@@ -59,6 +59,7 @@ import clear.reader.AbstractReader;
  * 
  */
 
+@Deprecated
 public class ClearParserUtil {
 
   static protected final String ENTRY_PARSER = "parser";

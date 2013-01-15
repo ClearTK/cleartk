@@ -48,7 +48,8 @@ import clear.morph.MorphEnAnalyzer;
 /**
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
- * All rights reserved.
+ * All rights reserved. * This class has been deprecated. For a dependency-based Semantic Role
+ * Labeler, switch to {@link org.cleartk.clearnlp.MPAnalyzer}
  * <p>
  * LemmaAnnator is a wrapper around and English lemmatization tool provided by the <a
  * href="http://code.google.com/p/clearparser/">clearparser project</a> which is subject to the BSD
@@ -65,6 +66,7 @@ import clear.morph.MorphEnAnalyzer;
  * 
  */
 
+@Deprecated
 @TypeCapability(
     inputs = "org.cleartk.token.type.Token:pos",
     outputs = "org.cleartk.token.type.Token:lemma")

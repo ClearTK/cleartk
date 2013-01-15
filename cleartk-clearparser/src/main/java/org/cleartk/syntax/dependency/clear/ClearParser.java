@@ -62,6 +62,9 @@ import clear.parse.AbstractDepParser;
  * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+ * * This class has been deprecated. For a dependency-based Semantic Role Labeler, switch to
+ * {@link org.cleartk.clearnlp.DependencyParser}
+ * <p>
  * This class provides a UIMA wrapper for the CLEAR parser. This parser is available here:
  * <p>
  * http://code.google.com/p/clearparser/
@@ -76,6 +79,7 @@ import clear.parse.AbstractDepParser;
  * @author Philip Ogren
  * 
  */
+@Deprecated
 @TypeCapability(
     inputs = { "org.cleartk.token.type.Token:pos", "org.cleartk.token.type.Token:lemma" })
 public class ClearParser extends JCasAnnotator_ImplBase {
