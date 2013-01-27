@@ -28,8 +28,10 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -49,6 +51,7 @@ import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.TimeMLUtil;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.ViewURIUtil;
+import org.jdom2.output.XMLOutputter;
 import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -145,18 +148,20 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
     initialView.setDocumentText(textBuffer.toString());
 
     // point make-instance IDs to their events, and copy attributes over
+    Set<Event> processedEvents = new HashSet<Event>();
     for (Element makeInstance : makeInstances) {
       String eventID = makeInstance.getAttributeValue("eventID");
       String eventInstanceID = makeInstance.getAttributeValue("eiid");
       Event event = (Event) this.getAnchor(jCas, anchors, eventID);
       anchors.put(eventInstanceID, event);
-      eventInstanceID = event.getEventInstanceID();
-      if (eventInstanceID == null) {
+      if (!processedEvents.contains(event)) {
         TimeMLUtil.copyAttributes(makeInstance, event, jCas);
+        processedEvents.add(event);
       } else {
-        TimeMLUtil.removeInconsistentAttributes(makeInstance, event, jCas);
-        event.setId(eventID);
-        event.setEventInstanceID(eventInstanceID);
+        String makeInstanceXML = new XMLOutputter().outputString(makeInstance);
+        String message = "Ignoring attributes from additional %s in %s";
+        String fileName = ViewURIUtil.getURI(jCas).toString();
+        this.getLogger().warn(String.format(message, makeInstanceXML, fileName));
       }
     }
 
