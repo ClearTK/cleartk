@@ -24,12 +24,10 @@
 package org.cleartk.timeml.tlink;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
+import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
@@ -37,11 +35,13 @@ import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
 import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
-import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.timeml.util.FilteringExtractor;
+import org.cleartk.token.type.Sentence;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
+
+import com.google.common.collect.Lists;
 
 /**
  * <br>
@@ -71,7 +71,7 @@ public class TemporalLinkEventToDocumentCreationTimeAnnotator extends
   };
 
   public TemporalLinkEventToDocumentCreationTimeAnnotator() {
-    super(Event.class, DocumentCreationTime.class, "BEFORE", "OVERLAP", "AFTER");
+    super(Event.class, DocumentCreationTime.class, "BEFORE", "OVERLAP", "AFTER", "INCLUDES", "IS_INCLUDED", "SIMULTANEOUS");
   }
 
   @Override
@@ -98,19 +98,14 @@ public class TemporalLinkEventToDocumentCreationTimeAnnotator extends
   }
 
   @Override
-  public void process(JCas jCas) throws AnalysisEngineProcessException {
-    Map<Event, Map<DocumentCreationTime, TemporalLink>> links = this.getLinks(jCas);
-
-    Collection<DocumentCreationTime> dcts = JCasUtil.select(jCas, DocumentCreationTime.class);
-    if (dcts.size() != 1) {
-      throw new RuntimeException("expected 1 DocumentCreationTime, found " + dcts.size());
+  protected List<SourceTargetPair> getSourceTargetPairs(JCas jCas) {
+    List<SourceTargetPair> pairs = Lists.newArrayList();
+    DocumentCreationTime dct = JCasUtil.selectSingle(jCas, DocumentCreationTime.class);
+    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
+      for (Event event : JCasUtil.selectCovered(jCas, Event.class, sentence)) {
+        pairs.add(new SourceTargetPair(event, dct));
+      }
     }
-    DocumentCreationTime dct = dcts.iterator().next();
-
-    for (Event event : JCasUtil.select(jCas, Event.class)) {
-      this.processLink(event, dct, links, jCas);
-    }
-
-    this.logSkippedLinks(jCas, links);
+    return pairs;
   }
 }

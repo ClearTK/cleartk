@@ -47,7 +47,9 @@ public class ModelInfo<ANNOTATION_TYPE extends TOP> {
 
   public String annotatedFeatureName;
 
-  public Function<ANNOTATION_TYPE, ? extends Object> annotationConverter;
+  public Function<ANNOTATION_TYPE, ?> getSpan;
+
+  public Function<ANNOTATION_TYPE, String> getOutcome;
 
   public CleartkInternalModelFactory modelFactory;
 
@@ -56,12 +58,17 @@ public class ModelInfo<ANNOTATION_TYPE extends TOP> {
   public ModelInfo(
       Class<ANNOTATION_TYPE> annotatedClass,
       String annotatedFeatureName,
-      Function<ANNOTATION_TYPE, ? extends Object> annotationConverter,
+      Function<ANNOTATION_TYPE, ? extends Object> getSpan,
       CleartkInternalModelFactory modelFactory,
       String[] trainingArguments) {
     this.annotatedClass = annotatedClass;
     this.annotatedFeatureName = annotatedFeatureName;
-    this.annotationConverter = annotationConverter;
+    this.getSpan = getSpan;
+    if (this.annotatedFeatureName == null) {
+      this.getOutcome = AnnotationStatistics.annotationToNull();
+    } else {
+      this.getOutcome = AnnotationStatistics.annotationToFeatureValue(this.annotatedFeatureName);
+    }
     this.modelFactory = modelFactory;
     this.trainingArguments = trainingArguments;
   }
@@ -80,7 +87,7 @@ public class ModelInfo<ANNOTATION_TYPE extends TOP> {
     statistics.add(
         goldAnns,
         systemAnns,
-        this.annotationConverter,
-        AnnotationStatistics.<ANNOTATION_TYPE> annotationToFeatureValue(this.annotatedFeatureName));
+        this.getSpan,
+        this.getOutcome);
   }
 }

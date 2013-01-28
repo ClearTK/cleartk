@@ -26,17 +26,16 @@ package org.cleartk.timeml.tlink;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.util.Level;
 import org.cleartk.classifier.CleartkAnnotator;
-import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.BetweenAnnotationsFeatureExtractor;
@@ -49,6 +48,13 @@ import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.token.type.Sentence;
 import org.uimafit.util.JCasUtil;
 
+import com.google.common.base.Function;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
+import com.google.common.collect.Table;
+import com.google.common.collect.Table.Cell;
+
 /**
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
@@ -58,6 +64,32 @@ import org.uimafit.util.JCasUtil;
  */
 public abstract class TemporalLinkAnnotator_ImplBase<SOURCE extends Anchor, TARGET extends Anchor>
     extends CleartkAnnotator<String> {
+
+  private static Map<String, String> REVERSE_RELATION = new HashMap<String, String>();
+  static {
+    // TimeML
+    REVERSE_RELATION.put("BEFORE", "AFTER");
+    REVERSE_RELATION.put("AFTER", "BEFORE");
+    REVERSE_RELATION.put("INCLUDES", "IS_INCLUDED");
+    REVERSE_RELATION.put("IS_INCLUDED", "INCLUDES");
+    REVERSE_RELATION.put("DURING", "DURING_INV");
+    REVERSE_RELATION.put("DURING_INV", "DURING");
+    REVERSE_RELATION.put("SIMULTANEOUS", "SIMULTANEOUS");
+    REVERSE_RELATION.put("IAFTER", "IBEFORE");
+    REVERSE_RELATION.put("IBEFORE", "IAFTER");
+    REVERSE_RELATION.put("IDENTITY", "IDENTITY");
+    REVERSE_RELATION.put("BEGINS", "BEGUN_BY");
+    REVERSE_RELATION.put("ENDS", "ENDED_BY");
+    REVERSE_RELATION.put("BEGUN_BY", "BEGINS");
+    REVERSE_RELATION.put("ENDED_BY", "ENDS");
+    // TempEval
+    REVERSE_RELATION.put("OVERLAP", "OVERLAP");
+    REVERSE_RELATION.put("OVERLAP-OR-AFTER", "BEFORE-OR-OVERLAP");
+    REVERSE_RELATION.put("BEFORE-OR-OVERLAP", "OVERLAP-OR-AFTER");
+    REVERSE_RELATION.put("VAGUE", "VAGUE");
+    REVERSE_RELATION.put("UNKNOWN", "UNKNOWN");
+    REVERSE_RELATION.put("NONE", "NONE");
+  }
 
   private Class<SOURCE> sourceClass;
 
@@ -70,6 +102,18 @@ public abstract class TemporalLinkAnnotator_ImplBase<SOURCE extends Anchor, TARG
   protected List<SimpleFeatureExtractor> targetExtractors;
 
   protected List<BetweenAnnotationsFeatureExtractor> betweenExtractors;
+
+  protected class SourceTargetPair {
+
+    public SOURCE source;
+
+    public TARGET target;
+
+    public SourceTargetPair(SOURCE source, TARGET target) {
+      this.source = source;
+      this.target = target;
+    }
+  }
 
   public TemporalLinkAnnotator_ImplBase(
       Class<SOURCE> sourceClass,
@@ -101,93 +145,81 @@ public abstract class TemporalLinkAnnotator_ImplBase<SOURCE extends Anchor, TARG
     this.betweenExtractors = extractors;
   }
 
-  protected Map<SOURCE, Map<TARGET, TemporalLink>> getLinks(JCas jCas) {
-    Map<SOURCE, Map<TARGET, TemporalLink>> links = new HashMap<SOURCE, Map<TARGET, TemporalLink>>();
-    if (this.isTraining()) {
-      for (TemporalLink tlink : JCasUtil.select(jCas, TemporalLink.class)) {
-        SOURCE source;
-        try {
-          source = this.sourceClass.cast(tlink.getSource());
-        } catch (ClassCastException e) {
-          String message = "Expected all sources to be of type %s, found %s";
-          throw new RuntimeException(String.format(message, this.sourceClass, tlink.getSource()));
+  /**
+   * Returns the (source, target) anchor pairs for which a relation should be classified.
+   */
+  protected abstract List<SourceTargetPair> getSourceTargetPairs(JCas jCas);
+
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+    // collect all annotated relations
+    Table<SOURCE, TARGET, String> links = HashBasedTable.create();
+    for (TemporalLink tlink : JCasUtil.select(jCas, TemporalLink.class)) {
+      Anchor sourceAnchor = tlink.getSource();
+      Anchor targetAnchor = tlink.getTarget();
+
+      // collect the relation from source to target
+      if (this.sourceClass.isInstance(sourceAnchor) && this.targetClass.isInstance(targetAnchor)) {
+        SOURCE source = this.sourceClass.cast(sourceAnchor);
+        TARGET target = this.targetClass.cast(targetAnchor);
+        String relation = tlink.getRelationType();
+        links.put(source, target, relation);
+      }
+
+      // collect the (reversed) relation from target to source
+      if (this.sourceClass.isInstance(targetAnchor) && this.targetClass.isInstance(sourceAnchor)) {
+        SOURCE source = this.sourceClass.cast(targetAnchor);
+        TARGET target = this.targetClass.cast(sourceAnchor);
+        String relation = REVERSE_RELATION.get(tlink.getRelationType());
+        if (relation == null) {
+          throw new UnsupportedOperationException("Unknown relation: " + tlink.getRelationType());
         }
-        TARGET target;
-        try {
-          target = this.targetClass.cast(tlink.getTarget());
-        } catch (ClassCastException e) {
-          String message = "Expected all targets to be of type %s, found %s";
-          throw new RuntimeException(String.format(message, this.targetClass, tlink.getSource()));
-        }
-        if (!links.containsKey(source)) {
-          links.put(source, new HashMap<TARGET, TemporalLink>());
-        }
-        if (links.get(source).containsKey(target)) {
-          String message = "Duplicate link between source %s and target %s";
-          throw new RuntimeException(String.format(message, source.getId(), target.getId()));
-        }
-        links.get(source).put(target, tlink);
+        links.put(source, target, relation);
       }
     }
-    return links;
-  }
 
-  protected void processLink(
-      SOURCE source,
-      TARGET target,
-      Map<SOURCE, Map<TARGET, TemporalLink>> links,
-      JCas jCas) throws CleartkProcessingException {
+    // for each pair of anchors, write training data or classify the relation
+    for (SourceTargetPair pair : this.getSourceTargetPairs(jCas)) {
+      SOURCE source = pair.source;
+      TARGET target = pair.target;
 
-    List<Feature> features = new ArrayList<Feature>();
-    for (SimpleFeatureExtractor extractor : this.sourceExtractors) {
-      features.addAll(extractor.extract(jCas, source));
-    }
-    for (SimpleFeatureExtractor extractor : this.targetExtractors) {
-      features.addAll(extractor.extract(jCas, target));
-    }
-    for (BetweenAnnotationsFeatureExtractor extractor : this.betweenExtractors) {
-      features.addAll(extractor.extractBetween(jCas, source, target));
-    }
-    if (this.isTraining()) {
-      if (links.containsKey(source) && links.get(source).containsKey(target)) {
-        TemporalLink link = null;
-        Map<TARGET, TemporalLink> targetLinks = links.get(source);
-        if (targetLinks != null) {
-          link = targetLinks.remove(target);
-          if (targetLinks.isEmpty()) {
-            links.remove(source);
-          }
-        }
-        if (link != null) {
-          String relation = link.getRelationType();
-          if (this.trainingRelationTypes.contains(relation)) {
+      // extract features
+      List<Feature> features = new ArrayList<Feature>();
+      for (SimpleFeatureExtractor extractor : this.sourceExtractors) {
+        features.addAll(extractor.extract(jCas, source));
+      }
+      for (SimpleFeatureExtractor extractor : this.targetExtractors) {
+        features.addAll(extractor.extract(jCas, target));
+      }
+      for (BetweenAnnotationsFeatureExtractor extractor : this.betweenExtractors) {
+        features.addAll(extractor.extractBetween(jCas, source, target));
+      }
+
+      // during training, write an instance if this pair was labeled
+      if (this.isTraining()) {
+        String relation = links.remove(source, target);
+        if (relation != null) {
+          if (this.trainingRelationTypes.isEmpty() || this.trainingRelationTypes.contains(relation)) {
             this.dataWriter.write(new Instance<String>(relation, features));
           }
         }
+      } else {
+        String relation = this.classifier.classify(features);
+        int offset = jCas.getDocumentText().length();
+        TemporalLink tlink = new TemporalLink(jCas, offset, offset);
+        tlink.setSource(source);
+        tlink.setTarget(target);
+        tlink.setRelationType(relation);
+        tlink.addToIndexes();
       }
-    } else {
-      String relation = this.classifier.classify(features);
-      int offset = jCas.getDocumentText().length();
-      TemporalLink tlink = new TemporalLink(jCas, offset, offset);
-      tlink.setSource(source);
-      tlink.setTarget(target);
-      tlink.setRelationType(relation);
-      tlink.addToIndexes();
     }
-  }
 
-  protected void logSkippedLinks(JCas jCas, Map<SOURCE, Map<TARGET, TemporalLink>> links) {
+    // log a message for any links that were annotated but not used
     if (!links.isEmpty()) {
-      int count = 0;
-      for (Map<TARGET, TemporalLink> targetLinks : links.values()) {
-        count += targetLinks.size();
-      }
+      
+      // map anchors to the sentences that contain them
       Map<Anchor, Sentence> sentences = new HashMap<Anchor, Sentence>();
-      Map<Sentence, Integer> sentenceIndexes = new HashMap<Sentence, Integer>();
-      int index = 0;
       for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
-        sentenceIndexes.put(sentence, index);
-        index += 1;
         for (SOURCE source : JCasUtil.selectCovered(jCas, this.sourceClass, sentence)) {
           sentences.put(source, sentence);
         }
@@ -195,30 +227,34 @@ public abstract class TemporalLinkAnnotator_ImplBase<SOURCE extends Anchor, TARG
           sentences.put(target, sentence);
         }
       }
+
+      // sort relations by the location of their source
+      List<Cell<SOURCE, TARGET, String>> cells = Lists.newArrayList(links.cellSet());
+      Ordering<Cell<SOURCE, TARGET, String>> order = Ordering.natural().onResultOf(
+          new Function<Cell<SOURCE, TARGET, String>, Integer>() {
+            @Override
+            public Integer apply(Cell<SOURCE, TARGET, String> cell) {
+              return cell.getRowKey().getBegin();
+            }
+          });
+      Collections.sort(cells, order);
+
+      // assemble an error message
       StringBuilder errorBuilder = new StringBuilder();
-      errorBuilder.append("Missed ").append(count).append(" TLINK(s)\n");
-      List<SOURCE> sources = new ArrayList<SOURCE>(links.keySet());
-      Collections.sort(sources, new Comparator<SOURCE>() {
-        @Override
-        public int compare(SOURCE source1, SOURCE source2) {
-          return source1.getBegin() - source2.getBegin();
-        }
-      });
-      for (SOURCE source : sources) {
-        for (TARGET target : links.get(source).keySet()) {
-          TemporalLink link = links.get(source).get(target);
-          Sentence sent1 = sentences.get(source);
-          Sentence sent2 = sentences.get(target);
-          errorBuilder.append(String.format(
-              "%s(%s, %s)\n%d: %s\n%d: %s\n",
-              link.getRelationType(),
-              source.getCoveredText(),
-              target.getCoveredText(),
-              sentenceIndexes.get(sent1),
-              sent1.getCoveredText(),
-              sentenceIndexes.get(sent2),
-              sent2.getCoveredText()));
-        }
+      errorBuilder.append("Missed ").append(links.size()).append(" TLINK(s)\n");
+      for (Cell<SOURCE, TARGET, String> cell : cells) {
+        SOURCE source = cell.getRowKey();
+        TARGET target = cell.getColumnKey();
+        String relation = cell.getValue();
+        Sentence sent1 = sentences.get(source);
+        Sentence sent2 = sentences.get(target);
+        errorBuilder.append(String.format(
+            "%s(%s, %s)\n%s\n%s\n",
+            relation,
+            source.getCoveredText(),
+            target.getCoveredText(),
+            sent1 == null ? null : sent1.getCoveredText(),
+            sent2 == null ? null : sent2.getCoveredText()));
       }
       this.getContext().getLogger().log(Level.FINE, errorBuilder.toString());
     }
