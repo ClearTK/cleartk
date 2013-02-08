@@ -56,13 +56,12 @@ import org.xml.sax.helpers.AttributesImpl;
  * 
  * 
  * @author Steven Bethard
- * @deprecated This class has been renamed to {@link TempEval2007Writer}.
+ * 
  */
-@Deprecated
-public class TimeMLWriter extends JCasAnnotator_ImplBase {
+public class TempEval2007Writer extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      TimeMLWriter.class,
+      TempEval2007Writer.class,
       "outputDirectoryName");
 
   @ConfigurationParameter(
@@ -73,7 +72,7 @@ public class TimeMLWriter extends JCasAnnotator_ImplBase {
   public static AnalysisEngineDescription getDescription(String outputDir)
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(
-        TimeMLWriter.class,
+        TempEval2007Writer.class,
         PARAM_OUTPUT_DIRECTORY_NAME,
         outputDir);
   }

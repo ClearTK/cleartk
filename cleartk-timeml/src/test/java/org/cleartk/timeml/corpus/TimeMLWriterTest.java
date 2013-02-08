@@ -79,7 +79,7 @@ public class TimeMLWriterTest extends TimeMLTestBase {
         this.inputFile.getPath(),
         TimeMLViewName.TIMEML);
     AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.getDescription());
-    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(TimeMLWriter.getDescription(this.outputDirectory.getPath()));
+    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(TempEval2007Writer.getDescription(this.outputDirectory.getPath()));
 
     reader.getNext(this.jCas.getCas());
     annotator.process(this.jCas);
@@ -124,24 +124,24 @@ public class TimeMLWriterTest extends TimeMLTestBase {
         + "<TLINK relType=\"OVERLAP\" eventID=\"e1\" eventInstanceID=\"ei1\" relatedToTime=\"t1\"/>\n"
         + "<TLINK relType=\"OVERLAP\" timeID=\"t1\" relatedToEvent=\"e1\" relatedToEventInstance=\"ei1\"/>\n"
         + "</TimeML>";
-    Assert.assertEquals(expected, TimeMLWriter.toTimeML(this.jCas).replaceAll("\r", ""));
+    Assert.assertEquals(expected, TempEval2007Writer.toTimeML(this.jCas).replaceAll("\r", ""));
   }
 
   @Test
   public void testDescriptor() throws UIMAException {
     try {
-      AnalysisEngineFactory.createPrimitive(TimeMLWriter.class);
+      AnalysisEngineFactory.createPrimitive(TempEval2007Writer.class);
       Assert.fail("expected failure with no OutputDirectory specified");
     } catch (ResourceInitializationException e) {
     }
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-        TimeMLWriter.class,
-        TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        TempEval2007Writer.class,
+        TempEval2007Writer.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath());
     Assert.assertEquals(
         this.outputDirectory.getPath(),
-        engine.getConfigParameterValue(TimeMLWriter.PARAM_OUTPUT_DIRECTORY_NAME));
+        engine.getConfigParameterValue(TempEval2007Writer.PARAM_OUTPUT_DIRECTORY_NAME));
     engine.collectionProcessComplete();
   }
 
