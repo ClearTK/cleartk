@@ -137,6 +137,7 @@ public class EventAnnotator extends CleartkAnnotator<String> {
           if (this.classifier.classify(features).equals("Event")) {
             Event event = new Event(jCas, token.getBegin(), token.getEnd());
             event.setId(String.format("e%d", index));
+            event.setEventInstanceID(String.format("ei%d", index));
             event.addToIndexes();
             index += 1;
           }

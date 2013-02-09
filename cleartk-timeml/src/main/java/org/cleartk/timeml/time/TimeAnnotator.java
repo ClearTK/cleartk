@@ -146,9 +146,11 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
     // add IDs to all Times
     int timeIndex = 1;
     for (Time time : JCasUtil.select(jCas, Time.class)) {
-      String id = String.format("t%d", timeIndex);
-      time.setId(id);
-      timeIndex += 1;
+      if (time.getId() == null) {
+        String id = String.format("t%d", timeIndex);
+        time.setId(id);
+        timeIndex += 1;
+      }
     }
   }
 }

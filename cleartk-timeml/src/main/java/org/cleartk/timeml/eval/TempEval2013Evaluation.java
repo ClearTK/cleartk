@@ -1,3 +1,26 @@
+/*
+ * Copyright (c) 2013, Regents of the University of Colorado 
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
+ */
 package org.cleartk.timeml.eval;
 
 import java.io.File;
@@ -24,6 +47,7 @@ import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.timeml.TimeMLViewName;
+import org.cleartk.timeml.corpus.TempEval2013Writer;
 import org.cleartk.timeml.corpus.TimeMLGoldAnnotator;
 import org.cleartk.timeml.event.EventAnnotator;
 import org.cleartk.timeml.event.EventAspectAnnotator;
@@ -61,6 +85,15 @@ import com.google.common.collect.Sets;
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
 
+/**
+ * Trains and evaluates event, time and temporal relation models on the TempEval 2013 data.
+ * 
+ * <br>
+ * Copyright (c) 2013, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * @author Steven Bethard
+ */
 public class TempEval2013Evaluation extends
     Evaluation_ImplBase<File, TempEval2013Evaluation.ModelStats> {
 
@@ -171,26 +204,39 @@ public class TempEval2013Evaluation extends
   interface Options {
     @Option(longName = "train-dirs")
     List<File> getTrainDirectories();
+    @Option(longName = "test-dirs")
+    List<File> getTestDirectories();
   }
 
   public static void main(String[] args) throws Exception {
     Options options = CliFactory.parseArguments(Options.class, args);
 
-    List<File> trainFiles = Lists.newArrayList();
-    for (File trainDir : options.getTrainDirectories()) {
-      for (File trainFile : trainDir.listFiles()) {
-        trainFiles.add(trainFile);
-      }
-    }
+    List<File> trainFiles = listAllFiles(options.getTrainDirectories());
+    List<File> testFiles = listAllFiles(options.getTestDirectories());
 
-    File evalDir = new File("target/eval");
+    File evalDir = new File("target/tempeval2013");
     TempEval2013Evaluation evaluation = new TempEval2013Evaluation(evalDir);
-    List<ModelStats> foldStats = evaluation.crossValidation(trainFiles, 2);
-    ModelStats modelStats = ModelStats.addAll(foldStats);
+    ModelStats modelStats;
+    if (testFiles.isEmpty()) {
+      List<ModelStats> foldStats = evaluation.crossValidation(trainFiles, 2);
+      modelStats = ModelStats.addAll(foldStats);
+    } else {
+      modelStats = evaluation.trainAndTest(trainFiles, testFiles);
+    }
     for (Model<?> model : MODELS) {
       System.err.printf("== %s ==\n", model.name);
       System.err.println(modelStats.get(model));
     }
+  }
+  
+  private static List<File> listAllFiles(List<File> directories) {
+    List<File> files = Lists.newArrayList();
+    for (File dir : directories) {
+      for (File file : dir.listFiles()) {
+        files.add(file);
+      }
+    }
+    return files;
   }
 
   public TempEval2013Evaluation(File baseDirectory) {
@@ -277,6 +323,8 @@ public class TempEval2013Evaluation extends
     for (Model<?> model : MODELS) {
       builder.add(model.getAnnotatorDescription(directory));
     }
+    builder.add(AnalysisEngineFactory.createPrimitiveDescription(SetTemporalLinkIDs.class));
+    builder.add(TempEval2013Writer.getDescription(new File(directory, "timeml")));
 
     ModelStats stats = new ModelStats();
     for (JCas jCas : new JCasIterable(reader, builder.createAggregate())) {
@@ -461,6 +509,19 @@ public class TempEval2013Evaluation extends
           tlink.setRelationType("SIMULTANEOUS");
         }
       }
+    }
+  }
+  
+  public static class SetTemporalLinkIDs extends JCasAnnotator_ImplBase {
+
+    @Override
+    public void process(JCas jCas) throws AnalysisEngineProcessException {
+      int index = 1;
+      for (TemporalLink tlink : JCasUtil.select(jCas, TemporalLink.class)) {
+        tlink.setId(String.format("l%d", index));
+        ++index;
+      }
+      
     }
   }
 }
