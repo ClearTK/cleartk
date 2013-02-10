@@ -24,10 +24,13 @@
 package org.cleartk.timeml.eval;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -60,6 +63,7 @@ import org.cleartk.timeml.time.TimeTypeAnnotator;
 import org.cleartk.timeml.tlink.TemporalLinkEventToDocumentCreationTimeAnnotator;
 import org.cleartk.timeml.tlink.TemporalLinkEventToSameSentenceTimeAnnotator;
 import org.cleartk.timeml.tlink.TemporalLinkEventToSubordinatedEventAnnotator;
+import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
@@ -68,8 +72,15 @@ import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
+import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.filter.Filters;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.XMLOutputter;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -81,6 +92,7 @@ import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
@@ -202,10 +214,15 @@ public class TempEval2013Evaluation extends
           AnnotationStatistics.<TemporalLink> annotationToFeatureValue("relationType")), };
 
   interface Options {
+    
     @Option(longName = "train-dirs")
     List<File> getTrainDirectories();
+    
     @Option(longName = "test-dirs")
     List<File> getTestDirectories();
+    
+    @Option(longName = "inferred-tlinks", defaultToNull=true)
+    File getInferredTLinksFile();
   }
 
   public static void main(String[] args) throws Exception {
@@ -215,7 +232,7 @@ public class TempEval2013Evaluation extends
     List<File> testFiles = listAllFiles(options.getTestDirectories());
 
     File evalDir = new File("target/tempeval2013");
-    TempEval2013Evaluation evaluation = new TempEval2013Evaluation(evalDir);
+    TempEval2013Evaluation evaluation = new TempEval2013Evaluation(evalDir, options.getInferredTLinksFile());
     ModelStats modelStats;
     if (testFiles.isEmpty()) {
       List<ModelStats> foldStats = evaluation.crossValidation(trainFiles, 2);
@@ -238,9 +255,12 @@ public class TempEval2013Evaluation extends
     }
     return files;
   }
+  
+  private File inferredTLinksFile;
 
-  public TempEval2013Evaluation(File baseDirectory) {
+  public TempEval2013Evaluation(File baseDirectory, File inferredTLinksFile) {
     super(baseDirectory);
+    this.inferredTLinksFile = inferredTLinksFile;
   }
 
   @Override
@@ -261,6 +281,12 @@ public class TempEval2013Evaluation extends
         TimeMLViewName.TIMEML);
     builder.add(TimeMLGoldAnnotator.getDescription());
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(FixTimeML.class));
+    if (this.inferredTLinksFile != null) {
+      builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+          UseInferredTlinks.class,
+          UseInferredTlinks.PARAM_INFERRED_TLINKS_DIRECTORY,
+          this.inferredTLinksFile));
+    }
     // only add sentences and other annotations under <TEXT>
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(
         SentenceAnnotator.class,
@@ -522,6 +548,104 @@ public class TempEval2013Evaluation extends
         ++index;
       }
       
+    }
+  }
+  
+  public static class UseInferredTlinks extends JCasAnnotator_ImplBase {
+    
+    public static final String PARAM_INFERRED_TLINKS_DIRECTORY = "InferredTLinksDirectory";
+    @ConfigurationParameter(name = PARAM_INFERRED_TLINKS_DIRECTORY, mandatory=true)
+    private File inferredTLinksDirectory;
+    
+    @Override
+    public void process(JCas jCas) throws AnalysisEngineProcessException {
+      String fileName = new File(ViewURIUtil.getURI(jCas).getPath()).getName();
+      String suffix = this.inferredTLinksDirectory.getName();
+      String inferredFileName = fileName.replaceAll("[.]tml$", "." + suffix + ".tml");
+      File inferredTLinksFile = new File(this.inferredTLinksDirectory, inferredFileName);
+      
+      if (!inferredTLinksFile.exists()) {
+        this.getLogger().warn("No inferred TLINKs file " + inferredTLinksFile);
+      } else {
+        
+        // remove existing temporal links
+        for (TemporalLink tlink : Lists.newArrayList(JCasUtil.select(jCas, TemporalLink.class))) {
+          tlink.removeFromIndexes();
+        }
+
+        // parse the XML document
+        SAXBuilder builder = new SAXBuilder();
+        Document xml;
+        try {
+          xml = builder.build(inferredTLinksFile);
+        } catch (JDOMException e) {
+          throw new AnalysisEngineProcessException(e);
+        } catch (IOException e) {
+          throw new AnalysisEngineProcessException(e);
+        }
+        
+        // index all anchors by their IDs
+        Map<String, Anchor> idToAnchor = Maps.newHashMap();
+        for (Anchor anchor : JCasUtil.select(jCas, Anchor.class)) {
+          idToAnchor.put(anchor.getId(), anchor);
+          if (anchor instanceof Event) {
+            idToAnchor.put(((Event) anchor).getEventInstanceID(), anchor);
+          }
+        }
+        
+        // create a TemporalLink for each TLINK in the file
+        int offset = jCas.getDocumentText().length();
+        for (Element linkElem : xml.getDescendants(Filters.element("TLINK"))) {
+          // get the relation
+          String relationType = linkElem.getAttributeValue("relType");
+          if (relationType == null) {
+            error(jCas, linkElem, "No relation type specified in %s");
+          }
+          
+          // get the source
+          String sourceEventID = linkElem.getAttributeValue("eventInstanceID");
+          String sourceTimeID = linkElem.getAttributeValue("timeID");
+          if (!(sourceEventID == null ^ sourceTimeID == null)) {
+            error(jCas, linkElem, "Expected exactly 1 source attribute, found %s");
+          }
+          String sourceID = sourceEventID != null ? sourceEventID : sourceTimeID;
+          Anchor source = idToAnchor.get(sourceID);
+          if (source == null) {
+            this.getLogger().warn(errorString(jCas, linkElem, "No annotation found for source of %s"));
+            continue;
+          }
+          
+          // get the target
+          String targetEventID = linkElem.getAttributeValue("relatedToEventInstance");
+          String targetTimeID = linkElem.getAttributeValue("relatedToTime");
+          if (!(targetEventID == null ^ targetTimeID == null)) {
+            error(jCas, linkElem, "Expected exactly 1 target attribute, found %s");
+          }
+          String targetID = targetEventID != null ? targetEventID : targetTimeID;
+          Anchor target = idToAnchor.get(targetID);
+          if (target == null) {
+            this.getLogger().warn(errorString(jCas, linkElem, "No annotation found for target of %s"));
+            continue;
+          }
+          
+          // add the temporal link
+          TemporalLink link = new TemporalLink(jCas, offset, offset);
+          link.setRelationType(relationType);
+          link.setSource(source);
+          link.setTarget(target);
+          link.addToIndexes();
+        }
+      }
+    }
+
+    private static String errorString(JCas jCas, Element element, String message) throws AnalysisEngineProcessException {
+      URI uri = ViewURIUtil.getURI(jCas);
+      String elemString = new XMLOutputter().outputString(element);
+      return String.format("In %s: " + message, uri, elemString);
+    }
+    
+    private static void error(JCas jCas, Element element, String message) throws AnalysisEngineProcessException {
+      throw new IllegalArgumentException(errorString(jCas, element, message));
     }
   }
 }
