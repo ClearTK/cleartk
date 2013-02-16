@@ -60,7 +60,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * @author Steven Bethard
  * 
  */
-public class TimeMLWriterTest extends TimeMLTestBase {
+public class TempEval2007WriterTest extends TimeMLTestBase {
 
   private File inputFile;
 
@@ -120,9 +120,9 @@ public class TimeMLWriterTest extends TimeMLTestBase {
     tlink2.addToIndexes();
 
     String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><TimeML>\n"
-        + "He <EVENT eid=\"e1\" eiid=\"ei1\">bought</EVENT> milk <TIMEX3 tid=\"t1\">yesterday</TIMEX3>.\n"
-        + "<TLINK relType=\"OVERLAP\" eventID=\"e1\" eventInstanceID=\"ei1\" relatedToTime=\"t1\"/>\n"
-        + "<TLINK relType=\"OVERLAP\" timeID=\"t1\" relatedToEvent=\"e1\" relatedToEventInstance=\"ei1\"/>\n"
+        + "He <EVENT eid=\"e1\">bought</EVENT> milk <TIMEX3 tid=\"t1\">yesterday</TIMEX3>.\n"
+        + "<TLINK relType=\"OVERLAP\" eventID=\"e1\" relatedToTime=\"t1\"/>\n"
+        + "<TLINK relType=\"OVERLAP\" timeID=\"t1\" relatedToEvent=\"e1\"/>\n"
         + "</TimeML>";
     Assert.assertEquals(expected, TempEval2007Writer.toTimeML(this.jCas).replaceAll("\r", ""));
   }

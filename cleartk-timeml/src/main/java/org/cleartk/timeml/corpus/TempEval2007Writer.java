@@ -153,7 +153,7 @@ public class TempEval2007Writer extends JCasAnnotator_ImplBase {
         throws SAXException {
       String name = TimeMLUtil.toTimeMLElementName(annotation);
       if (name != null) {
-        handler.startElement("", name, name, TimeMLUtil.toTimeMLAttributes(annotation, name));
+        handler.startElement("", name, name, TimeMLUtil.toTempEval2007Attributes(annotation, name));
       }
     }
 
