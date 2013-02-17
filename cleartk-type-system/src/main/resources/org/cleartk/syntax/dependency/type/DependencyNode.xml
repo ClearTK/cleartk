@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<?xml version="1.0" encoding="UTF-8"?><typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>DependencyNode</name>
   <description/>
   <version>1.0</version>
   <vendor/>
   <imports>
     <import name="org.cleartk.syntax.dependency.type.DependencyRelation"/>
+    <import name="org.cleartk.score.type.TypeSystem"/>
   </imports>
   <types>
     <typeDescription>
       <name>org.cleartk.syntax.dependency.type.DependencyNode</name>
       <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <supertypeName>org.cleartk.score.type.ScoredAnnotation</supertypeName>
       <features>
         <featureDescription>
           <name>HeadRelations</name>

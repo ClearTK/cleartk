@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<?xml version="1.0" encoding="UTF-8"?><typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>NamedEntity</name>
   <description>Copyright (c) 2007-2008, Regents of the University of Colorado 
 All rights reserved.
@@ -26,12 +25,13 @@ POSSIBILITY OF SUCH DAMAGE.</description>
   <vendor>Copyright 2007-2008 Regents of the University of Colorado.   All Rights Reserved.</vendor>
   <imports>
     <import name="org.cleartk.ne.type.NamedEntity"/>
+    <import name="org.cleartk.score.type.TypeSystem"/>
   </imports>
   <types>
     <typeDescription>
       <name>org.cleartk.ne.type.NamedEntityMention</name>
       <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <supertypeName>org.cleartk.score.type.ScoredAnnotation</supertypeName>
       <features>
         <featureDescription>
           <name>mentionType</name>
