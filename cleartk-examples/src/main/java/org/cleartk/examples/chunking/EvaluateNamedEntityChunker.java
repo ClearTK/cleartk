@@ -76,6 +76,8 @@ import com.google.common.base.Function;
  * 
  * @author Himanshu Gahlot
  * @author Steven Bethard
+ * 
+ * 
  */
 public class EvaluateNamedEntityChunker extends
     Evaluation_ImplBase<File, AnnotationStatistics<String>> {
