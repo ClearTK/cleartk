@@ -28,11 +28,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.uima.analysis_component.AnalysisComponent;
+import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
@@ -43,7 +44,17 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.CasCopier;
+import org.cleartk.classifier.DataWriter;
+import org.cleartk.classifier.SequenceDataWriter;
+import org.cleartk.classifier.jar.DefaultDataWriterFactory;
+import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
+import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.Train;
+import org.cleartk.classifier.libsvm.LIBSVMStringOutcomeDataWriter;
+import org.cleartk.classifier.mallet.MalletCRFStringOutcomeDataWriter;
+import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter;
+import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
@@ -69,7 +80,6 @@ import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Text;
 import org.cleartk.timeml.type.Time;
-import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ViewURIUtil;
@@ -91,9 +101,14 @@ import org.uimafit.pipeline.SimplePipeline;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.common.collect.Table;
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
 
@@ -106,8 +121,9 @@ import com.lexicalscope.jewel.cli.Option;
  * 
  * @author Steven Bethard
  */
-public class TempEval2013Evaluation extends
-    Evaluation_ImplBase<File, TempEval2013Evaluation.ModelStats> {
+public class TempEval2013Evaluation
+    extends
+    Evaluation_ImplBase<File, ImmutableTable<TempEval2013Evaluation.Model<?>, TempEval2013Evaluation.Model.Params, AnnotationStatistics<String>>> {
 
   private static Function<TemporalLink, List<Integer>> TEMPORAL_LINK_TO_SPANS = new Function<TemporalLink, List<Integer>>() {
     @Override
@@ -120,109 +136,205 @@ public class TempEval2013Evaluation extends
     }
   };
 
-  static final Model<?>[] MODELS = new Model<?>[] {
-      new Model<Time>(
-          "time-extent",
-          TimeAnnotator.FACTORY,
-          new String[0],
-          Model.EvaluationType.NORMAL,
-          Time.class,
-          AnnotationStatistics.<Time> annotationToSpan(),
-          AnnotationStatistics.<Time, String> annotationToNull()),
-      new Model<Time>(
-          "time-type",
-          TimeTypeAnnotator.FACTORY,
-          new String[0],
-          Model.EvaluationType.NORMAL,
-          Time.class,
-          AnnotationStatistics.<Time> annotationToSpan(),
-          AnnotationStatistics.<Time> annotationToFeatureValue("timeType")),
-      new Model<Event>(
-          "event-extent",
-          EventAnnotator.FACTORY,
-          new String[] { "MaxEnt" },
-          Model.EvaluationType.NORMAL,
-          Event.class,
-          AnnotationStatistics.<Event> annotationToSpan(),
-          AnnotationStatistics.<Event, String> annotationToNull()),
-      new Model<Event>(
-          "event-aspect",
-          EventAspectAnnotator.FACTORY,
-          new String[0],
-          Model.EvaluationType.NORMAL,
-          Event.class,
-          AnnotationStatistics.<Event> annotationToSpan(),
-          AnnotationStatistics.<Event> annotationToFeatureValue("aspect")),
-      new Model<Event>(
-          "event-class",
-          EventClassAnnotator.FACTORY,
-          new String[0],
-          Model.EvaluationType.NORMAL,
-          Event.class,
-          AnnotationStatistics.<Event> annotationToSpan(),
-          AnnotationStatistics.<Event> annotationToFeatureValue("eventClass")),
-      new Model<Event>(
-          "event-modality",
-          EventModalityAnnotator.FACTORY,
-          new String[0],
-          Model.EvaluationType.NORMAL,
-          Event.class,
-          AnnotationStatistics.<Event> annotationToSpan(),
-          AnnotationStatistics.<Event> annotationToFeatureValue("modality")),
-      new Model<Event>(
-          "event-polarity",
-          EventPolarityAnnotator.FACTORY,
-          new String[0],
-          Model.EvaluationType.NORMAL,
-          Event.class,
-          AnnotationStatistics.<Event> annotationToSpan(),
-          AnnotationStatistics.<Event> annotationToFeatureValue("polarity")),
-      new Model<Event>(
-          "event-tense",
-          EventTenseAnnotator.FACTORY,
-          new String[0],
-          Model.EvaluationType.NORMAL,
-          Event.class,
-          AnnotationStatistics.<Event> annotationToSpan(),
-          AnnotationStatistics.<Event> annotationToFeatureValue("tense")),
-      new Model<TemporalLink>(
-          "tlink-event-doctime",
-          TemporalLinkEventToDocumentCreationTimeAnnotator.FACTORY,
-          new String[0],
-          // links are not consistently annotated, so only evaluate precision
-          Model.EvaluationType.PRECISION_ONLY,
-          TemporalLink.class,
-          TEMPORAL_LINK_TO_SPANS,
-          AnnotationStatistics.<TemporalLink> annotationToFeatureValue("relationType")),
-      new Model<TemporalLink>(
-          "tlink-event-senttime",
-          TemporalLinkEventToSameSentenceTimeAnnotator.FACTORY,
-          new String[0],
-          // links are not consistently annotated, so only evaluate precision
-          Model.EvaluationType.PRECISION_ONLY,
-          TemporalLink.class,
-          TEMPORAL_LINK_TO_SPANS,
-          AnnotationStatistics.<TemporalLink> annotationToFeatureValue("relationType")),
-      new Model<TemporalLink>(
-          "tlink-event-subordevent",
-          TemporalLinkEventToSubordinatedEventAnnotator.FACTORY,
-          new String[0],
-          // links are not consistently annotated, so only evaluate precision
-          Model.EvaluationType.PRECISION_ONLY,
-          TemporalLink.class,
-          TEMPORAL_LINK_TO_SPANS,
-          AnnotationStatistics.<TemporalLink> annotationToFeatureValue("relationType")), };
+  private static List<Model.Params> SEQUENCE_CLASSIFIER_PARAM_SEARCH_SPACE = Lists.newArrayList(
+  // default is --iterations 500 --gaussian-variance 10
+      new Model.Params(MalletCRFStringOutcomeDataWriter.class),
+      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--forbidden", "O,I"),
+      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--iterations", "100"),
+      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--iterations", "1000"),
+      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--gaussian-variance", "1"),
+      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--gaussian-variance", "100"));
+
+  private static final String priorFlag = "--gaussianPriorVariance";
+
+  private static List<Model.Params> CLASSIFIER_PARAM_SEARCH_SPACE = Lists.newArrayList(
+  // default is --gaussianPriorVariance 1
+      new Model.Params(MalletStringOutcomeDataWriter.class, "MaxEnt"),
+      new Model.Params(MalletStringOutcomeDataWriter.class, "MaxEnt", priorFlag, "0.1"),
+      new Model.Params(MalletStringOutcomeDataWriter.class, "MaxEnt", priorFlag, "10"),
+      // default is [iterations cutoff] 100 5
+      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      new Model.Params(MaxentStringOutcomeDataWriter.class, "100", "10"),
+      new Model.Params(MaxentStringOutcomeDataWriter.class, "500", "5"),
+      // default is RBF kernel; skip that entirely and just try linear kernels
+      new Model.Params(LIBSVMStringOutcomeDataWriter.class, "-t", "0", "-c", "1"),
+      new Model.Params(LIBSVMStringOutcomeDataWriter.class, "-t", "0", "-c", "10"),
+      new Model.Params(LIBSVMStringOutcomeDataWriter.class, "-t", "0", "-c", "100"));
+
+  private static final Model<Time> TIME_EXTENT_MODEL = new Model<Time>(
+      "time-extent",
+      Lists.<Model<?>> newArrayList(),
+      TimeAnnotator.class,
+      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--forbidden", "O,I"),
+      SEQUENCE_CLASSIFIER_PARAM_SEARCH_SPACE,
+      Model.EvaluationType.NORMAL,
+      Time.class,
+      AnnotationStatistics.<Time> annotationToSpan(),
+      AnnotationStatistics.<Time, String> annotationToNull(),
+      null);
+
+  private static final Model<Time> TIME_TYPE_MODEL = new Model<Time>(
+      "time-type",
+      Lists.<Model<?>> newArrayList(TIME_EXTENT_MODEL),
+      TimeTypeAnnotator.class,
+      new Model.Params(LIBSVMStringOutcomeDataWriter.class, "-t", "0", "-c", "10"),
+      CLASSIFIER_PARAM_SEARCH_SPACE,
+      Model.EvaluationType.NORMAL,
+      Time.class,
+      AnnotationStatistics.<Time> annotationToSpan(),
+      AnnotationStatistics.<Time> annotationToFeatureValue("timeType"),
+      "timeType");
+
+  private static final Model<Event> EVENT_EXTENT_MODEL = new Model<Event>(
+      "event-extent",
+      Lists.<Model<?>> newArrayList(),
+      EventAnnotator.class,
+      // TODO: determine best model parameters
+      new Model.Params(MalletStringOutcomeDataWriter.class, "MaxEnt"),
+      CLASSIFIER_PARAM_SEARCH_SPACE,
+      Model.EvaluationType.NORMAL,
+      Event.class,
+      AnnotationStatistics.<Event> annotationToSpan(),
+      AnnotationStatistics.<Event, String> annotationToNull(),
+      null);
+
+  private static final Model<Event> EVENT_ASPECT_MODEL = new Model<Event>(
+      "event-aspect",
+      Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
+      EventAspectAnnotator.class,
+      // TODO: determine best model parameters
+      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      CLASSIFIER_PARAM_SEARCH_SPACE,
+      Model.EvaluationType.NORMAL,
+      Event.class,
+      AnnotationStatistics.<Event> annotationToSpan(),
+      AnnotationStatistics.<Event> annotationToFeatureValue("aspect"),
+      "aspect");
+
+  private static final Model<Event> EVENT_CLASS_MODEL = new Model<Event>(
+      "event-class",
+      Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
+      EventClassAnnotator.class,
+      // TODO: determine best model parameters
+      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      CLASSIFIER_PARAM_SEARCH_SPACE,
+      Model.EvaluationType.NORMAL,
+      Event.class,
+      AnnotationStatistics.<Event> annotationToSpan(),
+      AnnotationStatistics.<Event> annotationToFeatureValue("eventClass"),
+      "eventClass");
+
+  private static final Model<Event> EVENT_MODALITY_MODEL = new Model<Event>(
+      "event-modality",
+      Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
+      EventModalityAnnotator.class,
+      // TODO: determine best model parameters
+      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      CLASSIFIER_PARAM_SEARCH_SPACE,
+      Model.EvaluationType.NORMAL,
+      Event.class,
+      AnnotationStatistics.<Event> annotationToSpan(),
+      AnnotationStatistics.<Event> annotationToFeatureValue("modality"),
+      "modality");
+
+  private static final Model<Event> EVENT_POLARITY_MODEL = new Model<Event>(
+      "event-polarity",
+      Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
+      EventPolarityAnnotator.class,
+      // TODO: determine best model parameters
+      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      CLASSIFIER_PARAM_SEARCH_SPACE,
+      Model.EvaluationType.NORMAL,
+      Event.class,
+      AnnotationStatistics.<Event> annotationToSpan(),
+      AnnotationStatistics.<Event> annotationToFeatureValue("polarity"),
+      "polarity");
+
+  private static final Model<Event> EVENT_TENSE_MODEL = new Model<Event>(
+      "event-tense",
+      Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
+      EventTenseAnnotator.class,
+      // TODO: determine best model parameters
+      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      CLASSIFIER_PARAM_SEARCH_SPACE,
+      Model.EvaluationType.NORMAL,
+      Event.class,
+      AnnotationStatistics.<Event> annotationToSpan(),
+      AnnotationStatistics.<Event> annotationToFeatureValue("tense"),
+      "tense");
+
+  private static final Model<TemporalLink> TLINK_EVENT_DOCTIME_MODEL = new Model<TemporalLink>(
+      "tlink-event-doctime",
+      Lists.<Model<?>> newArrayList(
+          EVENT_EXTENT_MODEL,
+          EVENT_ASPECT_MODEL,
+          EVENT_CLASS_MODEL,
+          EVENT_MODALITY_MODEL,
+          EVENT_POLARITY_MODEL,
+          EVENT_TENSE_MODEL),
+      TemporalLinkEventToDocumentCreationTimeAnnotator.class,
+      // TODO: determine best model parameters
+      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      CLASSIFIER_PARAM_SEARCH_SPACE,
+      Model.EvaluationType.PRECISION_ONLY,
+      TemporalLink.class,
+      TEMPORAL_LINK_TO_SPANS,
+      AnnotationStatistics.<TemporalLink> annotationToFeatureValue("relationType"),
+      null);
+
+  private static final Model<TemporalLink> TLINK_EVENT_SENTTIME_MODEL = new Model<TemporalLink>(
+      "tlink-event-senttime",
+      Lists.<Model<?>> newArrayList(
+          TIME_EXTENT_MODEL,
+          TIME_TYPE_MODEL,
+          EVENT_EXTENT_MODEL,
+          EVENT_ASPECT_MODEL,
+          EVENT_CLASS_MODEL,
+          EVENT_MODALITY_MODEL,
+          EVENT_POLARITY_MODEL,
+          EVENT_TENSE_MODEL),
+      TemporalLinkEventToSameSentenceTimeAnnotator.class,
+      // TODO: determine best model parameters
+      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      CLASSIFIER_PARAM_SEARCH_SPACE,
+      Model.EvaluationType.PRECISION_ONLY,
+      TemporalLink.class,
+      TEMPORAL_LINK_TO_SPANS,
+      AnnotationStatistics.<TemporalLink> annotationToFeatureValue("relationType"),
+      null);
+
+  private static final Model<TemporalLink> TLINK_EVENT_SUBORDEVENT_MODEL = new Model<TemporalLink>(
+      "tlink-event-subordevent",
+      Lists.<Model<?>> newArrayList(
+          EVENT_EXTENT_MODEL,
+          EVENT_ASPECT_MODEL,
+          EVENT_CLASS_MODEL,
+          EVENT_MODALITY_MODEL,
+          EVENT_POLARITY_MODEL,
+          EVENT_TENSE_MODEL),
+      TemporalLinkEventToSubordinatedEventAnnotator.class,
+      // TODO: determine best model parameters
+      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      CLASSIFIER_PARAM_SEARCH_SPACE,
+      Model.EvaluationType.PRECISION_ONLY,
+      TemporalLink.class,
+      TEMPORAL_LINK_TO_SPANS,
+      AnnotationStatistics.<TemporalLink> annotationToFeatureValue("relationType"),
+      null);
 
   interface Options {
-    
+
     @Option(longName = "train-dirs")
     List<File> getTrainDirectories();
-    
-    @Option(longName = "test-dirs")
+
+    @Option(longName = "test-dirs", defaultToNull = true)
     List<File> getTestDirectories();
-    
-    @Option(longName = "inferred-tlinks", defaultToNull=true)
+
+    @Option(longName = "inferred-tlinks", defaultToNull = true)
     File getInferredTLinksFile();
+
+    @Option(longName = "tune", defaultToNull = true)
+    String getNameOfModelToTune();
   }
 
   public static void main(String[] args) throws Exception {
@@ -231,35 +343,120 @@ public class TempEval2013Evaluation extends
     List<File> trainFiles = listAllFiles(options.getTrainDirectories());
     List<File> testFiles = listAllFiles(options.getTestDirectories());
 
-    File evalDir = new File("target/tempeval2013");
-    TempEval2013Evaluation evaluation = new TempEval2013Evaluation(evalDir, options.getInferredTLinksFile());
-    ModelStats modelStats;
-    if (testFiles.isEmpty()) {
-      List<ModelStats> foldStats = evaluation.crossValidation(trainFiles, 2);
-      modelStats = ModelStats.addAll(foldStats);
+    // map names to models
+    List<Model<?>> allModels = Lists.<Model<?>> newArrayList(
+        TIME_EXTENT_MODEL,
+        TIME_TYPE_MODEL,
+        EVENT_EXTENT_MODEL,
+        EVENT_ASPECT_MODEL,
+        EVENT_CLASS_MODEL,
+        EVENT_MODALITY_MODEL,
+        EVENT_POLARITY_MODEL,
+        EVENT_TENSE_MODEL,
+        TLINK_EVENT_DOCTIME_MODEL,
+        TLINK_EVENT_SENTTIME_MODEL,
+        TLINK_EVENT_SUBORDEVENT_MODEL);
+    Map<String, Model<?>> nameToModel = Maps.newHashMap();
+    for (Model<?> model : allModels) {
+      nameToModel.put(model.name, model);
+    }
+
+    // determine which parameters each model should be trained with
+    ImmutableMultimap.Builder<Model<?>, Model.Params> modelsBuilder = ImmutableMultimap.builder();
+    String nameOfModelToTune = options.getNameOfModelToTune();
+    if (nameOfModelToTune == null) {
+      for (Model<?> model : allModels) {
+        modelsBuilder.put(model, model.bestParams);
+      }
     } else {
+      Model<?> modelToTune = nameToModel.get(nameOfModelToTune);
+      if (modelToTune == null) {
+        throw new IllegalArgumentException("No such model: " + nameOfModelToTune);
+      }
+      for (Model<?> model : getPrerequisites(modelToTune)) {
+        modelsBuilder.put(model, model.bestParams);
+      }
+      for (Model.Params params : modelToTune.paramsToSearch) {
+        modelsBuilder.put(modelToTune, params);
+      }
+    }
+    ImmutableMultimap<Model<?>, Model.Params> models = modelsBuilder.build();
+
+    // create the evaluation manager
+    File evalDir = new File("target/tempeval2013");
+    TempEval2013Evaluation evaluation = new TempEval2013Evaluation(
+        evalDir,
+        models,
+        options.getInferredTLinksFile());
+
+    // run a simple train-and-test
+    ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>> modelStats;
+    if (!testFiles.isEmpty()) {
       modelStats = evaluation.trainAndTest(trainFiles, testFiles);
     }
-    for (Model<?> model : MODELS) {
-      System.err.printf("== %s ==\n", model.name);
-      System.err.println(modelStats.get(model));
+
+    // run a cross-validation
+    else {
+      List<ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>>> foldStats;
+      foldStats = evaluation.crossValidation(trainFiles, 2);
+
+      // prepare a table of stats for all models and parameters
+      ImmutableTable.Builder<Model<?>, Model.Params, AnnotationStatistics<String>> modelStatsBuilder = ImmutableTable.builder();
+      for (Model<?> model : models.keySet()) {
+        for (Model.Params params : models.get(model)) {
+          modelStatsBuilder.put(model, params, new AnnotationStatistics<String>());
+        }
+      }
+      modelStats = modelStatsBuilder.build();
+
+      // combine all fold stats into a single overall stats
+      for (Table<Model<?>, Model.Params, AnnotationStatistics<String>> foldTable : foldStats) {
+        for (Table.Cell<Model<?>, Model.Params, AnnotationStatistics<String>> cell : foldTable.cellSet()) {
+          modelStats.get(cell.getRowKey(), cell.getColumnKey()).addAll(cell.getValue());
+        }
+      }
+    }
+
+    // print out all model performance
+    for (Model<?> model : models.keySet()) {
+      for (Model.Params params : modelStats.row(model).keySet()) {
+        System.err.printf("== %s %s ==\n", model.name, params);
+        System.err.println(modelStats.get(model, params));
+      }
     }
   }
-  
+
   private static List<File> listAllFiles(List<File> directories) {
     List<File> files = Lists.newArrayList();
-    for (File dir : directories) {
-      for (File file : dir.listFiles()) {
-        files.add(file);
+    if (directories != null) {
+      for (File dir : directories) {
+        for (File file : dir.listFiles()) {
+          files.add(file);
+        }
       }
     }
     return files;
   }
-  
+
+  private static List<Model<?>> getPrerequisites(Model<?> model) {
+    List<Model<?>> models = Lists.newArrayList();
+    for (Model<?> child : model.prerequisites) {
+      models.addAll(getPrerequisites(child));
+      models.add(child);
+    }
+    return models;
+  }
+
+  private ImmutableMultimap<Model<?>, Model.Params> models;
+
   private File inferredTLinksFile;
 
-  public TempEval2013Evaluation(File baseDirectory, File inferredTLinksFile) {
+  public TempEval2013Evaluation(
+      File baseDirectory,
+      ImmutableMultimap<Model<?>, Model.Params> models,
+      File inferredTLinksFile) {
     super(baseDirectory);
+    this.models = models;
     this.inferredTLinksFile = inferredTLinksFile;
   }
 
@@ -271,6 +468,8 @@ public class TempEval2013Evaluation extends
   @Override
   protected void train(CollectionReader reader, File directory) throws Exception {
     AggregateBuilder builder = new AggregateBuilder();
+
+    // read the manual TimeML annotations into the CAS
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
@@ -287,6 +486,7 @@ public class TempEval2013Evaluation extends
           UseInferredTlinks.PARAM_INFERRED_TLINKS_DIRECTORY,
           this.inferredTLinksFile));
     }
+
     // only add sentences and other annotations under <TEXT>
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(
         SentenceAnnotator.class,
@@ -298,102 +498,147 @@ public class TempEval2013Evaluation extends
     builder.add(PosTaggerAnnotator.getDescription());
     builder.add(DefaultSnowballStemmer.getDescription("English"));
     builder.add(ParserAnnotator.getDescription());
-    for (Model<?> model : MODELS) {
-      builder.add(model.getWriterDescription(directory));
+
+    // add a data write for each model and its various parameters
+    for (Model<?> model : this.models.keySet()) {
+      for (Model.Params params : this.models.get(model)) {
+        builder.add(model.getWriterDescription(directory, params));
+      }
     }
 
+    // run the pipeline
     SimplePipeline.runPipeline(reader, builder.createAggregate());
 
-    for (Model<?> model : MODELS) {
-      System.err.println("Training: " + model.name);
-      model.train(directory);
+    // train each model with each of its various parameters
+    for (Model<?> model : this.models.keySet()) {
+      for (Model.Params params : this.models.get(model)) {
+        System.err.printf("Training: %s %s\n", model.name, params);
+        model.train(directory, params);
+      }
     }
   }
 
   @Override
-  protected ModelStats test(CollectionReader reader, File directory) throws Exception {
+  protected ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>> test(
+      CollectionReader reader,
+      File directory) throws Exception {
     String goldViewName = "GoldView";
-    AggregateBuilder builder = new AggregateBuilder();
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    AggregateBuilder preprocess = new AggregateBuilder();
+
+    // read the manual TimeML annotations into the gold view
+    preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         TimeMLViewName.TIMEML));
-    builder.add(
+    preprocess.add(
         UriToDocumentTextAnnotator.getDescription(),
         CAS.NAME_DEFAULT_SOFA,
         TimeMLViewName.TIMEML);
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         goldViewName));
-    builder.add(TimeMLGoldAnnotator.getDescription(), CAS.NAME_DEFAULT_SOFA, goldViewName);
-    builder.add(
+    preprocess.add(TimeMLGoldAnnotator.getDescription(), CAS.NAME_DEFAULT_SOFA, goldViewName);
+    preprocess.add(
         AnalysisEngineFactory.createPrimitiveDescription(FixTimeML.class),
         CAS.NAME_DEFAULT_SOFA,
         goldViewName);
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
         CopyTextAndDocumentCreationTime.class,
         CopyTextAndDocumentCreationTime.PARAM_SOURCE_VIEW,
         goldViewName));
+
     // only add sentences and other annotations under <TEXT>
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
         SentenceAnnotator.class,
         SentenceAnnotator.PARAM_SENTENCE_MODEL_PATH,
         "/models/en-sent.bin",
         SentenceAnnotator.PARAM_WINDOW_CLASS_NAMES,
         new Class<?>[] { Text.class }));
-    builder.add(TokenAnnotator.getDescription());
-    builder.add(PosTaggerAnnotator.getDescription());
-    builder.add(DefaultSnowballStemmer.getDescription("English"));
-    builder.add(ParserAnnotator.getDescription());
-    for (Model<?> model : MODELS) {
-      builder.add(model.getAnnotatorDescription(directory));
-    }
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(SetTemporalLinkIDs.class));
-    builder.add(TempEval2013Writer.getDescription(new File(directory, "timeml")));
+    preprocess.add(TokenAnnotator.getDescription());
+    preprocess.add(PosTaggerAnnotator.getDescription());
+    preprocess.add(DefaultSnowballStemmer.getDescription("English"));
+    preprocess.add(ParserAnnotator.getDescription());
+    AnalysisEngine preprocessEngine = preprocess.createAggregate();
 
-    ModelStats stats = new ModelStats();
-    for (JCas jCas : new JCasIterable(reader, builder.createAggregate())) {
+    // finalize TLINK ids and write out TimeML files
+    AggregateBuilder postprocess = new AggregateBuilder();
+    postprocess.add(AnalysisEngineFactory.createPrimitiveDescription(SetTemporalLinkIDs.class));
+    postprocess.add(TempEval2013Writer.getDescription(new File(directory, "timeml")));
+    AnalysisEngine postprocessEngine = postprocess.createAggregate();
+
+    // create one AnalysisEngine and one AnnotationStatistics for each model/parameters combination
+    ImmutableTable.Builder<Model<?>, Model.Params, AnalysisEngine> enginesBuilder = ImmutableTable.builder();
+    ImmutableTable.Builder<Model<?>, Model.Params, AnnotationStatistics<String>> statsBuilder = ImmutableTable.builder();
+    for (Model<?> model : this.models.keySet()) {
+      for (Model.Params params : this.models.get(model)) {
+        AnalysisEngineDescription desc = model.getAnnotatorDescription(directory, params);
+        enginesBuilder.put(model, params, AnalysisEngineFactory.createPrimitive(desc));
+        statsBuilder.put(model, params, new AnnotationStatistics<String>());
+      }
+    }
+    ImmutableTable<Model<?>, Model.Params, AnalysisEngine> engines = enginesBuilder.build();
+    ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>> stats = statsBuilder.build();
+
+    // evaluate each CAS in the test data
+    for (JCas jCas : new JCasIterable(reader, preprocessEngine)) {
+
+      // evaluate each model/parameters combination
       JCas goldView = jCas.getView(goldViewName);
       JCas systemView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
+      for (Table.Cell<Model<?>, Model.Params, AnalysisEngine> cell : engines.cellSet()) {
+        Model<?> model = cell.getRowKey();
+        Model.Params params = cell.getColumnKey();
+        AnalysisEngine engine = cell.getValue();
 
-      for (Model<?> model : MODELS) {
-        model.evaluate(goldView, systemView, stats.get(model));
+        // clean any annotations from previous parameter settings, then process and evaluate
+        model.removeModelAnnotations(jCas);
+        engine.process(jCas);
+        model.evaluate(goldView, systemView, stats.get(model, params));
       }
+
+      postprocessEngine.process(jCas);
     }
     return stats;
   }
 
-  static class ModelStats extends HashMap<Model<?>, AnnotationStatistics<String>> {
-    private static final long serialVersionUID = 1L;
+  static class Model<ANNOTATION_TYPE extends TOP> {
 
-    public ModelStats() {
-      for (Model<?> model : MODELS) {
-        this.put(model, new AnnotationStatistics<String>());
+    public static class Params {
+      public Class<?> dataWriterClass;
+
+      public String[] trainingArguments;
+
+      public Params(Class<?> dataWriterClass, String... trainingArguments) {
+        this.dataWriterClass = dataWriterClass;
+        this.trainingArguments = trainingArguments;
       }
-    }
 
-    public static ModelStats addAll(Iterable<ModelStats> modelStatsIter) {
-      ModelStats result = new ModelStats();
-      for (ModelStats stats : modelStatsIter) {
-        for (Model<?> model : MODELS) {
-          result.get(model).addAll(stats.get(model));
+      @Override
+      public String toString() {
+        Objects.ToStringHelper helper = Objects.toStringHelper(this.getClass());
+        helper.add("dataWriterClass", this.dataWriterClass.getSimpleName());
+        if (this.trainingArguments.length > 0) {
+          helper.add("trainingArguments", Joiner.on(' ').join(this.trainingArguments));
         }
+        return helper.toString();
       }
-      return result;
-    }
-  }
 
-  private static class Model<ANNOTATION_TYPE extends TOP> {
+    }
+
     public enum EvaluationType {
       NORMAL, PRECISION_ONLY
     }
 
     public String name;
 
-    private CleartkInternalModelFactory factory;
+    public List<Model<?>> prerequisites;
 
-    private String[] trainingArguments;
+    private Class<? extends AnalysisComponent> annotatorClass;
+
+    public Params bestParams;
+
+    public List<Params> paramsToSearch;
 
     private EvaluationType evaluationType;
 
@@ -403,51 +648,71 @@ public class TempEval2013Evaluation extends
 
     private Function<ANNOTATION_TYPE, String> annotationToOutcome;
 
+    private String featureToRemove;
+
     public Model(
         String name,
-        CleartkInternalModelFactory factory,
-        String[] trainingArguments,
+        List<Model<?>> prerequisites,
+        Class<? extends AnalysisComponent> annotatorClass,
+        Params bestParams,
+        List<Params> paramsToSearch,
         EvaluationType evaluationType,
         Class<ANNOTATION_TYPE> annotationClass,
         Function<ANNOTATION_TYPE, ?> annotationToSpan,
-        Function<ANNOTATION_TYPE, String> annotationToOutcome) {
+        Function<ANNOTATION_TYPE, String> annotationToOutcome,
+        String featureToRemove) {
       this.name = name;
-      this.factory = factory;
-      this.trainingArguments = trainingArguments;
+      this.prerequisites = prerequisites;
+      this.annotatorClass = annotatorClass;
+      this.bestParams = bestParams;
+      this.paramsToSearch = paramsToSearch;
       this.evaluationType = evaluationType;
       this.annotationClass = annotationClass;
       this.annotationToSpan = annotationToSpan;
       this.annotationToOutcome = annotationToOutcome;
+      this.featureToRemove = featureToRemove;
     }
 
-    public AnalysisEngineDescription getWriterDescription(File directory)
+    public AnalysisEngineDescription getWriterDescription(File directory, Params params)
         throws ResourceInitializationException {
-      return this.factory.getWriterDescription(this.getModelDirectory(directory));
+      String datatWriterParamName;
+      if (SequenceDataWriter.class.isAssignableFrom(params.dataWriterClass)) {
+        datatWriterParamName = DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME;
+      } else if (DataWriter.class.isAssignableFrom(params.dataWriterClass)) {
+        datatWriterParamName = DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME;
+      } else {
+        throw new RuntimeException("Invalid data writer class: " + params.dataWriterClass);
+      }
+      return AnalysisEngineFactory.createPrimitiveDescription(
+          this.annotatorClass,
+          datatWriterParamName,
+          params.dataWriterClass,
+          DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+          this.getModelDirectory(directory, params));
     }
 
-    public void train(File directory) throws Exception {
-      Train.main(this.getModelDirectory(directory), this.trainingArguments);
+    public void train(File directory, Params params) throws Exception {
+      Train.main(this.getModelDirectory(directory, params), params.trainingArguments);
     }
 
-    public AnalysisEngineDescription getAnnotatorDescription(File directory)
+    public AnalysisEngineDescription getAnnotatorDescription(File directory, Params params)
         throws ResourceInitializationException {
-      return this.factory.getAnnotatorDescription(new File(
-          this.getModelDirectory(directory),
-          "model.jar").getPath());
+      return AnalysisEngineFactory.createPrimitiveDescription(
+          this.annotatorClass,
+          GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+          new File(this.getModelDirectory(directory, params), "model.jar").getPath());
     }
 
     public void evaluate(JCas goldView, JCas systemView, AnnotationStatistics<String> stats) {
       switch (this.evaluationType) {
         case PRECISION_ONLY:
-          Collection<ANNOTATION_TYPE> goldRelations = JCasUtil.select(
-              goldView,
-              this.annotationClass);
+          Collection<ANNOTATION_TYPE> goldRelations = this.select(goldView);
           Set<Object> goldSpans = Sets.newHashSet();
           for (ANNOTATION_TYPE annotation : goldRelations) {
             goldSpans.add(this.annotationToSpan.apply(annotation));
           }
           List<ANNOTATION_TYPE> systemRelations = Lists.newArrayList();
-          for (ANNOTATION_TYPE annotation : JCasUtil.select(systemView, this.annotationClass)) {
+          for (ANNOTATION_TYPE annotation : this.select(systemView)) {
             if (goldSpans.contains(this.annotationToSpan.apply(annotation))) {
               systemRelations.add(annotation);
             }
@@ -456,15 +721,40 @@ public class TempEval2013Evaluation extends
           break;
         case NORMAL:
           stats.add(
-              JCasUtil.select(goldView, this.annotationClass),
-              JCasUtil.select(systemView, this.annotationClass),
+              this.select(goldView),
+              this.select(systemView),
               this.annotationToSpan,
               this.annotationToOutcome);
       }
     }
 
-    private File getModelDirectory(File directory) {
-      return new File(directory, this.name);
+    public void removeModelAnnotations(JCas jCas) {
+      for (ANNOTATION_TYPE annotation : this.select(jCas)) {
+        if (this.featureToRemove != null) {
+          Feature feature = annotation.getType().getFeatureByBaseName(this.featureToRemove);
+          annotation.setFeatureValueFromString(feature, null);
+        } else {
+          annotation.removeFromIndexes();
+        }
+      }
+    }
+
+    private List<ANNOTATION_TYPE> select(JCas jCas) {
+      // should restrict ourselves to the Text element, but restricting to exact
+      // class should exclude DocumentCreationTimes, the one thing outside the Text element
+      List<ANNOTATION_TYPE> annotations = Lists.newArrayList();
+      for (ANNOTATION_TYPE annotation : JCasUtil.select(jCas, this.annotationClass)) {
+        if (annotation.getClass().equals(this.annotationClass)) {
+          annotations.add(annotation);
+        }
+      }
+      return annotations;
+    }
+
+    private File getModelDirectory(File directory, Params params) {
+      String dataWriterName = params.dataWriterClass.getSimpleName();
+      String argumentsString = Joiner.on("_").join(params.trainingArguments);
+      return new File(new File(new File(directory, this.name), dataWriterName), argumentsString);
     }
   }
 
@@ -537,7 +827,7 @@ public class TempEval2013Evaluation extends
       }
     }
   }
-  
+
   public static class SetTemporalLinkIDs extends JCasAnnotator_ImplBase {
 
     @Override
@@ -547,27 +837,28 @@ public class TempEval2013Evaluation extends
         tlink.setId(String.format("l%d", index));
         ++index;
       }
-      
+
     }
   }
-  
+
   public static class UseInferredTlinks extends JCasAnnotator_ImplBase {
-    
+
     public static final String PARAM_INFERRED_TLINKS_DIRECTORY = "InferredTLinksDirectory";
-    @ConfigurationParameter(name = PARAM_INFERRED_TLINKS_DIRECTORY, mandatory=true)
+
+    @ConfigurationParameter(name = PARAM_INFERRED_TLINKS_DIRECTORY, mandatory = true)
     private File inferredTLinksDirectory;
-    
+
     @Override
     public void process(JCas jCas) throws AnalysisEngineProcessException {
       String fileName = new File(ViewURIUtil.getURI(jCas).getPath()).getName();
       String suffix = this.inferredTLinksDirectory.getName();
       String inferredFileName = fileName.replaceAll("[.]tml$", "." + suffix + ".tml");
       File inferredTLinksFile = new File(this.inferredTLinksDirectory, inferredFileName);
-      
+
       if (!inferredTLinksFile.exists()) {
         this.getLogger().warn("No inferred TLINKs file " + inferredTLinksFile);
       } else {
-        
+
         // remove existing temporal links
         for (TemporalLink tlink : Lists.newArrayList(JCasUtil.select(jCas, TemporalLink.class))) {
           tlink.removeFromIndexes();
@@ -583,7 +874,7 @@ public class TempEval2013Evaluation extends
         } catch (IOException e) {
           throw new AnalysisEngineProcessException(e);
         }
-        
+
         // index all anchors by their IDs
         Map<String, Anchor> idToAnchor = Maps.newHashMap();
         for (Anchor anchor : JCasUtil.select(jCas, Anchor.class)) {
@@ -592,7 +883,7 @@ public class TempEval2013Evaluation extends
             idToAnchor.put(((Event) anchor).getEventInstanceID(), anchor);
           }
         }
-        
+
         // create a TemporalLink for each TLINK in the file
         int offset = jCas.getDocumentText().length();
         for (Element linkElem : xml.getDescendants(Filters.element("TLINK"))) {
@@ -601,7 +892,7 @@ public class TempEval2013Evaluation extends
           if (relationType == null) {
             error(jCas, linkElem, "No relation type specified in %s");
           }
-          
+
           // get the source
           String sourceEventID = linkElem.getAttributeValue("eventInstanceID");
           String sourceTimeID = linkElem.getAttributeValue("timeID");
@@ -611,10 +902,11 @@ public class TempEval2013Evaluation extends
           String sourceID = sourceEventID != null ? sourceEventID : sourceTimeID;
           Anchor source = idToAnchor.get(sourceID);
           if (source == null) {
-            this.getLogger().warn(errorString(jCas, linkElem, "No annotation found for source of %s"));
+            this.getLogger().warn(
+                errorString(jCas, linkElem, "No annotation found for source of %s"));
             continue;
           }
-          
+
           // get the target
           String targetEventID = linkElem.getAttributeValue("relatedToEventInstance");
           String targetTimeID = linkElem.getAttributeValue("relatedToTime");
@@ -624,10 +916,11 @@ public class TempEval2013Evaluation extends
           String targetID = targetEventID != null ? targetEventID : targetTimeID;
           Anchor target = idToAnchor.get(targetID);
           if (target == null) {
-            this.getLogger().warn(errorString(jCas, linkElem, "No annotation found for target of %s"));
+            this.getLogger().warn(
+                errorString(jCas, linkElem, "No annotation found for target of %s"));
             continue;
           }
-          
+
           // add the temporal link
           TemporalLink link = new TemporalLink(jCas, offset, offset);
           link.setRelationType(relationType);
@@ -638,13 +931,15 @@ public class TempEval2013Evaluation extends
       }
     }
 
-    private static String errorString(JCas jCas, Element element, String message) throws AnalysisEngineProcessException {
+    private static String errorString(JCas jCas, Element element, String message)
+        throws AnalysisEngineProcessException {
       URI uri = ViewURIUtil.getURI(jCas);
       String elemString = new XMLOutputter().outputString(element);
       return String.format("In %s: " + message, uri, elemString);
     }
-    
-    private static void error(JCas jCas, Element element, String message) throws AnalysisEngineProcessException {
+
+    private static void error(JCas jCas, Element element, String message)
+        throws AnalysisEngineProcessException {
       throw new IllegalArgumentException(errorString(jCas, element, message));
     }
   }
