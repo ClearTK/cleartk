@@ -25,6 +25,7 @@ package org.cleartk.chunker;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -49,6 +50,7 @@ import org.cleartk.classifier.feature.proliferate.CharacterNGramProliferator;
 import org.cleartk.classifier.feature.proliferate.LowerCaseProliferator;
 import org.cleartk.classifier.feature.proliferate.ProliferatingExtractor;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.util.PublicFieldSequenceDataWriter;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Chunk;
@@ -248,7 +250,7 @@ public class ChunkerTest extends DefaultTestBase {
         DefaultChunkLabeler.PARAM_CHUNK_LABEL_FEATURE_NAME,
         "chunkType",
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-        "example/pos/model/model.jar");
+        JarClassifierBuilder.getModelJarFile("example/pos/model"));
     InitializableFactory.initialize(chunkLabeler, engine.getUimaContext());
     engine.process(jCas);
 
