@@ -26,6 +26,7 @@ package org.cleartk.srl.conll2005;
 import java.io.File;
 
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.srl.ArgumentClassifier;
 import org.cleartk.srl.ArgumentIdentifier;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
@@ -43,13 +44,9 @@ public class TestConll2005Models {
 
   private static final File conll2005File = new File("../../ClearTK-data/data/conll2005/devset");
 
-  // private static final File predicateIdentificationModel = new
-  // File("scratch/CoNLL2005/predicateIdentification/model.jar");
-  private static final File argumentIdentificationModel = new File(
-      "scratch/CoNLL2005/argumentIdentification/model.jar");
+  private static final File argumentIdentificationModel = JarClassifierBuilder.getModelJarFile("scratch/CoNLL2005/argumentIdentification");
 
-  private static final File argumentClassificationModel = new File(
-      "scratch/CoNLL2005/argumentClassification/model.jar");
+  private static final File argumentClassificationModel = JarClassifierBuilder.getModelJarFile("scratch/CoNLL2005/argumentClassification");
 
   private static final File outputFile = new File("scratch/CoNLL2005/results/props-devset");
 

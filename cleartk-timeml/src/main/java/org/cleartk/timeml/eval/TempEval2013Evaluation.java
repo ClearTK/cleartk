@@ -43,6 +43,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.CasCopier;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
@@ -431,9 +432,7 @@ public class TempEval2013Evaluation extends
 
     public AnalysisEngineDescription getAnnotatorDescription(File directory)
         throws ResourceInitializationException {
-      return this.factory.getAnnotatorDescription(new File(
-          this.getModelDirectory(directory),
-          "model.jar").getPath());
+      return this.factory.getAnnotatorDescription(JarClassifierBuilder.getModelJarFile(this.getModelDirectory(directory)).getPath());
     }
 
     public void evaluate(JCas goldView, JCas systemView, AnnotationStatistics<String> stats) {

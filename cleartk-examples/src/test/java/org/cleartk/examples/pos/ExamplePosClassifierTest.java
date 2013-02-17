@@ -36,6 +36,7 @@ import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.libsvm.LIBSVMStringOutcomeDataWriter;
 import org.cleartk.classifier.mallet.MalletCRFStringOutcomeDataWriter;
 import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter;
@@ -288,8 +289,8 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
       hider.restoreOutput();
     }
 
-    AnalysisEngineDescription taggerDescription = ExamplePOSAnnotator.getClassifierDescription(outDirectoryName
-        + "/model.jar");
+    AnalysisEngineDescription taggerDescription = ExamplePOSAnnotator.getClassifierDescription(JarClassifierBuilder.getModelJarFile(
+        outDirectoryName).getPath());
     ResourceCreationSpecifierFactory.setConfigurationParameters(
         taggerDescription,
         ViterbiClassifier.PARAM_STACK_SIZE,

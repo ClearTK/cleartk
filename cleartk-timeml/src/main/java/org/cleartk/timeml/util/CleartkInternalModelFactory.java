@@ -35,6 +35,7 @@ import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.uimafit.factory.ResourceCreationSpecifierFactory;
 
 /**
@@ -60,7 +61,7 @@ public abstract class CleartkInternalModelFactory {
   }
 
   public URL getClassifierJarURL() {
-    String resourceName = this.getAnnotatorClass().getSimpleName().toLowerCase() + "/model.jar";
+    String resourceName = JarClassifierBuilder.getModelJarFile(getAnnotatorClass().getSimpleName().toLowerCase()).getPath(); 
     URL url = this.getAnnotatorClass().getResource(resourceName);
     if (url == null) {
       String className = this.getAnnotatorClass().getName();

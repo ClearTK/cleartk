@@ -36,6 +36,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.util.PublicFieldSequenceDataWriter;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.examples.ExamplesTestBase;
@@ -167,11 +168,13 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
     BuildTestExamplePosModel.main();
     hider.restoreOutput();
 
-    AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator.getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
+    String modelFileName = JarClassifierBuilder.getModelJarFile(
+        ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY).getPath();
+    AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator.getClassifierDescription(modelFileName);
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 
     Object classifierJar = engine.getConfigParameterValue(GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH);
-    Assert.assertEquals(ExamplePOSAnnotator.DEFAULT_MODEL, classifierJar);
+    Assert.assertEquals(modelFileName, classifierJar);
 
     engine.collectionProcessComplete();
   }

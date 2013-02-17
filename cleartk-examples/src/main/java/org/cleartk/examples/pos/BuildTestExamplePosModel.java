@@ -32,6 +32,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionReader;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.syntax.constituent.TreebankConstants;
 import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
@@ -96,7 +97,8 @@ public class BuildTestExamplePosModel {
     // Train a classifier on the training data, and package it into a .jar file
     Train.main(outputDirectory);
 
-    System.out.println("model written to " + ExamplePOSAnnotator.DEFAULT_MODEL);
+    System.out.println("model written to "
+        + JarClassifierBuilder.getModelJarFile(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY).getPath());
 
   }
 }

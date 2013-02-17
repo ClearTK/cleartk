@@ -71,8 +71,6 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
 
   public static final String DEFAULT_OUTPUT_DIRECTORY = "target/examples/pos";
 
-  public static final String DEFAULT_MODEL = "target/examples/pos/model.jar";
-
   private SimpleFeatureExtractor tokenFeatureExtractor;
 
   private CleartkExtractor contextFeatureExtractor;

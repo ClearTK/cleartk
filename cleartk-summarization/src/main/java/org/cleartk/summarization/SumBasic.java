@@ -210,7 +210,7 @@ public class SumBasic extends Summarize_ImplBase<File> {
         CleartkAnnotator.PARAM_IS_TRAINING,
         false,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-        new File(this.modelDirectory, "model.jar").getPath(),
+        JarClassifierBuilder.getModelJarFile(this.modelDirectory),
         SumBasicAnnotator.PARAM_TOKEN_FIELD,
         this.tokenField.name(),
         SumBasicAnnotator.PARAM_STOPWORDS_URI,
