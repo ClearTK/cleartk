@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<?xml version="1.0" encoding="UTF-8"?><typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>TemporalLink</name>
   <description>Copyright (c) 2009, Regents of the University of Colorado 
 All rights reserved.
@@ -31,7 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
     <typeDescription>
       <name>org.cleartk.timeml.type.TemporalLink</name>
       <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <supertypeName>org.cleartk.score.type.ScoredAnnotation</supertypeName>
       <features>
         <featureDescription>
           <name>relationType</name>

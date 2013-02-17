@@ -1,14 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<?xml version="1.0" encoding="UTF-8"?><typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>Parenthetical</name>
   <description/>
   <version>1.0</version>
   <vendor/>
+  <imports>
+    <import name="org.cleartk.score.type.TypeSystem"/>
+  </imports>
   <types>
     <typeDescription>
       <name>org.cleartk.util.type.Parenthetical</name>
       <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <supertypeName>org.cleartk.score.type.ScoredAnnotation</supertypeName>
     </typeDescription>
   </types>
 </typeSystemDescription>
