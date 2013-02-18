@@ -30,7 +30,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 
 /**
@@ -41,7 +41,14 @@ import org.cleartk.syntax.constituent.type.TreebankNode;
  * 
  * @author Philipp Wetzler
  */
-public class NodeTypeExtractor implements SimpleFeatureExtractor {
+public class NodeTypeExtractor implements SimpleNamedFeatureExtractor {
+  
+  private String featureName = "NodeType";
+  
+  @Override
+  public String getFeatureName() {
+    return this.featureName;
+  }
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
       throws CleartkExtractorException {
@@ -53,7 +60,7 @@ public class NodeTypeExtractor implements SimpleFeatureExtractor {
     if (node.getNodeType() == null)
       throw new UnsupportedOperationException("nodeType attribute has not been set");
 
-    Feature feature = new Feature("NodeType", node.getNodeType());
+    Feature feature = new Feature(this.featureName, node.getNodeType());
     return Collections.singletonList(feature);
   }
 

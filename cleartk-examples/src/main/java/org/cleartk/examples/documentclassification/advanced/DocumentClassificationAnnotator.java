@@ -43,7 +43,7 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.cleartk.classifier.feature.transform.extractor.CentroidTfidfSimilarityExtractor;
 import org.cleartk.classifier.feature.transform.extractor.MinMaxNormalizationExtractor;
 import org.cleartk.classifier.feature.transform.extractor.TfidfExtractor;
@@ -254,23 +254,27 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
         classifierJarFile.toString());
   }
 
-  public static class CountAnnotationExtractor implements SimpleFeatureExtractor {
+  public static class CountAnnotationExtractor implements SimpleNamedFeatureExtractor {
 
-    @SuppressWarnings("rawtypes")
-    private Class annotationType;
+    private Class<? extends Annotation> annotationType;
 
-    @SuppressWarnings("rawtypes")
-    public CountAnnotationExtractor(Class annotationType) {
+    private String name;
+
+    public CountAnnotationExtractor(Class<? extends Annotation> annotationType) {
       this.annotationType = annotationType;
+      this.name = "Count_" + this.annotationType.getName();
+    }
+
+    @Override
+    public String getFeatureName() {
+      return this.name;
     }
 
     @Override
     public List<Feature> extract(JCas view, Annotation focusAnnotation)
         throws CleartkExtractorException {
-
-      @SuppressWarnings({ "rawtypes", "unchecked" })
-      List annotations = JCasUtil.selectCovered(this.annotationType, focusAnnotation);
-      return Arrays.asList(new Feature("Count_" + annotationType.getName(), annotations.size()));
+      List<?> annotations = JCasUtil.selectCovered(this.annotationType, focusAnnotation);
+      return Arrays.asList(new Feature(this.name, annotations.size()));
     }
   }
 

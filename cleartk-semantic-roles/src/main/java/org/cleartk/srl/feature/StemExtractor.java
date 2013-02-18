@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.cleartk.token.type.Token;
 
 /**
@@ -40,7 +40,14 @@ import org.cleartk.token.type.Token;
  * 
  * @author Philipp Wetzler
  */
-public class StemExtractor implements SimpleFeatureExtractor {
+public class StemExtractor implements SimpleNamedFeatureExtractor {
+  
+  private String featureName = "Stem";
+  
+  @Override
+  public String getFeatureName() {
+    return this.featureName;
+  }
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
       throws UnsupportedOperationException {
@@ -52,7 +59,7 @@ public class StemExtractor implements SimpleFeatureExtractor {
     if (token.getStem() == null)
       throw new UnsupportedOperationException("stem attribute has not been set");
 
-    Feature feature = new Feature("Stem", token.getStem());
+    Feature feature = new Feature(this.featureName, token.getStem());
     return Collections.singletonList(feature);
   }
 

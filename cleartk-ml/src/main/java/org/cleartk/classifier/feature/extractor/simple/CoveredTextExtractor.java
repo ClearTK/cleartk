@@ -41,8 +41,14 @@ import org.cleartk.classifier.Feature;
  * 
  */
 
-public class CoveredTextExtractor implements SimpleFeatureExtractor {
+public class CoveredTextExtractor implements SimpleNamedFeatureExtractor {
 
+  @Override
+  public String getFeatureName() {
+    return null;
+  }
+
+  @Override
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation) {
     // inline Annotation.getCoveredText() here, but use the right JCas instead
     String jCasText = jCas.getDocumentText();

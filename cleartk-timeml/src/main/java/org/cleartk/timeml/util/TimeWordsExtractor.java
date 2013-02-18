@@ -34,7 +34,7 @@ import java.util.Set;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 
 import com.google.common.base.Joiner;
 
@@ -45,7 +45,9 @@ import com.google.common.base.Joiner;
  * 
  * @author Steven Bethard
  */
-public class TimeWordsExtractor implements SimpleFeatureExtractor {
+public class TimeWordsExtractor implements SimpleNamedFeatureExtractor {
+  
+  private String featureName = "TimeType";
 
   private Map<String, Set<String>> groupedWords;
 
@@ -116,6 +118,11 @@ public class TimeWordsExtractor implements SimpleFeatureExtractor {
             "century",
             "centuries")));
   }
+  
+  @Override
+  public String getFeatureName() {
+    return this.featureName;
+  }
 
   @Override
   public List<Feature> extract(JCas view, Annotation focusAnnotation) {
@@ -143,7 +150,7 @@ public class TimeWordsExtractor implements SimpleFeatureExtractor {
     if (types.isEmpty()) {
       types.add("None");
     }
-    return Arrays.asList(new Feature("TimeType", Joiner.on('_').join(types)));
+    return Arrays.asList(new Feature(this.featureName, Joiner.on('_').join(types)));
   }
 
 }

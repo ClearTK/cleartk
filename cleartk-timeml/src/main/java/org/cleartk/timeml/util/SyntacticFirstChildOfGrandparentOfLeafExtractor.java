@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 
@@ -40,7 +40,14 @@ import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
  * 
  * @author Steven Bethard
  */
-public class SyntacticFirstChildOfGrandparentOfLeafExtractor implements SimpleFeatureExtractor {
+public class SyntacticFirstChildOfGrandparentOfLeafExtractor implements SimpleNamedFeatureExtractor {
+  
+  private String featureName = "FirstChildOfGrandparent";
+  
+  @Override
+  public String getFeatureName() {
+    return this.featureName;
+  }
 
   @Override
   public List<Feature> extract(JCas view, Annotation focusAnnotation) {
@@ -56,7 +63,7 @@ public class SyntacticFirstChildOfGrandparentOfLeafExtractor implements SimpleFe
       node = node.getChildren(0);
     }
     if (node != null && node.getLeaf()) {
-      features.add(new Feature("FirstChildOfGrandparent", node.getCoveredText()));
+      features.add(new Feature(this.featureName, node.getCoveredText()));
     }
     return features;
   }

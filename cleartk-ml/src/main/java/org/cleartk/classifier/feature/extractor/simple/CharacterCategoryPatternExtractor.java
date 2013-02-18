@@ -43,7 +43,7 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
  * 
  * @author Steven Bethard
  */
-public class CharacterCategoryPatternExtractor implements SimpleFeatureExtractor {
+public class CharacterCategoryPatternExtractor implements SimpleNamedFeatureExtractor {
 
   /**
    * The type of pattern to generate in feature values.
@@ -91,6 +91,11 @@ public class CharacterCategoryPatternExtractor implements SimpleFeatureExtractor
         this.name = "CharPatternRepeatsMerged";
         break;
     }
+  }
+
+  @Override
+  public String getFeatureName() {
+    return this.name;
   }
 
   @Override

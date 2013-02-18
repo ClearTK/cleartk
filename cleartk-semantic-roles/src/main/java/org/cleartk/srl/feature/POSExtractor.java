@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.cleartk.token.type.Token;
 
 /**
@@ -40,7 +40,14 @@ import org.cleartk.token.type.Token;
  * 
  * @author Philipp Wetzler
  */
-public class POSExtractor implements SimpleFeatureExtractor {
+public class POSExtractor implements SimpleNamedFeatureExtractor {
+  
+  private String featureName = "POS";
+  
+  @Override
+  public String getFeatureName() {
+    return this.featureName;
+  }
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
       throws UnsupportedOperationException {
@@ -52,7 +59,7 @@ public class POSExtractor implements SimpleFeatureExtractor {
     if (token.getPos() == null)
       throw new UnsupportedOperationException("pos attribute has not been set");
 
-    Feature feature = new Feature("POS", token.getPos());
+    Feature feature = new Feature(this.featureName, token.getPos());
     return Collections.singletonList(feature);
   }
 

@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 
 /**
  * <br>
@@ -41,11 +41,13 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
  * 
  * @author Steven Bethard
  */
-public class TextSliceExtractor implements SimpleFeatureExtractor {
+public class TextSliceExtractor implements SimpleNamedFeatureExtractor {
 
   private int start;
 
   private int stop;
+  
+  private String featureName;
 
   /**
    * Create an extractor for a given slice of the text. E.g.
@@ -64,6 +66,7 @@ public class TextSliceExtractor implements SimpleFeatureExtractor {
   public TextSliceExtractor(int start, int stop) {
     this.start = start;
     this.stop = stop;
+    this.featureName = "Suffix";
   }
 
   /**
@@ -77,6 +80,11 @@ public class TextSliceExtractor implements SimpleFeatureExtractor {
    */
   public TextSliceExtractor(int start) {
     this(start, Integer.MAX_VALUE);
+  }
+  
+  @Override
+  public String getFeatureName() {
+    return this.featureName;
   }
 
   public List<Feature> extract(JCas view, Annotation focusAnnotation) {
@@ -96,7 +104,7 @@ public class TextSliceExtractor implements SimpleFeatureExtractor {
       stopOffset = text.length();
     }
     text = text.substring(startOffset, stopOffset);
-    return Collections.singletonList(new Feature("Suffix", text));
+    return Collections.singletonList(new Feature(this.featureName, text));
   }
 
 }
