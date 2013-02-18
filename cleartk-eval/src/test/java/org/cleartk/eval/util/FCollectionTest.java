@@ -35,6 +35,7 @@ import org.junit.Test;
  * @author Philip Ogren
  */
 
+@Deprecated
 public class FCollectionTest {
 
   @Test

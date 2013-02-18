@@ -43,6 +43,7 @@ import org.cleartk.eval.util.FCollections;
  * @author Philip Ogren
  */
 
+@Deprecated
 public class FCollectionsFile {
 
   public static NumberFormat percentFormat;

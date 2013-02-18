@@ -175,4 +175,87 @@ public class AnnotationStatisticsTest extends DefaultTestBase {
     Assert.assertEquals(1, stats.confusions().getCount(null, "B"));
     Assert.assertEquals(0, stats.confusions().getCount(null, null));
   }
+
+  private void appendLabels(
+      int n,
+      String reference,
+      String predicted,
+      StringBuilder sbTokens,
+      StringBuilder sbReference,
+      StringBuilder sbPredicted) {
+
+    for (int i = 0; i < n; i++) {
+      sbTokens.append(String.format("%s%s%d ", reference, predicted, i));
+      sbReference.append(String.format("%s ", reference));
+      sbPredicted.append(String.format("%s ", predicted));
+    }
+
+  }
+
+  @Test
+  public void testRocStats() throws Exception {
+
+    StringBuilder sbTokens = new StringBuilder();
+    StringBuilder sbReferenceLabels = new StringBuilder();
+    StringBuilder sbPredictedLabels = new StringBuilder();
+
+    // Create a confusion matrix
+    appendLabels(200, "A", "A", sbTokens, sbReferenceLabels, sbPredictedLabels);
+    appendLabels(100, "A", "B", sbTokens, sbReferenceLabels, sbPredictedLabels);
+    appendLabels(100, "A", "C", sbTokens, sbReferenceLabels, sbPredictedLabels);
+    appendLabels(50, "B", "A", sbTokens, sbReferenceLabels, sbPredictedLabels);
+    appendLabels(150, "B", "B", sbTokens, sbReferenceLabels, sbPredictedLabels);
+    appendLabels(50, "B", "C", sbTokens, sbReferenceLabels, sbPredictedLabels);
+    appendLabels(25, "C", "A", sbTokens, sbReferenceLabels, sbPredictedLabels);
+    appendLabels(25, "C", "B", sbTokens, sbReferenceLabels, sbPredictedLabels);
+    appendLabels(50, "C", "C", sbTokens, sbReferenceLabels, sbPredictedLabels);
+
+    // Note using POS tags as a lazy way to get values
+    JCas referenceView = this.jCas.createView("Reference");
+    this.tokenBuilder.buildTokens(
+        referenceView,
+        sbTokens.toString(),
+        sbTokens.toString(),
+        sbReferenceLabels.toString());
+
+    JCas predictedView = this.jCas.createView("Predicted");
+    this.tokenBuilder.buildTokens(
+        predictedView,
+        sbTokens.toString(),
+        sbTokens.toString(),
+        sbPredictedLabels.toString());
+
+    AnnotationStatistics<String> stats = new AnnotationStatistics<String>();
+
+    Collection<Token> referenceTokens = new ArrayList<Token>(JCasUtil.select(
+        referenceView,
+        Token.class));
+    Collection<Token> predictedTokens = new ArrayList<Token>(JCasUtil.select(
+        predictedView,
+        Token.class));
+
+    // use the text of the annotation, rather than its span, to determine match
+    Function<Token, String> tokenToCoveredText = new Function<Token, String>() {
+      @Override
+      public String apply(Token token) {
+        return token.getCoveredText();
+      }
+    };
+
+    Function<Token, String> tokenToPOS = AnnotationStatistics.<Token> annotationToFeatureValue("pos");
+
+    stats.add(referenceTokens, predictedTokens, tokenToCoveredText, tokenToPOS);
+    Assert.assertEquals(stats.countTruePositives("A"), 200);
+    Assert.assertEquals(stats.countTrueNegatives("A"), 200);
+    Assert.assertEquals(stats.countFalsePositives("A"), 75);
+    Assert.assertEquals(stats.countFalseNegatives("A"), 200);
+    Assert.assertEquals(stats.countTruePositives("B"), 150);
+    Assert.assertEquals(stats.countTrueNegatives("B"), 250);
+    Assert.assertEquals(stats.countFalsePositives("B"), 125);
+    Assert.assertEquals(stats.countFalseNegatives("B"), 100);
+    Assert.assertEquals(stats.countTruePositives("C"), 50);
+    Assert.assertEquals(stats.countTrueNegatives("C"), 350);
+    Assert.assertEquals(stats.countFalsePositives("C"), 150);
+    Assert.assertEquals(stats.countFalseNegatives("C"), 50);
+  }
 }

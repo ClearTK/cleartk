@@ -23,18 +23,24 @@
  */
 package org.cleartk.eval.util;
 
+import org.cleartk.eval.AnnotationStatistics;
+
 /**
+ * 
  * This data structure is a simplified version of FCollections. Here you simply count true
  * positives, false positives, and false negatives without stratifying them across any
  * dimension/label/category.
  * 
+ * @deprecated use {@link AnnotationStatistics} instead.
+ * 
  * <br>
- * Copyright (c) 2011, Regents of the University of Colorado <br>
- * All rights reserved.
+ *             Copyright (c) 2011, Regents of the University of Colorado <br>
+ *             All rights reserved.
  * 
  * @author Philip Ogren
  */
 
+@Deprecated
 public class FCollection {
 
   protected int truePositives = 0;

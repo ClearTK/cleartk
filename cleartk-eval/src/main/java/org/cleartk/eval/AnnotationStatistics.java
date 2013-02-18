@@ -248,6 +248,109 @@ public class AnnotationStatistics<OUTCOME_TYPE extends Comparable<? super OUTCOM
     this.confusionMatrix.add(that.confusionMatrix);
   }
 
+  public int countCorrectOutcomes() {
+    return this.correctOutcomes.size();
+  }
+
+  public int countCorrectOutcomes(OUTCOME_TYPE outcome) {
+    return this.correctOutcomes.count(outcome);
+  }
+
+  public int countPredictedOutcomes() {
+    return this.predictedOutcomes.size();
+  }
+
+  public int countPredictedOutcomes(OUTCOME_TYPE outcome) {
+    return this.predictedOutcomes.count(outcome);
+  }
+
+  public int countReferenceOutcomes() {
+    return this.referenceOutcomes.size();
+  }
+
+  public int countReferenceOutcomes(OUTCOME_TYPE outcome) {
+    return this.referenceOutcomes.count(outcome);
+  }
+
+  public int countFalseNegatives(OUTCOME_TYPE... positiveOutcomes) {
+    int numReferenceOutcomes = this.countReferenceOutcomes();
+    int numPredictedOutcomes = this.countPredictedOutcomes();
+    if (numReferenceOutcomes != numPredictedOutcomes) {
+      throw new IllegalStateException(
+          String.format(
+              "Expected number equal number of references outcomes and predicted outcomes.  Had reference outcomes=%d, predicted outcomes=%d",
+              numReferenceOutcomes,
+              numPredictedOutcomes,
+              this.countPredictedOutcomes()));
+    }
+    int totalFalseNegatives = 0;
+    for (OUTCOME_TYPE positiveOutcome : positiveOutcomes) {
+      totalFalseNegatives += this.countReferenceOutcomes(positiveOutcome)
+          - this.countCorrectOutcomes(positiveOutcome);
+    }
+    return totalFalseNegatives;
+  }
+
+  public int countFalsePositives(OUTCOME_TYPE... positiveOutcomes) {
+    int numReferenceOutcomes = this.countReferenceOutcomes();
+    int numPredictedOutcomes = this.countPredictedOutcomes();
+    if (numReferenceOutcomes != numPredictedOutcomes) {
+      throw new IllegalStateException(
+          String.format(
+              "Expected number equal number of references outcomes and predicted outcomes.  Had reference outcomes=%d, predicted outcomes=%d",
+              numReferenceOutcomes,
+              numPredictedOutcomes,
+              this.countPredictedOutcomes()));
+    }
+    int totalFalsePositives = 0;
+    for (OUTCOME_TYPE positiveOutcome : positiveOutcomes) {
+      totalFalsePositives += this.countPredictedOutcomes(positiveOutcome)
+          - this.countCorrectOutcomes(positiveOutcome);
+    }
+
+    return totalFalsePositives;
+  }
+
+  public int countTrueNegatives(OUTCOME_TYPE... positiveOutcomes) {
+    int numReferenceOutcomes = this.countReferenceOutcomes();
+    int numPredictedOutcomes = this.countPredictedOutcomes();
+    if (numReferenceOutcomes != numPredictedOutcomes) {
+      throw new IllegalStateException(
+          String.format(
+              "Expected number equal number of references outcomes and predicted outcomes.  Had reference outcomes=%d, predicted outcomes=%d",
+              numReferenceOutcomes,
+              numPredictedOutcomes,
+              this.countPredictedOutcomes()));
+    }
+    int totalTrueNegatives = this.countCorrectOutcomes();
+
+    for (OUTCOME_TYPE positiveOutcome : positiveOutcomes) {
+      totalTrueNegatives -= this.countCorrectOutcomes(positiveOutcome);
+    }
+
+    return totalTrueNegatives;
+
+  }
+
+  public int countTruePositives(OUTCOME_TYPE... positiveOutcomes) {
+    int numReferenceOutcomes = this.countReferenceOutcomes();
+    int numPredictedOutcomes = this.countPredictedOutcomes();
+    if (numReferenceOutcomes != numPredictedOutcomes) {
+      throw new IllegalStateException(
+          String.format(
+              "Expected number equal number of references outcomes and predicted outcomes.  Had reference outcomes=%d, predicted outcomes=%d",
+              numReferenceOutcomes,
+              numPredictedOutcomes,
+              this.countPredictedOutcomes()));
+    }
+
+    int totalTruePositives = 0;
+    for (OUTCOME_TYPE positiveOutcome : positiveOutcomes) {
+      totalTruePositives += this.countCorrectOutcomes(positiveOutcome);
+    }
+    return totalTruePositives;
+  }
+
   /**
    * Returns the {@link ConfusionMatrix} tabulating reference outcomes matched to predicted
    * outcomes.
@@ -259,37 +362,47 @@ public class AnnotationStatistics<OUTCOME_TYPE extends Comparable<? super OUTCOM
   }
 
   public double precision() {
-    int nSystem = this.predictedOutcomes.size();
-    return nSystem == 0 ? 1.0 : ((double) this.correctOutcomes.size()) / nSystem;
+    int nSystem = this.countPredictedOutcomes();
+    return nSystem == 0 ? 1.0 : ((double) this.countCorrectOutcomes()) / nSystem;
   }
 
   public double precision(OUTCOME_TYPE outcome) {
-    int nSystem = this.predictedOutcomes.count(outcome);
-    return nSystem == 0 ? 1.0 : ((double) this.correctOutcomes.count(outcome)) / nSystem;
+    int nSystem = this.countPredictedOutcomes(outcome);
+    return nSystem == 0 ? 1.0 : ((double) this.countCorrectOutcomes(outcome)) / nSystem;
   }
 
   public double recall() {
-    int nGold = this.referenceOutcomes.size();
-    return nGold == 0 ? 1.0 : ((double) this.correctOutcomes.size()) / nGold;
+    int nGold = this.countReferenceOutcomes();
+    return nGold == 0 ? 1.0 : ((double) this.countCorrectOutcomes()) / nGold;
   }
 
   public double recall(OUTCOME_TYPE outcome) {
-    int nGold = this.referenceOutcomes.count(outcome);
-    return nGold == 0 ? 1.0 : ((double) this.correctOutcomes.count(outcome)) / nGold;
+    int nGold = this.countReferenceOutcomes(outcome);
+    return nGold == 0 ? 1.0 : ((double) this.countCorrectOutcomes(outcome)) / nGold;
+  }
+
+  public double f(double beta) {
+    double p = this.precision();
+    double r = this.recall();
+    double num = (1 + beta * beta) * p * r;
+    double den = (beta * beta * p) + r;
+    return den == 0.0 ? 0.0 : num / den;
+  }
+
+  public double f(double beta, OUTCOME_TYPE outcome) {
+    double p = this.precision(outcome);
+    double r = this.recall(outcome);
+    double num = (1 + beta * beta) * p * r;
+    double den = (beta * beta * p) + r;
+    return den == 0.0 ? 0.0 : num / den;
   }
 
   public double f1() {
-    double p = this.precision();
-    double r = this.recall();
-    double sum = p + r;
-    return sum == 0.0 ? 0.0 : (2 * p * r) / sum;
+    return this.f(1.0);
   }
 
   public double f1(OUTCOME_TYPE outcome) {
-    double p = this.precision(outcome);
-    double r = this.recall(outcome);
-    double sum = p + r;
-    return sum == 0.0 ? 0.0 : (2 * p * r) / sum;
+    return f(1.0, outcome);
   }
 
   @Override
