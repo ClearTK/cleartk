@@ -63,7 +63,7 @@ import clear.parse.AbstractDepParser;
  * All rights reserved.
  * <p>
  * * This class has been deprecated. For a dependency-based Semantic Role Labeler, switch to
- * {@link org.cleartk.clearnlp.DependencyParser}
+ * org.cleartk.clearnlp.DependencyParser in cleartk-clearnlp
  * <p>
  * This class provides a UIMA wrapper for the CLEAR parser. This parser is available here:
  * <p>

@@ -68,7 +68,7 @@ import clear.reader.AbstractReader;
  * All rights reserved.
  * <p>
  * This class has been deprecated. For a dependency-based Semantic Role Labeler, switch to
- * {@link org.cleartk.clearnlp.SemanticRoleLabler}
+ * org.cleartk.clearnlp.SemanticRoleLabler in cleartk-clearnlp.
  * <p>
  * This class provides a UIMA wrapper for the CLEAR parser Semantic Role Labeler. This parser is
  * available here.
@@ -89,6 +89,7 @@ import clear.reader.AbstractReader;
     "org.cleartk.token.type.Token:pos",
     "org.cleartk.token.type.Token:lemma",
     "org.cleartk.syntax.dependency.type.DependencyNode" })
+@SuppressWarnings("deprecation")
 @Deprecated
 public class ClearParserSRL extends JCasAnnotator_ImplBase {
 

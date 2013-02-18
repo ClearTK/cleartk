@@ -178,7 +178,7 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    */
   public void packageClassifier(File dir) throws IOException {
     JarOutputStream modelStream = new JarOutputStream(new BufferedOutputStream(
-        new FileOutputStream(this.getModelJarFile(dir))), this.manifest);
+        new FileOutputStream(getModelJarFile(dir))), this.manifest);
     this.packageClassifier(dir, modelStream);
     modelStream.close();
   }
@@ -226,7 +226,7 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    * @return The loaded classifier.
    */
   public CLASSIFIER_TYPE loadClassifierFromTrainingDirectory(File dir) throws IOException {
-    File modelJarFile = this.getModelJarFile(dir);
+    File modelJarFile = getModelJarFile(dir);
     InputStream inputStream = new BufferedInputStream(new FileInputStream(modelJarFile));
     try {
       return this.loadClassifier(inputStream);
