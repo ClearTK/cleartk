@@ -33,6 +33,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Joiner;
@@ -244,9 +245,9 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
       this.setValue(feature.getValue());
     }
 
-    public ContextFeature(String baseName, int position, int oobPosition) {
-      this.feature = new Feature(null, String.format("OOB%d", oobPosition));
-      this.setName(Feature.createName(baseName, String.valueOf(position)));
+    public ContextFeature(String baseName, int position, int oobPosition, String featureName) {
+      this.feature = new Feature(featureName, String.format("OOB%d", oobPosition));
+      this.setName(Feature.createName(baseName, String.valueOf(position), featureName));
       this.setValue(this.feature.getValue());
     }
   }
@@ -317,6 +318,9 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
         Bounds bounds,
         Class<T> annotationClass,
         SimpleFeatureExtractor extractor) throws CleartkExtractorException {
+      String featureName = extractor instanceof SimpleNamedFeatureExtractor
+          ? ((SimpleNamedFeatureExtractor) extractor).getFeatureName()
+          : null;
 
       // slice the appropriate annotations from the CAS
       List<T> anns = this.select(jCas, focusAnnotation, annotationClass, this.end);
@@ -346,7 +350,7 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
 
         // if the annotation at the current position is out of bounds, add an out-of-bounds feature
         else {
-          features.add(new ContextFeature(this.getName(), pos, oobPos));
+          features.add(new ContextFeature(this.getName(), pos, oobPos, featureName));
           oobPos -= 1;
         }
       }
@@ -370,6 +374,9 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
         Bounds bounds,
         Class<T> annotationClass,
         SimpleFeatureExtractor extractor) throws CleartkExtractorException {
+      String featureName = extractor instanceof SimpleNamedFeatureExtractor
+          ? ((SimpleNamedFeatureExtractor) extractor).getFeatureName()
+          : null;
       List<T> anns = this.select(jCas, focusAnnotation, annotationClass, this.end);
       anns = anns.subList(this.begin, anns.size());
       List<Feature> features = new ArrayList<Feature>();
@@ -381,7 +388,7 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
             features.add(new ContextFeature(this.getName(), pos, feature));
           }
         } else {
-          features.add(new ContextFeature(this.getName(), pos, oobPos));
+          features.add(new ContextFeature(this.getName(), pos, oobPos, featureName));
           oobPos += 1;
         }
       }
@@ -801,6 +808,10 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
         Bounds bounds,
         Class<T> annotationClass,
         SimpleFeatureExtractor extractor) throws CleartkExtractorException {
+      String featureName = extractor instanceof SimpleNamedFeatureExtractor
+          ? ((SimpleNamedFeatureExtractor) extractor).getFeatureName()
+          : null;
+      featureName = Feature.createName(this.name, featureName);
       List<String> values = new ArrayList<String>();
       for (Context context : this.contexts) {
         for (Feature feature : context.extract(
@@ -812,7 +823,7 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
           values.add(String.valueOf(feature.getValue()));
         }
       }
-      return Arrays.asList(new Feature(this.name, StringUtils.join(values, '_')));
+      return Arrays.asList(new Feature(featureName, StringUtils.join(values, '_')));
     }
   }
 
@@ -863,6 +874,10 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
         Bounds bounds,
         Class<T> annotationClass,
         SimpleFeatureExtractor extractor) throws CleartkExtractorException {
+      String featureName = extractor instanceof SimpleNamedFeatureExtractor
+          ? ((SimpleNamedFeatureExtractor) extractor).getFeatureName()
+          : null;
+      featureName = Feature.createName(this.name, featureName);
       List<Feature> extractedFeatures = new ArrayList<Feature>();
       for (Context context : this.contexts) {
         extractedFeatures.addAll(context.extract(
@@ -878,7 +893,7 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
         for (Feature feature : extractedFeatures.subList(i, i + this.n)) {
           values.add(feature.getValue().toString());
         }
-        features.add(new Feature(this.name, Joiner.on('_').join(values)));
+        features.add(new Feature(featureName, Joiner.on('_').join(values)));
       }
       return features;
     }
