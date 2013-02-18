@@ -30,6 +30,7 @@ import static org.junit.Assert.assertNull;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.examples.ExamplesTestBase;
 import org.cleartk.token.type.Token;
 import org.junit.Test;
@@ -53,7 +54,8 @@ public class ExampleModelTest extends ExamplesTestBase {
     BuildTestExamplePosModel.main();
     hider.restoreOutput();
 
-    AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator.getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL);
+    AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator.getClassifierDescription(JarClassifierBuilder.getModelJarFile(
+        ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY).getPath());
     AnalysisEngine posTagger = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 
     tokenBuilder.buildTokens(

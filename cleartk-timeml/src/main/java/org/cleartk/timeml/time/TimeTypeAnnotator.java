@@ -43,6 +43,7 @@ import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternE
 import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor.PatternType;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
@@ -104,15 +105,23 @@ public class TimeTypeAnnotator extends CleartkAnnotator<String> {
     }
   }
 
-  private static class LastWordExtractor implements SimpleFeatureExtractor {
+  private static class LastWordExtractor implements SimpleNamedFeatureExtractor {
+    
+    private String featureName;
 
     public LastWordExtractor() {
+      this.featureName = "LastWord";
+    }
+    
+    @Override
+    public String getFeatureName() {
+      return this.featureName;
     }
 
     @Override
     public List<Feature> extract(JCas view, Annotation focusAnnotation) {
       String[] words = focusAnnotation.getCoveredText().split("\\W+");
-      return Arrays.asList(new Feature("LastWord", words[words.length - 1]));
+      return Arrays.asList(new Feature(this.featureName, words[words.length - 1]));
     }
 
   }

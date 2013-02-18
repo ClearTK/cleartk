@@ -29,6 +29,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.uima.cas.ArrayFS;
 import org.apache.uima.cas.Feature;
@@ -46,6 +48,7 @@ import org.apache.uima.jcas.cas.LongArray;
 import org.apache.uima.jcas.cas.ShortArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.util.UIMAUtil;
 
@@ -62,7 +65,10 @@ import org.cleartk.util.UIMAUtil;
  *         converted to strings
  */
 
-public class TypePathExtractor implements SimpleFeatureExtractor {
+public class TypePathExtractor implements SimpleNamedFeatureExtractor {
+
+  String featureName;
+
   Class<? extends Annotation> focusClass;
 
   Type type;
@@ -122,11 +128,44 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
       boolean traverseAllPaths,
       boolean returnAllValues,
       boolean uniqueValues) {
+    this.featureName = createName(null, typePath);
     this.focusClass = focusClass;
     this.path = typePath;
     this.allPaths = traverseAllPaths;
     this.allValues = returnAllValues;
     this.uniqueValues = uniqueValues;
+  }
+
+  private static Pattern pattern = Pattern.compile("/([^/])?");
+
+  /**
+   * WARNING: this method is public for TypePathFeature backwards compatibility, but should not be
+   * used by anyone else!
+   */
+  public static String createName(String namePrefix, String typePath) {
+    if (namePrefix == null)
+      namePrefix = "TypePath";
+    String typePathString = typePath == null ? "" : typePath;
+
+    Matcher matcher = pattern.matcher(typePathString);
+    StringBuffer sb = new StringBuffer();
+    while (matcher.find()) {
+      if (matcher.group(1) != null)
+        matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
+      else
+        matcher.appendReplacement(sb, "");
+    }
+    matcher.appendTail(sb);
+
+    // may not be > 0 if path is "" or "/"
+    if (sb.length() > 0)
+      sb.replace(0, 1, sb.substring(0, 1).toUpperCase());
+
+    if (sb.length() > 0) {
+      return String.format("%s(%s)", namePrefix, sb.toString());
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -136,6 +175,12 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
     this(focusClass, typePath, false, false, true);
   }
 
+  @Override
+  public String getFeatureName() {
+    return this.featureName;
+  }
+
+  @Override
   public List<org.cleartk.classifier.Feature> extract(JCas view, Annotation focusAnnotation)
       throws CleartkExtractorException {
     if (this.type == null)
@@ -153,21 +198,9 @@ public class TypePathExtractor implements SimpleFeatureExtractor {
     List<org.cleartk.classifier.Feature> returnValues = new ArrayList<org.cleartk.classifier.Feature>();
     Set<Object> values = new HashSet<Object>();
     for (Object pathValue : pathValues) {
-      if (uniqueValues) {
-        if (!values.contains(pathValue)) {
-          org.cleartk.classifier.Feature feature = new org.cleartk.classifier.feature.TypePathFeature(
-              null,
-              pathValue,
-              this.path);
-          returnValues.add(feature);
-          values.add(pathValue);
-        }
-      } else {
-        org.cleartk.classifier.Feature feature = new org.cleartk.classifier.feature.TypePathFeature(
-            null,
-            pathValue,
-            this.path);
-        returnValues.add(feature);
+      if (!uniqueValues || !values.contains(pathValue)) {
+        returnValues.add(new TypePathFeature(null, pathValue, this.path, this.featureName));
+        values.add(pathValue);
       }
     }
 

@@ -38,7 +38,9 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
  * All rights reserved.
  */
 
-public class WhiteSpaceExtractor implements SimpleFeatureExtractor {
+public class WhiteSpaceExtractor implements SimpleNamedFeatureExtractor {
+
+  private static final String FEATURE_NAME = "whitespace";
 
   public static final String WhiteSpaceRegex = "\\s";
 
@@ -47,6 +49,11 @@ public class WhiteSpaceExtractor implements SimpleFeatureExtractor {
   public static final String ORIENTATION_LEFT = "L";
 
   public static final String ORIENTATION_RIGHT = "R";
+
+  @Override
+  public String getFeatureName() {
+    return FEATURE_NAME;
+  }
 
   public List<Feature> extract(JCas view, Annotation focusAnnotation)
       throws CleartkExtractorException {
@@ -58,24 +65,24 @@ public class WhiteSpaceExtractor implements SimpleFeatureExtractor {
 
     // white space to the left of the focusAnnotation
     if (begin == 0) {
-      Feature feature = new Feature("whitespace", ORIENTATION_LEFT);
+      Feature feature = new Feature(FEATURE_NAME, ORIENTATION_LEFT);
       features.add(feature);
     } else {
       char leftChar = text.charAt(begin - 1);
       if (Character.isWhitespace(leftChar)) {
-        Feature feature = new Feature("whitespace", ORIENTATION_LEFT);
+        Feature feature = new Feature(FEATURE_NAME, ORIENTATION_LEFT);
         features.add(feature);
       }
     }
 
     // white space to the right of the focusAnnotation
     if (end == text.length()) {
-      Feature feature = new Feature("whitespace", ORIENTATION_RIGHT);
+      Feature feature = new Feature(FEATURE_NAME, ORIENTATION_RIGHT);
       features.add(feature);
     } else {
       char rightChar = text.charAt(end);
       if (Character.isWhitespace(rightChar)) {
-        Feature feature = new Feature("whitespace", ORIENTATION_RIGHT);
+        Feature feature = new Feature(FEATURE_NAME, ORIENTATION_RIGHT);
         features.add(feature);
       }
     }

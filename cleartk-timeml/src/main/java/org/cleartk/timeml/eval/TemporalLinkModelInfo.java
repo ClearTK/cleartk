@@ -52,7 +52,7 @@ public class TemporalLinkModelInfo extends ModelInfo<TemporalLink> {
     super(
         TemporalLink.class,
         "relationType",
-        TemporalLinkSpanAndRelation.ANNOTATION_CONVERTER,
+        TemporalLinkSpan.FROM_TEMPORAL_LINK,
         modelFactory,
         trainingArguments);
   }
@@ -68,25 +68,31 @@ public class TemporalLinkModelInfo extends ModelInfo<TemporalLink> {
       JCas systemView) {
     // restrict evaluation to only the TLINKs that were present in the gold data
     Collection<TemporalLink> goldTlinks = JCasUtil.select(goldView, this.annotatedClass);
-    Collection<TemporalLink> systemTlinks = JCasUtil.select(systemView, this.annotatedClass);
-    Set<TemporalLinkSpan> goldSpans = new HashSet<TemporalLinkSpan>();
+    Set<Object> goldSpans = new HashSet<Object>();
     for (TemporalLink tlink : goldTlinks) {
-      goldSpans.add(new TemporalLinkSpan(tlink));
+      goldSpans.add(this.getSpan.apply(tlink));
     }
-    List<TemporalLink> systemTlinksWithGoldSpans = new ArrayList<TemporalLink>();
-    for (TemporalLink tlink : systemTlinks) {
-      if (goldSpans.contains(new TemporalLinkSpan(tlink))) {
-        systemTlinksWithGoldSpans.add(tlink);
+    List<TemporalLink> systemTlinks = new ArrayList<TemporalLink>();
+    for (TemporalLink tlink : JCasUtil.select(systemView, this.annotatedClass)) {
+      if (goldSpans.contains(this.getSpan.apply(tlink))) {
+        systemTlinks.add(tlink);
       }
     }
     statistics.add(
         goldTlinks,
-        systemTlinksWithGoldSpans,
-        this.annotationConverter,
-        AnnotationStatistics.<TemporalLink> annotationToFeatureValue(this.annotatedFeatureName));
+        systemTlinks,
+        this.getSpan,
+        this.getOutcome);
   }
 
   private static class TemporalLinkSpan {
+    
+    public static final Function<TemporalLink, TemporalLinkSpan> FROM_TEMPORAL_LINK = new Function<TemporalLink, TemporalLinkSpan>() {
+      @Override
+      public TemporalLinkSpan apply(TemporalLink tlink) {
+        return new TemporalLinkSpan(tlink);
+      }
+    };
 
     private int sourceBegin;
 
@@ -121,43 +127,6 @@ public class TemporalLinkModelInfo extends ModelInfo<TemporalLink> {
       TemporalLinkSpan that = (TemporalLinkSpan) obj;
       return this.sourceBegin == that.sourceBegin && this.sourceEnd == that.sourceEnd
           && this.targetBegin == that.targetBegin && this.targetEnd == that.targetEnd;
-    }
-
-  }
-
-  private static class TemporalLinkSpanAndRelation {
-    public static final Function<TemporalLink, TemporalLinkSpanAndRelation> ANNOTATION_CONVERTER = new Function<TemporalLink, TemporalLinkSpanAndRelation>() {
-      @Override
-      public TemporalLinkSpanAndRelation apply(TemporalLink tlink) {
-        return new TemporalLinkSpanAndRelation(tlink);
-      }
-    };
-
-    private TemporalLinkSpan span;
-
-    private String relationType;
-
-    public TemporalLinkSpanAndRelation(TemporalLink tlink) {
-      this.span = new TemporalLinkSpan(tlink);
-      this.relationType = tlink.getRelationType();
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hashCode(this.span, this.relationType);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      if (this == obj) {
-        return true;
-      }
-      if (obj == null || this.getClass() != obj.getClass()) {
-        return false;
-      }
-      TemporalLinkSpanAndRelation that = (TemporalLinkSpanAndRelation) obj;
-      return Objects.equal(this.span, that.span)
-          && Objects.equal(this.relationType, that.relationType);
     }
 
   }

@@ -48,6 +48,7 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  */
 
+@SuppressWarnings("deprecation")
 public class LemmaAnnotatorTest extends CleartkTestBase {
 
   protected TokenBuilder<Token, Sentence> tokenBuilder;

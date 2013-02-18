@@ -40,6 +40,7 @@ import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.mallet.MalletCRFStringOutcomeDataWriter;
 import org.cleartk.eval.AnnotationStatistics;
@@ -76,6 +77,8 @@ import com.google.common.base.Function;
  * 
  * @author Himanshu Gahlot
  * @author Steven Bethard
+ * 
+ * 
  */
 public class EvaluateNamedEntityChunker extends
     Evaluation_ImplBase<File, AnnotationStatistics<String>> {
@@ -199,7 +202,7 @@ public class EvaluateNamedEntityChunker extends
         CleartkSequenceAnnotator.PARAM_IS_TRAINING,
         false,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-        new File(modelDirectory, "model.jar")));
+        JarClassifierBuilder.getModelJarFile(modelDirectory)));
 
     // prepare the evaluation statistics
     AnnotationStatistics<String> stats = new AnnotationStatistics<String>();

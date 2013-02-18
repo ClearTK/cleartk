@@ -31,6 +31,7 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
@@ -89,7 +90,7 @@ public class RunNamedEntityChunker {
         CleartkSequenceAnnotator.PARAM_IS_TRAINING,
         false,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-        new File(options.modelDirectory, "model.jar")));
+        JarClassifierBuilder.getModelJarFile(options.modelDirectory)));
 
     // a very simple annotator that just prints out any named entities we found
     aggregate.add(AnalysisEngineFactory.createPrimitiveDescription(PrintNamedEntityMentions.class));

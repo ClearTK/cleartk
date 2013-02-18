@@ -357,7 +357,7 @@ public class DocumentClassificationEvaluation extends
             CleartkAnnotator.PARAM_IS_TRAINING,
             false,
             GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-            new File(modelDirectory, "model.jar").getPath());
+            JarClassifierBuilder.getModelJarFile(modelDirectory));
 
         ConfigurationParameterFactory.addConfigurationParameters(
             documentClassificationAnnotator,

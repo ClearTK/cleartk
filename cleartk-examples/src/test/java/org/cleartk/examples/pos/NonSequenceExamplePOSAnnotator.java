@@ -61,8 +61,6 @@ public class NonSequenceExamplePOSAnnotator extends CleartkAnnotator<String> imp
 
   public static final String DEFAULT_OUTPUT_DIRECTORY = "example/model";
 
-  public static final String DEFAULT_MODEL = "example/model/model.jar";
-
   private List<SimpleFeatureExtractor> tokenFeatureExtractors;
 
   private List<CleartkExtractor> tokenSentenceFeatureExtractors;

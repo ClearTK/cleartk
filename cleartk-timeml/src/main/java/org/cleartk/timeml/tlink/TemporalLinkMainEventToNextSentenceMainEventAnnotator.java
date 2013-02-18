@@ -32,7 +32,6 @@ import java.util.Map;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
@@ -41,11 +40,12 @@ import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.timeml.type.Event;
-import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.token.type.Sentence;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
+
+import com.google.common.collect.Lists;
 
 /**
  * <br>
@@ -91,9 +91,8 @@ public class TemporalLinkMainEventToNextSentenceMainEventAnnotator extends
   }
 
   @Override
-  public void process(JCas jCas) throws AnalysisEngineProcessException {
-    Map<Event, Map<Event, TemporalLink>> links = this.getLinks(jCas);
-
+  protected List<SourceTargetPair> getSourceTargetPairs(JCas jCas) {
+    List<SourceTargetPair> pairs = Lists.newArrayList();
     Iterator<Sentence> sentences = JCasUtil.select(jCas, Sentence.class).iterator();
     Sentence prev = sentences.hasNext() ? sentences.next() : null;
     while (sentences.hasNext()) {
@@ -101,12 +100,11 @@ public class TemporalLinkMainEventToNextSentenceMainEventAnnotator extends
       Event source = getMainEvent(jCas, prev);
       Event target = getMainEvent(jCas, curr);
       if (source != null && target != null) {
-        this.processLink(source, target, links, jCas);
+        pairs.add(new SourceTargetPair(source, target));
       }
       prev = curr;
     }
-
-    this.logSkippedLinks(jCas, links);
+    return pairs;
   }
 
   private Event getMainEvent(JCas jCas, Sentence sentence) {

@@ -178,7 +178,7 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    */
   public void packageClassifier(File dir) throws IOException {
     JarOutputStream modelStream = new JarOutputStream(new BufferedOutputStream(
-        new FileOutputStream(this.getModelJarFile(dir))), this.manifest);
+        new FileOutputStream(getModelJarFile(dir))), this.manifest);
     this.packageClassifier(dir, modelStream);
     modelStream.close();
   }
@@ -197,6 +197,8 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
     // Used by subclasses
   }
 
+  private static final String MODEL_FILE_NAME = "model.jar";
+
   /**
    * Get the classifier jar file, as packaged by {@link #packageClassifier(File)}.
    * 
@@ -204,8 +206,12 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    *          The directory where the classifier was packaged.
    * @return The classifier jar file.
    */
-  public File getModelJarFile(File dir) {
-    return new File(dir, "model.jar");
+  public static File getModelJarFile(File dir) {
+    return new File(dir, MODEL_FILE_NAME);
+  }
+
+  public static File getModelJarFile(String directoryName) {
+    return getModelJarFile(new File(directoryName));
   }
 
   /**
@@ -220,7 +226,7 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    * @return The loaded classifier.
    */
   public CLASSIFIER_TYPE loadClassifierFromTrainingDirectory(File dir) throws IOException {
-    File modelJarFile = this.getModelJarFile(dir);
+    File modelJarFile = getModelJarFile(dir);
     InputStream inputStream = new BufferedInputStream(new FileInputStream(modelJarFile));
     try {
       return this.loadClassifier(inputStream);

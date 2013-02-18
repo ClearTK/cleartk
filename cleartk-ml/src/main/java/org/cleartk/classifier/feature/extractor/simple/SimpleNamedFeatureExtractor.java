@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2009, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,46 +21,23 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.srl.feature;
-
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
-import org.cleartk.token.type.Token;
+package org.cleartk.classifier.feature.extractor.simple;
 
 /**
+ * A {@link SimpleFeatureExtractor} that provides the name used for the features it creates.
+ * 
  * <br>
- * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * 
- * @author Philipp Wetzler
+ * @author Steven Bethard
  */
-public class StemExtractor implements SimpleNamedFeatureExtractor {
-  
-  private String featureName = "Stem";
-  
-  @Override
-  public String getFeatureName() {
-    return this.featureName;
-  }
+public interface SimpleNamedFeatureExtractor extends SimpleFeatureExtractor {
 
-  public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
-      throws UnsupportedOperationException {
-    if (!(focusAnnotation instanceof Token))
-      throw new UnsupportedOperationException("annotation is not of type Token");
-
-    Token token = (Token) focusAnnotation;
-
-    if (token.getStem() == null)
-      throw new UnsupportedOperationException("stem attribute has not been set");
-
-    Feature feature = new Feature(this.featureName, token.getStem());
-    return Collections.singletonList(feature);
-  }
-
+  /**
+   * Gets the name that will be used for all features created by this feature extractor.
+   * 
+   * @return The feature name
+   */
+  public String getFeatureName();
 }

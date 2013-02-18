@@ -30,7 +30,7 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.util.UIMAUtil;
 
@@ -43,15 +43,20 @@ import org.cleartk.util.UIMAUtil;
  * @author Philipp Wetzler
  */
 
-public class SubCategorizationExtractor implements SimpleFeatureExtractor {
-  String name;
+public class SubCategorizationExtractor implements SimpleNamedFeatureExtractor {
+  private String featureName;
 
   public SubCategorizationExtractor(String name) {
-    this.name = name;
+    this.featureName = Feature.createName(name, "SubCategorization");
   }
 
   public SubCategorizationExtractor() {
-    this.name = null;
+    this(null);
+  }
+  
+  @Override
+  public String getFeatureName() {
+    return this.featureName;
   }
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
@@ -73,7 +78,6 @@ public class SubCategorizationExtractor implements SimpleFeatureExtractor {
       first = false;
     }
 
-    String featureName = Feature.createName(name, "SubCategorization");
-    return Collections.singletonList(new Feature(featureName, buffer));
+    return Collections.singletonList(new Feature(this.featureName, buffer));
   }
 }

@@ -128,15 +128,15 @@ public class CleartkExtractorTest extends DefaultTestBase {
     Iterator<Feature> iter = features.iterator();
     this.assertFeature("Bag_Preceding_0_2_TypePath(Pos)", "JJ", iter.next());
     this.assertFeature("Bag_Preceding_0_2_TypePath(Pos)", "NN", iter.next());
-    this.assertFeature("Bag_Preceding_3_6", "OOB2", iter.next());
-    this.assertFeature("Bag_Preceding_3_6", "OOB1", iter.next());
+    this.assertFeature("Bag_Preceding_3_6_TypePath(Pos)", "OOB2", iter.next());
+    this.assertFeature("Bag_Preceding_3_6_TypePath(Pos)", "OOB1", iter.next());
     this.assertFeature("Bag_Preceding_3_6_TypePath(Pos)", "DT", iter.next());
     this.assertFeature("Bag_FirstCovered_0_1_LastCovered_0_1_TypePath(Pos)", "VBD", iter.next());
     this.assertFeature("Bag_FirstCovered_0_1_LastCovered_0_1_TypePath(Pos)", "IN", iter.next());
     this.assertFeature("Bag_Following_1_3_TypePath(Pos)", "JJ", iter.next());
     this.assertFeature("Bag_Following_1_3_TypePath(Pos)", "NN", iter.next());
     this.assertFeature("Bag_Following_3_5_TypePath(Pos)", ".", iter.next());
-    this.assertFeature("Bag_Following_3_5", "OOB1", iter.next());
+    this.assertFeature("Bag_Following_3_5_TypePath(Pos)", "OOB1", iter.next());
     this.assertFeature("Bag_Preceding_0_1_Following_0_1_TypePath(Pos)", "NN", iter.next());
     this.assertFeature("Bag_Preceding_0_1_Following_0_1_TypePath(Pos)", "DT", iter.next());
   }
@@ -361,6 +361,42 @@ public class CleartkExtractorTest extends DefaultTestBase {
     this.assertFeature("Covered_0", ".", iter.next());
     this.assertFeature("Covered_1", "He", iter.next());
     this.assertFeature("Ngram_Following_0_3", "sold_oranges_.", iter.next());
+  }
+
+  @Test
+  public void testNestedNames() throws Exception {
+    CleartkExtractor extractor = new CleartkExtractor(
+        Token.class,
+        new TypePathExtractor(Token.class, "pos"),
+        new Count(new Preceding(1, 5), new Covered()),
+        new Bag(new Preceding(3)),
+        new Ngram(new Following(2)),
+        new Ngrams(3, new Following(1, 6)));
+
+    this.tokenBuilder.buildTokens(
+        this.jCas,
+        "The quick brown fox jumped over the lazy dog.",
+        "The quick brown fox jumped over the lazy dog .",
+        "DT JJ JJ NN VBD IN DT JJ NN .");
+    Chunk chunk = new Chunk(this.jCas, 20, 31);
+    chunk.addToIndexes();
+    Assert.assertEquals("jumped over", chunk.getCoveredText());
+
+    List<Feature> features = extractor.extract(this.jCas, chunk);
+    Iterator<Feature> iter = features.iterator();
+    this.assertFeature("Count_Preceding_1_5_Covered_TypePath(Pos)_OOB1", 1, iter.next());
+    this.assertFeature("Count_Preceding_1_5_Covered_TypePath(Pos)_DT", 1, iter.next());
+    this.assertFeature("Count_Preceding_1_5_Covered_TypePath(Pos)_JJ", 2, iter.next());
+    this.assertFeature("Count_Preceding_1_5_Covered_TypePath(Pos)_VBD", 1, iter.next());
+    this.assertFeature("Count_Preceding_1_5_Covered_TypePath(Pos)_IN", 1, iter.next());
+    this.assertFeature("Bag_Preceding_0_3_TypePath(Pos)", "JJ", iter.next());
+    this.assertFeature("Bag_Preceding_0_3_TypePath(Pos)", "JJ", iter.next());
+    this.assertFeature("Bag_Preceding_0_3_TypePath(Pos)", "NN", iter.next());
+    this.assertFeature("Ngram_Following_0_2_TypePath(Pos)", "DT_JJ", iter.next());
+    this.assertFeature("3grams_Following_1_6_TypePath(Pos)", "JJ_NN_.", iter.next());
+    this.assertFeature("3grams_Following_1_6_TypePath(Pos)", "NN_._OOB1", iter.next());
+    this.assertFeature("3grams_Following_1_6_TypePath(Pos)", "._OOB1_OOB2", iter.next());
+    Assert.assertFalse(iter.hasNext());
   }
 
   private void assertFeature(String expectedName, Object expectedValue, Feature actualFeature) {

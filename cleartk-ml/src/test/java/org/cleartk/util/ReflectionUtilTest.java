@@ -95,8 +95,14 @@ public class ReflectionUtilTest {
     Assert.assertNull(type);
 
     type = ReflectionUtil.getTypeArgument(TestSuperClass.class, "T", new TestArraySubClass());
-    Assert.assertTrue(type instanceof GenericArrayType);
-    Assert.assertEquals(double.class, ((GenericArrayType) type).getGenericComponentType());
+    // Java6 bug - double[] is improperly returned as a generic array
+    if (type instanceof GenericArrayType) {
+      Assert.assertEquals(double.class, ((GenericArrayType) type).getGenericComponentType());
+    }
+    // Java7 (correct) behavior
+    else {
+      Assert.assertEquals(double[].class, type);
+    }
 
     type = ReflectionUtil.getTypeArgument(
         Classifier.class,

@@ -41,6 +41,7 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
@@ -125,7 +126,7 @@ public class GrmmClassifierTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // check that the classifier is successfully loaded from the model
-    File modelJarFile = builder.getModelJarFile(this.outputDirectory);
+    File modelJarFile = JarClassifierBuilder.getModelJarFile(this.outputDirectory);
     assertNotNull(modelJarFile);
     builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
 

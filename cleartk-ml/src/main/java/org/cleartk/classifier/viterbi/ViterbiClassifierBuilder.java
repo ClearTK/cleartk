@@ -96,7 +96,7 @@ public class ViterbiClassifierBuilder<OUTCOME_TYPE> extends
     JarStreams.putNextJarEntry(
         modelStream,
         DELEGATED_MODEL_FILE_NAME,
-        this.getModelJarFile(this.getDelegatedModelDirectory(dir)));
+        JarClassifierBuilder.getModelJarFile(this.getDelegatedModelDirectory(dir)));
 
     JarStreams.putNextJarEntry(
         modelStream,

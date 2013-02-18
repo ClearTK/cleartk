@@ -23,10 +23,8 @@
  */
 package org.cleartk.classifier.feature;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 
 /**
  * <br>
@@ -44,42 +42,19 @@ public class TypePathFeature extends Feature {
 
   private String typePath;
 
-  Pattern pattern = Pattern.compile("/([^/])?");
+  public TypePathFeature(String name, Object value, String typePath, String fullName) {
+    super(value);
+    this.typePath = typePath;
+    this.name = fullName;
+  }
 
   public TypePathFeature(String name, Object value, String typePath) {
     super(value);
     this.typePath = typePath;
-    this.name = createName(name);
+    this.name = TypePathExtractor.createName(name, typePath);
   }
 
   public String getTypePath() {
     return typePath;
   }
-
-  private String createName(String namePrefix) {
-    if (namePrefix == null)
-      namePrefix = "TypePath";
-    String typePathString = typePath == null ? "" : typePath;
-
-    Matcher matcher = pattern.matcher(typePathString);
-    StringBuffer sb = new StringBuffer();
-    while (matcher.find()) {
-      if (matcher.group(1) != null)
-        matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
-      else
-        matcher.appendReplacement(sb, "");
-    }
-    matcher.appendTail(sb);
-
-    // may not be > 0 if path is "" or "/"
-    if (sb.length() > 0)
-      sb.replace(0, 1, sb.substring(0, 1).toUpperCase());
-
-    if (sb.length() > 0) {
-      return String.format("%s(%s)", namePrefix, sb.toString());
-    } else {
-      return null;
-    }
-  }
-
 }

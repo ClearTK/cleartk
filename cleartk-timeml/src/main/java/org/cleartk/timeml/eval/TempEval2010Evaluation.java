@@ -145,7 +145,8 @@ public class TempEval2010Evaluation extends
       File modelDir = modelInfo.modelFactory.getTrainingDirectory();
       if (modelDir.exists()) {
         for (File file : modelDir.listFiles()) {
-          if (!file.isDirectory() && !file.getName().equals("model.jar")) {
+          File modelFile = JarClassifierBuilder.getModelJarFile(modelDir);
+          if (!file.isDirectory() && !file.equals(modelFile)) {
             file.delete();
           }
         }
@@ -164,7 +165,7 @@ public class TempEval2010Evaluation extends
         XMIAnnotator.PARAM_XMI_DIRECTORY,
         this.getXMIDirectory(directory, Stage.TEST).getPath()));
     for (ModelInfo<?> modelInfo : this.modelInfos) {
-      File modelFile = new File(modelInfo.getModelSubdirectory(directory), "model.jar");
+      File modelFile = JarClassifierBuilder.getModelJarFile(modelInfo.getModelSubdirectory(directory));
       builder.add(modelInfo.modelFactory.getAnnotatorDescription(modelFile.getPath()));
     }
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(

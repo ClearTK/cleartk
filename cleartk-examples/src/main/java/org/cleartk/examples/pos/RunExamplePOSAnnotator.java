@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.collection.CollectionReader;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
@@ -69,7 +70,9 @@ public class RunExamplePOSAnnotator {
     builder.add(TokenAnnotator.getDescription());
 
     // The POS annotator, configured to make predictions
-    builder.add(ExamplePOSAnnotator.getClassifierDescription(ExamplePOSAnnotator.DEFAULT_MODEL));
+		builder.add(ExamplePOSAnnotator
+				.getClassifierDescription(JarClassifierBuilder.getModelJarFile(
+						ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY).getPath()));
 
     // An annotator that write out the tokens and their part of speech tags
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(

@@ -43,6 +43,7 @@ import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternE
 import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor.PatternType;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.mallet.MalletCRFStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Time;
@@ -80,7 +81,7 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
     }
   };
 
-  private List<SimpleFeatureExtractor> tokenFeatureExtractors;
+  private List<SimpleNamedFeatureExtractor> tokenFeatureExtractors;
 
   private List<CleartkExtractor> contextFeatureExtractors;
 
@@ -146,9 +147,11 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
     // add IDs to all Times
     int timeIndex = 1;
     for (Time time : JCasUtil.select(jCas, Time.class)) {
-      String id = String.format("t%d", timeIndex);
-      time.setId(id);
-      timeIndex += 1;
+      if (time.getId() == null) {
+        String id = String.format("t%d", timeIndex);
+        time.setId(id);
+        timeIndex += 1;
+      }
     }
   }
 }

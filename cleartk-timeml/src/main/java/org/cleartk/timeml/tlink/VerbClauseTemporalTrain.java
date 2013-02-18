@@ -92,7 +92,8 @@ public class VerbClauseTemporalTrain {
 
     // delete the generated files
     for (File file : trainingDirectory.listFiles()) {
-      if (!file.isDirectory() && !file.getName().equals("model.jar")) {
+      File modelFile = JarClassifierBuilder.getModelJarFile(trainingDirectory);
+      if (!file.isDirectory() && !file.equals(modelFile)) {
         file.delete();
       }
     }

@@ -32,7 +32,7 @@ import org.apache.uima.util.Logger;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
-import org.cleartk.timeml.corpus.TimeMLWriter;
+import org.cleartk.timeml.corpus.TempEval2007Writer;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
@@ -90,6 +90,6 @@ public class VerbClauseTemporalAnnotate {
         DefaultSnowballStemmer.getDescription("English"),
         ParserAnnotator.getDescription(),
         VerbClauseTemporalAnnotator.FACTORY.getAnnotatorDescription(),
-        TimeMLWriter.getDescription(outputDir.getPath()));
+        TempEval2007Writer.getDescription(outputDir.getPath()));
   }
 }

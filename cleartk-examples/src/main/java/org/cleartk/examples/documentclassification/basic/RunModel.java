@@ -28,6 +28,7 @@ import java.io.File;
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
@@ -94,7 +95,7 @@ public class RunModel {
         CleartkAnnotator.PARAM_IS_TRAINING,
         false,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-        new File(options.modelsDirectory, "model.jar").getPath()));
+        JarClassifierBuilder.getModelJarFile(options.modelsDirectory)));
 
     // //////////////////////////////////////////////////////////////////////////////
     // Run pipeline and classify documents

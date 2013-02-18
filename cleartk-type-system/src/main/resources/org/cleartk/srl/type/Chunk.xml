@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<?xml version="1.0" encoding="UTF-8"?><typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>Chunk</name>
   <description>Copyright (c) 2007-2008, Regents of the University of Colorado 
 All rights reserved.
@@ -24,11 +23,14 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.</description>
   <version>1.0</version>
   <vendor>Copyright 2007-2008 Regents of the University of Colorado.   All Rights Reserved.</vendor>
-   <types>
+  <imports>
+    <import name="org.cleartk.score.type.TypeSystem"/>
+  </imports>
+  <types>
     <typeDescription>
       <name>org.cleartk.srl.type.Chunk</name>
       <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <supertypeName>org.cleartk.score.type.ScoredAnnotation</supertypeName>
       <features>
         <featureDescription>
           <name>chunkType</name>

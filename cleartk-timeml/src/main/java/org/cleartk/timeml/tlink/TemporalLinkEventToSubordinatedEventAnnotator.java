@@ -26,12 +26,10 @@ package org.cleartk.timeml.tlink;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
@@ -44,7 +42,6 @@ import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.timeml.type.Event;
-import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.timeml.util.SyntacticFirstChildOfGrandparentOfLeafExtractor;
 import org.cleartk.timeml.util.SyntacticLeafToLeafPathPartsExtractor;
@@ -52,6 +49,8 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
+
+import com.google.common.collect.Lists;
 
 /**
  * <br>
@@ -103,18 +102,16 @@ public class TemporalLinkEventToSubordinatedEventAnnotator extends
   }
 
   @Override
-  public void process(JCas jCas) throws AnalysisEngineProcessException {
-    Map<Event, Map<Event, TemporalLink>> links = this.getLinks(jCas);
-
+  protected List<SourceTargetPair> getSourceTargetPairs(JCas jCas) {
+    List<SourceTargetPair> pairs = Lists.newArrayList();
     for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
       for (Event source : JCasUtil.selectCovered(jCas, Event.class, sentence)) {
         for (Event target : this.getSubordinateEvents(jCas, source, sentence)) {
-          this.processLink(source, target, links, jCas);
+          pairs.add(new SourceTargetPair(source, target));
         }
       }
     }
-
-    this.logSkippedLinks(jCas, links);
+    return pairs;
   }
 
   private List<Event> getSubordinateEvents(JCas jCas, Event source, Sentence sentence) {

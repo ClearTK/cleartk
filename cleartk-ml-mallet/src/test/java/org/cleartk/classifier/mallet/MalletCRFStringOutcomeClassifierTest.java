@@ -42,6 +42,7 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
@@ -130,7 +131,7 @@ public class MalletCRFStringOutcomeClassifierTest extends DefaultTestBase {
     AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
         TestAnnotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-        outputDirectoryName + "/model.jar");
+        JarClassifierBuilder.getModelJarFile(outputDirectoryName));
     jCas.reset();
     classifierAnnotator.process(jCas);
     classifierAnnotator.collectionProcessComplete();

@@ -37,6 +37,7 @@ import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
+import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.libsvm.LIBSVMStringOutcomeDataWriter;
 import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
 import org.cleartk.classifier.svmlight.SVMlightStringOutcomeDataWriter;
@@ -167,7 +168,7 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     AnalysisEngineDescription taggerDescription = AnalysisEngineFactory.createPrimitiveDescription(
         NonSequenceExamplePOSAnnotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-        outDirectoryName + "/model.jar");
+        JarClassifierBuilder.getModelJarFile(outDirectoryName));
 
     SimplePipeline.runPipeline(
         FilesCollectionReader.getCollectionReader("src/test/resources/data/2008_Sichuan_earthquake.txt"),

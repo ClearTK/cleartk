@@ -50,6 +50,7 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  */
 
+@SuppressWarnings("deprecation")
 public class ClearParserTest extends CleartkTestBase {
 
   protected TokenBuilder<Token, Sentence> tokenBuilder;

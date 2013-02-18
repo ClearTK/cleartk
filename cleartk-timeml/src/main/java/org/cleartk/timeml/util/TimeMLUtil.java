@@ -189,6 +189,36 @@ public class TimeMLUtil {
     return attributes;
   }
 
+  public static Attributes toTempEval2007Attributes(AnnotationFS annotation, String elementName) {
+    // add attributes that have a simple one-to-one mapping
+    AttributesImpl attributes = new AttributesImpl();
+    for (NamePair names : timemlAttributeLists.get(elementName)) {
+      if (!names.timemlName.equals("eiid")) {
+        Feature feature = annotation.getType().getFeatureByBaseName(names.uimaName);
+        addAttribute(attributes, names.timemlName, annotation.getFeatureValueAsString(feature));
+      }
+    }
+    // add un-mappable attributes
+    if (annotation instanceof TemporalLink) {
+      TemporalLink tlink = (TemporalLink) annotation;
+      Anchor source = tlink.getSource();
+      Anchor target = tlink.getTarget();
+      if (source instanceof Event) {
+        Event event = (Event) source;
+        addAttribute(attributes, "eventID", event.getId());
+      } else if (source instanceof Time) {
+        addAttribute(attributes, "timeID", source.getId());
+      }
+      if (target instanceof Event) {
+        Event event = (Event) target;
+        addAttribute(attributes, "relatedToEvent", event.getId());
+      } else if (target instanceof Time) {
+        addAttribute(attributes, "relatedToTime", target.getId());
+      }
+    }
+    return attributes;
+  }
+
   private static void addAttribute(AttributesImpl attributes, String name, String value) {
     if (value != null) {
       attributes.addAttribute("", name, name, "CDATA", value);
