@@ -78,4 +78,15 @@
   	<version>1.2.1</version>
   </dependency>
  </dependencies>
+	<build>
+		<plugins>
+			<!-- increase max memory for tests since models must be loaded -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-Xmx3g</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -145,7 +145,9 @@ public class ClearNLPTest extends CleartkTestBase {
 	@Test
 	public void srlTest() throws Exception {
     this.assumeBigMemoryTestsEnabled();
+    this.assumeLongTestsEnabled();
     this.logger.info(BIG_MEMORY_TEST_MESSAGE);
+    this.logger.info(LONG_TEST_MESSAGE);
     
 	  this.initDefaultModels();
 		this.jCas.reset();
