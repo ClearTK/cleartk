@@ -25,18 +25,13 @@ package org.cleartk.classifier.liblinear.encoder;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Ordering;
 
 import de.bwaldvogel.liblinear.FeatureNode;
 
@@ -56,7 +51,8 @@ public class FeatureNodeArrayEncoder implements FeaturesEncoder<FeatureNode[]> {
 
   @Override
   public FeatureNode[] encodeAll(Iterable<Feature> features) throws CleartkEncoderException {
-    List<FeatureNode> featureNodes = Lists.newArrayList();
+    // map feature indexes to feature nodes, sorting by index
+    Map<Integer, FeatureNode> featureNodes = Maps.newTreeMap();
     for (Feature feature : features) {
 
       // convert features to a String name and a double value
@@ -83,21 +79,18 @@ public class FeatureNodeArrayEncoder implements FeaturesEncoder<FeatureNode[]> {
       }
       int index = this.stringToInt.get(name);
 
-      // create a feature node and add it to the list
-      featureNodes.add(new FeatureNode(index, value));
+      // create a feature node for the given index
+      // NOTE: if there are duplicate features, only the last will be kept
+      featureNodes.put(index, new FeatureNode(index, value));
     }
     
-    // convert the list to an array
+    // put the feature nodes into an array, sorted by feature index
     FeatureNode[] featureNodeArray = new FeatureNode[featureNodes.size()];
-    featureNodes.toArray(featureNodeArray);
-    
-    // sort the array by feature index
-    Arrays.sort(featureNodeArray, Ordering.natural().onResultOf(new Function<FeatureNode, Integer>() {
-      @Override
-      public Integer apply(FeatureNode featureNode) {
-        return featureNode.index;
-      }
-    }));
+    int i = 0;
+    for (Integer index : featureNodes.keySet()) {
+      featureNodeArray[i] = featureNodes.get(index);
+      ++i;
+    }
     return featureNodeArray;
   }
 

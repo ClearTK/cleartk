@@ -158,6 +158,11 @@ public class LIBLINEARTest extends DefaultTestBase {
         new Feature("dog"),
         new Feature("badger", 42))));
     encoder.finalizeFeatureSet(null);
+    
+    // test that multiple features with the same index are combined
+    Assert.assertArrayEquals(
+        new FeatureNode[] { new FeatureNode(1, 2.0) },
+        encoder.encodeAll(Arrays.asList(new Feature("dog"), new Feature("dog", 2))));
 
     // test that feature ordering doesn't matter and that extra features are ignored
     Assert.assertArrayEquals(expected, encoder.encodeAll(Arrays.asList(
