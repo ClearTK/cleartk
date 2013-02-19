@@ -41,6 +41,7 @@ import org.junit.Test;
  * @author Philip Ogren
  */
 
+@SuppressWarnings("deprecation")
 public class FCollectionsFileTest extends EvaluationTestBase {
 
   @Test

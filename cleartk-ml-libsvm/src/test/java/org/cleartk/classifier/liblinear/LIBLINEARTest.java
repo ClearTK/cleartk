@@ -30,9 +30,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.SerializationUtils;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.jcas.JCas;
-import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.ScoredOutcome;
