@@ -31,11 +31,11 @@ package org.cleartk.classifier.liblinear;
  * 
  * @author Steven Bethard
  */
-public class LIBLINEARBooleanOutcomeClassifierBuilder extends
-    GenericLIBLINEARClassifierBuilder<LIBLINEARBooleanOutcomeClassifier, Boolean> {
+public class LIBLINEARStringOutcomeClassifierBuilder extends
+    GenericLIBLINEARClassifierBuilder<LIBLINEARStringOutcomeClassifier, String> {
 
   @Override
-  protected LIBLINEARBooleanOutcomeClassifier newClassifier() {
-    return new LIBLINEARBooleanOutcomeClassifier(this.featuresEncoder, this.outcomeEncoder, this.model);
+  protected LIBLINEARStringOutcomeClassifier newClassifier() {
+    return new LIBLINEARStringOutcomeClassifier(this.featuresEncoder, this.outcomeEncoder, this.model);
   }
 }

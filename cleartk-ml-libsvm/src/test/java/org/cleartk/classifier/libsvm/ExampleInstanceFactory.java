@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2010, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2010-2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -28,17 +28,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
+import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 
 /**
  * <br>
- * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * Copyright (c) 2010-2013, Regents of the University of Colorado <br>
  * All rights reserved.
  */
 
 public class ExampleInstanceFactory {
-
+  
   public static List<Instance<Boolean>> generateBooleanInstances(int n) {
     Random random = new Random(42);
     List<Instance<Boolean>> instances = new ArrayList<Instance<Boolean>>();
@@ -50,12 +53,24 @@ public class ExampleInstanceFactory {
         instance.add(new Feature("goodbye", 500));
       } else {
         instance.setOutcome(false);
-        instance.add(new Feature("hello", random.nextInt(100)));
         instance.add(new Feature("goodbye", 500));
+        instance.add(new Feature("hello", random.nextInt(100)));
       }
       instances.add(instance);
     }
     return instances;
+  }
+
+  public static class BooleanAnnotator extends CleartkAnnotator<Boolean> {
+    public BooleanAnnotator() {
+    }
+
+    @Override
+    public void process(JCas aJCas) throws AnalysisEngineProcessException {
+      for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {
+        this.dataWriter.write(instance);
+      }
+    }
   }
 
   public static List<Instance<String>> generateStringInstances(int n) {
@@ -71,18 +86,29 @@ public class ExampleInstanceFactory {
         instance.add(new Feature("farewell", random.nextInt(100)));
       } else if (c == 1) {
         instance.setOutcome("B");
-        instance.add(new Feature("hello", random.nextInt(100)));
         instance.add(new Feature("goodbye", random.nextInt(100) + 950));
+        instance.add(new Feature("hello", random.nextInt(100)));
         instance.add(new Feature("farewell", random.nextInt(100)));
       } else {
         instance.setOutcome("C");
+        instance.add(new Feature("farewell", random.nextInt(100) + 950));
         instance.add(new Feature("hello", random.nextInt(100)));
         instance.add(new Feature("goodbye", random.nextInt(100)));
-        instance.add(new Feature("farewell", random.nextInt(100) + 950));
       }
       instances.add(instance);
     }
     return instances;
   }
 
+  public static class StringAnnotator extends CleartkAnnotator<String> {
+    public StringAnnotator() {
+    }
+
+    @Override
+    public void process(JCas aJCas) throws AnalysisEngineProcessException {
+      for (Instance<String> instance : ExampleInstanceFactory.generateStringInstances(1000)) {
+        this.dataWriter.write(instance);
+      }
+    }
+  }
 }

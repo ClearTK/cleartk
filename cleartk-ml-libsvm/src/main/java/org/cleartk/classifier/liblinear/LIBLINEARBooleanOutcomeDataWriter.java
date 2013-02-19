@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2007-2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -24,43 +24,27 @@
 package org.cleartk.classifier.liblinear;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 
-import org.cleartk.classifier.encoder.CleartkEncoderException;
-import org.cleartk.classifier.encoder.features.BooleanEncoder;
-import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
-import org.cleartk.classifier.encoder.features.NumberEncoder;
-import org.cleartk.classifier.encoder.features.StringEncoder;
-import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
-import org.cleartk.classifier.liblinear.model.LIBLINEARModel;
-import org.cleartk.classifier.libsvm.LIBSVMDataWriter;
+import org.cleartk.classifier.encoder.outcome.BooleanToSignOutcomeEncoder;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @author Steven Bethard
  */
 public class LIBLINEARBooleanOutcomeDataWriter extends
-    LIBSVMDataWriter<LIBLINEARBooleanOutcomeClassifierBuilder, Boolean, Boolean, LIBLINEARModel> {
+    GenericLIBLINEARDataWriter<LIBLINEARBooleanOutcomeClassifierBuilder, Boolean> {
 
-  public LIBLINEARBooleanOutcomeDataWriter(File outputDirectory) throws IOException {
+  public LIBLINEARBooleanOutcomeDataWriter(File outputDirectory) throws FileNotFoundException {
     super(outputDirectory);
-    FeatureVectorFeaturesEncoder fe = new FeatureVectorFeaturesEncoder();
-    fe.addEncoder(new NumberEncoder());
-    fe.addEncoder(new BooleanEncoder());
-    fe.addEncoder(new StringEncoder());
-    this.setFeaturesEncoder(fe);
-    this.setOutcomeEncoder(new BooleanToBooleanOutcomeEncoder());
-  }
-
-  @Override
-  protected String encode(Boolean outcome) throws CleartkEncoderException {
-    return this.classifierBuilder.getOutcomeEncoder().encode(outcome).booleanValue() ? "+1" : "-1";
+    this.setOutcomeEncoder(new BooleanToSignOutcomeEncoder());
   }
 
   @Override
   protected LIBLINEARBooleanOutcomeClassifierBuilder newClassifierBuilder() {
     return new LIBLINEARBooleanOutcomeClassifierBuilder();
   }
-
 }

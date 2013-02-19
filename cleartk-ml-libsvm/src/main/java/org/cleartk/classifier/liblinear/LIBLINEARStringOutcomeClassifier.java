@@ -23,6 +23,11 @@
  */
 package org.cleartk.classifier.liblinear;
 
+import org.cleartk.classifier.encoder.features.FeaturesEncoder;
+import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+
+import de.bwaldvogel.liblinear.FeatureNode;
+import de.bwaldvogel.liblinear.Model;
 
 /**
  * <br>
@@ -31,11 +36,12 @@ package org.cleartk.classifier.liblinear;
  * 
  * @author Steven Bethard
  */
-public class LIBLINEARBooleanOutcomeClassifierBuilder extends
-    GenericLIBLINEARClassifierBuilder<LIBLINEARBooleanOutcomeClassifier, Boolean> {
+public class LIBLINEARStringOutcomeClassifier extends GenericLIBLINEARClassifier<String> {
 
-  @Override
-  protected LIBLINEARBooleanOutcomeClassifier newClassifier() {
-    return new LIBLINEARBooleanOutcomeClassifier(this.featuresEncoder, this.outcomeEncoder, this.model);
+  public LIBLINEARStringOutcomeClassifier(
+      FeaturesEncoder<FeatureNode[]> featuresEncoder,
+      OutcomeEncoder<String, Integer> outcomeEncoder,
+      Model model) {
+    super(featuresEncoder, outcomeEncoder, model);
   }
 }

@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2007-2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,65 +23,25 @@
  */
 package org.cleartk.classifier.liblinear;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.cleartk.classifier.CleartkProcessingException;
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
-import org.cleartk.classifier.jar.Classifier_ImplBase;
-import org.cleartk.classifier.liblinear.model.LIBLINEARModel;
-import org.cleartk.classifier.liblinear.model.LIBLINEARModel.ScoredPrediction;
-import org.cleartk.classifier.util.featurevector.FeatureVector;
+
+import de.bwaldvogel.liblinear.FeatureNode;
+import de.bwaldvogel.liblinear.Model;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * 
- * @author Philipp Wetzler
- * @author Philip Ogren
- * 
+ * @author Steven Bethard
  */
-
-public class LIBLINEARBooleanOutcomeClassifier extends Classifier_ImplBase<FeatureVector, Boolean, Boolean> {
-
-  protected LIBLINEARModel model;
+public class LIBLINEARBooleanOutcomeClassifier extends GenericLIBLINEARClassifier<Boolean> {
 
   public LIBLINEARBooleanOutcomeClassifier(
-      FeaturesEncoder<FeatureVector> featuresEncoder,
-      OutcomeEncoder<Boolean, Boolean> outcomeEncoder,
-      LIBLINEARModel model) {
-    super(featuresEncoder, outcomeEncoder);
-    this.model = model;
+      FeaturesEncoder<FeatureNode[]> featuresEncoder,
+      OutcomeEncoder<Boolean, Integer> outcomeEncoder,
+      Model model) {
+    super(featuresEncoder, outcomeEncoder, model);
   }
-
-  public Boolean classify(List<Feature> features) throws CleartkProcessingException {
-    FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
-
-    boolean encodedOutcome = (model.predict(featureVector) > 0);
-    return outcomeEncoder.decode(encodedOutcome);
-  }
-
-  @Override
-  public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
-      throws CleartkProcessingException {
-    List<ScoredOutcome<Boolean>> returnValues = new ArrayList<ScoredOutcome<Boolean>>();
-
-    FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
-    List<ScoredPrediction> encodedPredictions = model.score(featureVector);
-    for (ScoredPrediction prediction : encodedPredictions) {
-      boolean encodedOutcome = prediction.getPrediction() > 0;
-      returnValues.add(new ScoredOutcome<Boolean>(outcomeEncoder.decode(encodedOutcome), prediction
-          .getScore()));
-      if (maxResults == 1)
-        return returnValues;
-    }
-
-    return returnValues;
-  }
-
 }

@@ -23,6 +23,10 @@
  */
 package org.cleartk.classifier.liblinear;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
+import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
 
 /**
  * <br>
@@ -31,11 +35,16 @@ package org.cleartk.classifier.liblinear;
  * 
  * @author Steven Bethard
  */
-public class LIBLINEARBooleanOutcomeClassifierBuilder extends
-    GenericLIBLINEARClassifierBuilder<LIBLINEARBooleanOutcomeClassifier, Boolean> {
+public class LIBLINEARStringOutcomeDataWriter extends
+    GenericLIBLINEARDataWriter<LIBLINEARStringOutcomeClassifierBuilder, String> {
+
+  public LIBLINEARStringOutcomeDataWriter(File outputDirectory) throws FileNotFoundException {
+    super(outputDirectory);
+    this.setOutcomeEncoder(new StringToIntegerOutcomeEncoder());
+  }
 
   @Override
-  protected LIBLINEARBooleanOutcomeClassifier newClassifier() {
-    return new LIBLINEARBooleanOutcomeClassifier(this.featuresEncoder, this.outcomeEncoder, this.model);
+  protected LIBLINEARStringOutcomeClassifierBuilder newClassifierBuilder() {
+    return new LIBLINEARStringOutcomeClassifierBuilder();
   }
 }

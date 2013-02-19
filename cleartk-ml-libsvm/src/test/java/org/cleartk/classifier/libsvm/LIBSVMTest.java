@@ -28,15 +28,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.List;
 
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.jcas.JCas;
-import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
+import org.cleartk.classifier.libsvm.ExampleInstanceFactory.BooleanAnnotator;
+import org.cleartk.classifier.libsvm.ExampleInstanceFactory.StringAnnotator;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -55,7 +54,7 @@ public class LIBSVMTest extends DefaultTestBase {
   @Test
   public void testBinaryLIBSVM() throws Exception {
     // create the data writer
-    BinaryAnnotator annotator = new BinaryAnnotator();
+    BooleanAnnotator annotator = new BooleanAnnotator();
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
@@ -143,57 +142,4 @@ public class LIBSVMTest extends DefaultTestBase {
       scoredOutcomes = classifier.score(features, Integer.MAX_VALUE);
     }
   }
-
-  // private static List<Instance<String>> generateStringInstances2(int n) {
-  // Random random = new Random(42);
-  // List<Instance<String>> instances = new ArrayList<Instance<String>>();
-  // for (int i = 0; i < n; i++) {
-  // Instance<String> instance = new Instance<String>();
-  // int c = random.nextInt(3);
-  // if ( c == 0 ) {
-  // instance.setOutcome("A");
-  // instance.add(new Feature("aardvark", 1));
-  // instance.add(new Feature("apple", 1));
-  // instance.add(new Feature("algorithm", 1));
-  // }
-  // else if( c == 1 ) {
-  // instance.setOutcome("B");
-  // instance.add(new Feature("bat", 1));
-  // instance.add(new Feature("banana", 1));
-  // instance.add(new Feature("bayes", 1));
-  // } else {
-  // instance.setOutcome("C");
-  // instance.add(new Feature("cat", 1));
-  // instance.add(new Feature("coconut", 1));
-  // instance.add(new Feature("calculus", 1));
-  // }
-  // instances.add(instance);
-  // }
-  // return instances;
-  // }
-
-  private static class BinaryAnnotator extends CleartkAnnotator<Boolean> {
-    public BinaryAnnotator() {
-    }
-
-    @Override
-    public void process(JCas aJCas) throws AnalysisEngineProcessException {
-      for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {
-        this.dataWriter.write(instance);
-      }
-    }
-  }
-
-  private static class StringAnnotator extends CleartkAnnotator<String> {
-    public StringAnnotator() {
-    }
-
-    @Override
-    public void process(JCas aJCas) throws AnalysisEngineProcessException {
-      for (Instance<String> instance : ExampleInstanceFactory.generateStringInstances(1000)) {
-        this.dataWriter.write(instance);
-      }
-    }
-  }
-
 }

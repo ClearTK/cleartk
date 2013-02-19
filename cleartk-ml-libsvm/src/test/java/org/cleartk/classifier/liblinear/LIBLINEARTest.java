@@ -24,23 +24,32 @@
 package org.cleartk.classifier.liblinear;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.SerializationUtils;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
+import org.cleartk.classifier.liblinear.encoder.FeatureNodeArrayEncoder;
 import org.cleartk.classifier.libsvm.ExampleInstanceFactory;
+import org.cleartk.classifier.libsvm.ExampleInstanceFactory.BooleanAnnotator;
+import org.cleartk.classifier.libsvm.ExampleInstanceFactory.StringAnnotator;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.testing.util.HideOutput;
+
+import de.bwaldvogel.liblinear.FeatureNode;
 
 /**
  * <br>
@@ -54,9 +63,9 @@ import org.uimafit.testing.util.HideOutput;
 public class LIBLINEARTest extends DefaultTestBase {
 
   @Test
-  public void testLIBLINEAR() throws Exception {
+  public void testBooleanOutcomeLIBLINEAR() throws Exception {
     // create the data writer
-    BinaryAnnotator annotator = new BinaryAnnotator();
+    BooleanAnnotator annotator = new BooleanAnnotator();
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
@@ -87,20 +96,84 @@ public class LIBLINEARTest extends DefaultTestBase {
       List<Feature> features = instance.getFeatures();
       Boolean outcome = instance.getOutcome();
       Assert.assertEquals(outcome, classifier.classify(features));
-      Assert.assertTrue(classifier.score(features, 2).get(0).getScore() > 0.0d);
+      ScoredOutcome<Boolean> scoredOutcome = classifier.score(features, 2).get(0);
+      Assert.assertEquals(outcome, scoredOutcome.getOutcome());
+      Assert.assertTrue(scoredOutcome.getScore() > 0.0d);
     }
   }
+  
+  @Test
+  public void testStringOutcomeLIBLINEAR() throws Exception {
+    // create the data writer
+    StringAnnotator annotator = new StringAnnotator();
+    annotator.initialize(UimaContextFactory.createUimaContext(
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        this.outputDirectoryName,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        LIBLINEARStringOutcomeDataWriter.class.getName()));
 
-  private static class BinaryAnnotator extends CleartkAnnotator<Boolean> {
-    public BinaryAnnotator() {
-    }
+    // run process to produce a bunch of instances
+    annotator.process(null);
 
-    @Override
-    public void process(JCas aJCas) throws AnalysisEngineProcessException {
-      for (Instance<Boolean> instance : ExampleInstanceFactory.generateBooleanInstances(1000)) {
-        this.dataWriter.write(instance);
-      }
+    annotator.collectionProcessComplete();
+
+    // check that the output files were written for each class
+    BufferedReader reader = new BufferedReader(new FileReader(new File(
+        this.outputDirectoryName,
+        "training-data.liblinear")));
+    Assert.assertTrue(reader.readLine().length() > 0);
+    reader.close();
+
+    // run the training command
+    HideOutput hider = new HideOutput();
+    Train.main(this.outputDirectoryName, "-c", "1.0", "-s", "0");
+    hider.restoreOutput();
+
+    // read in the classifier and test it on new instances
+    LIBLINEARStringOutcomeClassifierBuilder builder = new LIBLINEARStringOutcomeClassifierBuilder();
+    LIBLINEARStringOutcomeClassifier classifier;
+    classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
+    for (Instance<String> instance : ExampleInstanceFactory.generateStringInstances(1000)) {
+      List<Feature> features = instance.getFeatures();
+      String outcome = instance.getOutcome();
+      Assert.assertEquals(outcome, classifier.classify(features));
+
+      List<ScoredOutcome<String>> scoredOutcomes = classifier.score(features, 1);
+      Assert.assertEquals(1, scoredOutcomes.size());
+      Assert.assertEquals(outcome, scoredOutcomes.get(0).getOutcome());
+      scoredOutcomes = classifier.score(features, 2);
+      Assert.assertEquals(2, scoredOutcomes.size());
+      Assert.assertTrue(scoredOutcomes.get(0).getScore() > scoredOutcomes.get(1).getScore());
+      scoredOutcomes = classifier.score(features, Integer.MAX_VALUE);
     }
   }
+  
+  @Test
+  public void testFeatureNodeArrayEncoder() throws Exception {
+    FeatureNode[] expected = new FeatureNode[] {
+        new FeatureNode(1, 1.0),
+        new FeatureNode(2, 42.0)
+    };
+    
+    // create an encoder, add some features and then finalize the feature set
+    FeatureNodeArrayEncoder encoder = new FeatureNodeArrayEncoder();
+    Assert.assertArrayEquals(expected, encoder.encodeAll(Arrays.asList(
+        new Feature("dog"),
+        new Feature("badger", 42))));
+    encoder.finalizeFeatureSet(null);
 
+    // test that feature ordering doesn't matter and that extra features are ignored
+    Assert.assertArrayEquals(expected, encoder.encodeAll(Arrays.asList(
+        new Feature("badger", 42),
+        new Feature("dog"),
+        new Feature(46))));
+
+    // test that encoder can be serialized and deserialized and give the same results
+    byte[] encoderBytes = SerializationUtils.serialize(encoder);
+    encoder = (FeatureNodeArrayEncoder) SerializationUtils.deserialize(encoderBytes);
+    Assert.assertArrayEquals(expected, encoder.encodeAll(Arrays.asList(
+        new Feature("badger", 42),
+        new Feature("dog"),
+        new Feature(46))));
+  }
 }
