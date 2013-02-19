@@ -87,7 +87,7 @@ public class TemporalLinkEventToSameSentenceTimeAnnotator extends
   };
 
   public TemporalLinkEventToSameSentenceTimeAnnotator() {
-    super(Event.class, Time.class, "BEFORE", "OVERLAP", "AFTER");
+    super(Event.class, Time.class, "BEFORE", "OVERLAP", "AFTER", "INCLUDES", "IS_INCLUDED", "SIMULTANEOUS");
   }
 
   private static final Pattern SUBORDINATE_PATH_PATTERN = Pattern.compile("^((NP|PP|ADVP)>)*((VP|SBAR|S)>)*(S|SBAR|VP|NP)(<(VP|SBAR|S))*(<(NP|PP|ADVP))*$");

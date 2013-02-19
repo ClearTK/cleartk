@@ -28,8 +28,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 import org.apache.uima.analysis_component.AnalysisComponent;
@@ -52,7 +54,7 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.classifier.libsvm.LIBSVMStringOutcomeDataWriter;
+import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.classifier.mallet.MalletCRFStringOutcomeDataWriter;
 import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter;
 import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
@@ -106,8 +108,11 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableTable;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
 import com.lexicalscope.jewel.cli.CliFactory;
@@ -157,10 +162,20 @@ public class TempEval2013Evaluation
       new Model.Params(MaxentStringOutcomeDataWriter.class),
       new Model.Params(MaxentStringOutcomeDataWriter.class, "100", "10"),
       new Model.Params(MaxentStringOutcomeDataWriter.class, "500", "5"),
-      // default is RBF kernel; skip that entirely and just try linear kernels
-      new Model.Params(LIBSVMStringOutcomeDataWriter.class, "-t", "0", "-c", "1"),
-      new Model.Params(LIBSVMStringOutcomeDataWriter.class, "-t", "0", "-c", "10"),
-      new Model.Params(LIBSVMStringOutcomeDataWriter.class, "-t", "0", "-c", "100"));
+      // L2-regularized logistic regression (primal)
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "0"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.5", "-s", "0"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "0"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "5", "-s", "0"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "10", "-s", "0"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "50", "-s", "0"),
+      // L2-regularized L2-loss support vector classification (dual)
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.5", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "5", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "10", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "50", "-s", "1"));
 
   private static final Model<Time> TIME_EXTENT_MODEL = new Model<Time>(
       "time-extent",
@@ -178,7 +193,7 @@ public class TempEval2013Evaluation
       "time-type",
       Lists.<Model<?>> newArrayList(TIME_EXTENT_MODEL),
       TimeTypeAnnotator.class,
-      new Model.Params(LIBSVMStringOutcomeDataWriter.class, "-t", "0", "-c", "10"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "5", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Time.class,
@@ -190,8 +205,7 @@ public class TempEval2013Evaluation
       "event-extent",
       Lists.<Model<?>> newArrayList(),
       EventAnnotator.class,
-      // TODO: determine best model parameters
-      new Model.Params(MalletStringOutcomeDataWriter.class, "MaxEnt"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Event.class,
@@ -203,8 +217,7 @@ public class TempEval2013Evaluation
       "event-aspect",
       Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
       EventAspectAnnotator.class,
-      // TODO: determine best model parameters
-      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "10", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Event.class,
@@ -216,8 +229,7 @@ public class TempEval2013Evaluation
       "event-class",
       Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
       EventClassAnnotator.class,
-      // TODO: determine best model parameters
-      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "10", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Event.class,
@@ -229,8 +241,7 @@ public class TempEval2013Evaluation
       "event-modality",
       Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
       EventModalityAnnotator.class,
-      // TODO: determine best model parameters
-      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Event.class,
@@ -242,8 +253,7 @@ public class TempEval2013Evaluation
       "event-polarity",
       Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
       EventPolarityAnnotator.class,
-      // TODO: determine best model parameters
-      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Event.class,
@@ -255,8 +265,7 @@ public class TempEval2013Evaluation
       "event-tense",
       Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
       EventTenseAnnotator.class,
-      // TODO: determine best model parameters
-      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Event.class,
@@ -274,8 +283,7 @@ public class TempEval2013Evaluation
           EVENT_POLARITY_MODEL,
           EVENT_TENSE_MODEL),
       TemporalLinkEventToDocumentCreationTimeAnnotator.class,
-      // TODO: determine best model parameters
-      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.PRECISION_ONLY,
       TemporalLink.class,
@@ -295,8 +303,7 @@ public class TempEval2013Evaluation
           EVENT_POLARITY_MODEL,
           EVENT_TENSE_MODEL),
       TemporalLinkEventToSameSentenceTimeAnnotator.class,
-      // TODO: determine best model parameters
-      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.PRECISION_ONLY,
       TemporalLink.class,
@@ -314,8 +321,7 @@ public class TempEval2013Evaluation
           EVENT_POLARITY_MODEL,
           EVENT_TENSE_MODEL),
       TemporalLinkEventToSubordinatedEventAnnotator.class,
-      // TODO: determine best model parameters
-      new Model.Params(MaxentStringOutcomeDataWriter.class),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.PRECISION_ONLY,
       TemporalLink.class,
@@ -374,7 +380,7 @@ public class TempEval2013Evaluation
       if (modelToTune == null) {
         throw new IllegalArgumentException("No such model: " + nameOfModelToTune);
       }
-      for (Model<?> model : getPrerequisites(modelToTune)) {
+      for (Model<?> model : getSortedPrerequisites(modelToTune)) {
         modelsBuilder.put(model, model.bestParams);
       }
       for (Model.Params params : modelToTune.paramsToSearch) {
@@ -438,12 +444,38 @@ public class TempEval2013Evaluation
     }
     return files;
   }
+  
+  private static Set<Model<?>> getPrerequisites(Model<?> model) {
+    Set<Model<?>> prereqs = Sets.newLinkedHashSet();
+    for (Model<?> prereq : model.prerequisites) {
+      prereqs.add(prereq);
+      prereqs.addAll(getPrerequisites(prereq));
+    }
+    return prereqs;
+  }
 
-  private static List<Model<?>> getPrerequisites(Model<?> model) {
-    List<Model<?>> models = Lists.newArrayList();
-    for (Model<?> child : model.prerequisites) {
-      models.addAll(getPrerequisites(child));
-      models.add(child);
+  private static LinkedHashSet<Model<?>> getSortedPrerequisites(Model<?> model) {
+    Queue<Model<?>> todo = Queues.newArrayDeque();
+    Multimap<Model<?>, Model<?>> following = LinkedHashMultimap.create();
+    for (Model<?> prereq : getPrerequisites(model)) {
+      if (prereq.prerequisites.isEmpty()) {
+        todo.add(prereq);
+      } else {
+        for (Model<?> preprereq : prereq.prerequisites) {
+          following.put(preprereq, prereq);
+        }
+      }
+    }
+    LinkedHashSet<Model<?>> models = Sets.newLinkedHashSet();
+    while (!todo.isEmpty()) {
+      Model<?> next = todo.iterator().next();
+      todo.remove(next);
+      models.add(next);
+      for (Model<?> prereq : following.removeAll(next)) {
+        if (!following.containsKey(prereq)) {
+          todo.add(prereq);
+        }
+      }
     }
     return models;
   }
@@ -673,6 +705,13 @@ public class TempEval2013Evaluation
       this.annotationToOutcome = annotationToOutcome;
       this.featureToRemove = featureToRemove;
     }
+    
+    @Override
+    public String toString() {
+      Objects.ToStringHelper helper = Objects.toStringHelper(this.getClass());
+      helper.add("name", this.name);
+      return helper.toString();
+    }
 
     public AnalysisEngineDescription getWriterDescription(File directory, Params params)
         throws ResourceInitializationException {
@@ -705,28 +744,29 @@ public class TempEval2013Evaluation
     }
 
     public void evaluate(JCas goldView, JCas systemView, AnnotationStatistics<String> stats) {
+      Collection<ANNOTATION_TYPE> goldRelations, systemRelations;
       switch (this.evaluationType) {
         case PRECISION_ONLY:
-          Collection<ANNOTATION_TYPE> goldRelations = this.select(goldView);
+          goldRelations = this.select(goldView);
           Set<Object> goldSpans = Sets.newHashSet();
           for (ANNOTATION_TYPE annotation : goldRelations) {
             goldSpans.add(this.annotationToSpan.apply(annotation));
           }
-          List<ANNOTATION_TYPE> systemRelations = Lists.newArrayList();
+          systemRelations = Lists.newArrayList();
           for (ANNOTATION_TYPE annotation : this.select(systemView)) {
             if (goldSpans.contains(this.annotationToSpan.apply(annotation))) {
               systemRelations.add(annotation);
             }
           }
-          stats.add(goldRelations, systemRelations, this.annotationToSpan, this.annotationToOutcome);
           break;
         case NORMAL:
-          stats.add(
-              this.select(goldView),
-              this.select(systemView),
-              this.annotationToSpan,
-              this.annotationToOutcome);
+          goldRelations = this.select(goldView);
+          systemRelations = this.select(systemView);
+          break;
+        default:
+          throw new IllegalArgumentException("Unknown evaluation type: " + this.evaluationType);
       }
+      stats.add(goldRelations, systemRelations, this.annotationToSpan, this.annotationToOutcome);
     }
 
     public void removeModelAnnotations(JCas jCas) {
