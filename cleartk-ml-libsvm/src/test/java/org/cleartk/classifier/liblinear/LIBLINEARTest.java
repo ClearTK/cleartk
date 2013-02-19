@@ -46,6 +46,8 @@ import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.testing.util.HideOutput;
 
+import com.google.common.collect.Lists;
+
 import de.bwaldvogel.liblinear.FeatureNode;
 
 /**
@@ -146,10 +148,31 @@ public class LIBLINEARTest extends DefaultTestBase {
   }
   
   @Test
+  public void testMajorityClass() throws Exception {
+    // training data has 4 times as many AAA as BBB
+    LIBLINEARStringOutcomeDataWriter dataWriter = new LIBLINEARStringOutcomeDataWriter(this.outputDirectory);
+    dataWriter.write(new Instance<String>("AAA", Lists.newArrayList(new Feature("V"))));
+    dataWriter.write(new Instance<String>("AAA", Lists.newArrayList(new Feature("W"))));
+    dataWriter.write(new Instance<String>("AAA", Lists.newArrayList(new Feature("X"))));
+    dataWriter.write(new Instance<String>("AAA", Lists.newArrayList(new Feature("Y"))));
+    dataWriter.write(new Instance<String>("BBB", Lists.newArrayList(new Feature("Z"))));
+    dataWriter.finish();
+    
+    LIBLINEARStringOutcomeClassifierBuilder classifierBuilder = dataWriter.getClassifierBuilder();
+    classifierBuilder.trainClassifier(this.outputDirectory);
+    classifierBuilder.packageClassifier(this.outputDirectory);
+    
+    // test on a feature never seen during training
+    LIBLINEARStringOutcomeClassifier classifier = classifierBuilder.loadClassifierFromTrainingDirectory(this.outputDirectory);
+    Assert.assertEquals("AAA", classifier.classify(Lists.newArrayList(new Feature("A"))));
+  }
+  
+  @Test
   public void testFeatureNodeArrayEncoder() throws Exception {
     FeatureNode[] expected = new FeatureNode[] {
-        new FeatureNode(1, 1.0),
-        new FeatureNode(2, 42.0)
+        new FeatureNode(1, 1.0), /* bias */
+        new FeatureNode(2, 1.0),
+        new FeatureNode(3, 42.0)
     };
     
     // create an encoder, add some features and then finalize the feature set
@@ -161,7 +184,7 @@ public class LIBLINEARTest extends DefaultTestBase {
     
     // test that multiple features with the same index are combined
     Assert.assertArrayEquals(
-        new FeatureNode[] { new FeatureNode(1, 2.0) },
+        new FeatureNode[] { new FeatureNode(1, 1) /* bias */, new FeatureNode(2, 2.0) },
         encoder.encodeAll(Arrays.asList(new Feature("dog"), new Feature("dog", 2))));
 
     // test that feature ordering doesn't matter and that extra features are ignored

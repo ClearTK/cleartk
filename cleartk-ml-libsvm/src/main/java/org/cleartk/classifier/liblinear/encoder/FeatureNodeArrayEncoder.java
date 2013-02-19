@@ -45,14 +45,31 @@ import de.bwaldvogel.liblinear.FeatureNode;
 public class FeatureNodeArrayEncoder implements FeaturesEncoder<FeatureNode[]> {
   private static final long serialVersionUID = 1L;
 
-  private Map<String, Integer> stringToInt = Maps.newHashMap();
+  private static final String BIAS_NAME = FeatureNodeArrayEncoder.class.getName() + ".BIAS";
   
-  private boolean isFinalized = false;
+  private Map<String, Integer> stringToInt;
+  
+  private int biasIndex;
+  
+  private boolean isFinalized;
+  
+  public FeatureNodeArrayEncoder() {
+    this.stringToInt = Maps.newHashMap();
+    this.biasIndex = 1;
+    this.isFinalized = false;
+    this.stringToInt.put(BIAS_NAME, biasIndex);
+  }
 
   @Override
   public FeatureNode[] encodeAll(Iterable<Feature> features) throws CleartkEncoderException {
     // map feature indexes to feature nodes, sorting by index
     Map<Integer, FeatureNode> featureNodes = Maps.newTreeMap();
+    
+    // add a "bias" feature node; otherwise LIBLINEAR is unable to predict the majority class for
+    // instances consisting entirely of features never seen during training
+    featureNodes.put(this.biasIndex, new FeatureNode(this.biasIndex, 1));
+    
+    // add nodes for all the features
     for (Feature feature : features) {
 
       // convert features to a String name and a double value
