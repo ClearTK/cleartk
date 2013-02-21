@@ -118,11 +118,13 @@ public class TemporalLinkEventToSubordinatedEventAnnotator extends
     List<Event> targets = new ArrayList<Event>();
     TreebankNode sourceNode = TreebankNodeUtil.selectMatchingLeaf(jCas, source);
     for (Event target : JCasUtil.selectCovered(jCas, Event.class, sentence)) {
-      TreebankNode targetNode = TreebankNodeUtil.selectMatchingLeaf(jCas, target);
-      if (sourceNode != null && targetNode != null) {
-        String path = noLeavesPath(TreebankNodeUtil.getPath(sourceNode, targetNode));
-        if (SUBORDINATE_PATH_PATTERN.matcher(path).matches()) {
-          targets.add(target);
+      if (!target.equals(source)) {
+        TreebankNode targetNode = TreebankNodeUtil.selectMatchingLeaf(jCas, target);
+        if (sourceNode != null && targetNode != null) {
+          String path = noLeavesPath(TreebankNodeUtil.getPath(sourceNode, targetNode));
+          if (SUBORDINATE_PATH_PATTERN.matcher(path).matches()) {
+            targets.add(target);
+          }
         }
       }
     }
