@@ -26,7 +26,6 @@ package org.cleartk.timeml.eval;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -44,6 +43,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.TOP;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.CasCopier;
 import org.cleartk.classifier.DataWriter;
@@ -74,6 +74,7 @@ import org.cleartk.timeml.event.EventPolarityAnnotator;
 import org.cleartk.timeml.event.EventTenseAnnotator;
 import org.cleartk.timeml.time.TimeAnnotator;
 import org.cleartk.timeml.time.TimeTypeAnnotator;
+import org.cleartk.timeml.tlink.TemporalLinkAnnotator_ImplBase;
 import org.cleartk.timeml.tlink.TemporalLinkEventToDocumentCreationTimeAnnotator;
 import org.cleartk.timeml.tlink.TemporalLinkEventToSameSentenceTimeAnnotator;
 import org.cleartk.timeml.tlink.TemporalLinkEventToSubordinatedEventAnnotator;
@@ -106,8 +107,10 @@ import org.uimafit.util.JCasUtil;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableTable;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -134,11 +137,24 @@ public class TempEval2013Evaluation
   private static Function<TemporalLink, List<Integer>> TEMPORAL_LINK_TO_SPANS = new Function<TemporalLink, List<Integer>>() {
     @Override
     public List<Integer> apply(TemporalLink temporalLink) {
-      return Arrays.asList(
-          temporalLink.getSource().getBegin(),
-          temporalLink.getSource().getEnd(),
-          temporalLink.getTarget().getBegin(),
-          temporalLink.getTarget().getEnd());
+      // order source and target indexes, left-to-right
+      Anchor source = temporalLink.getSource();
+      Anchor target = temporalLink.getTarget();
+      return source.getBegin() < target.getBegin()
+          ? Lists.newArrayList(source.getBegin(), source.getEnd(), target.getBegin(), target.getEnd())
+          : Lists.newArrayList(target.getBegin(), target.getEnd(), source.getBegin(), source.getEnd());
+    }
+  };
+  
+  private static Function<TemporalLink, String> TEMPORAL_LINK_TO_RELATION = new Function<TemporalLink, String>() {
+    @Override
+    public String apply(TemporalLink temporalLink) {
+      // match relation with left-to-right ordering of indexes
+      Anchor source = temporalLink.getSource();
+      Anchor target = temporalLink.getTarget();
+      return source.getBegin() < target.getBegin()
+          ? temporalLink.getRelationType()
+          : TemporalLinkAnnotator_ImplBase.REVERSE_RELATION.get(temporalLink.getRelationType());
     }
   };
 
@@ -184,6 +200,7 @@ public class TempEval2013Evaluation
       new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--forbidden", "O,I"),
       SEQUENCE_CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
+      Model.LoggingType.NONE,
       Time.class,
       AnnotationStatistics.<Time> annotationToSpan(),
       AnnotationStatistics.<Time, String> annotationToNull(),
@@ -196,6 +213,7 @@ public class TempEval2013Evaluation
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "5", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
+      Model.LoggingType.NONE,
       Time.class,
       AnnotationStatistics.<Time> annotationToSpan(),
       AnnotationStatistics.<Time> annotationToFeatureValue("timeType"),
@@ -208,6 +226,7 @@ public class TempEval2013Evaluation
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
+      Model.LoggingType.NONE,
       Event.class,
       AnnotationStatistics.<Event> annotationToSpan(),
       AnnotationStatistics.<Event, String> annotationToNull(),
@@ -220,6 +239,7 @@ public class TempEval2013Evaluation
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "10", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
+      Model.LoggingType.NONE,
       Event.class,
       AnnotationStatistics.<Event> annotationToSpan(),
       AnnotationStatistics.<Event> annotationToFeatureValue("aspect"),
@@ -232,6 +252,7 @@ public class TempEval2013Evaluation
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "10", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
+      Model.LoggingType.NONE,
       Event.class,
       AnnotationStatistics.<Event> annotationToSpan(),
       AnnotationStatistics.<Event> annotationToFeatureValue("eventClass"),
@@ -244,6 +265,7 @@ public class TempEval2013Evaluation
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
+      Model.LoggingType.NONE,
       Event.class,
       AnnotationStatistics.<Event> annotationToSpan(),
       AnnotationStatistics.<Event> annotationToFeatureValue("modality"),
@@ -256,6 +278,7 @@ public class TempEval2013Evaluation
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
+      Model.LoggingType.NONE,
       Event.class,
       AnnotationStatistics.<Event> annotationToSpan(),
       AnnotationStatistics.<Event> annotationToFeatureValue("polarity"),
@@ -268,6 +291,7 @@ public class TempEval2013Evaluation
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
+      Model.LoggingType.NONE,
       Event.class,
       AnnotationStatistics.<Event> annotationToSpan(),
       AnnotationStatistics.<Event> annotationToFeatureValue("tense"),
@@ -285,10 +309,11 @@ public class TempEval2013Evaluation
       TemporalLinkEventToDocumentCreationTimeAnnotator.class,
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
-      Model.EvaluationType.PRECISION_ONLY,
+      Model.EvaluationType.SYSTEM_SPANS,
+      Model.LoggingType.NONE,
       TemporalLink.class,
       TEMPORAL_LINK_TO_SPANS,
-      AnnotationStatistics.<TemporalLink> annotationToFeatureValue("relationType"),
+      TEMPORAL_LINK_TO_RELATION,
       null);
 
   private static final Model<TemporalLink> TLINK_EVENT_SENTTIME_MODEL = new Model<TemporalLink>(
@@ -305,10 +330,11 @@ public class TempEval2013Evaluation
       TemporalLinkEventToSameSentenceTimeAnnotator.class,
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
-      Model.EvaluationType.PRECISION_ONLY,
+      Model.EvaluationType.SYSTEM_SPANS,
+      Model.LoggingType.NONE,
       TemporalLink.class,
       TEMPORAL_LINK_TO_SPANS,
-      AnnotationStatistics.<TemporalLink> annotationToFeatureValue("relationType"),
+      TEMPORAL_LINK_TO_RELATION,
       null);
 
   private static final Model<TemporalLink> TLINK_EVENT_SUBORDEVENT_MODEL = new Model<TemporalLink>(
@@ -323,10 +349,11 @@ public class TempEval2013Evaluation
       TemporalLinkEventToSubordinatedEventAnnotator.class,
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
-      Model.EvaluationType.PRECISION_ONLY,
+      Model.EvaluationType.SYSTEM_SPANS,
+      Model.LoggingType.SYSTEM_PREDICTIONS,
       TemporalLink.class,
       TEMPORAL_LINK_TO_SPANS,
-      AnnotationStatistics.<TemporalLink> annotationToFeatureValue("relationType"),
+      TEMPORAL_LINK_TO_RELATION,
       null);
 
   interface Options {
@@ -660,7 +687,11 @@ public class TempEval2013Evaluation
     }
 
     public enum EvaluationType {
-      NORMAL, PRECISION_ONLY
+      NORMAL, GOLD_SPANS, SYSTEM_SPANS, INTERSECTED_SPANS
+    }
+    
+    public enum LoggingType {
+      NONE, SYSTEM_PREDICTIONS
     }
 
     public String name;
@@ -674,10 +705,12 @@ public class TempEval2013Evaluation
     public List<Params> paramsToSearch;
 
     private EvaluationType evaluationType;
+    
+    private LoggingType loggingType;
 
     private Class<ANNOTATION_TYPE> annotationClass;
 
-    private Function<ANNOTATION_TYPE, ?> annotationToSpan;
+    Function<ANNOTATION_TYPE, ?> annotationToSpan;
 
     private Function<ANNOTATION_TYPE, String> annotationToOutcome;
 
@@ -690,6 +723,7 @@ public class TempEval2013Evaluation
         Params bestParams,
         List<Params> paramsToSearch,
         EvaluationType evaluationType,
+        LoggingType loggingType,
         Class<ANNOTATION_TYPE> annotationClass,
         Function<ANNOTATION_TYPE, ?> annotationToSpan,
         Function<ANNOTATION_TYPE, String> annotationToOutcome,
@@ -700,6 +734,7 @@ public class TempEval2013Evaluation
       this.bestParams = bestParams;
       this.paramsToSearch = paramsToSearch;
       this.evaluationType = evaluationType;
+      this.loggingType = loggingType;
       this.annotationClass = annotationClass;
       this.annotationToSpan = annotationToSpan;
       this.annotationToOutcome = annotationToOutcome;
@@ -744,29 +779,103 @@ public class TempEval2013Evaluation
     }
 
     public void evaluate(JCas goldView, JCas systemView, AnnotationStatistics<String> stats) {
-      Collection<ANNOTATION_TYPE> goldRelations, systemRelations;
+      Collection<ANNOTATION_TYPE> goldAnnotations = this.select(goldView);
+      Collection<ANNOTATION_TYPE> systemAnnotations = this.select(systemView);
+      final Set<Object> spans;
       switch (this.evaluationType) {
-        case PRECISION_ONLY:
-          goldRelations = this.select(goldView);
-          Set<Object> goldSpans = Sets.newHashSet();
-          for (ANNOTATION_TYPE annotation : goldRelations) {
-            goldSpans.add(this.annotationToSpan.apply(annotation));
-          }
-          systemRelations = Lists.newArrayList();
-          for (ANNOTATION_TYPE annotation : this.select(systemView)) {
-            if (goldSpans.contains(this.annotationToSpan.apply(annotation))) {
-              systemRelations.add(annotation);
-            }
-          }
-          break;
         case NORMAL:
-          goldRelations = this.select(goldView);
-          systemRelations = this.select(systemView);
+          spans = null;
+          break;
+        case GOLD_SPANS:
+          spans = Sets.newHashSet(Iterables.transform(this.select(goldView), this.annotationToSpan));
+          break;
+        case SYSTEM_SPANS:
+          spans = Sets.newHashSet(Iterables.transform(this.select(systemView), this.annotationToSpan));
+          break;
+        case INTERSECTED_SPANS:
+          spans = Sets.intersection(
+              Sets.newHashSet(Iterables.transform(this.select(goldView), this.annotationToSpan)),
+              Sets.newHashSet(Iterables.transform(this.select(systemView), this.annotationToSpan)));
           break;
         default:
           throw new IllegalArgumentException("Unknown evaluation type: " + this.evaluationType);
       }
-      stats.add(goldRelations, systemRelations, this.annotationToSpan, this.annotationToOutcome);
+      if (spans != null) {
+        Predicate<ANNOTATION_TYPE> isSelectedSpan = new Predicate<ANNOTATION_TYPE>() {
+          @Override
+          public boolean apply(ANNOTATION_TYPE annotation) {
+            return spans.contains(annotationToSpan.apply(annotation));
+          }
+        };
+        goldAnnotations = Lists.newArrayList(Iterables.filter(goldAnnotations, isSelectedSpan));
+        systemAnnotations = Lists.newArrayList(Iterables.filter(systemAnnotations, isSelectedSpan));
+      }
+      
+      switch (this.loggingType) {
+        case NONE: break;
+        case SYSTEM_PREDICTIONS:
+          Map<Object, ANNOTATION_TYPE> goldMap = Maps.newHashMap();
+          for (ANNOTATION_TYPE annotation : goldAnnotations) {
+            goldMap.put(this.annotationToSpan.apply(annotation), annotation);
+          }
+          Map<Object, ANNOTATION_TYPE> systemMap = Maps.newHashMap();
+          for (ANNOTATION_TYPE annotation : systemAnnotations) {
+            systemMap.put(this.annotationToSpan.apply(annotation), annotation);
+          }
+          for (Object span : Sets.union(goldMap.keySet(), systemMap.keySet())) {
+            ANNOTATION_TYPE goldAnnotation = goldMap.get(span);
+            ANNOTATION_TYPE systemAnnotation = systemMap.get(span);
+            String goldOutcome = goldAnnotation == null ? null : this.annotationToOutcome.apply(goldAnnotation);
+            String systemOutcome = systemAnnotation == null ? null : this.annotationToOutcome.apply(systemAnnotation);
+            if (goldAnnotation == null) {
+              System.err.printf("%s: System added %s\n", this.name, format(systemAnnotation));
+            } else if (systemAnnotation == null) {
+              System.err.printf("%s: System missed %s\n", this.name, format(goldAnnotation));
+            } else if (!goldOutcome.equals(systemOutcome)) {
+              String message = "%s: System misclassified %s as %s\n";
+              System.err.printf(message, this.name, goldOutcome, format(systemAnnotation));
+            } else {
+              System.err.printf("%s: System found %s\n", this.name, format(systemAnnotation));
+            }
+          }
+      }
+      
+      stats.add(goldAnnotations, systemAnnotations, this.annotationToSpan, this.annotationToOutcome);
+    }
+    
+    private String format(ANNOTATION_TYPE annotation) {
+      return this.format(annotation, this.annotationToOutcome.apply(annotation));
+    }
+    
+    private String format(TOP top, String outcome) {
+      String result;
+      String text = top.getCAS().getDocumentText().replaceAll("[\r\n]", " ");
+      int nChars = 30;
+      if (top instanceof TemporalLink) {
+        TemporalLink link = (TemporalLink) top;
+        Anchor source = link.getSource();
+        Anchor target = link.getTarget();
+        result = String.format(
+            "%s(%s, %s)",
+            link.getRelationType(),
+            format(source, null),
+            format(target, null));
+      } else if (top instanceof Annotation) {
+        Annotation annotation = (Annotation) top;
+        int begin = annotation.getBegin();
+        int end = annotation.getEnd();
+        int preBegin = Math.max(begin - nChars, 0);
+        int postEnd = Math.min(end + nChars, text.length());
+        result = String.format(
+            "...%s[%s%s]%s...",
+            text.substring(preBegin, begin),
+            text.substring(begin, end),
+            outcome == null ? "" : "=" + outcome,
+            text.substring(end, postEnd));
+      } else {
+        throw new IllegalArgumentException("unsupported annotation type: " + top);
+      }
+      return result;
     }
 
     public void removeModelAnnotations(JCas jCas) {

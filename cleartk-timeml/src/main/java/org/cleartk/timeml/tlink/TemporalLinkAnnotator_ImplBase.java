@@ -65,7 +65,7 @@ import com.google.common.collect.Table.Cell;
 public abstract class TemporalLinkAnnotator_ImplBase<SOURCE extends Anchor, TARGET extends Anchor>
     extends CleartkAnnotator<String> {
 
-  private static Map<String, String> REVERSE_RELATION = new HashMap<String, String>();
+  public static Map<String, String> REVERSE_RELATION = new HashMap<String, String>();
   static {
     // TimeML
     REVERSE_RELATION.put("BEFORE", "AFTER");
