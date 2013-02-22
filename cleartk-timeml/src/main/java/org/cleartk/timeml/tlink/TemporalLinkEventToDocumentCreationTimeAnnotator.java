@@ -71,7 +71,7 @@ public class TemporalLinkEventToDocumentCreationTimeAnnotator extends
   };
 
   public TemporalLinkEventToDocumentCreationTimeAnnotator() {
-    super(Event.class, DocumentCreationTime.class, "BEFORE", "OVERLAP", "AFTER", "INCLUDES", "IS_INCLUDED", "SIMULTANEOUS");
+    super(Event.class, DocumentCreationTime.class, "BEFORE", "AFTER", "INCLUDES");
   }
 
   @Override

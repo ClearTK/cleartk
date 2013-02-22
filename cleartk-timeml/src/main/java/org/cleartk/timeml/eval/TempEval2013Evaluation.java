@@ -351,7 +351,7 @@ public class TempEval2013Evaluation
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.SYSTEM_SPANS,
-      Model.LoggingType.SYSTEM_PREDICTIONS,
+      Model.LoggingType.NONE,
       TemporalLink.class,
       TEMPORAL_LINK_TO_SPANS,
       TEMPORAL_LINK_TO_RELATION,

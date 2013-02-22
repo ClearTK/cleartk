@@ -80,7 +80,7 @@ public class TemporalLinkEventToSubordinatedEventAnnotator extends
   };
 
   public TemporalLinkEventToSubordinatedEventAnnotator() {
-    super(Event.class, Event.class, "BEFORE", "OVERLAP", "AFTER", "INCLUDES", "IS_INCLUDED", "SIMULTANEOUS");
+    super(Event.class, Event.class, "BEFORE", "AFTER");
   }
 
   private static final Pattern SUBORDINATE_PATH_PATTERN = Pattern.compile("^(VP>|ADJP>|NP>)?(VP|ADJP|S|SBAR)(<(S|SBAR|PP))*((<VP|<ADJP)*|(<NP)*)$");
