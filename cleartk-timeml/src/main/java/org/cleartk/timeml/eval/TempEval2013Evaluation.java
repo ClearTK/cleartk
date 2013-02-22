@@ -64,6 +64,7 @@ import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.timeml.TimeMLViewName;
+import org.cleartk.timeml.corpus.PlainTextTLINKGoldAnnotator;
 import org.cleartk.timeml.corpus.TempEval2013Writer;
 import org.cleartk.timeml.corpus.TimeMLGoldAnnotator;
 import org.cleartk.timeml.event.EventAnnotator;
@@ -367,6 +368,9 @@ public class TempEval2013Evaluation
     @Option(longName = "inferred-tlinks", defaultToNull = true)
     File getInferredTLinksFile();
 
+    @Option(longName = "verb-clause-tlinks")
+    boolean getVerbClauseTLinks();
+
     @Option(longName = "tune", defaultToNull = true)
     String getNameOfModelToTune();
   }
@@ -421,7 +425,8 @@ public class TempEval2013Evaluation
     TempEval2013Evaluation evaluation = new TempEval2013Evaluation(
         evalDir,
         models,
-        options.getInferredTLinksFile());
+        options.getInferredTLinksFile(),
+        options.getVerbClauseTLinks());
 
     // run a simple train-and-test
     ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>> modelStats;
@@ -510,14 +515,18 @@ public class TempEval2013Evaluation
   private ImmutableMultimap<Model<?>, Model.Params> models;
 
   private File inferredTLinksFile;
+  
+  private boolean useVerbClauseTlinks;
 
   public TempEval2013Evaluation(
       File baseDirectory,
       ImmutableMultimap<Model<?>, Model.Params> models,
-      File inferredTLinksFile) {
+      File inferredTLinksFile,
+      boolean useVerbClauseTlinks) {
     super(baseDirectory);
     this.models = models;
     this.inferredTLinksFile = inferredTLinksFile;
+    this.useVerbClauseTlinks = useVerbClauseTlinks;
   }
 
   @Override
@@ -539,13 +548,16 @@ public class TempEval2013Evaluation
         CAS.NAME_DEFAULT_SOFA,
         TimeMLViewName.TIMEML);
     builder.add(TimeMLGoldAnnotator.getDescription());
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(FixTimeML.class));
     if (this.inferredTLinksFile != null) {
       builder.add(AnalysisEngineFactory.createPrimitiveDescription(
           UseInferredTlinks.class,
           UseInferredTlinks.PARAM_INFERRED_TLINKS_DIRECTORY,
           this.inferredTLinksFile));
     }
+    if (this.useVerbClauseTlinks) {
+      builder.add(PlainTextTLINKGoldAnnotator.getDescription());
+    }
+    builder.add(AnalysisEngineFactory.createPrimitiveDescription(FixTimeML.class));
 
     // only add sentences and other annotations under <TEXT>
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(
@@ -973,6 +985,13 @@ public class TempEval2013Evaluation
       for (TemporalLink tlink : JCasUtil.select(jCas, TemporalLink.class)) {
         if (IS_SIMULTANEOUS.contains(tlink.getRelationType())) {
           tlink.setRelationType("SIMULTANEOUS");
+        }
+      }
+      
+      // remove overlap relations
+      for (TemporalLink tlink : Lists.newArrayList(JCasUtil.select(jCas, TemporalLink.class))) {
+        if ("OVERLAP".equals(tlink.getRelationType())) {
+          tlink.removeFromIndexes();
         }
       }
     }
