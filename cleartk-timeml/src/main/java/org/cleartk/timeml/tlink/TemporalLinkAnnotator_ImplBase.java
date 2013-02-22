@@ -96,6 +96,8 @@ public abstract class TemporalLinkAnnotator_ImplBase<SOURCE extends Anchor, TARG
   private Class<TARGET> targetClass;
 
   private Set<String> trainingRelationTypes;
+  
+  private static final String NO_RELATION = "-NO-RELATION-";
 
   protected List<SimpleFeatureExtractor> sourceExtractors;
 
@@ -199,18 +201,21 @@ public abstract class TemporalLinkAnnotator_ImplBase<SOURCE extends Anchor, TARG
       if (this.isTraining()) {
         String relation = links.remove(source, target);
         if (relation != null) {
-          if (this.trainingRelationTypes.isEmpty() || this.trainingRelationTypes.contains(relation)) {
-            this.dataWriter.write(new Instance<String>(relation, features));
+          if (!this.trainingRelationTypes.isEmpty() && !this.trainingRelationTypes.contains(relation)) {
+            relation = NO_RELATION;
           }
+          this.dataWriter.write(new Instance<String>(relation, features));
         }
       } else {
         String relation = this.classifier.classify(features);
-        int offset = jCas.getDocumentText().length();
-        TemporalLink tlink = new TemporalLink(jCas, offset, offset);
-        tlink.setSource(source);
-        tlink.setTarget(target);
-        tlink.setRelationType(relation);
-        tlink.addToIndexes();
+        if (!NO_RELATION.equals(relation)) {
+          int offset = jCas.getDocumentText().length();
+          TemporalLink tlink = new TemporalLink(jCas, offset, offset);
+          tlink.setSource(source);
+          tlink.setTarget(target);
+          tlink.setRelationType(relation);
+          tlink.addToIndexes();
+        }
       }
     }
 
