@@ -27,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +68,7 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
   @ConfigurationParameter(
       mandatory = true,
       description = "the URL to a plain-text TLINK file, e.g."
-          + "http://people.cs.kuleuven.be/~steven.bethard/data/timebank-verb-clause.txt")
+          + "http://www.bethard.info/data/timebank-verb-clause.txt")
   private String tlinkFileUrl;
 
   public void setTlinkFileUrl(String tlinkFileUrl) {
@@ -80,7 +81,7 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
         PARAM_TLINK_FILE_URL,
         ParamUtil.getParameterValue(
             PARAM_TLINK_FILE_URL,
-            "http://people.cs.kuleuven.be/~steven.bethard/data/timebank-verb-clause.txt"));
+            "http://www.bethard.info/data/timebank-verb-clause.txt"));
   }
 
   private Map<String, List<TLINK>> fileTLINKs;
@@ -111,7 +112,8 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    String filePath = ViewURIUtil.getURI(jCas).getPath();
+    URI uri = ViewURIUtil.getURI(jCas);
+    String filePath = uri.getPath();
     String fileBase = new File(filePath).getName().replaceAll("\\..*", "");
     if (this.fileTLINKs.containsKey(fileBase)) {
       Map<String, Anchor> anchors = new HashMap<String, Anchor>();
@@ -125,20 +127,22 @@ public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
       for (TLINK tlink : this.fileTLINKs.get(fileBase)) {
         int offset = jCas.getDocumentText().length();
         TemporalLink temporalLink = new TemporalLink(jCas, offset, offset);
-        Anchor source = this.getAnchor(anchors, tlink.sourceID);
-        Anchor target = this.getAnchor(anchors, tlink.targetID);
-        temporalLink.setSource(source);
-        temporalLink.setTarget(target);
-        temporalLink.setRelationType(tlink.relationType);
-        temporalLink.addToIndexes();
+        Anchor source = this.getAnchor(anchors, tlink.sourceID, uri);
+        Anchor target = this.getAnchor(anchors, tlink.targetID, uri);
+        if (source != null && target != null) {
+          temporalLink.setSource(source);
+          temporalLink.setTarget(target);
+          temporalLink.setRelationType(tlink.relationType);
+          temporalLink.addToIndexes();
+        }
       }
     }
   }
 
-  private Anchor getAnchor(Map<String, Anchor> anchors, String id) {
+  private Anchor getAnchor(Map<String, Anchor> anchors, String id, URI uri) {
     Anchor anchor = anchors.get(id);
     if (anchor == null) {
-      throw new RuntimeException(String.format("no anchor for id %s", id));
+      this.getLogger().warn(String.format("no anchor for id %s in %s", id, uri));
     }
     return anchor;
   }
