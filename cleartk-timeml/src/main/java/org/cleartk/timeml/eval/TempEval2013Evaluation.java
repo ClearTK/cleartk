@@ -135,6 +135,161 @@ public class TempEval2013Evaluation
     extends
     Evaluation_ImplBase<File, ImmutableTable<TempEval2013Evaluation.Model<?>, TempEval2013Evaluation.Model.Params, AnnotationStatistics<String>>> {
 
+  interface Options {
+
+    @Option(longName = "train-dirs")
+    List<File> getTrainDirectories();
+
+    @Option(longName = "test-dirs", defaultToNull = true)
+    List<File> getTestDirectories();
+
+    @Option(longName = "inferred-tlinks", defaultToNull = true)
+    File getInferredTLinksFile();
+
+    @Option(longName = "verb-clause-tlinks")
+    boolean getVerbClauseTLinks();
+
+    @Option(longName = "tune", defaultToNull = true)
+    String getNameOfModelToTune();
+  }
+
+  public static void main(String[] args) throws Exception {
+    Options options = CliFactory.parseArguments(Options.class, args);
+
+    List<File> trainFiles = listAllFiles(options.getTrainDirectories());
+    List<File> testFiles = listAllFiles(options.getTestDirectories());
+
+    // map names to models
+    List<Model<?>> allModels = Lists.<Model<?>> newArrayList(
+        TIME_EXTENT_MODEL,
+        TIME_TYPE_MODEL,
+        EVENT_EXTENT_MODEL,
+        EVENT_ASPECT_MODEL,
+        EVENT_CLASS_MODEL,
+        EVENT_MODALITY_MODEL,
+        EVENT_POLARITY_MODEL,
+        EVENT_TENSE_MODEL,
+        TLINK_EVENT_DOCTIME_MODEL,
+        TLINK_EVENT_SENTTIME_MODEL,
+        TLINK_EVENT_SUBORDEVENT_MODEL);
+    Map<String, Model<?>> nameToModel = Maps.newHashMap();
+    for (Model<?> model : allModels) {
+      nameToModel.put(model.name, model);
+    }
+
+    // determine which parameters each model should be trained with
+    ImmutableMultimap.Builder<Model<?>, Model.Params> modelsBuilder = ImmutableMultimap.builder();
+    String nameOfModelToTune = options.getNameOfModelToTune();
+    if (nameOfModelToTune == null) {
+      for (Model<?> model : allModels) {
+        modelsBuilder.put(model, model.bestParams);
+      }
+    } else {
+      Model<?> modelToTune = nameToModel.get(nameOfModelToTune);
+      if (modelToTune == null) {
+        throw new IllegalArgumentException("No such model: " + nameOfModelToTune);
+      }
+      for (Model<?> model : getSortedPrerequisites(modelToTune)) {
+        modelsBuilder.put(model, model.bestParams);
+      }
+      for (Model.Params params : modelToTune.paramsToSearch) {
+        modelsBuilder.put(modelToTune, params);
+      }
+    }
+    ImmutableMultimap<Model<?>, Model.Params> models = modelsBuilder.build();
+
+    // create the evaluation manager
+    File evalDir = new File("target/tempeval2013");
+    TempEval2013Evaluation evaluation = new TempEval2013Evaluation(
+        evalDir,
+        models,
+        options.getInferredTLinksFile(),
+        options.getVerbClauseTLinks());
+
+    // run a simple train-and-test
+    ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>> modelStats;
+    if (!testFiles.isEmpty()) {
+      modelStats = evaluation.trainAndTest(trainFiles, testFiles);
+    }
+
+    // run a cross-validation
+    else {
+      List<ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>>> foldStats;
+      foldStats = evaluation.crossValidation(trainFiles, 2);
+
+      // prepare a table of stats for all models and parameters
+      ImmutableTable.Builder<Model<?>, Model.Params, AnnotationStatistics<String>> modelStatsBuilder = ImmutableTable.builder();
+      for (Model<?> model : models.keySet()) {
+        for (Model.Params params : models.get(model)) {
+          modelStatsBuilder.put(model, params, new AnnotationStatistics<String>());
+        }
+      }
+      modelStats = modelStatsBuilder.build();
+
+      // combine all fold stats into a single overall stats
+      for (Table<Model<?>, Model.Params, AnnotationStatistics<String>> foldTable : foldStats) {
+        for (Table.Cell<Model<?>, Model.Params, AnnotationStatistics<String>> cell : foldTable.cellSet()) {
+          modelStats.get(cell.getRowKey(), cell.getColumnKey()).addAll(cell.getValue());
+        }
+      }
+    }
+
+    // print out all model performance
+    for (Model<?> model : models.keySet()) {
+      for (Model.Params params : modelStats.row(model).keySet()) {
+        System.err.printf("== %s %s ==\n", model.name, params);
+        System.err.println(modelStats.get(model, params));
+      }
+    }
+  }
+
+  private static List<File> listAllFiles(List<File> directories) {
+    List<File> files = Lists.newArrayList();
+    if (directories != null) {
+      for (File dir : directories) {
+        for (File file : dir.listFiles()) {
+          files.add(file);
+        }
+      }
+    }
+    return files;
+  }
+  
+  private static Set<Model<?>> getPrerequisites(Model<?> model) {
+    Set<Model<?>> prereqs = Sets.newLinkedHashSet();
+    for (Model<?> prereq : model.prerequisites) {
+      prereqs.add(prereq);
+      prereqs.addAll(getPrerequisites(prereq));
+    }
+    return prereqs;
+  }
+
+  private static LinkedHashSet<Model<?>> getSortedPrerequisites(Model<?> model) {
+    Queue<Model<?>> todo = Queues.newArrayDeque();
+    Multimap<Model<?>, Model<?>> following = LinkedHashMultimap.create();
+    for (Model<?> prereq : getPrerequisites(model)) {
+      if (prereq.prerequisites.isEmpty()) {
+        todo.add(prereq);
+      } else {
+        for (Model<?> preprereq : prereq.prerequisites) {
+          following.put(preprereq, prereq);
+        }
+      }
+    }
+    LinkedHashSet<Model<?>> models = Sets.newLinkedHashSet();
+    while (!todo.isEmpty()) {
+      Model<?> next = todo.iterator().next();
+      todo.remove(next);
+      models.add(next);
+      for (Model<?> prereq : following.removeAll(next)) {
+        if (!following.containsKey(prereq)) {
+          todo.add(prereq);
+        }
+      }
+    }
+    return models;
+  }
+
   private static Function<TemporalLink, List<Integer>> TEMPORAL_LINK_TO_SPANS = new Function<TemporalLink, List<Integer>>() {
     @Override
     public List<Integer> apply(TemporalLink temporalLink) {
@@ -356,161 +511,6 @@ public class TempEval2013Evaluation
       TEMPORAL_LINK_TO_SPANS,
       TEMPORAL_LINK_TO_RELATION,
       null);
-
-  interface Options {
-
-    @Option(longName = "train-dirs")
-    List<File> getTrainDirectories();
-
-    @Option(longName = "test-dirs", defaultToNull = true)
-    List<File> getTestDirectories();
-
-    @Option(longName = "inferred-tlinks", defaultToNull = true)
-    File getInferredTLinksFile();
-
-    @Option(longName = "verb-clause-tlinks")
-    boolean getVerbClauseTLinks();
-
-    @Option(longName = "tune", defaultToNull = true)
-    String getNameOfModelToTune();
-  }
-
-  public static void main(String[] args) throws Exception {
-    Options options = CliFactory.parseArguments(Options.class, args);
-
-    List<File> trainFiles = listAllFiles(options.getTrainDirectories());
-    List<File> testFiles = listAllFiles(options.getTestDirectories());
-
-    // map names to models
-    List<Model<?>> allModels = Lists.<Model<?>> newArrayList(
-        TIME_EXTENT_MODEL,
-        TIME_TYPE_MODEL,
-        EVENT_EXTENT_MODEL,
-        EVENT_ASPECT_MODEL,
-        EVENT_CLASS_MODEL,
-        EVENT_MODALITY_MODEL,
-        EVENT_POLARITY_MODEL,
-        EVENT_TENSE_MODEL,
-        TLINK_EVENT_DOCTIME_MODEL,
-        TLINK_EVENT_SENTTIME_MODEL,
-        TLINK_EVENT_SUBORDEVENT_MODEL);
-    Map<String, Model<?>> nameToModel = Maps.newHashMap();
-    for (Model<?> model : allModels) {
-      nameToModel.put(model.name, model);
-    }
-
-    // determine which parameters each model should be trained with
-    ImmutableMultimap.Builder<Model<?>, Model.Params> modelsBuilder = ImmutableMultimap.builder();
-    String nameOfModelToTune = options.getNameOfModelToTune();
-    if (nameOfModelToTune == null) {
-      for (Model<?> model : allModels) {
-        modelsBuilder.put(model, model.bestParams);
-      }
-    } else {
-      Model<?> modelToTune = nameToModel.get(nameOfModelToTune);
-      if (modelToTune == null) {
-        throw new IllegalArgumentException("No such model: " + nameOfModelToTune);
-      }
-      for (Model<?> model : getSortedPrerequisites(modelToTune)) {
-        modelsBuilder.put(model, model.bestParams);
-      }
-      for (Model.Params params : modelToTune.paramsToSearch) {
-        modelsBuilder.put(modelToTune, params);
-      }
-    }
-    ImmutableMultimap<Model<?>, Model.Params> models = modelsBuilder.build();
-
-    // create the evaluation manager
-    File evalDir = new File("target/tempeval2013");
-    TempEval2013Evaluation evaluation = new TempEval2013Evaluation(
-        evalDir,
-        models,
-        options.getInferredTLinksFile(),
-        options.getVerbClauseTLinks());
-
-    // run a simple train-and-test
-    ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>> modelStats;
-    if (!testFiles.isEmpty()) {
-      modelStats = evaluation.trainAndTest(trainFiles, testFiles);
-    }
-
-    // run a cross-validation
-    else {
-      List<ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>>> foldStats;
-      foldStats = evaluation.crossValidation(trainFiles, 2);
-
-      // prepare a table of stats for all models and parameters
-      ImmutableTable.Builder<Model<?>, Model.Params, AnnotationStatistics<String>> modelStatsBuilder = ImmutableTable.builder();
-      for (Model<?> model : models.keySet()) {
-        for (Model.Params params : models.get(model)) {
-          modelStatsBuilder.put(model, params, new AnnotationStatistics<String>());
-        }
-      }
-      modelStats = modelStatsBuilder.build();
-
-      // combine all fold stats into a single overall stats
-      for (Table<Model<?>, Model.Params, AnnotationStatistics<String>> foldTable : foldStats) {
-        for (Table.Cell<Model<?>, Model.Params, AnnotationStatistics<String>> cell : foldTable.cellSet()) {
-          modelStats.get(cell.getRowKey(), cell.getColumnKey()).addAll(cell.getValue());
-        }
-      }
-    }
-
-    // print out all model performance
-    for (Model<?> model : models.keySet()) {
-      for (Model.Params params : modelStats.row(model).keySet()) {
-        System.err.printf("== %s %s ==\n", model.name, params);
-        System.err.println(modelStats.get(model, params));
-      }
-    }
-  }
-
-  private static List<File> listAllFiles(List<File> directories) {
-    List<File> files = Lists.newArrayList();
-    if (directories != null) {
-      for (File dir : directories) {
-        for (File file : dir.listFiles()) {
-          files.add(file);
-        }
-      }
-    }
-    return files;
-  }
-  
-  private static Set<Model<?>> getPrerequisites(Model<?> model) {
-    Set<Model<?>> prereqs = Sets.newLinkedHashSet();
-    for (Model<?> prereq : model.prerequisites) {
-      prereqs.add(prereq);
-      prereqs.addAll(getPrerequisites(prereq));
-    }
-    return prereqs;
-  }
-
-  private static LinkedHashSet<Model<?>> getSortedPrerequisites(Model<?> model) {
-    Queue<Model<?>> todo = Queues.newArrayDeque();
-    Multimap<Model<?>, Model<?>> following = LinkedHashMultimap.create();
-    for (Model<?> prereq : getPrerequisites(model)) {
-      if (prereq.prerequisites.isEmpty()) {
-        todo.add(prereq);
-      } else {
-        for (Model<?> preprereq : prereq.prerequisites) {
-          following.put(preprereq, prereq);
-        }
-      }
-    }
-    LinkedHashSet<Model<?>> models = Sets.newLinkedHashSet();
-    while (!todo.isEmpty()) {
-      Model<?> next = todo.iterator().next();
-      todo.remove(next);
-      models.add(next);
-      for (Model<?> prereq : following.removeAll(next)) {
-        if (!following.containsKey(prereq)) {
-          todo.add(prereq);
-        }
-      }
-    }
-    return models;
-  }
 
   private ImmutableMultimap<Model<?>, Model.Params> models;
 
