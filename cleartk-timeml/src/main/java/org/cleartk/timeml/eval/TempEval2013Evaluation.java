@@ -40,6 +40,7 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.util.CasCopier;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.classifier.mallet.MalletCRFStringOutcomeDataWriter;
@@ -448,7 +449,7 @@ public class TempEval2013Evaluation
       TemporalLinkEventToDocumentCreationTimeAnnotator.class,
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
-      Model.EvaluationType.SYSTEM_SPANS,
+      Model.EvaluationType.INTERSECTED_SPANS,
       Model.LoggingType.NONE,
       TemporalLink.class,
       TEMPORAL_LINK_TO_SPANS,
@@ -469,7 +470,7 @@ public class TempEval2013Evaluation
       TemporalLinkEventToSameSentenceTimeAnnotator.class,
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
-      Model.EvaluationType.SYSTEM_SPANS,
+      Model.EvaluationType.INTERSECTED_SPANS,
       Model.LoggingType.NONE,
       TemporalLink.class,
       TEMPORAL_LINK_TO_SPANS,
@@ -488,7 +489,7 @@ public class TempEval2013Evaluation
       TemporalLinkEventToSubordinatedEventAnnotator.class,
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
-      Model.EvaluationType.SYSTEM_SPANS,
+      Model.EvaluationType.INTERSECTED_SPANS,
       Model.LoggingType.NONE,
       TemporalLink.class,
       TEMPORAL_LINK_TO_SPANS,
@@ -618,8 +619,9 @@ public class TempEval2013Evaluation
 
     // finalize TLINK ids and write out TimeML files
     AggregateBuilder postprocess = new AggregateBuilder();
+    postprocess.add(AnalysisEngineFactory.createPrimitiveDescription(ShrinkTimesContainingEvents.class));
     postprocess.add(AnalysisEngineFactory.createPrimitiveDescription(SetTemporalLinkIDs.class));
-    postprocess.add(TempEval2013Writer.getDescription(new File(directory, "timeml")));
+    postprocess.add(TempEval2013Writer.getDescription(new File(this.baseDirectory, "timeml")));
     AnalysisEngine postprocessEngine = postprocess.createAggregate();
 
     // create one AnalysisEngine and one AnnotationStatistics for each model/parameters combination
@@ -646,10 +648,15 @@ public class TempEval2013Evaluation
         Model.Params params = cell.getColumnKey();
         AnalysisEngine engine = cell.getValue();
 
-        // clean any annotations from previous parameter settings, then process and evaluate
-        model.removeModelAnnotations(jCas);
+        // clean any annotations from previous parameter settings
+        Map<? extends TOP, String> annotations = model.removeModelAnnotations(jCas);
+        
+        // process and evaluate
         engine.process(jCas);
         model.evaluate(goldView, systemView, stats.get(model, params));
+        
+        // restore annotations from previous models
+        model.restoreModelAnnotations(jCas, annotations);
       }
 
       postprocessEngine.process(jCas);
@@ -742,6 +749,41 @@ public class TempEval2013Evaluation
       for (TemporalLink tlink : JCasUtil.select(jCas, TemporalLink.class)) {
         tlink.setId(String.format("l%d", index));
         ++index;
+      }
+
+    }
+  }
+
+  public static class ShrinkTimesContainingEvents extends JCasAnnotator_ImplBase {
+
+    @Override
+    public void process(JCas jCas) throws AnalysisEngineProcessException {
+      String text = jCas.getDocumentText();
+      for (Time time : JCasUtil.select(jCas, Time.class)) {
+        List<Event> events = JCasUtil.selectCovered(jCas, Event.class, time);
+        if (!events.isEmpty()) {
+          int eventsBegin = events.get(0).getBegin();
+          int eventsEnd = events.get(events.size() - 1).getEnd();
+          int timeBegin, timeEnd;
+          if (time.getBegin() - eventsBegin > time.getEnd() - eventsEnd) {
+            timeBegin = time.getBegin();
+            timeEnd = eventsBegin - 1;
+            while (timeEnd > timeBegin && Character.isWhitespace(text.charAt(timeEnd))) {
+              --timeEnd;
+            }
+          } else {
+            timeEnd = time.getEnd();
+            timeBegin = eventsEnd;
+            while (timeBegin < timeEnd && Character.isWhitespace(text.charAt(timeBegin))) {
+              ++timeBegin;
+            }
+          }
+          String oldText = time.getCoveredText();
+          time.setBegin(timeBegin);
+          time.setEnd(timeEnd);
+          String newText = time.getCoveredText();
+          this.getLogger().warn(String.format("shrinking \"%s\" to \"%s\"", oldText, newText));
+        }
       }
 
     }

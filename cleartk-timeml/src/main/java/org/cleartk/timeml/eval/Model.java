@@ -252,13 +252,31 @@ class Model<ANNOTATION_TYPE extends TOP> {
     return result;
   }
 
-  public void removeModelAnnotations(JCas jCas) {
+  public Map<ANNOTATION_TYPE, String> removeModelAnnotations(JCas jCas) {
+    Map<ANNOTATION_TYPE, String> annotations = Maps.newHashMap();
     for (ANNOTATION_TYPE annotation : this.select(jCas)) {
       if (this.featureToRemove != null) {
         Feature feature = annotation.getType().getFeatureByBaseName(this.featureToRemove);
+        annotations.put(annotation, annotation.getFeatureValueAsString(feature));
         annotation.setFeatureValueFromString(feature, null);
       } else {
+        annotations.put(annotation, null);
         annotation.removeFromIndexes();
+      }
+    }
+    return annotations;
+  }
+  
+  public void restoreModelAnnotations(JCas jCas, Map<? extends TOP, String> annotations) {
+    for (TOP annotation : annotations.keySet()) {
+      String value = annotations.get(annotation);
+      if (this.featureToRemove != null) {
+        if (value != null) {
+          Feature feature = annotation.getType().getFeatureByBaseName(this.featureToRemove);
+          annotation.setFeatureValueFromString(feature, value);
+        }
+      } else {
+        annotation.addToIndexes();
       }
     }
   }
