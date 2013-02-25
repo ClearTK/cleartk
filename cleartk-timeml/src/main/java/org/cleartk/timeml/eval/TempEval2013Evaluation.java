@@ -356,7 +356,7 @@ public class TempEval2013Evaluation
       "time-extent",
       Lists.<Model<?>> newArrayList(),
       TimeAnnotator.class,
-      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--forbidden", "O,I"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "0.1", "-s", "1"),
       SEQUENCE_CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Model.LoggingType.NONE,
