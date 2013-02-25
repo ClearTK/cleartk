@@ -299,7 +299,26 @@ public class TempEval2013Evaluation
   };
 
   private static List<Model.Params> SEQUENCE_CLASSIFIER_PARAM_SEARCH_SPACE = Lists.newArrayList(
-  // default is --iterations 500 --gaussian-variance 10
+      // L2-regularized L2-loss support vector classification (dual)
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 1, "-c", "0.1", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 1, "-c", "0.5", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 1, "-c", "1", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 1, "-c", "5", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 1, "-c", "10", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 1, "-c", "50", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 2, "-c", "0.1", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 2, "-c", "0.5", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 2, "-c", "1", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 2, "-c", "5", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 2, "-c", "10", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 2, "-c", "50", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "0.1", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "0.5", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "1", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "5", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "10", "-s", "1"),
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "50", "-s", "1"),
+      // default is --iterations 500 --gaussian-variance 10
       new Model.Params(MalletCRFStringOutcomeDataWriter.class),
       new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--forbidden", "O,I"),
       new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--iterations", "100"),

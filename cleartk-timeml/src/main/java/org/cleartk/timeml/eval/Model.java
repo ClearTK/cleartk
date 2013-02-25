@@ -13,6 +13,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.SequenceDataWriter;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
@@ -21,6 +22,8 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.Train;
+import org.cleartk.classifier.viterbi.DefaultOutcomeFeatureExtractor;
+import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.TemporalLink;
@@ -41,10 +44,17 @@ class Model<ANNOTATION_TYPE extends TOP> {
   public static class Params {
     public Class<?> dataWriterClass;
 
+    public int nViterbiOutcomes;
+    
     public String[] trainingArguments;
 
     public Params(Class<?> dataWriterClass, String... trainingArguments) {
+      this(dataWriterClass, 0, trainingArguments);
+    }
+    
+    public Params(Class<?> dataWriterClass, int nViterbiOutcomes, String ... trainingArguments) {
       this.dataWriterClass = dataWriterClass;
+      this.nViterbiOutcomes = nViterbiOutcomes;
       this.trainingArguments = trainingArguments;
     }
 
@@ -52,6 +62,9 @@ class Model<ANNOTATION_TYPE extends TOP> {
     public String toString() {
       Objects.ToStringHelper helper = Objects.toStringHelper(this.getClass());
       helper.add("dataWriterClass", this.dataWriterClass.getSimpleName());
+      if (this.nViterbiOutcomes > 0) {
+        helper.add("nViterbiOutcomes", this.nViterbiOutcomes);
+      }
       if (this.trainingArguments.length > 0) {
         helper.add("trainingArguments", Joiner.on(' ').join(this.trainingArguments));
       }
@@ -124,20 +137,41 @@ class Model<ANNOTATION_TYPE extends TOP> {
 
   public AnalysisEngineDescription getWriterDescription(File directory, Model.Params params)
       throws ResourceInitializationException {
-    String datatWriterParamName;
-    if (SequenceDataWriter.class.isAssignableFrom(params.dataWriterClass)) {
-      datatWriterParamName = DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME;
-    } else if (DataWriter.class.isAssignableFrom(params.dataWriterClass)) {
-      datatWriterParamName = DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME;
+    AnalysisEngineDescription desc;
+    if (params.nViterbiOutcomes > 0) {
+      desc = AnalysisEngineFactory.createPrimitiveDescription(
+          this.annotatorClass,
+          CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
+          ViterbiDataWriterFactory.class,
+          ViterbiDataWriterFactory.PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
+          DefaultDataWriterFactory.class,
+          DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+          params.dataWriterClass,
+          ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
+          DefaultOutcomeFeatureExtractor.class,
+          DefaultOutcomeFeatureExtractor.PARAM_MOST_RECENT_OUTCOME,
+          1,
+          DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME,
+          params.nViterbiOutcomes,
+          DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+          this.getModelDirectory(directory, params));
     } else {
-      throw new RuntimeException("Invalid data writer class: " + params.dataWriterClass);
+      String datatWriterParamName;
+      if (SequenceDataWriter.class.isAssignableFrom(params.dataWriterClass)) {
+        datatWriterParamName = DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME;
+      } else if (DataWriter.class.isAssignableFrom(params.dataWriterClass)) {
+        datatWriterParamName = DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME;
+      } else {
+        throw new RuntimeException("Invalid data writer class: " + params.dataWriterClass);
+      }
+      desc = AnalysisEngineFactory.createPrimitiveDescription(
+          this.annotatorClass,
+          datatWriterParamName,
+          params.dataWriterClass,
+          DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+          this.getModelDirectory(directory, params));
     }
-    return AnalysisEngineFactory.createPrimitiveDescription(
-        this.annotatorClass,
-        datatWriterParamName,
-        params.dataWriterClass,
-        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        this.getModelDirectory(directory, params));
+    return desc;
   }
 
   public void train(File directory, Model.Params params) throws Exception {
@@ -295,7 +329,8 @@ class Model<ANNOTATION_TYPE extends TOP> {
 
   private File getModelDirectory(File directory, Model.Params params) {
     String dataWriterName = params.dataWriterClass.getSimpleName();
-    String argumentsString = Joiner.on("_").join(params.trainingArguments);
-    return new File(new File(new File(directory, this.name), dataWriterName), argumentsString);
+    String viterbi = params.nViterbiOutcomes > 0 ? "viterbi" + params.nViterbiOutcomes + "_": "";
+    String fileName = viterbi + Joiner.on("_").join(params.trainingArguments);
+    return new File(new File(new File(directory, this.name), dataWriterName), fileName);
   }
 }
