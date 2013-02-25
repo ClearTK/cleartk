@@ -64,7 +64,7 @@ public class GenericLIBLINEARClassifier<OUTCOME_TYPE> extends
   @Override
   public OUTCOME_TYPE classify(List<Feature> features) throws CleartkProcessingException {
     FeatureNode[] encodedFeatures = this.featuresEncoder.encodeAll(features);
-    int encodedOutcome = Linear.predict(this.model, encodedFeatures);
+    int encodedOutcome = (int)Linear.predict(this.model, encodedFeatures);
     return this.outcomeEncoder.decode(encodedOutcome);
   }
 

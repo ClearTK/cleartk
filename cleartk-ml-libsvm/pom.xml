@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>de.bwaldvogel</groupId>
 			<artifactId>liblinear</artifactId>
-			<version>1.8</version>
+			<version>1.92</version>
 		</dependency>
 	</dependencies>
 </project>
