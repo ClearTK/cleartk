@@ -662,19 +662,24 @@ public class TempEval2013Evaluation
       // evaluate each model/parameters combination
       JCas goldView = jCas.getView(goldViewName);
       JCas systemView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
-      for (Table.Cell<Model<?>, Model.Params, AnalysisEngine> cell : engines.cellSet()) {
-        Model<?> model = cell.getRowKey();
-        Model.Params params = cell.getColumnKey();
-        AnalysisEngine engine = cell.getValue();
-
-        // clean any annotations from previous parameter settings
+      for (Model<?> model : engines.rowKeySet()) {
+        // remove any annotations from previous models that would interfere with the evaluation
         Map<? extends TOP, String> annotations = model.removeModelAnnotations(jCas);
         
-        // process and evaluate
-        engine.process(jCas);
-        model.evaluate(goldView, systemView, stats.get(model, params));
+        // apply and evaluate the model with each set of parameters
+        for (Map.Entry<Model.Params, AnalysisEngine> entry : engines.row(model).entrySet()) {
+          Model.Params params = entry.getKey();
+          AnalysisEngine engine = entry.getValue();
+  
+          // remove any annotations from this model with other parameter settings
+          model.removeModelAnnotations(jCas);
+          
+          // process and evaluate
+          engine.process(jCas);
+          model.evaluate(goldView, systemView, stats.get(model, params));
+        }
         
-        // restore annotations from previous models
+        // restore any annotations from previous models
         model.restoreModelAnnotations(jCas, annotations);
       }
 
