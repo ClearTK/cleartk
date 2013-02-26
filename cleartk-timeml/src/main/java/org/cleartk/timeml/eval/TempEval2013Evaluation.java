@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -41,6 +42,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.TOP;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.CasCopier;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.classifier.mallet.MalletCRFStringOutcomeDataWriter;
@@ -128,7 +130,7 @@ public class TempEval2013Evaluation
     List<File> getTestDirectories();
 
     @Option(longName = "inferred-tlinks", defaultToNull = true)
-    File getInferredTLinksFile();
+    List<File> getInferredTLinksDirectories();
 
     @Option(longName = "verb-clause-tlinks")
     boolean getVerbClauseTLinks();
@@ -187,7 +189,7 @@ public class TempEval2013Evaluation
     TempEval2013Evaluation evaluation = new TempEval2013Evaluation(
         evalDir,
         models,
-        options.getInferredTLinksFile(),
+        options.getInferredTLinksDirectories(),
         options.getVerbClauseTLinks());
 
     // run a simple train-and-test
@@ -517,18 +519,18 @@ public class TempEval2013Evaluation
 
   private ImmutableMultimap<Model<?>, Model.Params> models;
 
-  private File inferredTLinksFile;
+  private List<File> inferredTLinksDirectories;
   
   private boolean useVerbClauseTlinks;
 
   public TempEval2013Evaluation(
       File baseDirectory,
       ImmutableMultimap<Model<?>, Model.Params> models,
-      File inferredTLinksFile,
+      List<File> inferredTLinksDirectories,
       boolean useVerbClauseTlinks) {
     super(baseDirectory);
     this.models = models;
-    this.inferredTLinksFile = inferredTLinksFile;
+    this.inferredTLinksDirectories = inferredTLinksDirectories;
     this.useVerbClauseTlinks = useVerbClauseTlinks;
   }
 
@@ -551,11 +553,11 @@ public class TempEval2013Evaluation
         CAS.NAME_DEFAULT_SOFA,
         TimeMLViewName.TIMEML);
     builder.add(TimeMLGoldAnnotator.getDescription());
-    if (this.inferredTLinksFile != null) {
+    if (this.inferredTLinksDirectories != null) {
       builder.add(AnalysisEngineFactory.createPrimitiveDescription(
           UseInferredTlinks.class,
-          UseInferredTlinks.PARAM_INFERRED_TLINKS_DIRECTORY,
-          this.inferredTLinksFile));
+          UseInferredTlinks.PARAM_INFERRED_TLINKS_DIRECTORIES,
+          this.inferredTLinksDirectories));
     }
     if (this.useVerbClauseTlinks) {
       builder.add(PlainTextTLINKGoldAnnotator.getDescription());
@@ -614,6 +616,18 @@ public class TempEval2013Evaluation
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         goldViewName));
     preprocess.add(TimeMLGoldAnnotator.getDescription(), CAS.NAME_DEFAULT_SOFA, goldViewName);
+    if (this.inferredTLinksDirectories != null) {
+      preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
+          UseInferredTlinks.class,
+          UseInferredTlinks.PARAM_INFERRED_TLINKS_DIRECTORIES,
+          this.inferredTLinksDirectories), CAS.NAME_DEFAULT_SOFA, goldViewName);
+    }
+    if (this.useVerbClauseTlinks) {
+      preprocess.add(
+          PlainTextTLINKGoldAnnotator.getDescription(),
+          CAS.NAME_DEFAULT_SOFA,
+          goldViewName);
+    }
     preprocess.add(
         AnalysisEngineFactory.createPrimitiveDescription(FixTimeML.class),
         CAS.NAME_DEFAULT_SOFA,
@@ -815,20 +829,35 @@ public class TempEval2013Evaluation
 
   public static class UseInferredTlinks extends JCasAnnotator_ImplBase {
 
-    public static final String PARAM_INFERRED_TLINKS_DIRECTORY = "InferredTLinksDirectory";
+    public static final String PARAM_INFERRED_TLINKS_DIRECTORIES = "InferredTLinksDirectories";
 
-    @ConfigurationParameter(name = PARAM_INFERRED_TLINKS_DIRECTORY, mandatory = true)
-    private File inferredTLinksDirectory;
+    @ConfigurationParameter(name = PARAM_INFERRED_TLINKS_DIRECTORIES, mandatory = true)
+    private List<File> inferredTLinksDirectories;
+    private Map<String, File> fileNameToFile;
+    
+
+    @Override
+    public void initialize(UimaContext context) throws ResourceInitializationException {
+      super.initialize(context);
+      this.fileNameToFile = Maps.newHashMap();
+      for (File dir : this.inferredTLinksDirectories) {
+        for (File file : dir.listFiles()) {
+          String fileName = file.getName();
+          if (fileName.endsWith(".tml")) {
+            String extension = String.format("[.]%s[.]tml$",  dir.getName());
+            this.fileNameToFile.put(fileName.replaceAll(extension, ".tml"), file);
+          }
+        }
+      }
+    }
 
     @Override
     public void process(JCas jCas) throws AnalysisEngineProcessException {
       String fileName = new File(ViewURIUtil.getURI(jCas).getPath()).getName();
-      String suffix = this.inferredTLinksDirectory.getName();
-      String inferredFileName = fileName.replaceAll("[.]tml$", "." + suffix + ".tml");
-      File inferredTLinksFile = new File(this.inferredTLinksDirectory, inferredFileName);
+      File inferredTLinksFile = this.fileNameToFile.get(fileName);
 
-      if (!inferredTLinksFile.exists()) {
-        this.getLogger().warn("No inferred TLINKs file " + inferredTLinksFile);
+      if (inferredTLinksFile == null) {
+        this.getLogger().warn("No inferred TLINKs found for " + fileName);
       } else {
 
         // remove existing temporal links
