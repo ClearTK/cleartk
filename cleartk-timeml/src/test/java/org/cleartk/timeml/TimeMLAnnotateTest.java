@@ -77,19 +77,18 @@ public class TimeMLAnnotateTest extends TimeMLTestBase{
       "<TimeML>" +
       "In" +
       " <TIMEX3 tid=\"t1\" type=\"DATE\">August 2010</TIMEX3>, the U.S. Central Intelligence Agency had" +
-      " <EVENT eid=\"e1\" class=\"OCCURRENCE\" tense=\"PAST\" aspect=\"PERFECTIVE\" polarity=\"POS\" modality=\"NONE\">identified</EVENT>" +
+      " <EVENT eid=\"e1\" class=\"OCCURRENCE\" tense=\"PAST\" aspect=\"PERFECTIVE\" polarity=\"POS\" modality=\"none\">identified</EVENT>" +
       " a compound in Abbottabad in Pakistan as the likely location of bin Laden. " +
       "On <TIMEX3 tid=\"t2\" type=\"DATE\">May 1, 2011</TIMEX3>, President Barack Obama" +
-      " <EVENT eid=\"e2\" class=\"I_ACTION\" tense=\"PAST\" aspect=\"NONE\" polarity=\"POS\" modality=\"NONE\">ordered</EVENT>" +
+      " <EVENT eid=\"e2\" class=\"OCCURRENCE\" tense=\"PAST\" aspect=\"NONE\" polarity=\"POS\" modality=\"none\">ordered</EVENT>" +
       " Navy SEALs to" +
-      " <EVENT eid=\"e3\" class=\"OCCURRENCE\" tense=\"INFINITIVE\" aspect=\"NONE\" polarity=\"POS\" modality=\"NONE\">assault</EVENT>" +
+      " <EVENT eid=\"e3\" class=\"OCCURRENCE\" tense=\"INFINITIVE\" aspect=\"NONE\" polarity=\"POS\" modality=\"none\">assault</EVENT>" +
       " the compound." +
-      // this TLINK should really be OVERLAP - feel free to fix it if model performance improves
-      "<TLINK relType=\"AFTER\" eventID=\"e1\" relatedToTime=\"t1\"/>" +
-      "<TLINK relType=\"OVERLAP\" eventID=\"e3\" relatedToTime=\"t2\"/>" +
+      "<TLINK relType=\"IS_INCLUDED\" eventID=\"e1\" relatedToTime=\"t1\"/>" +
+      "<TLINK relType=\"IS_INCLUDED\" eventID=\"e3\" relatedToTime=\"t2\"/>" +
       "<TLINK relType=\"BEFORE\" eventID=\"e2\" relatedToEvent=\"e3\"/>" +
       "<TLINK relType=\"BEFORE\" eventID=\"e1\" relatedToEvent=\"e2\"/>" +
-      "<TLINK relType=\"OVERLAP\" eventID=\"e2\" relatedToTime=\"t2\"/>" +
+      "<TLINK relType=\"IS_INCLUDED\" eventID=\"e2\" relatedToTime=\"t2\"/>" +
       "</TimeML>";
     // @formatter:on
     Assert.assertEquals("TimeML output should match", expected, output);
