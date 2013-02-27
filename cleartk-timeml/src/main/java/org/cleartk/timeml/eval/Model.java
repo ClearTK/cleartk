@@ -1,3 +1,26 @@
+/*
+ * Copyright (c) 2013, Regents of the University of Colorado 
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. 
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
+ * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
+ */
 package org.cleartk.timeml.eval;
 
 import java.io.File;
@@ -39,6 +62,15 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+/**
+ * Stores information needed for training and evaluating a machine learning model
+ * 
+ * <br>
+ * Copyright (c) 2013, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * @author Steven Bethard
+ */
 class Model<ANNOTATION_TYPE extends TOP> {
 
   public static class Params {
@@ -80,6 +112,8 @@ class Model<ANNOTATION_TYPE extends TOP> {
   public enum LoggingType {
     NONE, SYSTEM_PREDICTIONS
   }
+  
+  public static final File DEFAULT_DIRECTORY = null;
 
   public String name;
 
@@ -176,6 +210,22 @@ class Model<ANNOTATION_TYPE extends TOP> {
 
   public void train(File directory, Model.Params params) throws Exception {
     Train.main(this.getModelDirectory(directory, params), params.trainingArguments);
+  }
+  
+  public void cleanTrainingFiles(File directory, Model.Params params) {
+    this.cleanTrainingFiles(this.getModelDirectory(directory, params));
+  }
+  
+  private void cleanTrainingFiles(File directory) {
+    File modelJarFile = JarClassifierBuilder.getModelJarFile(directory);
+    for (File file : directory.listFiles()) {
+      if (file.isDirectory()) {
+        this.cleanTrainingFiles(file);
+      }
+      if (!file.equals(modelJarFile)) {
+        file.delete();
+      }
+    }
   }
 
   public AnalysisEngineDescription getAnnotatorDescription(File directory, Model.Params params)
@@ -328,9 +378,14 @@ class Model<ANNOTATION_TYPE extends TOP> {
   }
 
   private File getModelDirectory(File directory, Model.Params params) {
-    String dataWriterName = params.dataWriterClass.getSimpleName();
-    String viterbi = params.nViterbiOutcomes > 0 ? "viterbi" + params.nViterbiOutcomes + "_": "";
-    String fileName = viterbi + Joiner.on("_").join(params.trainingArguments);
-    return new File(new File(new File(directory, this.name), dataWriterName), fileName);
+    if (directory == DEFAULT_DIRECTORY) {
+      String path = this.annotatorClass.getName().toLowerCase().replace('.', '/');
+      return new File("src/main/resources/" + path);
+    } else {
+      String dataWriterName = params.dataWriterClass.getSimpleName();
+      String viterbi = params.nViterbiOutcomes > 0 ? "viterbi" + params.nViterbiOutcomes + "_": "";
+      String fileName = viterbi + Joiner.on("_").join(params.trainingArguments);
+      return new File(new File(new File(directory, this.name), dataWriterName), fileName);
+    }
   }
 }

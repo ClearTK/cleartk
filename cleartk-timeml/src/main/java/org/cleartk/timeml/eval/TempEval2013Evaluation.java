@@ -137,6 +137,9 @@ public class TempEval2013Evaluation
 
     @Option(longName = "tune", defaultToNull = true)
     String getNameOfModelToTune();
+    
+    @Option(longName = "train-only")
+    boolean getTrainOnly();
   }
 
   public static void main(String[] args) throws Exception {
@@ -192,39 +195,53 @@ public class TempEval2013Evaluation
         options.getInferredTLinksDirectories(),
         options.getVerbClauseTLinks());
 
-    // run a simple train-and-test
-    ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>> modelStats;
-    if (!testFiles.isEmpty()) {
-      modelStats = evaluation.trainAndTest(trainFiles, testFiles);
-    }
-
-    // run a cross-validation
-    else {
-      List<ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>>> foldStats;
-      foldStats = evaluation.crossValidation(trainFiles, 2);
-
-      // prepare a table of stats for all models and parameters
-      ImmutableTable.Builder<Model<?>, Model.Params, AnnotationStatistics<String>> modelStatsBuilder = ImmutableTable.builder();
+    // just train a model
+    if (options.getTrainOnly()) {
+      if (!testFiles.isEmpty()) {
+        throw new IllegalArgumentException("Cannot specify test files when only training");
+      }
+      evaluation.train(evaluation.getCollectionReader(trainFiles), Model.DEFAULT_DIRECTORY);
       for (Model<?> model : models.keySet()) {
         for (Model.Params params : models.get(model)) {
-          modelStatsBuilder.put(model, params, new AnnotationStatistics<String>());
+          model.cleanTrainingFiles(Model.DEFAULT_DIRECTORY, params);
         }
       }
-      modelStats = modelStatsBuilder.build();
+    } else {
 
-      // combine all fold stats into a single overall stats
-      for (Table<Model<?>, Model.Params, AnnotationStatistics<String>> foldTable : foldStats) {
-        for (Table.Cell<Model<?>, Model.Params, AnnotationStatistics<String>> cell : foldTable.cellSet()) {
-          modelStats.get(cell.getRowKey(), cell.getColumnKey()).addAll(cell.getValue());
+      // run a simple train-and-test
+      ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>> modelStats;
+      if (!testFiles.isEmpty()) {
+        modelStats = evaluation.trainAndTest(trainFiles, testFiles);
+      }
+  
+      // run a cross-validation
+      else {
+        List<ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>>> foldStats;
+        foldStats = evaluation.crossValidation(trainFiles, 2);
+  
+        // prepare a table of stats for all models and parameters
+        ImmutableTable.Builder<Model<?>, Model.Params, AnnotationStatistics<String>> modelStatsBuilder = ImmutableTable.builder();
+        for (Model<?> model : models.keySet()) {
+          for (Model.Params params : models.get(model)) {
+            modelStatsBuilder.put(model, params, new AnnotationStatistics<String>());
+          }
+        }
+        modelStats = modelStatsBuilder.build();
+  
+        // combine all fold stats into a single overall stats
+        for (Table<Model<?>, Model.Params, AnnotationStatistics<String>> foldTable : foldStats) {
+          for (Table.Cell<Model<?>, Model.Params, AnnotationStatistics<String>> cell : foldTable.cellSet()) {
+            modelStats.get(cell.getRowKey(), cell.getColumnKey()).addAll(cell.getValue());
+          }
         }
       }
-    }
-
-    // print out all model performance
-    for (Model<?> model : models.keySet()) {
-      for (Model.Params params : modelStats.row(model).keySet()) {
-        System.err.printf("== %s %s ==\n", model.name, params);
-        System.err.println(modelStats.get(model, params));
+  
+      // print out all model performance
+      for (Model<?> model : models.keySet()) {
+        for (Model.Params params : modelStats.row(model).keySet()) {
+          System.err.printf("== %s %s ==\n", model.name, params);
+          System.err.println(modelStats.get(model, params));
+        }
       }
     }
   }
@@ -538,9 +555,9 @@ public class TempEval2013Evaluation
   protected CollectionReader getCollectionReader(List<File> files) throws Exception {
     return UriCollectionReader.getCollectionReaderFromFiles(files);
   }
-
+  
   @Override
-  protected void train(CollectionReader reader, File directory) throws Exception {
+  public void train(CollectionReader reader, File directory) throws Exception {
     AggregateBuilder builder = new AggregateBuilder();
 
     // read the manual TimeML annotations into the CAS
