@@ -251,7 +251,9 @@ public class TempEval2013Evaluation
     if (directories != null) {
       for (File dir : directories) {
         for (File file : dir.listFiles()) {
-          files.add(file);
+          if (!file.getName().startsWith(".") && !file.isHidden()) {
+            files.add(file);
+          }
         }
       }
     }
