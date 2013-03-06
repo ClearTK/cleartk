@@ -134,6 +134,9 @@ public class TempEval2013Evaluation
 
     @Option(longName = "verb-clause-tlinks")
     boolean getVerbClauseTLinks();
+    
+    @Option(longName = "relations-only")
+    boolean getRelationsOnly();
 
     @Option(longName = "tune", defaultToNull = true)
     String getNameOfModelToTune();
@@ -171,7 +174,9 @@ public class TempEval2013Evaluation
     String nameOfModelToTune = options.getNameOfModelToTune();
     if (nameOfModelToTune == null) {
       for (Model<?> model : allModels) {
-        modelsBuilder.put(model, model.bestParams);
+        if (!options.getRelationsOnly() || model.name.startsWith("tlink")) {
+          modelsBuilder.put(model, model.bestParams);
+        }
       }
     } else {
       Model<?> modelToTune = nameToModel.get(nameOfModelToTune);
@@ -179,7 +184,9 @@ public class TempEval2013Evaluation
         throw new IllegalArgumentException("No such model: " + nameOfModelToTune);
       }
       for (Model<?> model : getSortedPrerequisites(modelToTune)) {
-        modelsBuilder.put(model, model.bestParams);
+        if (!options.getRelationsOnly() || model.name.startsWith("tlink")) {
+          modelsBuilder.put(model, model.bestParams);
+        }
       }
       for (Model.Params params : modelToTune.paramsToSearch) {
         modelsBuilder.put(modelToTune, params);
@@ -193,7 +200,8 @@ public class TempEval2013Evaluation
         evalDir,
         models,
         options.getInferredTLinksDirectories(),
-        options.getVerbClauseTLinks());
+        options.getVerbClauseTLinks(),
+        options.getRelationsOnly());
 
     // just train a model
     if (options.getTrainOnly()) {
@@ -541,16 +549,20 @@ public class TempEval2013Evaluation
   private List<File> inferredTLinksDirectories;
   
   private boolean useVerbClauseTlinks;
+  
+  private boolean relationsOnly;
 
   public TempEval2013Evaluation(
       File baseDirectory,
       ImmutableMultimap<Model<?>, Model.Params> models,
       List<File> inferredTLinksDirectories,
-      boolean useVerbClauseTlinks) {
+      boolean useVerbClauseTlinks,
+      boolean relationsOnly) {
     super(baseDirectory);
     this.models = models;
     this.inferredTLinksDirectories = inferredTLinksDirectories;
     this.useVerbClauseTlinks = useVerbClauseTlinks;
+    this.relationsOnly = relationsOnly;
   }
 
   @Override
@@ -655,6 +667,12 @@ public class TempEval2013Evaluation
         CopyTextAndDocumentCreationTime.class,
         CopyTextAndDocumentCreationTime.PARAM_SOURCE_VIEW,
         goldViewName));
+    if (this.relationsOnly) {
+      preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
+          CopyEventsAndTimes.class,
+          CopyEventsAndTimes.PARAM_SOURCE_VIEW,
+          goldViewName));
+    } 
 
     // only add sentences and other annotations under <TEXT>
     preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
@@ -755,6 +773,41 @@ public class TempEval2013Evaluation
       DocumentCreationTime time = (DocumentCreationTime) copier.copyFs(sourceTime);
       time.setFeatureValue(sofaFeature, jCas.getSofa());
       time.addToIndexes();
+    }
+  }
+
+  public static class CopyEventsAndTimes extends JCasAnnotator_ImplBase {
+
+    public static final String PARAM_SOURCE_VIEW = "SourceView";
+
+    @ConfigurationParameter(name = PARAM_SOURCE_VIEW)
+    private String sourceViewName;
+
+    @Override
+    public void process(JCas jCas) throws AnalysisEngineProcessException {
+      JCas sourceView;
+      try {
+        sourceView = jCas.getView(this.sourceViewName);
+      } catch (CASException e) {
+        throw new AnalysisEngineProcessException(e);
+      }
+      CasCopier copier = new CasCopier(sourceView.getCas(), jCas.getCas());
+      Feature sofaFeature = jCas.getTypeSystem().getFeatureByFullName(CAS.FEATURE_FULL_NAME_SOFA);
+      for (Event sourceEvent : JCasUtil.select(sourceView, Event.class)) {
+        Event event = (Event) copier.copyFs(sourceEvent);
+        event.setFeatureValue(sofaFeature, jCas.getSofa());
+        if (event.getEventInstanceID() ==  null) {
+          event.setEventInstanceID(event.getId().replaceAll("^e", "ei"));
+        }
+        event.addToIndexes();
+      }
+      for (Time sourceTime : JCasUtil.select(sourceView, Time.class)) {
+        if (!(sourceTime instanceof DocumentCreationTime)) {
+          Time time = (Time) copier.copyFs(sourceTime);
+          time.setFeatureValue(sofaFeature, jCas.getSofa());
+          time.addToIndexes();
+        }
+      }
     }
   }
 
