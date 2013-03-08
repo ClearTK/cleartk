@@ -27,6 +27,7 @@ package org.cleartk.clearnlp;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -49,6 +50,7 @@ import org.uimafit.testing.factory.TokenBuilder;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * <br>
@@ -107,12 +109,14 @@ public class ClearNLPTest extends CleartkTestBase {
 		SimplePipeline.runPipeline(jCas, lemmatizer, depparser, srlabeler);
 		
 		// Check dependency relations
-		List<String> expectedDep = Arrays.asList(
-		    //"nsubj(drives, John)", "advmod(drives, still)", "root(TOP, drives)", "det(gave, the)", "nn(Mary, car)", "nsubj(gave, Mary)", 
-		    //"punct(drives, gave)", "punct(drives, him)", "prep(drives, in)", "pobj(in, 1982)", "punct(drives, .)");
-		    "nsubj(drives, John)", "advmod(drives, still)", "root(TOP, drives)", "det(gave, the)", "nn(Mary, car)", "nsubj(gave, Mary)", 
-		    "punct(drives, gave)", "root(TOP, him)", "prep(him, in)", "root(TOP, 1982)", "punct(drives, .)");
-		List<String> actualDep = Lists.newArrayList();
+    Set<String> expectedDep = Sets.newHashSet(
+        "root(TOP, drives)",
+        "nsubj(drives, John)",
+        "advmod(drives, still)",
+        "nsubj(gave, Mary)",
+        "pobj(in, 1982)",
+        "punct(drives, .)");
+		Set<String> actualDep = Sets.newHashSet();
 		for (DependencyNode depnode : JCasUtil.select(jCas, DependencyNode.class)) {
       for (DependencyRelation deprel : JCasUtil.select(depnode.getHeadRelations(), DependencyRelation.class)) {
         DependencyNode head = deprel.getHead();
@@ -121,9 +125,10 @@ public class ClearNLPTest extends CleartkTestBase {
         } else {
           actualDep.add(String.format("%s(%s, %s)", deprel.getRelation(), deprel.getHead().getCoveredText(), depnode.getCoveredText()));
         }
-            
       }
 		}
+		// take the subset of actualDep that's being tested (the parser may get some of the others wrong) 
+		actualDep.retainAll(expectedDep);
     Assert.assertEquals(expectedDep, actualDep);
     
     // Check SRL relations

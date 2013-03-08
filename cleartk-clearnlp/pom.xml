@@ -70,7 +70,7 @@
   <dependency>
   	<groupId>com.googlecode.clearnlp</groupId>
   	<artifactId>clearnlp</artifactId>
-  	<version>1.3.0</version>
+  	<version>1.3.1</version>
   </dependency>
   <dependency>
   	<groupId>org.cleartk</groupId>
