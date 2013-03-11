@@ -40,7 +40,7 @@ public class PolynomialKernel extends Kernel {
   }
 
   @Override
-  double evaluate(FeatureVector fv1, FeatureVector fv2) {
+  public double evaluate(FeatureVector fv1, FeatureVector fv2) {
     return Math.pow(s * fv1.innerProduct(fv2) + c, degree);
   }
 

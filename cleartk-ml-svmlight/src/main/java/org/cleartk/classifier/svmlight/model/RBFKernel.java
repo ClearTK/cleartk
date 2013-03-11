@@ -38,7 +38,7 @@ public class RBFKernel extends Kernel {
   }
 
   @Override
-  double evaluate(FeatureVector fv1, FeatureVector fv2) {
+  public double evaluate(FeatureVector fv1, FeatureVector fv2) {
     return Math.exp(-gamma * (twonorm_sq(fv1) - 2 * fv1.innerProduct(fv2) + twonorm_sq(fv2)));
   }
 

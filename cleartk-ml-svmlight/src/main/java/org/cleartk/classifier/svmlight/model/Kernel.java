@@ -31,5 +31,5 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * All rights reserved.
  */
 public abstract class Kernel {
-  abstract double evaluate(FeatureVector fv1, FeatureVector fv2);
+  public abstract double evaluate(FeatureVector fv1, FeatureVector fv2);
 }

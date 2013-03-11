@@ -26,9 +26,8 @@ package org.cleartk.classifier.tksvmlight;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -40,6 +39,9 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
+import org.cleartk.classifier.tksvmlight.model.TreeKernel;
+import org.cleartk.classifier.tksvmlight.model.TreeKernel.ForestSumMethod;
+import org.cleartk.classifier.tksvmlight.model.TreeKernel.KernelType;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Before;
@@ -79,71 +81,6 @@ public class RunTKSVMlightTest extends DefaultTestBase {
     super.setUp();
   }
 
-  protected boolean testPath() throws Exception {
-    String[] command = new String[] { "tk_svm_learn" };
-
-    try {
-      Process process = Runtime.getRuntime().exec(command);
-      process.getOutputStream().write('\n');
-      process.getOutputStream().write('\n');
-      process.getOutputStream().close();
-      slurp(process.getInputStream());
-      slurp(process.getErrorStream());
-      process.waitFor();
-      return true;
-    } catch (IOException e) {
-      return false;
-    }
-  }
-
-  // @Test
-  // public void testTreeKernel() throws Exception {
-  /*
-   * File dir = new File(dataDirectory, "nonlinear"); File trainingFile = new File(dir,
-   * "training-data.svmlight"); File testFile = new File(dir, "test-data.svmlight");
-   * 
-   * trainAndTest(trainingFile, testFile, new String[] { "-t", "5" }, "tree kernel");
-   */
-  // }
-  /*
-   * private void trainAndTest(File trainingFile, File testFile, String[] args, String name) throws
-   * Exception { File modelFile = new File(this.outputDirectoryName, "model.svmlight");
-   * 
-   * String[] command = new String[3 + args.length]; command[0] = "svm_learn"; for (int i = 0; i <
-   * args.length; i++) command[i + 1] = args[i]; command[command.length - 2] =
-   * trainingFile.getPath(); command[command.length - 1] = modelFile.getPath();
-   * 
-   * Process process = Runtime.getRuntime().exec(command); slurp(process.getInputStream());
-   * output(process.getErrorStream(), System.err); process.waitFor();
-   * 
-   * SVMlightModel model = SVMlightModel.fromFile(modelFile); BufferedReader r = new
-   * BufferedReader(new FileReader(testFile)); float total = 0; float correct = 0; String line;
-   * while ((line = r.readLine()) != null) { String[] fields = line.split(" ");
-   * 
-   * boolean expectedResult = fields[0].equals("+1");
-   * 
-   * FeatureVector fv = new SparseFeatureVector(); for (int i = 1; i < fields.length; i++) {
-   * String[] parts = fields[i].split(":"); int featureIndex = Integer.valueOf(parts[0]); double
-   * featureValue = Double.valueOf(parts[1]); fv.set(featureIndex, featureValue); }
-   * 
-   * boolean actualResult = model.evaluate(fv) > 0;
-   * 
-   * total += 1; if (expectedResult == actualResult) correct += 1; } r.close();
-   * 
-   * if (correct < (total * 0.95)) Assert.fail("model accuracy using " + name + " is below 95%"); }
-   * 
-   * private static void output(InputStream input, PrintStream output) throws IOException { byte[]
-   * buffer = new byte[128]; int count = input.read(buffer); while (count != -1) {
-   * output.write(buffer, 0, count); count = input.read(buffer); } }
-   */
-  private static void slurp(InputStream input) throws IOException {
-    byte[] buffer = new byte[128];
-    int count = input.read();
-    while (count != -1) {
-      count = input.read(buffer);
-    }
-  }
-
   private static class EmptyAnnotator<T> extends CleartkAnnotator<T> {
     public EmptyAnnotator() {
     }
@@ -157,6 +94,36 @@ public class RunTKSVMlightTest extends DefaultTestBase {
     }
   }
 
+  @Test
+  public void testTKSim(){
+    TreeKernel tk = new TreeKernel(TreeKernel.LAMBDA_DEFAULT, ForestSumMethod.SEQUENTIAL, KernelType.SUBSET, false);
+    
+    TreeFeatureVector tf1 = new TreeFeatureVector();
+    String tree1 = "(S (NP i) (VP (VB eat) (NN cake)))";
+    LinkedHashMap<String,String> tree1map = new LinkedHashMap<String,String>();
+    tree1map.put("TK_1", tree1);
+    tf1.setTrees(tree1map);
+    
+    TreeFeatureVector tf2 = new TreeFeatureVector();
+    LinkedHashMap<String,String> tree2map = new LinkedHashMap<String,String>();
+    tree2map.put("TK_1", tree1);
+    tf2.setTrees(tree2map);
+    
+    double sim = tk.evaluate(tf1, tf2);
+    
+    Assert.assertEquals(2.983040, sim, 0.01);
+    
+    String tree2 = "(S (NP i) (VP (VBD ran) (NN home)))";
+    tree2map.clear();
+    tree2map.put("TK_1", tree2);
+    tf2.setTrees(tree2map);
+    
+    sim = tk.evaluate(tf1, tf2);
+    Assert.assertEquals(0.96, sim, 0.01);
+    
+    
+  }
+  
   @Test
   public void testTKSVMlight() throws Exception {
     this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, TK_SVMLIGHT_TESTS_PROPERTY_VALUE);
@@ -244,11 +211,8 @@ public class RunTKSVMlightTest extends DefaultTestBase {
     for (Instance<String> instance : generateStringInstances(20)) {
       List<Feature> features = instance.getFeatures();
       String outcome = instance.getOutcome();
-      hider = new HideOutput();
-      Assert.assertEquals(outcome, classifier.classify(features));
-      hider.restoreOutput();
+      Assert.assertEquals("Assert error with instance: " + instance.toString(), outcome, classifier.classify(features));
     }
-
   }
 
   private static List<Instance<Boolean>> generateBooleanInstances(int n) {

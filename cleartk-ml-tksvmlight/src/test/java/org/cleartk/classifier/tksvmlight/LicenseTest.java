@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,20 +21,28 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.svmlight.model;
+package org.cleartk.classifier.tksvmlight;
 
-import org.cleartk.classifier.util.featurevector.FeatureVector;
+import org.cleartk.test.util.LicenseTestUtil;
+import org.junit.Test;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2013, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-public class LinearKernel extends Kernel {
 
-  @Override
-  public double evaluate(FeatureVector fv1, FeatureVector fv2) {
-    return fv1.innerProduct(fv2);
+public class LicenseTest {
+
+  @Test
+  public void testLicenseStatedInSource() throws Exception {
+    LicenseTestUtil.testJavaFiles("src/main/java");
+  }
+
+  @Test
+  public void testLicenseStatedInTestSource() throws Exception {
+    LicenseTestUtil.testJavaFiles("src/test/java");
+
   }
 
 }

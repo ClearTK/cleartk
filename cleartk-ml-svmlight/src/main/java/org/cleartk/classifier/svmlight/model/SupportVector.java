@@ -35,8 +35,12 @@ public class SupportVector {
 
   FeatureVector featureVector;
 
-  SupportVector(double ay, FeatureVector fv) {
+  public SupportVector(double ay, FeatureVector fv) {
     this.alpha_y = ay;
     this.featureVector = fv;
+  }
+  
+  public double getAlpha() {
+    return this.alpha_y;
   }
 }

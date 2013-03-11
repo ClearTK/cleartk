@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2007-2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,7 +23,6 @@
  */
 package org.cleartk.classifier.tksvmlight;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,10 +34,11 @@ import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
+import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
 
 /**
  * A One versus All Tree Kernel SVM light classifier implementation. All features named with the
- * prefix "TK_" treated as Tree Kernels.
+ * prefix "TK" treated as Tree Kernels.
  * 
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -50,7 +50,7 @@ import org.cleartk.classifier.jar.Classifier_ImplBase;
 public class TKSVMlightStringOutcomeClassifier extends
     Classifier_ImplBase<TreeFeatureVector, String, Integer> {
 
-  Map<Integer, File> models;
+  Map<Integer, TKSVMlightModel> models;
 
   /**
    * Constructor
@@ -65,7 +65,7 @@ public class TKSVMlightStringOutcomeClassifier extends
   public TKSVMlightStringOutcomeClassifier(
       FeaturesEncoder<TreeFeatureVector> featuresEncoder,
       OutcomeEncoder<String, Integer> outcomeEncoder,
-      Map<Integer, File> models) {
+      Map<Integer, TKSVMlightModel> models) {
     super(featuresEncoder, outcomeEncoder);
     this.models = models;
   }
@@ -121,11 +121,7 @@ public class TKSVMlightStringOutcomeClassifier extends
     return results.subList(0, Math.min(maxResults, results.size()));
   }
 
-  private double score(TreeFeatureVector featureVector, int i) throws CleartkProcessingException {
-    // TD: Use the modelsFile hashmap to get the models, write out the line. Classify the line
-    // versus the model
-    // and get the prediction.
-    File mFile = models.get(i);
-    return TKSVMlightBooleanOutcomeClassifier.tkSvmLightPredict(mFile, featureVector);
+  private double score(TreeFeatureVector featureVector, int i) {
+    return this.models.get(i).evaluate(featureVector);
   }
 }

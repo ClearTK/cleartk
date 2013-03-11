@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2007-2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,12 +23,8 @@
  */
 package org.cleartk.classifier.tksvmlight;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.TreeMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -36,6 +32,7 @@ import java.util.jar.JarOutputStream;
 
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
+import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
 
 /**
  * A class that provided interfaces to package and unpackage a
@@ -73,7 +70,7 @@ public class TKSVMlightStringOutcomeClassifierBuilder
   }
 
   /**
-   * Train the OVASVMTK classifier.
+   * Train the classifier.
    * 
    * @param dir
    *          The directory where the training data has been written.
@@ -111,7 +108,7 @@ public class TKSVMlightStringOutcomeClassifierBuilder
     }
   }
 
-  private TreeMap<Integer, File> models;
+  private TreeMap<Integer, TKSVMlightModel> models;
 
   /**
    * Unpackage the classifier out of a JarInputStream.
@@ -119,8 +116,9 @@ public class TKSVMlightStringOutcomeClassifierBuilder
   @Override
   protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
     super.unpackageClassifier(modelStream);
-    this.models = new TreeMap<Integer, File>();
-    File model;
+    this.models = new TreeMap<Integer, TKSVMlightModel>();
+    // File model;
+    TKSVMlightModel model;
 
     int label = 1;
     while ((model = getNextModel(modelStream, label)) != null) {
@@ -134,7 +132,7 @@ public class TKSVMlightStringOutcomeClassifierBuilder
   }
 
   /**
-   * Create a OVATKSVMlightClassifier.
+   * Create the Classifier.
    */
   @Override
   protected TKSVMlightStringOutcomeClassifier newClassifier() {
@@ -144,8 +142,8 @@ public class TKSVMlightStringOutcomeClassifierBuilder
         this.models);
   }
 
-  private static File getNextModel(JarInputStream modelStream, int label) throws IOException {
-    File mFile = File.createTempFile(String.format("model-%d", label), ".svmlight");
+  private static TKSVMlightModel getNextModel(JarInputStream modelStream, int label)
+      throws IOException {
     // look for a next entry or return null if there isn't one
     JarEntry entry = modelStream.getNextJarEntry();
     if (entry == null) {
@@ -160,16 +158,7 @@ public class TKSVMlightStringOutcomeClassifierBuilder
           expectedName,
           entry.getName()));
     }
-
-    BufferedWriter out = new BufferedWriter(new FileWriter(mFile));
-    BufferedReader in = new BufferedReader(new InputStreamReader(modelStream));
-    String line;
-    while ((line = in.readLine()) != null) {
-      out.append(line);
-      out.append("\n");
-    }
-    out.close();
-    // read the model from the jar stream
-    return mFile;
+    TKSVMlightModel model = TKSVMlightModel.fromInputStream(modelStream);
+    return model;
   }
 }

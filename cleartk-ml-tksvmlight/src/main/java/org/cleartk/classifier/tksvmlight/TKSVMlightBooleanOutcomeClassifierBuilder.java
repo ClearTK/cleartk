@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2007-2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,12 +23,8 @@
  */
 package org.cleartk.classifier.tksvmlight;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 
@@ -37,6 +33,7 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
+import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
 
 import com.google.common.base.Joiner;
 import com.google.common.io.ByteStreams;
@@ -123,7 +120,7 @@ public class TKSVMlightBooleanOutcomeClassifierBuilder
     JarStreams.putNextJarEntry(modelStream, "model.svmlight", getModelFile(dir));
   }
 
-  private File modelFile;
+  private TKSVMlightModel model;
 
   /**
    * unpackage the model files found in a JarInputStream.
@@ -132,15 +129,7 @@ public class TKSVMlightBooleanOutcomeClassifierBuilder
   protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
     super.unpackageClassifier(modelStream);
     JarStreams.getNextJarEntry(modelStream, "model.svmlight");
-    this.modelFile = File.createTempFile("model", ".svmlight");
-    BufferedWriter out = new BufferedWriter(new FileWriter(this.modelFile));
-    BufferedReader in = new BufferedReader(new InputStreamReader(modelStream));
-    String line;
-    while ((line = in.readLine()) != null) {
-      out.append(line);
-      out.append("\n");
-    }
-    out.close();
+    model = TKSVMlightModel.fromInputStream(modelStream);
   }
 
   /**
@@ -151,6 +140,6 @@ public class TKSVMlightBooleanOutcomeClassifierBuilder
     return new TKSVMlightBooleanOutcomeClassifier(
         this.featuresEncoder,
         this.outcomeEncoder,
-        this.modelFile);
+        this.model);
   }
 }
