@@ -77,12 +77,12 @@
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-svmlight</artifactId>
-				<version>1.1.1</version>
+				<version>1.2.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-tksvmlight</artifactId>
-				<version>0.4.1</version>
+				<version>0.5.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
@@ -107,72 +107,72 @@
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-token</artifactId>
-				<version>0.8.6</version>
+				<version>0.8.7-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-named-entity</artifactId>
-				<version>0.6.5</version>
+				<version>0.6.6-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-syntax</artifactId>
-				<version>0.6.3</version>
+				<version>0.6.4-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-opennlp-tools</artifactId>
-				<version>0.10.2</version>
+				<version>0.10.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-berkeleyparser</artifactId>
-				<version>0.2.2</version>
+				<version>0.2.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-clearnlp</artifactId>
-				<version>0.5.0</version>
+				<version>0.5.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-clearparser</artifactId>
-				<version>0.7.2</version>
+				<version>0.7.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-maltparser</artifactId>
-				<version>0.8.1</version>
+				<version>0.8.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-stanford-corenlp</artifactId>
-				<version>0.7.1</version>
+				<version>0.7.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-semantic-roles</artifactId>
-				<version>0.6.3</version>
+				<version>0.6.4-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-snowball</artifactId>
-				<version>0.9.2</version>
+				<version>0.9.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-summarization</artifactId>
-				<version>0.0.1</version>
+				<version>0.0.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-timeml</artifactId>
-				<version>1.0.3</version>
+				<version>1.0.4-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-examples</artifactId>
-				<version>0.6.3</version>
+				<version>0.6.4-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

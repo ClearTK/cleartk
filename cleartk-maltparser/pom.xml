@@ -47,6 +47,18 @@
 			<groupId>org.maltparser</groupId>
 			<artifactId>maltparser</artifactId>
 			<version>1.7.2</version>
+			<!-- MaltParser is using an old version -->
+			<exclusions>
+				<exclusion>
+					<groupId>de.bwaldvogel</groupId>
+					<artifactId>liblinear</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>de.bwaldvogel</groupId>
+			<artifactId>liblinear</artifactId>
+			<version>1.92</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
