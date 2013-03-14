@@ -45,10 +45,13 @@ import org.uimafit.factory.initializable.Initializable;
  */
 public abstract class GenericJarClassifierFactory<CLASSIFIER_TYPE> implements Initializable {
 
-  public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterFactory
-      .createConfigurationParameterName(GenericJarClassifierFactory.class, "classifierJarPath");
+  public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterFactory.createConfigurationParameterName(
+      GenericJarClassifierFactory.class,
+      "classifierJarPath");
 
-  @ConfigurationParameter(mandatory = true, description = "provides the path to the jar file that should be used to instantiate the classifier.")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = "provides the path to the jar file that should be used to instantiate the classifier.")
   private String classifierJarPath;
 
   public void setClassifierJarPath(String classifierJarPath) {
@@ -60,11 +63,13 @@ public abstract class GenericJarClassifierFactory<CLASSIFIER_TYPE> implements In
   }
 
   public CLASSIFIER_TYPE createClassifier() throws IOException {
-    InputStream stream;
-    try {
-      stream = new URL(this.classifierJarPath).openStream();
-    } catch (MalformedURLException e) {
-      stream = new FileInputStream(this.classifierJarPath);
+    InputStream stream = this.getClass().getResourceAsStream(this.classifierJarPath);
+    if (stream == null) {
+      try {
+        stream = new URL(this.classifierJarPath).openStream();
+      } catch (MalformedURLException e) {
+        stream = new FileInputStream(this.classifierJarPath);
+      }
     }
     stream = new BufferedInputStream(stream);
     JarInputStream modelStream = new JarInputStream(stream);
