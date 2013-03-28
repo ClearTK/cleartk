@@ -1,0 +1,347 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (c) 2011, Regents of the University of Colorado <a name="line.2"></a>
+<span class="sourceLineNo">003</span> * All rights reserved.<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * <a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * <a name="line.7"></a>
+<span class="sourceLineNo">008</span> * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<span class="sourceLineNo">009</span> * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<span class="sourceLineNo">010</span> * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<span class="sourceLineNo">011</span> * <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<span class="sourceLineNo">023</span> */<a name="line.23"></a>
+<span class="sourceLineNo">024</span>package org.cleartk.timeml.corpus;<a name="line.24"></a>
+<span class="sourceLineNo">025</span><a name="line.25"></a>
+<span class="sourceLineNo">026</span>import java.io.File;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import java.io.FileNotFoundException;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import java.io.IOException;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import java.net.URI;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import java.net.URISyntaxException;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import java.util.ArrayList;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import java.util.Arrays;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import java.util.HashMap;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import java.util.HashSet;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import java.util.List;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import java.util.Map;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import java.util.Set;<a name="line.37"></a>
+<span class="sourceLineNo">038</span><a name="line.38"></a>
+<span class="sourceLineNo">039</span>import org.apache.uima.UimaContext;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import org.apache.uima.cas.CASException;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import org.apache.uima.collection.CollectionException;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>import org.apache.uima.collection.CollectionReader;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>import org.apache.uima.jcas.JCas;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>import org.apache.uima.resource.ResourceInitializationException;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>import org.apache.uima.util.Progress;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import org.apache.uima.util.ProgressImpl;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import org.cleartk.timeml.TimeMLViewName;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>import org.cleartk.util.ViewURIUtil;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>import org.uimafit.component.JCasCollectionReader_ImplBase;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>import org.uimafit.descriptor.ConfigurationParameter;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>import org.uimafit.factory.CollectionReaderFactory;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import org.uimafit.factory.ConfigurationParameterFactory;<a name="line.52"></a>
+<span class="sourceLineNo">053</span><a name="line.53"></a>
+<span class="sourceLineNo">054</span>import com.google.common.base.Charsets;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>import com.google.common.collect.ArrayListMultimap;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>import com.google.common.collect.ListMultimap;<a name="line.56"></a>
+<span class="sourceLineNo">057</span>import com.google.common.io.Files;<a name="line.57"></a>
+<span class="sourceLineNo">058</span><a name="line.58"></a>
+<span class="sourceLineNo">059</span>/**<a name="line.59"></a>
+<span class="sourceLineNo">060</span> * &lt;br&gt;<a name="line.60"></a>
+<span class="sourceLineNo">061</span> * Copyright (c) 2011, Regents of the University of Colorado &lt;br&gt;<a name="line.61"></a>
+<span class="sourceLineNo">062</span> * All rights reserved.<a name="line.62"></a>
+<span class="sourceLineNo">063</span> * <a name="line.63"></a>
+<span class="sourceLineNo">064</span> * @author Steven Bethard<a name="line.64"></a>
+<span class="sourceLineNo">065</span> */<a name="line.65"></a>
+<span class="sourceLineNo">066</span>public class TempEval2010CollectionReader extends JCasCollectionReader_ImplBase {<a name="line.66"></a>
+<span class="sourceLineNo">067</span><a name="line.67"></a>
+<span class="sourceLineNo">068</span>  public static CollectionReader getCollectionReader(String... dataPaths)<a name="line.68"></a>
+<span class="sourceLineNo">069</span>      throws ResourceInitializationException {<a name="line.69"></a>
+<span class="sourceLineNo">070</span>    List&lt;File&gt; dirs = new ArrayList&lt;File&gt;();<a name="line.70"></a>
+<span class="sourceLineNo">071</span>    for (String path : dataPaths) {<a name="line.71"></a>
+<span class="sourceLineNo">072</span>      dirs.add(new File(path));<a name="line.72"></a>
+<span class="sourceLineNo">073</span>    }<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    return getCollectionReader(dirs);<a name="line.74"></a>
+<span class="sourceLineNo">075</span>  }<a name="line.75"></a>
+<span class="sourceLineNo">076</span><a name="line.76"></a>
+<span class="sourceLineNo">077</span>  public static CollectionReader getCollectionReader(List&lt;File&gt; dataDirectories)<a name="line.77"></a>
+<span class="sourceLineNo">078</span>      throws ResourceInitializationException {<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    return getCollectionReader(dataDirectories, null);<a name="line.79"></a>
+<span class="sourceLineNo">080</span>  }<a name="line.80"></a>
+<span class="sourceLineNo">081</span><a name="line.81"></a>
+<span class="sourceLineNo">082</span>  public static CollectionReader getCollectionReader(<a name="line.82"></a>
+<span class="sourceLineNo">083</span>      List&lt;File&gt; dataDirectories,<a name="line.83"></a>
+<span class="sourceLineNo">084</span>      Set&lt;String&gt; selectedFileNames) throws ResourceInitializationException {<a name="line.84"></a>
+<span class="sourceLineNo">085</span>    // workaround UimaFIT limitation<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    List&lt;String&gt; dirsList = new ArrayList&lt;String&gt;();<a name="line.86"></a>
+<span class="sourceLineNo">087</span>    for (File dir : dataDirectories) {<a name="line.87"></a>
+<span class="sourceLineNo">088</span>      dirsList.add(dir.getPath());<a name="line.88"></a>
+<span class="sourceLineNo">089</span>    }<a name="line.89"></a>
+<span class="sourceLineNo">090</span>    String[] dirs = dirsList.toArray(new String[dirsList.size()]);<a name="line.90"></a>
+<span class="sourceLineNo">091</span>    String[] names = selectedFileNames == null<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        ? null<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        : selectedFileNames.toArray(new String[selectedFileNames.size()]);<a name="line.93"></a>
+<span class="sourceLineNo">094</span>    return CollectionReaderFactory.createCollectionReader(<a name="line.94"></a>
+<span class="sourceLineNo">095</span>        TempEval2010CollectionReader.class,<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        null,<a name="line.96"></a>
+<span class="sourceLineNo">097</span>        PARAM_DATA_DIRECTORIES,<a name="line.97"></a>
+<span class="sourceLineNo">098</span>        dirs,<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        PARAM_SELECTED_FILE_NAMES,<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        names);<a name="line.100"></a>
+<span class="sourceLineNo">101</span>  }<a name="line.101"></a>
+<span class="sourceLineNo">102</span><a name="line.102"></a>
+<span class="sourceLineNo">103</span>  @ConfigurationParameter(mandatory = true, description = "The directories containing the TempEval "<a name="line.103"></a>
+<span class="sourceLineNo">104</span>      + "2010 data, e.g. \"tempeval-training-2/english\" and \"tempeval2-test/english\"")<a name="line.104"></a>
+<span class="sourceLineNo">105</span>  protected List&lt;File&gt; dataDirectories;<a name="line.105"></a>
+<span class="sourceLineNo">106</span><a name="line.106"></a>
+<span class="sourceLineNo">107</span>  public static final String PARAM_DATA_DIRECTORIES = ConfigurationParameterFactory.createConfigurationParameterName(<a name="line.107"></a>
+<span class="sourceLineNo">108</span>      TempEval2010CollectionReader.class,<a name="line.108"></a>
+<span class="sourceLineNo">109</span>      "dataDirectories");<a name="line.109"></a>
+<span class="sourceLineNo">110</span><a name="line.110"></a>
+<span class="sourceLineNo">111</span>  @ConfigurationParameter(description = "The names of files that should be included when reading, "<a name="line.111"></a>
+<span class="sourceLineNo">112</span>      + "e.g \"ABC19980108.1830.0711\". If null, then all files in the dataset will be included.")<a name="line.112"></a>
+<span class="sourceLineNo">113</span>  protected Set&lt;String&gt; selectedFileNames;<a name="line.113"></a>
+<span class="sourceLineNo">114</span><a name="line.114"></a>
+<span class="sourceLineNo">115</span>  public static final String PARAM_SELECTED_FILE_NAMES = ConfigurationParameterFactory.createConfigurationParameterName(<a name="line.115"></a>
+<span class="sourceLineNo">116</span>      TempEval2010CollectionReader.class,<a name="line.116"></a>
+<span class="sourceLineNo">117</span>      "selectedFileNames");<a name="line.117"></a>
+<span class="sourceLineNo">118</span><a name="line.118"></a>
+<span class="sourceLineNo">119</span>  protected List&lt;URI&gt; uris;<a name="line.119"></a>
+<span class="sourceLineNo">120</span><a name="line.120"></a>
+<span class="sourceLineNo">121</span>  protected int uriIndex;<a name="line.121"></a>
+<span class="sourceLineNo">122</span><a name="line.122"></a>
+<span class="sourceLineNo">123</span>  private Map&lt;String, Map&lt;String, String&gt;&gt; viewFileTexts;<a name="line.123"></a>
+<span class="sourceLineNo">124</span><a name="line.124"></a>
+<span class="sourceLineNo">125</span>  @Override<a name="line.125"></a>
+<span class="sourceLineNo">126</span>  public void initialize(UimaContext context) throws ResourceInitializationException {<a name="line.126"></a>
+<span class="sourceLineNo">127</span>    super.initialize(context);<a name="line.127"></a>
+<span class="sourceLineNo">128</span><a name="line.128"></a>
+<span class="sourceLineNo">129</span>    try {<a name="line.129"></a>
+<span class="sourceLineNo">130</span>      // assemble URIs for each file in the data<a name="line.130"></a>
+<span class="sourceLineNo">131</span>      this.uriIndex = 0;<a name="line.131"></a>
+<span class="sourceLineNo">132</span>      this.uris = new ArrayList&lt;URI&gt;();<a name="line.132"></a>
+<span class="sourceLineNo">133</span>      for (File dataDirectory : this.dataDirectories) {<a name="line.133"></a>
+<span class="sourceLineNo">134</span>        URI dataURI = dataDirectory.toURI();<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        for (String fileName : getAnnotatedFileNames(dataDirectory)) {<a name="line.135"></a>
+<span class="sourceLineNo">136</span>          if (this.selectedFileNames == null || this.selectedFileNames.contains(fileName)) {<a name="line.136"></a>
+<span class="sourceLineNo">137</span>            URI uri = new URI(dataURI.getScheme(), dataURI.getHost(), dataURI.getPath(), fileName);<a name="line.137"></a>
+<span class="sourceLineNo">138</span>            this.uris.add(uri);<a name="line.138"></a>
+<span class="sourceLineNo">139</span>          }<a name="line.139"></a>
+<span class="sourceLineNo">140</span>        }<a name="line.140"></a>
+<span class="sourceLineNo">141</span>      }<a name="line.141"></a>
+<span class="sourceLineNo">142</span><a name="line.142"></a>
+<span class="sourceLineNo">143</span>      // group lines by filename<a name="line.143"></a>
+<span class="sourceLineNo">144</span>      this.viewFileTexts = new HashMap&lt;String, Map&lt;String, String&gt;&gt;();<a name="line.144"></a>
+<span class="sourceLineNo">145</span>      for (String viewName : Arrays.asList(<a name="line.145"></a>
+<span class="sourceLineNo">146</span>          TimeMLViewName.TEMPEVAL_BASE_SEGMENTATION,<a name="line.146"></a>
+<span class="sourceLineNo">147</span>          TimeMLViewName.TEMPEVAL_DCT,<a name="line.147"></a>
+<span class="sourceLineNo">148</span>          TimeMLViewName.TEMPEVAL_EVENT_EXTENTS,<a name="line.148"></a>
+<span class="sourceLineNo">149</span>          TimeMLViewName.TEMPEVAL_EVENT_ATTRIBUTES,<a name="line.149"></a>
+<span class="sourceLineNo">150</span>          TimeMLViewName.TEMPEVAL_TIMEX_EXTENTS,<a name="line.150"></a>
+<span class="sourceLineNo">151</span>          TimeMLViewName.TEMPEVAL_TIMEX_ATTRIBUTES,<a name="line.151"></a>
+<span class="sourceLineNo">152</span>          TimeMLViewName.TEMPEVAL_TLINK_DCT_EVENT,<a name="line.152"></a>
+<span class="sourceLineNo">153</span>          TimeMLViewName.TEMPEVAL_TLINK_MAIN_EVENTS,<a name="line.153"></a>
+<span class="sourceLineNo">154</span>          TimeMLViewName.TEMPEVAL_TLINK_SUBORDINATED_EVENTS,<a name="line.154"></a>
+<span class="sourceLineNo">155</span>          TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT)) {<a name="line.155"></a>
+<span class="sourceLineNo">156</span>        // assumes view names are the same as the .tab file names<a name="line.156"></a>
+<span class="sourceLineNo">157</span>        this.viewFileTexts.put(viewName, this.textByFileName(viewName));<a name="line.157"></a>
+<span class="sourceLineNo">158</span>      }<a name="line.158"></a>
+<span class="sourceLineNo">159</span>    } catch (IOException e) {<a name="line.159"></a>
+<span class="sourceLineNo">160</span>      throw new ResourceInitializationException(e);<a name="line.160"></a>
+<span class="sourceLineNo">161</span>    } catch (URISyntaxException e) {<a name="line.161"></a>
+<span class="sourceLineNo">162</span>      throw new ResourceInitializationException(e);<a name="line.162"></a>
+<span class="sourceLineNo">163</span>    }<a name="line.163"></a>
+<span class="sourceLineNo">164</span>  }<a name="line.164"></a>
+<span class="sourceLineNo">165</span><a name="line.165"></a>
+<span class="sourceLineNo">166</span>  @Override<a name="line.166"></a>
+<span class="sourceLineNo">167</span>  public boolean hasNext() throws IOException, CollectionException {<a name="line.167"></a>
+<span class="sourceLineNo">168</span>    return this.uriIndex &lt; this.uris.size();<a name="line.168"></a>
+<span class="sourceLineNo">169</span>  }<a name="line.169"></a>
+<span class="sourceLineNo">170</span><a name="line.170"></a>
+<span class="sourceLineNo">171</span>  @Override<a name="line.171"></a>
+<span class="sourceLineNo">172</span>  public void getNext(JCas jCas) throws IOException, CollectionException {<a name="line.172"></a>
+<span class="sourceLineNo">173</span>    URI uri = this.uris.get(this.uriIndex);<a name="line.173"></a>
+<span class="sourceLineNo">174</span>    this.uriIndex += 1;<a name="line.174"></a>
+<span class="sourceLineNo">175</span>    ViewURIUtil.setURI(jCas, uri);<a name="line.175"></a>
+<span class="sourceLineNo">176</span><a name="line.176"></a>
+<span class="sourceLineNo">177</span>    String fileName = uri.getFragment();<a name="line.177"></a>
+<span class="sourceLineNo">178</span>    for (String viewName : this.viewFileTexts.keySet()) {<a name="line.178"></a>
+<span class="sourceLineNo">179</span>      JCas view;<a name="line.179"></a>
+<span class="sourceLineNo">180</span>      try {<a name="line.180"></a>
+<span class="sourceLineNo">181</span>        view = jCas.createView(viewName);<a name="line.181"></a>
+<span class="sourceLineNo">182</span>      } catch (CASException e) {<a name="line.182"></a>
+<span class="sourceLineNo">183</span>        throw new CollectionException(e);<a name="line.183"></a>
+<span class="sourceLineNo">184</span>      }<a name="line.184"></a>
+<span class="sourceLineNo">185</span>      String text = this.viewFileTexts.get(viewName).get(fileName);<a name="line.185"></a>
+<span class="sourceLineNo">186</span>      view.setDocumentText(text == null ? "" : text);<a name="line.186"></a>
+<span class="sourceLineNo">187</span>    }<a name="line.187"></a>
+<span class="sourceLineNo">188</span>  }<a name="line.188"></a>
+<span class="sourceLineNo">189</span><a name="line.189"></a>
+<span class="sourceLineNo">190</span>  @Override<a name="line.190"></a>
+<span class="sourceLineNo">191</span>  public Progress[] getProgress() {<a name="line.191"></a>
+<span class="sourceLineNo">192</span>    return new Progress[] { new ProgressImpl(this.uriIndex, this.uris.size(), Progress.ENTITIES) };<a name="line.192"></a>
+<span class="sourceLineNo">193</span>  }<a name="line.193"></a>
+<span class="sourceLineNo">194</span><a name="line.194"></a>
+<span class="sourceLineNo">195</span>  private Map&lt;String, String&gt; textByFileName(String tabFileName) throws IOException {<a name="line.195"></a>
+<span class="sourceLineNo">196</span>    // get all variants of the file under all subdirectories<a name="line.196"></a>
+<span class="sourceLineNo">197</span>    List&lt;File&gt; files = new ArrayList&lt;File&gt;();<a name="line.197"></a>
+<span class="sourceLineNo">198</span>    for (File dir : this.dataDirectories) {<a name="line.198"></a>
+<span class="sourceLineNo">199</span>      files.addAll(getTempEvalFiles(dir, tabFileName));<a name="line.199"></a>
+<span class="sourceLineNo">200</span>    }<a name="line.200"></a>
+<span class="sourceLineNo">201</span><a name="line.201"></a>
+<span class="sourceLineNo">202</span>    // map each file name to its lines<a name="line.202"></a>
+<span class="sourceLineNo">203</span>    ListMultimap&lt;String, String&gt; fileLines = ArrayListMultimap.create();<a name="line.203"></a>
+<span class="sourceLineNo">204</span>    for (File file : files) {<a name="line.204"></a>
+<span class="sourceLineNo">205</span>      for (String line : Files.readLines(file, Charsets.US_ASCII)) {<a name="line.205"></a>
+<span class="sourceLineNo">206</span>        String fileName = getAnnotatedFileName(line);<a name="line.206"></a>
+<span class="sourceLineNo">207</span>        fileLines.put(fileName, line);<a name="line.207"></a>
+<span class="sourceLineNo">208</span>      }<a name="line.208"></a>
+<span class="sourceLineNo">209</span>    }<a name="line.209"></a>
+<span class="sourceLineNo">210</span><a name="line.210"></a>
+<span class="sourceLineNo">211</span>    // convert lists of lines back into text<a name="line.211"></a>
+<span class="sourceLineNo">212</span>    Map&lt;String, String&gt; fileTexts = new HashMap&lt;String, String&gt;();<a name="line.212"></a>
+<span class="sourceLineNo">213</span>    for (String fileName : fileLines.keySet()) {<a name="line.213"></a>
+<span class="sourceLineNo">214</span>      StringBuilder builder = new StringBuilder();<a name="line.214"></a>
+<span class="sourceLineNo">215</span>      for (String line : fileLines.get(fileName)) {<a name="line.215"></a>
+<span class="sourceLineNo">216</span>        builder.append(line).append('\n');<a name="line.216"></a>
+<span class="sourceLineNo">217</span>      }<a name="line.217"></a>
+<span class="sourceLineNo">218</span>      fileTexts.put(fileName, builder.toString());<a name="line.218"></a>
+<span class="sourceLineNo">219</span>    }<a name="line.219"></a>
+<span class="sourceLineNo">220</span>    return fileTexts;<a name="line.220"></a>
+<span class="sourceLineNo">221</span>  }<a name="line.221"></a>
+<span class="sourceLineNo">222</span><a name="line.222"></a>
+<span class="sourceLineNo">223</span>  private static List&lt;File&gt; getTempEvalFiles(File dataDirectory, String tabFileName)<a name="line.223"></a>
+<span class="sourceLineNo">224</span>      throws FileNotFoundException {<a name="line.224"></a>
+<span class="sourceLineNo">225</span><a name="line.225"></a>
+<span class="sourceLineNo">226</span>    // subdirectory is "data" for training, and both "entities" and "relations" for testing<a name="line.226"></a>
+<span class="sourceLineNo">227</span>    List&lt;File&gt; files = new ArrayList&lt;File&gt;();<a name="line.227"></a>
+<span class="sourceLineNo">228</span>    for (String subDir : Arrays.asList("data", "key")) {<a name="line.228"></a>
+<span class="sourceLineNo">229</span>      files.add(new File(new File(dataDirectory, subDir), tabFileName));<a name="line.229"></a>
+<span class="sourceLineNo">230</span>    }<a name="line.230"></a>
+<span class="sourceLineNo">231</span>    // weird special case: dct.txt is dct-en.txt in testing base directory<a name="line.231"></a>
+<span class="sourceLineNo">232</span>    files.add(new File(dataDirectory, tabFileName.replaceAll("\\.txt", "-en.txt")));<a name="line.232"></a>
+<span class="sourceLineNo">233</span><a name="line.233"></a>
+<span class="sourceLineNo">234</span>    // filter existing files<a name="line.234"></a>
+<span class="sourceLineNo">235</span>    List&lt;File&gt; existingFiles = new ArrayList&lt;File&gt;();<a name="line.235"></a>
+<span class="sourceLineNo">236</span>    for (File file : files) {<a name="line.236"></a>
+<span class="sourceLineNo">237</span>      if (file.exists()) {<a name="line.237"></a>
+<span class="sourceLineNo">238</span>        existingFiles.add(file);<a name="line.238"></a>
+<span class="sourceLineNo">239</span>      }<a name="line.239"></a>
+<span class="sourceLineNo">240</span>    }<a name="line.240"></a>
+<span class="sourceLineNo">241</span><a name="line.241"></a>
+<span class="sourceLineNo">242</span>    // error if we didn't find at least one<a name="line.242"></a>
+<span class="sourceLineNo">243</span>    if (existingFiles.size() == 0) {<a name="line.243"></a>
+<span class="sourceLineNo">244</span>      throw new FileNotFoundException("Could not find any of " + files);<a name="line.244"></a>
+<span class="sourceLineNo">245</span>    }<a name="line.245"></a>
+<span class="sourceLineNo">246</span>    return existingFiles;<a name="line.246"></a>
+<span class="sourceLineNo">247</span>  }<a name="line.247"></a>
+<span class="sourceLineNo">248</span><a name="line.248"></a>
+<span class="sourceLineNo">249</span>  protected static String getAnnotatedFileName(String line) {<a name="line.249"></a>
+<span class="sourceLineNo">250</span>    // the filename is the first column<a name="line.250"></a>
+<span class="sourceLineNo">251</span>    String[] parts = line.split("\t", 2);<a name="line.251"></a>
+<span class="sourceLineNo">252</span>    if (parts.length != 2) {<a name="line.252"></a>
+<span class="sourceLineNo">253</span>      throw new IllegalArgumentException("Expected &lt;filename&gt;\t..., found " + line);<a name="line.253"></a>
+<span class="sourceLineNo">254</span>    }<a name="line.254"></a>
+<span class="sourceLineNo">255</span>    return parts[0];<a name="line.255"></a>
+<span class="sourceLineNo">256</span>  }<a name="line.256"></a>
+<span class="sourceLineNo">257</span><a name="line.257"></a>
+<span class="sourceLineNo">258</span>  public static List&lt;String&gt; getAnnotatedFileNames(File dataDirectory) throws IOException {<a name="line.258"></a>
+<span class="sourceLineNo">259</span>    // look for file names in all the base segmentation files<a name="line.259"></a>
+<span class="sourceLineNo">260</span>    List&lt;String&gt; fileNames = new ArrayList&lt;String&gt;();<a name="line.260"></a>
+<span class="sourceLineNo">261</span>    Set&lt;String&gt; seenFileNames = new HashSet&lt;String&gt;();<a name="line.261"></a>
+<span class="sourceLineNo">262</span>    for (File tabFile : getTempEvalFiles(dataDirectory, "base-segmentation.tab")) {<a name="line.262"></a>
+<span class="sourceLineNo">263</span>      for (String line : Files.readLines(tabFile, Charsets.US_ASCII)) {<a name="line.263"></a>
+<span class="sourceLineNo">264</span><a name="line.264"></a>
+<span class="sourceLineNo">265</span>        // add the filename to the list if we haven't already seen it<a name="line.265"></a>
+<span class="sourceLineNo">266</span>        String fileName = getAnnotatedFileName(line);<a name="line.266"></a>
+<span class="sourceLineNo">267</span>        if (!seenFileNames.contains(fileName)) {<a name="line.267"></a>
+<span class="sourceLineNo">268</span>          seenFileNames.add(fileName);<a name="line.268"></a>
+<span class="sourceLineNo">269</span>          fileNames.add(fileName);<a name="line.269"></a>
+<span class="sourceLineNo">270</span>        }<a name="line.270"></a>
+<span class="sourceLineNo">271</span>      }<a name="line.271"></a>
+<span class="sourceLineNo">272</span>    }<a name="line.272"></a>
+<span class="sourceLineNo">273</span>    return fileNames;<a name="line.273"></a>
+<span class="sourceLineNo">274</span>  }<a name="line.274"></a>
+<span class="sourceLineNo">275</span>}<a name="line.275"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

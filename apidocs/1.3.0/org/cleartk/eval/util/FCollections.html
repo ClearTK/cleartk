@@ -1,0 +1,739 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- NewPage -->
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<title>FCollections (ClearTK Release 1.3.0 API)</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<script type="text/javascript"><!--
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="FCollections (ClearTK Release 1.3.0 API)";
+    }
+//-->
+</script>
+<noscript>
+<div>JavaScript is disabled on your browser.</div>
+</noscript>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+<!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/FCollections.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../index-all.html">Index</a></li>
+<li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li><a href="../../../../org/cleartk/eval/util/FCollection.html" title="class in org.cleartk.eval.util"><span class="strong">Prev Class</span></a></li>
+<li>Next Class</li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../index.html?org/cleartk/eval/util/FCollections.html" target="_top">Frames</a></li>
+<li><a href="FCollections.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_top">
+<li><a href="../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_top");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#field_summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li><a href="#field_detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_top">
+<!--   -->
+</a></div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+<!-- ======== START OF CLASS DATA ======== -->
+<div class="header">
+<div class="subTitle">org.cleartk.eval.util</div>
+<h2 title="Class FCollections" class="title">Class FCollections&lt;T extends <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</a>&lt;T&gt;&gt;</h2>
+</div>
+<div class="contentContainer">
+<ul class="inheritance">
+<li><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
+<li>
+<ul class="inheritance">
+<li>org.cleartk.eval.util.FCollections&lt;T&gt;</li>
+</ul>
+</li>
+</ul>
+<div class="description">
+<ul class="blockList">
+<li class="blockList">
+<hr>
+<br>
+<pre>public class <a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.49">FCollections</a>&lt;T extends <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</a>&lt;T&gt;&gt;
+extends <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
+<div class="block">This data structure is convenient if you want to stratify evaluation across different dimensions.
+ For example, if you wanted to see how good a part-of-speech tagger works for different tags you
+ might declare a FCollection of type String. Another example is a named-entity recognizer for
+ which you want to measure performance for different lengths of named entities (in tokens). For
+ this example, you could declare a FCollection of type Integer.
+ 
+ <br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+<dl><dt><span class="strong">Author:</span></dt>
+  <dd>Philip Ogren</dd></dl>
+</li>
+</ul>
+</div>
+<div class="summary">
+<ul class="blockList">
+<li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field_summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected <a href="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect">Multiset</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#falseNegatives">falseNegatives</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected <a href="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect">Multiset</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#falsePositives">falsePositives</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected <a href="http://download.oracle.com/javase/6/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#objects">objects</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected int</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#totalFalseNegatives">totalFalseNegatives</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected int</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#totalFalsePositives">totalFalsePositives</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected int</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#totalTruePositives">totalTruePositives</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected <a href="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect">Multiset</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#truePositives">truePositives</a></strong></code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_summary">
+<!--   -->
+</a>
+<h3>Constructor Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
+<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Constructor and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#FCollections()">FCollections</a></strong>()</code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- ========== METHOD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_summary">
+<!--   -->
+</a>
+<h3>Method Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
+<caption><span>Methods</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#addFalseNegative(T)">addFalseNegative</a></strong>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;falseNegative)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#addFalseNegatives(T, int)">addFalseNegatives</a></strong>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;falseNegative,
+                                  int&nbsp;countIncrement)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#addFalsePositive(T)">addFalsePositive</a></strong>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;falsePositive)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#addFalsePositives(T, int)">addFalsePositives</a></strong>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;falsePositive,
+                                  int&nbsp;countIncrement)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#addTruePositive(T)">addTruePositive</a></strong>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;truePositive)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#addTruePositives(T, int)">addTruePositives</a></strong>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;truePositive,
+                                int&nbsp;countIncrement)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static double</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#F(int, int, int)">F</a></strong>(int&nbsp;tps,
+  int&nbsp;fps,
+  int&nbsp;fns)</code>
+<div class="block">When the beta weight is .5, F-measure works out to be a very simple ratio if you work out the
+ algebra (which I did once.) This result is published in the literature here:
+ 
+ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1090460/
+ 
+ See equation 3.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static double</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#F(int, int, int, double)">F</a></strong>(int&nbsp;tps,
+  int&nbsp;fps,
+  int&nbsp;fns,
+  double&nbsp;B)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>double</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getF()">getF</a></strong>()</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>double</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getF(T)">getF</a></strong>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>double</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getF(T, double)">getF</a></strong>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object,
+        double&nbsp;B)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getFalseNegativesCount()">getFalseNegativesCount</a></strong>()</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getFalseNegativesCount(T)">getFalseNegativesCount</a></strong>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getFalsePositivesCount()">getFalsePositivesCount</a></strong>()</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getFalsePositivesCount(T)">getFalsePositivesCount</a></strong>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>double</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getPrecision()">getPrecision</a></strong>()</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>double</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getPrecision(T)">getPrecision</a></strong>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>double</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getRecall()">getRecall</a></strong>()</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>double</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getRecall(T)">getRecall</a></strong>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code><a href="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getSortedObjects()">getSortedObjects</a></strong>()</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getTruePositivesCount()">getTruePositivesCount</a></strong>()</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#getTruePositivesCount(T)">getTruePositivesCount</a></strong>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static double</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#precision(int, int)">precision</a></strong>(int&nbsp;tps,
+                  int&nbsp;fps)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static double</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/eval/util/FCollections.html#recall(int, int)">recall</a></strong>(int&nbsp;tps,
+            int&nbsp;fns)</code>&nbsp;</td>
+</tr>
+</table>
+<ul class="blockList">
+<li class="blockList"><a name="methods_inherited_from_class_java.lang.Object">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;java.lang.<a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
+<code><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="details">
+<ul class="blockList">
+<li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field_detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="falseNegatives">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>falseNegatives</h4>
+<pre>protected&nbsp;<a href="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect">Multiset</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a> extends <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&gt;&gt; <a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.55">falseNegatives</a></pre>
+</li>
+</ul>
+<a name="falsePositives">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>falsePositives</h4>
+<pre>protected&nbsp;<a href="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect">Multiset</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a> extends <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&gt;&gt; <a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.53">falsePositives</a></pre>
+</li>
+</ul>
+<a name="objects">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>objects</h4>
+<pre>protected&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a> extends <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&gt;&gt; <a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.63">objects</a></pre>
+</li>
+</ul>
+<a name="totalFalseNegatives">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>totalFalseNegatives</h4>
+<pre>protected&nbsp;int <a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.61">totalFalseNegatives</a></pre>
+</li>
+</ul>
+<a name="totalFalsePositives">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>totalFalsePositives</h4>
+<pre>protected&nbsp;int <a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.59">totalFalsePositives</a></pre>
+</li>
+</ul>
+<a name="totalTruePositives">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>totalTruePositives</h4>
+<pre>protected&nbsp;int <a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.57">totalTruePositives</a></pre>
+</li>
+</ul>
+<a name="truePositives">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>truePositives</h4>
+<pre>protected&nbsp;<a href="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect">Multiset</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a> extends <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&gt;&gt; <a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.51">truePositives</a></pre>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_detail">
+<!--   -->
+</a>
+<h3>Constructor Detail</h3>
+<a name="FCollections()">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>FCollections</h4>
+<pre>public&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.65">FCollections</a>()</pre>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ============ METHOD DETAIL ========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_detail">
+<!--   -->
+</a>
+<h3>Method Detail</h3>
+<a name="addFalseNegative(java.lang.Comparable)">
+<!--   -->
+</a><a name="addFalseNegative(T)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addFalseNegative</h4>
+<pre>public&nbsp;void&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.112">addFalseNegative</a>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;falseNegative)</pre>
+</li>
+</ul>
+<a name="addFalseNegatives(java.lang.Comparable,int)">
+<!--   -->
+</a><a name="addFalseNegatives(T, int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addFalseNegatives</h4>
+<pre>public&nbsp;void&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.118">addFalseNegatives</a>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;falseNegative,
+                     int&nbsp;countIncrement)</pre>
+</li>
+</ul>
+<a name="addFalsePositive(java.lang.Comparable)">
+<!--   -->
+</a><a name="addFalsePositive(T)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addFalsePositive</h4>
+<pre>public&nbsp;void&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.92">addFalsePositive</a>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;falsePositive)</pre>
+</li>
+</ul>
+<a name="addFalsePositives(java.lang.Comparable,int)">
+<!--   -->
+</a><a name="addFalsePositives(T, int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addFalsePositives</h4>
+<pre>public&nbsp;void&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.98">addFalsePositives</a>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;falsePositive,
+                     int&nbsp;countIncrement)</pre>
+</li>
+</ul>
+<a name="addTruePositive(java.lang.Comparable)">
+<!--   -->
+</a><a name="addTruePositive(T)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addTruePositive</h4>
+<pre>public&nbsp;void&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.72">addTruePositive</a>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;truePositive)</pre>
+</li>
+</ul>
+<a name="addTruePositives(java.lang.Comparable,int)">
+<!--   -->
+</a><a name="addTruePositives(T, int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addTruePositives</h4>
+<pre>public&nbsp;void&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.78">addTruePositives</a>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;truePositive,
+                    int&nbsp;countIncrement)</pre>
+</li>
+</ul>
+<a name="F(int, int, int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>F</h4>
+<pre>public static&nbsp;double&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.181">F</a>(int&nbsp;tps,
+       int&nbsp;fps,
+       int&nbsp;fns)</pre>
+<div class="block">When the beta weight is .5, F-measure works out to be a very simple ratio if you work out the
+ algebra (which I did once.) This result is published in the literature here:
+ 
+ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1090460/
+ 
+ See equation 3.</div>
+</li>
+</ul>
+<a name="F(int, int, int, double)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>F</h4>
+<pre>public static&nbsp;double&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.185">F</a>(int&nbsp;tps,
+       int&nbsp;fps,
+       int&nbsp;fns,
+       double&nbsp;B)</pre>
+</li>
+</ul>
+<a name="getF()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getF</h4>
+<pre>public&nbsp;double&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.169">getF</a>()</pre>
+</li>
+</ul>
+<a name="getF(java.lang.Comparable)">
+<!--   -->
+</a><a name="getF(T)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getF</h4>
+<pre>public&nbsp;double&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.162">getF</a>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object)</pre>
+</li>
+</ul>
+<a name="getF(java.lang.Comparable,double)">
+<!--   -->
+</a><a name="getF(T, double)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getF</h4>
+<pre>public&nbsp;double&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.193">getF</a>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object,
+          double&nbsp;B)</pre>
+</li>
+</ul>
+<a name="getFalseNegativesCount()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getFalseNegativesCount</h4>
+<pre>public&nbsp;int&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.128">getFalseNegativesCount</a>()</pre>
+</li>
+</ul>
+<a name="getFalseNegativesCount(java.lang.Comparable)">
+<!--   -->
+</a><a name="getFalseNegativesCount(T)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getFalseNegativesCount</h4>
+<pre>public&nbsp;int&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.124">getFalseNegativesCount</a>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object)</pre>
+</li>
+</ul>
+<a name="getFalsePositivesCount()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getFalsePositivesCount</h4>
+<pre>public&nbsp;int&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.108">getFalsePositivesCount</a>()</pre>
+</li>
+</ul>
+<a name="getFalsePositivesCount(java.lang.Comparable)">
+<!--   -->
+</a><a name="getFalsePositivesCount(T)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getFalsePositivesCount</h4>
+<pre>public&nbsp;int&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.104">getFalsePositivesCount</a>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object)</pre>
+</li>
+</ul>
+<a name="getPrecision()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getPrecision</h4>
+<pre>public&nbsp;double&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.142">getPrecision</a>()</pre>
+</li>
+</ul>
+<a name="getPrecision(java.lang.Comparable)">
+<!--   -->
+</a><a name="getPrecision(T)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getPrecision</h4>
+<pre>public&nbsp;double&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.138">getPrecision</a>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object)</pre>
+</li>
+</ul>
+<a name="getRecall()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getRecall</h4>
+<pre>public&nbsp;double&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.154">getRecall</a>()</pre>
+</li>
+</ul>
+<a name="getRecall(java.lang.Comparable)">
+<!--   -->
+</a><a name="getRecall(T)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getRecall</h4>
+<pre>public&nbsp;double&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.150">getRecall</a>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object)</pre>
+</li>
+</ul>
+<a name="getSortedObjects()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getSortedObjects</h4>
+<pre>public&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&gt;&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.132">getSortedObjects</a>()</pre>
+</li>
+</ul>
+<a name="getTruePositivesCount()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTruePositivesCount</h4>
+<pre>public&nbsp;int&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.88">getTruePositivesCount</a>()</pre>
+</li>
+</ul>
+<a name="getTruePositivesCount(java.lang.Comparable)">
+<!--   -->
+</a><a name="getTruePositivesCount(T)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTruePositivesCount</h4>
+<pre>public&nbsp;int&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.84">getTruePositivesCount</a>(<a href="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</a>&nbsp;object)</pre>
+</li>
+</ul>
+<a name="precision(int, int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>precision</h4>
+<pre>public static&nbsp;double&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.146">precision</a>(int&nbsp;tps,
+               int&nbsp;fps)</pre>
+</li>
+</ul>
+<a name="recall(int, int)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>recall</h4>
+<pre>public static&nbsp;double&nbsp;<a href="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.158">recall</a>(int&nbsp;tps,
+            int&nbsp;fns)</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- ========= END OF CLASS DATA ========= -->
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+<!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/FCollections.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../index-all.html">Index</a></li>
+<li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li><a href="../../../../org/cleartk/eval/util/FCollection.html" title="class in org.cleartk.eval.util"><span class="strong">Prev Class</span></a></li>
+<li>Next Class</li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../index.html?org/cleartk/eval/util/FCollections.html" target="_top">Frames</a></li>
+<li><a href="FCollections.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_bottom">
+<li><a href="../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_bottom");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#field_summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li><a href="#field_detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_bottom">
+<!--   -->
+</a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; 2013. All Rights Reserved.</small></p>
+</body>
+</html>

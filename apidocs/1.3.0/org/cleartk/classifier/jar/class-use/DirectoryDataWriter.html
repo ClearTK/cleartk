@@ -1,0 +1,590 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- NewPage -->
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<title>Uses of Class org.cleartk.classifier.jar.DirectoryDataWriter (ClearTK Release 1.3.0 API)</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<script type="text/javascript"><!--
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="Uses of Class org.cleartk.classifier.jar.DirectoryDataWriter (ClearTK Release 1.3.0 API)";
+    }
+//-->
+</script>
+<noscript>
+<div>JavaScript is disabled on your browser.</div>
+</noscript>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+<!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../../overview-summary.html">Overview</a></li>
+<li><a href="../package-summary.html">Package</a></li>
+<li><a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">Class</a></li>
+<li class="navBarCell1Rev">Use</li>
+<li><a href="../package-tree.html">Tree</a></li>
+<li><a href="../../../../../index-all.html">Index</a></li>
+<li><a href="../../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li>Prev</li>
+<li>Next</li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../../index.html?org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html" target="_top">Frames</a></li>
+<li><a href="DirectoryDataWriter.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_top">
+<li><a href="../../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_top");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<a name="skip-navbar_top">
+<!--   -->
+</a></div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+<div class="header">
+<h2 title="Uses of Class org.cleartk.classifier.jar.DirectoryDataWriter" class="title">Uses of Class<br>org.cleartk.classifier.jar.DirectoryDataWriter</h2>
+</div>
+<div class="classUseContainer">
+<ul class="blockList">
+<li class="blockList">
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing packages, and an explanation">
+<caption><span>Packages that use <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Package</th>
+<th class="colLast" scope="col">Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.baseline">org.cleartk.classifier.baseline</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.crfsuite">org.cleartk.classifier.crfsuite</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.grmm">org.cleartk.classifier.grmm</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.jar">org.cleartk.classifier.jar</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.liblinear">org.cleartk.classifier.liblinear</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.libsvm">org.cleartk.classifier.libsvm</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.mallet">org.cleartk.classifier.mallet</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.opennlp">org.cleartk.classifier.opennlp</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.svmlight">org.cleartk.classifier.svmlight</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.svmlight.rank">org.cleartk.classifier.svmlight.rank</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.tksvmlight">org.cleartk.classifier.tksvmlight</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.viterbi">org.cleartk.classifier.viterbi</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.weka">org.cleartk.classifier.weka</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList">
+<ul class="blockList">
+<li class="blockList"><a name="org.cleartk.classifier.baseline">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/baseline/package-summary.html">org.cleartk.classifier.baseline</a></h3>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing subclasses, and an explanation">
+<caption><span>Subclasses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/baseline/package-summary.html">org.cleartk.classifier.baseline</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/baseline/MeanValueDataWriter.html" title="class in org.cleartk.classifier.baseline">MeanValueDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/baseline/MostFrequentBooleanDataWriter.html" title="class in org.cleartk.classifier.baseline">MostFrequentBooleanDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/baseline/MostFrequentStringDataWriter.html" title="class in org.cleartk.classifier.baseline">MostFrequentStringDataWriter</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/baseline/OutcomeOnlyDataWriter.html" title="class in org.cleartk.classifier.baseline">OutcomeOnlyDataWriter</a>&lt;CLASSIFIER_BUILDER extends <a href="../../../../../org/cleartk/classifier/baseline/SingleOutcomeClassifierBuilder.html" title="class in org.cleartk.classifier.baseline">SingleOutcomeClassifierBuilder</a>&lt;OUTCOME_TYPE&gt;,OUTCOME_TYPE&gt;</strong></code>
+<div class="block"><br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.crfsuite">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/crfsuite/package-summary.html">org.cleartk.classifier.crfsuite</a></h3>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing subclasses, and an explanation">
+<caption><span>Subclasses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/crfsuite/package-summary.html">org.cleartk.classifier.crfsuite</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/crfsuite/CRFSuiteStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.crfsuite">CRFSuiteStringOutcomeDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2011-2012, Technische Universität Darmstadt <br>
+ All rights reserved.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.grmm">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/grmm/package-summary.html">org.cleartk.classifier.grmm</a></h3>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing subclasses, and an explanation">
+<caption><span>Subclasses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/grmm/package-summary.html">org.cleartk.classifier.grmm</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/grmm/GrmmDataWriter.html" title="class in org.cleartk.classifier.grmm">GrmmDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2010, University of Würzburg <br>
+ All rights reserved.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.jar">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a></h3>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing subclasses, and an explanation">
+<caption><span>Subclasses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/jar/DataWriter_ImplBase.html" title="class in org.cleartk.classifier.jar">DataWriter_ImplBase</a>&lt;CLASSIFIER_BUILDER_TYPE extends <a href="../../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">EncodingJarClassifierBuilder</a>&lt;? extends <a href="../../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier">Classifier</a>&lt;OUTCOME_TYPE&gt;,ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;,ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</strong></code>
+<div class="block">Superclass for <a href="../../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> implementations that write training data to a file using
+ <a href="../../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/jar/EncodingDirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">EncodingDirectoryDataWriter</a>&lt;CLASSIFIER_BUILDER_TYPE extends <a href="../../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">EncodingJarClassifierBuilder</a>&lt;? extends CLASSIFIER_TYPE,ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;,CLASSIFIER_TYPE,ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</strong></code>
+<div class="block">Superclass for <a href="../../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write
+ training data to a file using a classifier builder with <a href="../../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s
+ 
+ Note that it does not declare that it implements either of the DataWriter interfaces.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/jar/SequenceDataWriter_ImplBase.html" title="class in org.cleartk.classifier.jar">SequenceDataWriter_ImplBase</a>&lt;CLASSIFIER_BUILDER_TYPE extends <a href="../../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">EncodingJarClassifierBuilder</a>&lt;? extends <a href="../../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier">SequenceClassifier</a>&lt;OUTCOME_TYPE&gt;,ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;,ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</strong></code>
+<div class="block">Superclass for <a href="../../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write training data to a file
+ using <a href="../../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.liblinear">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/liblinear/package-summary.html">org.cleartk.classifier.liblinear</a></h3>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing subclasses, and an explanation">
+<caption><span>Subclasses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/liblinear/package-summary.html">org.cleartk.classifier.liblinear</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/liblinear/LIBLINEARBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.liblinear">LIBLINEARBooleanOutcomeDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.libsvm">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/libsvm/package-summary.html">org.cleartk.classifier.libsvm</a></h3>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing subclasses, and an explanation">
+<caption><span>Subclasses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/libsvm/package-summary.html">org.cleartk.classifier.libsvm</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/libsvm/LIBSVMBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.libsvm">LIBSVMBooleanOutcomeDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/libsvm/LIBSVMDataWriter.html" title="class in org.cleartk.classifier.libsvm">LIBSVMDataWriter</a>&lt;CLASSIFIER_BUILDER_TYPE extends <a href="../../../../../org/cleartk/classifier/libsvm/GenericLIBSVMClassifierBuilder.html" title="class in org.cleartk.classifier.libsvm">GenericLIBSVMClassifierBuilder</a>&lt;? extends <a href="../../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier">Classifier</a>&lt;OUTCOME_TYPE&gt;,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE,MODEL_TYPE&gt;,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE,MODEL_TYPE&gt;</strong></code>
+<div class="block"><br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/libsvm/LIBSVMStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.libsvm">LIBSVMStringOutcomeDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.mallet">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/mallet/package-summary.html">org.cleartk.classifier.mallet</a></h3>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing subclasses, and an explanation">
+<caption><span>Subclasses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/mallet/package-summary.html">org.cleartk.classifier.mallet</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/mallet/MalletBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.mallet">MalletBooleanOutcomeDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/mallet/MalletCRFStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.mallet">MalletCRFStringOutcomeDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/mallet/MalletDataWriter_ImplBase.html" title="class in org.cleartk.classifier.mallet">MalletDataWriter_ImplBase</a>&lt;CLASSIFIER_BUILDER_TYPE extends <a href="../../../../../org/cleartk/classifier/mallet/MalletClassifierBuilder_ImplBase.html" title="class in org.cleartk.classifier.mallet">MalletClassifierBuilder_ImplBase</a>&lt;? extends <a href="../../../../../org/cleartk/classifier/mallet/MalletClassifier_ImplBase.html" title="class in org.cleartk.classifier.mallet">MalletClassifier_ImplBase</a>&lt;OUTCOME_TYPE&gt;,OUTCOME_TYPE&gt;,OUTCOME_TYPE&gt;</strong></code>
+<div class="block"><br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/mallet/MalletStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.mallet">MalletStringOutcomeDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.opennlp">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/opennlp/package-summary.html">org.cleartk.classifier.opennlp</a></h3>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing subclasses, and an explanation">
+<caption><span>Subclasses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/opennlp/package-summary.html">org.cleartk.classifier.opennlp</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/opennlp/MaxentBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.opennlp">MaxentBooleanOutcomeDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/opennlp/MaxentDataWriter_ImplBase.html" title="class in org.cleartk.classifier.opennlp">MaxentDataWriter_ImplBase</a>&lt;CLASSIFIER_BUILDER_TYPE extends <a href="../../../../../org/cleartk/classifier/opennlp/MaxentClassifierBuilder_ImplBase.html" title="class in org.cleartk.classifier.opennlp">MaxentClassifierBuilder_ImplBase</a>&lt;? extends <a href="../../../../../org/cleartk/classifier/opennlp/MaxentClassifier_ImplBase.html" title="class in org.cleartk.classifier.opennlp">MaxentClassifier_ImplBase</a>&lt;OUTCOME_TYPE&gt;,OUTCOME_TYPE&gt;,OUTCOME_TYPE&gt;</strong></code>
+<div class="block"><br>
+ Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/opennlp/MaxentStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.opennlp">MaxentStringOutcomeDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.svmlight">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/svmlight/package-summary.html">org.cleartk.classifier.svmlight</a></h3>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing subclasses, and an explanation">
+<caption><span>Subclasses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/svmlight/package-summary.html">org.cleartk.classifier.svmlight</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/svmlight/SVMlightBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.svmlight">SVMlightBooleanOutcomeDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/svmlight/SVMlightDataWriter_ImplBase.html" title="class in org.cleartk.classifier.svmlight">SVMlightDataWriter_ImplBase</a>&lt;CLASSIFIER_BUILDER_TYPE extends <a href="../../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">EncodingJarClassifierBuilder</a>&lt;? extends <a href="../../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier">Classifier</a>&lt;OUTCOME_TYPE&gt;,<a href="../../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</a>,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</strong></code>
+<div class="block"><br>
+ Copyright (c) 2009-2011, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/svmlight/SVMlightRegressionDataWriter.html" title="class in org.cleartk.classifier.svmlight">SVMlightRegressionDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/svmlight/SVMlightStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.svmlight">SVMlightStringOutcomeDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.svmlight.rank">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/svmlight/rank/package-summary.html">org.cleartk.classifier.svmlight.rank</a></h3>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing subclasses, and an explanation">
+<caption><span>Subclasses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/svmlight/rank/package-summary.html">org.cleartk.classifier.svmlight.rank</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/svmlight/rank/SVMlightRankDataWriter.html" title="class in org.cleartk.classifier.svmlight.rank">SVMlightRankDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.tksvmlight">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/tksvmlight/package-summary.html">org.cleartk.classifier.tksvmlight</a></h3>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing subclasses, and an explanation">
+<caption><span>Subclasses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/tksvmlight/package-summary.html">org.cleartk.classifier.tksvmlight</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/tksvmlight/TKSVMlightBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.tksvmlight">TKSVMlightBooleanOutcomeDataWriter</a></strong></code>
+<div class="block">The data writer for tree kernel svm light.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/tksvmlight/TKSVMlightStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.tksvmlight">TKSVMlightStringOutcomeDataWriter</a></strong></code>
+<div class="block"><br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.viterbi">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/viterbi/package-summary.html">org.cleartk.classifier.viterbi</a></h3>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing subclasses, and an explanation">
+<caption><span>Subclasses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/viterbi/package-summary.html">org.cleartk.classifier.viterbi</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/viterbi/ViterbiDataWriter.html" title="class in org.cleartk.classifier.viterbi">ViterbiDataWriter</a>&lt;OUTCOME_TYPE&gt;</strong></code>
+<div class="block"><br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.weka">
+<!--   -->
+</a>
+<h3>Uses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/weka/package-summary.html">org.cleartk.classifier.weka</a></h3>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing subclasses, and an explanation">
+<caption><span>Subclasses of <a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter</a> in <a href="../../../../../org/cleartk/classifier/weka/package-summary.html">org.cleartk.classifier.weka</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><code>class&nbsp;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/classifier/weka/WekaStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.weka">WekaStringOutcomeDataWriter</a></strong></code>
+<div class="block">Copyright (c) 2012, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+<!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../../overview-summary.html">Overview</a></li>
+<li><a href="../package-summary.html">Package</a></li>
+<li><a href="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">Class</a></li>
+<li class="navBarCell1Rev">Use</li>
+<li><a href="../package-tree.html">Tree</a></li>
+<li><a href="../../../../../index-all.html">Index</a></li>
+<li><a href="../../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li>Prev</li>
+<li>Next</li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../../index.html?org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html" target="_top">Frames</a></li>
+<li><a href="DirectoryDataWriter.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_bottom">
+<li><a href="../../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_bottom");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<a name="skip-navbar_bottom">
+<!--   -->
+</a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; 2013. All Rights Reserved.</small></p>
+</body>
+</html>

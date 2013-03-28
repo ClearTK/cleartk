@@ -1,0 +1,810 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- NewPage -->
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<title>CleartkTestBase (ClearTK Release 1.3.0 API)</title>
+<link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
+</head>
+<body>
+<script type="text/javascript"><!--
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="CleartkTestBase (ClearTK Release 1.3.0 API)";
+    }
+//-->
+</script>
+<noscript>
+<div>JavaScript is disabled on your browser.</div>
+</noscript>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+<!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/CleartkTestBase.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../index-all.html">Index</a></li>
+<li><a href="../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li>Prev Class</li>
+<li><a href="../../../org/cleartk/test/DefaultTestBase.html" title="class in org.cleartk.test"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../index.html?org/cleartk/test/CleartkTestBase.html" target="_top">Frames</a></li>
+<li><a href="CleartkTestBase.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_top">
+<li><a href="../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_top");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#field_summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li><a href="#field_detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_top">
+<!--   -->
+</a></div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+<!-- ======== START OF CLASS DATA ======== -->
+<div class="header">
+<div class="subTitle">org.cleartk.test</div>
+<h2 title="Class CleartkTestBase" class="title">Class CleartkTestBase</h2>
+</div>
+<div class="contentContainer">
+<ul class="inheritance">
+<li><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
+<li>
+<ul class="inheritance">
+<li>org.cleartk.test.CleartkTestBase</li>
+</ul>
+</li>
+</ul>
+<div class="description">
+<ul class="blockList">
+<li class="blockList">
+<dl>
+<dt>Direct Known Subclasses:</dt>
+<dd><a href="../../../org/cleartk/test/DefaultTestBase.html" title="class in org.cleartk.test">DefaultTestBase</a></dd>
+</dl>
+<hr>
+<br>
+<pre>public abstract class <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.58">CleartkTestBase</a>
+extends <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
+<div class="block"><br>
+ Copyright (c) 2010, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+<dl><dt><span class="strong">Author:</span></dt>
+  <dd>Philip Ogren</dd></dl>
+</li>
+</ul>
+</div>
+<div class="summary">
+<ul class="blockList">
+<li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field_summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#ALL_TESTS_PROPERTY_VALUE">ALL_TESTS_PROPERTY_VALUE</a></strong></code>
+<div class="block">Value for the <a href="../../../org/cleartk/test/CleartkTestBase.html#SKIP_TESTS_PROPERTY"><code>SKIP_TESTS_PROPERTY</code></a> property that indicates that all tests that can be
+ skipped are disabled.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#BIG_MEMORY_TEST_MESSAGE">BIG_MEMORY_TEST_MESSAGE</a></strong></code>
+<div class="block">A message indicating that the current test requires a lot of memory, and giving instructions
+ how to skip it.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#BIG_MEMORY_TESTS_PROPERTY_VALUE">BIG_MEMORY_TESTS_PROPERTY_VALUE</a></strong></code>
+<div class="block">Value for the <a href="../../../org/cleartk/test/CleartkTestBase.html#SKIP_TESTS_PROPERTY"><code>SKIP_TESTS_PROPERTY</code></a> property that indicates that tests requiring a lot
+ of memory should be disabled.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#COMMON_TESTS_PROPERTY_VALUE">COMMON_TESTS_PROPERTY_VALUE</a></strong></code>
+<div class="block">Value for the <a href="../../../org/cleartk/test/CleartkTestBase.html#SKIP_TESTS_PROPERTY"><code>SKIP_TESTS_PROPERTY</code></a> property that indicates that commonly skipped tests
+ should be disabled.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>org.junit.rules.TemporaryFolder</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#folder">folder</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected <a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#jCas">jCas</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#LIBLINEAR_TEST_MESSAGE">LIBLINEAR_TEST_MESSAGE</a></strong></code>
+<div class="block"><strong>Deprecated.</strong>&nbsp;</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#LIBSVM_TEST_MESSAGE">LIBSVM_TEST_MESSAGE</a></strong></code>
+<div class="block"><strong>Deprecated.</strong>&nbsp;</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected <a href="http://download.oracle.com/javase/6/docs/api/java/util/logging/Logger.html?is-external=true" title="class or interface in java.util.logging">Logger</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#logger">logger</a></strong></code>
+<div class="block">A <a href="http://download.oracle.com/javase/6/docs/api/java/util/logging/Logger.html?is-external=true" title="class or interface in java.util.logging"><code>Logger</code></a> instance associated with the class, intended for use by subclasses.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#LONG_TEST_MESSAGE">LONG_TEST_MESSAGE</a></strong></code>
+<div class="block">A message indicating that the current test runs for a long time, and giving instructions how to
+ skip it.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#LONG_TESTS_PROPERTY_VALUE">LONG_TESTS_PROPERTY_VALUE</a></strong></code>
+<div class="block">Value for the <a href="../../../org/cleartk/test/CleartkTestBase.html#SKIP_TESTS_PROPERTY"><code>SKIP_TESTS_PROPERTY</code></a> property that indicates that long-running tests
+ should be disabled.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected <a href="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#outputDirectory">outputDirectory</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#outputDirectoryName">outputDirectoryName</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#SKIP_TESTS_PROPERTY">SKIP_TESTS_PROPERTY</a></strong></code>
+<div class="block">The name of the property that can be set to skip some tests.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#SVMLIGHT_RANK_TEST_MESSAGE">SVMLIGHT_RANK_TEST_MESSAGE</a></strong></code>
+<div class="block"><strong>Deprecated.</strong>&nbsp;</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#SVMLIGHT_TEST_MESSAGE">SVMLIGHT_TEST_MESSAGE</a></strong></code>
+<div class="block"><strong>Deprecated.</strong>&nbsp;</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#TK_SVMLIGHT_TEST_MESSAGE">TK_SVMLIGHT_TEST_MESSAGE</a></strong></code>
+<div class="block"><strong>Deprecated.</strong>&nbsp;</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected <a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/metadata/TypeSystemDescription.html?is-external=true" title="class or interface in org.apache.uima.resource.metadata">TypeSystemDescription</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#typeSystemDescription">typeSystemDescription</a></strong></code>
+<div class="block"><strong>Deprecated.</strong>&nbsp;</div>
+</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_summary">
+<!--   -->
+</a>
+<h3>Constructor Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
+<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Constructor and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#CleartkTestBase()">CleartkTestBase</a></strong>()</code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- ========== METHOD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_summary">
+<!--   -->
+</a>
+<h3>Method Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
+<caption><span>Methods</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected void</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#assumeBigMemoryTestsEnabled()">assumeBigMemoryTestsEnabled</a></strong>()</code>
+<div class="block">Subclasses should call this method at the beginning of a test that will take a long time to
+ run.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected void</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#assumeLiblinearEnabled()">assumeLiblinearEnabled</a></strong>()</code>
+<div class="block"><strong>Deprecated.</strong>&nbsp;</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected void</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#assumeLibsvmEnabled()">assumeLibsvmEnabled</a></strong>()</code>
+<div class="block"><strong>Deprecated.</strong>&nbsp;</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected void</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#assumeLongTestsEnabled()">assumeLongTestsEnabled</a></strong>()</code>
+<div class="block">Subclasses should call this method at the beginning of a test that will take a long time to
+ run.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected void</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#assumeSvmLightEnabled()">assumeSvmLightEnabled</a></strong>()</code>
+<div class="block"><strong>Deprecated.</strong>&nbsp;</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected void</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#assumeTestsEnabled(java.lang.String...)">assumeTestsEnabled</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;testNames)</code>
+<div class="block">Subclasses should call this method at the beginning of a test to check whether a specific type
+ of test is enabled by checking whether the name of that test is contained in the
+ <a href="../../../org/cleartk/test/CleartkTestBase.html#SKIP_TESTS_PROPERTY">"cleartk.skipTests"</a> property.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected void</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#assumeTkSvmLightEnabled()">assumeTkSvmLightEnabled</a></strong>()</code>
+<div class="block"><strong>Deprecated.</strong>&nbsp;</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#createTestEnabledMessage(java.lang.String, java.lang.String)">createTestEnabledMessage</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;testName,
+                                                <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</code>
+<div class="block">Subclasses should call this method to create a message that explains how to disable a test.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#getCollectionReaderCount(org.apache.uima.collection.CollectionReader)">getCollectionReaderCount</a></strong>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</a>&nbsp;reader)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code><a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#getTypeSystemDescriptorNames()">getTypeSystemDescriptorNames</a></strong>()</code>
+<div class="block"><strong>Deprecated.</strong>&nbsp;</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#setUp()">setUp</a></strong>()</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/test/CleartkTestBase.html#testCollectionReaderCount(org.apache.uima.collection.CollectionReader, int)">testCollectionReaderCount</a></strong>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</a>&nbsp;reader,
+                                                  int&nbsp;expectedCount)</code>&nbsp;</td>
+</tr>
+</table>
+<ul class="blockList">
+<li class="blockList"><a name="methods_inherited_from_class_java.lang.Object">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;java.lang.<a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
+<code><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="details">
+<ul class="blockList">
+<li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field_detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="ALL_TESTS_PROPERTY_VALUE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>ALL_TESTS_PROPERTY_VALUE</h4>
+<pre>public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.102">ALL_TESTS_PROPERTY_VALUE</a></pre>
+<div class="block">Value for the <a href="../../../org/cleartk/test/CleartkTestBase.html#SKIP_TESTS_PROPERTY"><code>SKIP_TESTS_PROPERTY</code></a> property that indicates that all tests that can be
+ skipped are disabled. Current value: "all".</div>
+<dl><dt><span class="strong">See Also:</span></dt><dd><a href="../../../constant-values.html#org.cleartk.test.CleartkTestBase.ALL_TESTS_PROPERTY_VALUE">Constant Field Values</a></dd></dl>
+</li>
+</ul>
+<a name="BIG_MEMORY_TEST_MESSAGE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>BIG_MEMORY_TEST_MESSAGE</h4>
+<pre>public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.188">BIG_MEMORY_TEST_MESSAGE</a></pre>
+<div class="block">A message indicating that the current test requires a lot of memory, and giving instructions
+ how to skip it. Should be logged immediately after calling
+ <a href="../../../org/cleartk/test/CleartkTestBase.html#assumeBigMemoryTestsEnabled()"><code>assumeBigMemoryTestsEnabled()</code></a>.</div>
+</li>
+</ul>
+<a name="BIG_MEMORY_TESTS_PROPERTY_VALUE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>BIG_MEMORY_TESTS_PROPERTY_VALUE</h4>
+<pre>public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.171">BIG_MEMORY_TESTS_PROPERTY_VALUE</a></pre>
+<div class="block">Value for the <a href="../../../org/cleartk/test/CleartkTestBase.html#SKIP_TESTS_PROPERTY"><code>SKIP_TESTS_PROPERTY</code></a> property that indicates that tests requiring a lot
+ of memory should be disabled. Current value: "bigMem".</div>
+<dl><dt><span class="strong">See Also:</span></dt><dd><a href="../../../constant-values.html#org.cleartk.test.CleartkTestBase.BIG_MEMORY_TESTS_PROPERTY_VALUE">Constant Field Values</a></dd></dl>
+</li>
+</ul>
+<a name="COMMON_TESTS_PROPERTY_VALUE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>COMMON_TESTS_PROPERTY_VALUE</h4>
+<pre>public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.96">COMMON_TESTS_PROPERTY_VALUE</a></pre>
+<div class="block">Value for the <a href="../../../org/cleartk/test/CleartkTestBase.html#SKIP_TESTS_PROPERTY"><code>SKIP_TESTS_PROPERTY</code></a> property that indicates that commonly skipped tests
+ should be disabled. Currently, this will disable at least <a href="../../../org/cleartk/test/CleartkTestBase.html#LONG_TESTS_PROPERTY_VALUE">"long"</a>
+ and <a href="../../../org/cleartk/test/CleartkTestBase.html#BIG_MEMORY_TESTS_PROPERTY_VALUE">"bigMem"</a> tests. It will also typically disable tests that
+ require binaries that are hard to build (e.g. tk-svmlight, crfsuite). Current value:
+ "common".</div>
+<dl><dt><span class="strong">See Also:</span></dt><dd><a href="../../../constant-values.html#org.cleartk.test.CleartkTestBase.COMMON_TESTS_PROPERTY_VALUE">Constant Field Values</a></dd></dl>
+</li>
+</ul>
+<a name="folder">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>folder</h4>
+<pre>public&nbsp;org.junit.rules.TemporaryFolder <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.198">folder</a></pre>
+</li>
+</ul>
+<a name="jCas">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>jCas</h4>
+<pre>protected&nbsp;<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.192">jCas</a></pre>
+</li>
+</ul>
+<a name="LIBLINEAR_TEST_MESSAGE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>LIBLINEAR_TEST_MESSAGE</h4>
+<pre><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.281">LIBLINEAR_TEST_MESSAGE</a></pre>
+<div class="block"><span class="strong">Deprecated.</span>&nbsp;</div>
+</li>
+</ul>
+<a name="LIBSVM_TEST_MESSAGE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>LIBSVM_TEST_MESSAGE</h4>
+<pre><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.259">LIBSVM_TEST_MESSAGE</a></pre>
+<div class="block"><span class="strong">Deprecated.</span>&nbsp;</div>
+</li>
+</ul>
+<a name="logger">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>logger</h4>
+<pre>protected&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/logging/Logger.html?is-external=true" title="class or interface in java.util.logging">Logger</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.63">logger</a></pre>
+<div class="block">A <a href="http://download.oracle.com/javase/6/docs/api/java/util/logging/Logger.html?is-external=true" title="class or interface in java.util.logging"><code>Logger</code></a> instance associated with the class, intended for use by subclasses.</div>
+</li>
+</ul>
+<a name="LONG_TEST_MESSAGE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>LONG_TEST_MESSAGE</h4>
+<pre>protected static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.163">LONG_TEST_MESSAGE</a></pre>
+<div class="block">A message indicating that the current test runs for a long time, and giving instructions how to
+ skip it. Should be logged immediately after calling <a href="../../../org/cleartk/test/CleartkTestBase.html#assumeLongTestsEnabled()"><code>assumeLongTestsEnabled()</code></a>.</div>
+</li>
+</ul>
+<a name="LONG_TESTS_PROPERTY_VALUE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>LONG_TESTS_PROPERTY_VALUE</h4>
+<pre>public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.147">LONG_TESTS_PROPERTY_VALUE</a></pre>
+<div class="block">Value for the <a href="../../../org/cleartk/test/CleartkTestBase.html#SKIP_TESTS_PROPERTY"><code>SKIP_TESTS_PROPERTY</code></a> property that indicates that long-running tests
+ should be disabled. Current value: "long".</div>
+<dl><dt><span class="strong">See Also:</span></dt><dd><a href="../../../constant-values.html#org.cleartk.test.CleartkTestBase.LONG_TESTS_PROPERTY_VALUE">Constant Field Values</a></dd></dl>
+</li>
+</ul>
+<a name="outputDirectory">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>outputDirectory</h4>
+<pre>protected&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.200">outputDirectory</a></pre>
+</li>
+</ul>
+<a name="outputDirectoryName">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>outputDirectoryName</h4>
+<pre>protected&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.202">outputDirectoryName</a></pre>
+</li>
+</ul>
+<a name="SKIP_TESTS_PROPERTY">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>SKIP_TESTS_PROPERTY</h4>
+<pre>public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.87">SKIP_TESTS_PROPERTY</a></pre>
+<div class="block">The name of the property that can be set to skip some tests. The property value will be parsed
+ as a comma-separated list of values, where each value can designate one type of test to skip,
+ e.g. <a href="../../../org/cleartk/test/CleartkTestBase.html#LONG_TESTS_PROPERTY_VALUE">"long"</a> or <a href="../../../org/cleartk/test/CleartkTestBase.html#BIG_MEMORY_TESTS_PROPERTY_VALUE">"bigMem"</a>. Example
+ usage: <br/>
+ <code>-Dcleartk.skipTests=long,bigMem</code></div>
+<dl><dt><span class="strong">See Also:</span></dt><dd><a href="../../../constant-values.html#org.cleartk.test.CleartkTestBase.SKIP_TESTS_PROPERTY">Constant Field Values</a></dd></dl>
+</li>
+</ul>
+<a name="SVMLIGHT_RANK_TEST_MESSAGE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>SVMLIGHT_RANK_TEST_MESSAGE</h4>
+<pre><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.319">SVMLIGHT_RANK_TEST_MESSAGE</a></pre>
+<div class="block"><span class="strong">Deprecated.</span>&nbsp;</div>
+</li>
+</ul>
+<a name="SVMLIGHT_TEST_MESSAGE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>SVMLIGHT_TEST_MESSAGE</h4>
+<pre><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.313">SVMLIGHT_TEST_MESSAGE</a></pre>
+<div class="block"><span class="strong">Deprecated.</span>&nbsp;</div>
+</li>
+</ul>
+<a name="TK_SVMLIGHT_TEST_MESSAGE">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>TK_SVMLIGHT_TEST_MESSAGE</h4>
+<pre><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.344">TK_SVMLIGHT_TEST_MESSAGE</a></pre>
+<div class="block"><span class="strong">Deprecated.</span>&nbsp;</div>
+</li>
+</ul>
+<a name="typeSystemDescription">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>typeSystemDescription</h4>
+<pre><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+protected&nbsp;<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/metadata/TypeSystemDescription.html?is-external=true" title="class or interface in org.apache.uima.resource.metadata">TypeSystemDescription</a> <a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.195">typeSystemDescription</a></pre>
+<div class="block"><span class="strong">Deprecated.</span>&nbsp;</div>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_detail">
+<!--   -->
+</a>
+<h3>Constructor Detail</h3>
+<a name="CleartkTestBase()">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>CleartkTestBase</h4>
+<pre>public&nbsp;<a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.70">CleartkTestBase</a>()</pre>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ============ METHOD DETAIL ========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_detail">
+<!--   -->
+</a>
+<h3>Method Detail</h3>
+<a name="assumeBigMemoryTestsEnabled()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>assumeBigMemoryTestsEnabled</h4>
+<pre>protected&nbsp;void&nbsp;<a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.178">assumeBigMemoryTestsEnabled</a>()</pre>
+<div class="block">Subclasses should call this method at the beginning of a test that will take a long time to
+ run. Immediately after calling this method, they should also call
+ <code>this.logger.info(<a href="../../../org/cleartk/test/CleartkTestBase.html#BIG_MEMORY_TEST_MESSAGE"><code>BIG_MEMORY_TEST_MESSAGE</code></a>)</code>.</div>
+</li>
+</ul>
+<a name="assumeLiblinearEnabled()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>assumeLiblinearEnabled</h4>
+<pre><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+protected&nbsp;void&nbsp;<a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.275">assumeLiblinearEnabled</a>()</pre>
+<div class="block"><span class="strong">Deprecated.</span>&nbsp;</div>
+</li>
+</ul>
+<a name="assumeLibsvmEnabled()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>assumeLibsvmEnabled</h4>
+<pre><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+protected&nbsp;void&nbsp;<a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.253">assumeLibsvmEnabled</a>()</pre>
+<div class="block"><span class="strong">Deprecated.</span>&nbsp;</div>
+</li>
+</ul>
+<a name="assumeLongTestsEnabled()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>assumeLongTestsEnabled</h4>
+<pre>protected&nbsp;void&nbsp;<a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.154">assumeLongTestsEnabled</a>()</pre>
+<div class="block">Subclasses should call this method at the beginning of a test that will take a long time to
+ run. Immediately after calling this method, they should also call
+ <code>this.logger.info(<a href="../../../org/cleartk/test/CleartkTestBase.html#LONG_TEST_MESSAGE"><code>LONG_TEST_MESSAGE</code></a>)</code>.</div>
+</li>
+</ul>
+<a name="assumeSvmLightEnabled()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>assumeSvmLightEnabled</h4>
+<pre><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+protected&nbsp;void&nbsp;<a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.307">assumeSvmLightEnabled</a>()</pre>
+<div class="block"><span class="strong">Deprecated.</span>&nbsp;</div>
+</li>
+</ul>
+<a name="assumeTestsEnabled(java.lang.String...)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>assumeTestsEnabled</h4>
+<pre>protected&nbsp;void&nbsp;<a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.117">assumeTestsEnabled</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>...&nbsp;testNames)</pre>
+<div class="block">Subclasses should call this method at the beginning of a test to check whether a specific type
+ of test is enabled by checking whether the name of that test is contained in the
+ <a href="../../../org/cleartk/test/CleartkTestBase.html#SKIP_TESTS_PROPERTY">"cleartk.skipTests"</a> property. If the name is present, then the test will be skipped.
+ 
+ Typically, immediately after calling <a href="../../../org/cleartk/test/CleartkTestBase.html#assumeTestsEnabled(java.lang.String...)"><code>assumeTestsEnabled(java.lang.String...)</code></a>, a test should log a message
+ created by <a href="../../../org/cleartk/test/CleartkTestBase.html#createTestEnabledMessage(java.lang.String, java.lang.String)"><code>createTestEnabledMessage(java.lang.String, java.lang.String)</code></a> to explain to a user how to disable the test if
+ they wish.
+ 
+ Note that if <a href="../../../org/cleartk/test/CleartkTestBase.html#SKIP_TESTS_PROPERTY">"cleartk.skipTests"</a> contains <a href="../../../org/cleartk/test/CleartkTestBase.html#ALL_TESTS_PROPERTY_VALUE">"all"</a> then the
+ test will be skipped even if <a href="../../../org/cleartk/test/CleartkTestBase.html#ALL_TESTS_PROPERTY_VALUE"><code>ALL_TESTS_PROPERTY_VALUE</code></a> was not passed as an argument to
+ this method.</div>
+</li>
+</ul>
+<a name="assumeTkSvmLightEnabled()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>assumeTkSvmLightEnabled</h4>
+<pre><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+protected&nbsp;void&nbsp;<a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.335">assumeTkSvmLightEnabled</a>()</pre>
+<div class="block"><span class="strong">Deprecated.</span>&nbsp;</div>
+</li>
+</ul>
+<a name="createTestEnabledMessage(java.lang.String, java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createTestEnabledMessage</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.138">createTestEnabledMessage</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;testName,
+                              <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;message)</pre>
+<div class="block">Subclasses should call this method to create a message that explains how to disable a test.
+ Typically such a message should be logged immediately after calling
+ <a href="../../../org/cleartk/test/CleartkTestBase.html#assumeTestsEnabled(java.lang.String...)"><code>assumeTestsEnabled(String...)</code></a>.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>testName</code> - The name of the test (i.e. the value that should be present in the
+          <a href="../../../org/cleartk/test/CleartkTestBase.html#SKIP_TESTS_PROPERTY">"cleartk.skipTests"</a> property)</dd><dd><code>message</code> - A message describing the requirements of the tests that are run when the named test is
+          enabled.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A message that contains both the given description and an explanation of how to disable
+         the test.</dd></dl>
+</li>
+</ul>
+<a name="getCollectionReaderCount(org.apache.uima.collection.CollectionReader)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getCollectionReaderCount</h4>
+<pre>public&nbsp;int&nbsp;<a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.222">getCollectionReaderCount</a>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</a>&nbsp;reader)
+                             throws <a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</a>,
+                                    <a href="http://download.oracle.com/javase/6/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</a></pre>
+<dl><dt><span class="strong">Throws:</span></dt>
+<dd><code><a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</a></code></dd>
+<dd><code><a href="http://download.oracle.com/javase/6/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</a></code></dd></dl>
+</li>
+</ul>
+<a name="getTypeSystemDescriptorNames()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTypeSystemDescriptorNames</h4>
+<pre><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</a>
+public&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;<a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.218">getTypeSystemDescriptorNames</a>()</pre>
+<div class="block"><span class="strong">Deprecated.</span>&nbsp;</div>
+</li>
+</ul>
+<a name="setUp()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setUp</h4>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.205">setUp</a>()
+           throws <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Exception.html?is-external=true" title="class or interface in java.lang">Exception</a></pre>
+<dl><dt><span class="strong">Throws:</span></dt>
+<dd><code><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Exception.html?is-external=true" title="class or interface in java.lang">Exception</a></code></dd></dl>
+</li>
+</ul>
+<a name="testCollectionReaderCount(org.apache.uima.collection.CollectionReader, int)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>testCollectionReaderCount</h4>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/org/cleartk/test/CleartkTestBase.html#line.237">testCollectionReaderCount</a>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</a>&nbsp;reader,
+                             int&nbsp;expectedCount)
+                               throws <a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</a>,
+                                      <a href="http://download.oracle.com/javase/6/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</a></pre>
+<dl><dt><span class="strong">Throws:</span></dt>
+<dd><code><a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</a></code></dd>
+<dd><code><a href="http://download.oracle.com/javase/6/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</a></code></dd></dl>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- ========= END OF CLASS DATA ========= -->
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+<!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/CleartkTestBase.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../index-all.html">Index</a></li>
+<li><a href="../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li>Prev Class</li>
+<li><a href="../../../org/cleartk/test/DefaultTestBase.html" title="class in org.cleartk.test"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../index.html?org/cleartk/test/CleartkTestBase.html" target="_top">Frames</a></li>
+<li><a href="CleartkTestBase.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_bottom">
+<li><a href="../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_bottom");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#field_summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li><a href="#field_detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_bottom">
+<!--   -->
+</a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; 2013. All Rights Reserved.</small></p>
+</body>
+</html>

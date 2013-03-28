@@ -1,0 +1,938 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- NewPage -->
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<title>Uses of Package org.cleartk.classifier.jar (ClearTK Release 1.3.0 API)</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<script type="text/javascript"><!--
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="Uses of Package org.cleartk.classifier.jar (ClearTK Release 1.3.0 API)";
+    }
+//-->
+</script>
+<noscript>
+<div>JavaScript is disabled on your browser.</div>
+</noscript>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+<!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li>Class</li>
+<li class="navBarCell1Rev">Use</li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../index-all.html">Index</a></li>
+<li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li>Prev</li>
+<li>Next</li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../index.html?org/cleartk/classifier/jar/package-use.html" target="_top">Frames</a></li>
+<li><a href="package-use.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_top">
+<li><a href="../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_top");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<a name="skip-navbar_top">
+<!--   -->
+</a></div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+<div class="header">
+<h1 title="Uses of Package org.cleartk.classifier.jar" class="title">Uses of Package<br>org.cleartk.classifier.jar</h1>
+</div>
+<div class="contentContainer">
+<ul class="blockList">
+<li class="blockList">
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing packages, and an explanation">
+<caption><span>Packages that use <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Package</th>
+<th class="colLast" scope="col">Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.baseline">org.cleartk.classifier.baseline</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.crfsuite">org.cleartk.classifier.crfsuite</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.grmm">org.cleartk.classifier.grmm</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.jar">org.cleartk.classifier.jar</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.liblinear">org.cleartk.classifier.liblinear</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.libsvm">org.cleartk.classifier.libsvm</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.mallet">org.cleartk.classifier.mallet</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.opennlp">org.cleartk.classifier.opennlp</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.svmlight">org.cleartk.classifier.svmlight</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.svmlight.rank">org.cleartk.classifier.svmlight.rank</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.tksvmlight">org.cleartk.classifier.tksvmlight</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.viterbi">org.cleartk.classifier.viterbi</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="#org.cleartk.classifier.weka">org.cleartk.classifier.weka</a></td>
+<td class="colLast">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.baseline">
+<!--   -->
+</a>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
+<caption><span>Classes in <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a> used by <a href="../../../../org/cleartk/classifier/baseline/package-summary.html">org.cleartk.classifier.baseline</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html#org.cleartk.classifier.baseline">DirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that saves files
+ to a training directory using a <a href="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><code>JarClassifierBuilder</code></a>.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/JarClassifierBuilder.html#org.cleartk.classifier.baseline">JarClassifierBuilder</a>
+<div class="block">Superclass for builders which package classifiers as jar files.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.crfsuite">
+<!--   -->
+</a>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
+<caption><span>Classes in <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a> used by <a href="../../../../org/cleartk/classifier/crfsuite/package-summary.html">org.cleartk.classifier.crfsuite</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html#org.cleartk.classifier.crfsuite">DirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that saves files
+ to a training directory using a <a href="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><code>JarClassifierBuilder</code></a>.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingDirectoryDataWriter.html#org.cleartk.classifier.crfsuite">EncodingDirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write
+ training data to a file using a classifier builder with <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s
+ 
+ Note that it does not declare that it implements either of the DataWriter interfaces.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifier.html#org.cleartk.classifier.crfsuite">EncodingJarClassifier</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> and <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifierBuilder.html#org.cleartk.classifier.crfsuite">EncodingJarClassifierBuilder</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/JarClassifierBuilder.html#org.cleartk.classifier.crfsuite">JarClassifierBuilder</a>
+<div class="block">Superclass for builders which package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/SequenceClassifier_ImplBase.html#org.cleartk.classifier.crfsuite">SequenceClassifier_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/SequenceClassifierBuilder_ImplBase.html#org.cleartk.classifier.crfsuite">SequenceClassifierBuilder_ImplBase</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and build and package <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a>s as jar files.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/SequenceDataWriter_ImplBase.html#org.cleartk.classifier.crfsuite">SequenceDataWriter_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write training data to a file
+ using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.grmm">
+<!--   -->
+</a>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
+<caption><span>Classes in <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a> used by <a href="../../../../org/cleartk/classifier/grmm/package-summary.html">org.cleartk.classifier.grmm</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html#org.cleartk.classifier.grmm">DirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that saves files
+ to a training directory using a <a href="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><code>JarClassifierBuilder</code></a>.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingDirectoryDataWriter.html#org.cleartk.classifier.grmm">EncodingDirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write
+ training data to a file using a classifier builder with <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s
+ 
+ Note that it does not declare that it implements either of the DataWriter interfaces.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifier.html#org.cleartk.classifier.grmm">EncodingJarClassifier</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> and <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifierBuilder.html#org.cleartk.classifier.grmm">EncodingJarClassifierBuilder</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/JarClassifierBuilder.html#org.cleartk.classifier.grmm">JarClassifierBuilder</a>
+<div class="block">Superclass for builders which package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/SequenceClassifier_ImplBase.html#org.cleartk.classifier.grmm">SequenceClassifier_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/SequenceClassifierBuilder_ImplBase.html#org.cleartk.classifier.grmm">SequenceClassifierBuilder_ImplBase</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and build and package <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a>s as jar files.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/SequenceDataWriter_ImplBase.html#org.cleartk.classifier.grmm">SequenceDataWriter_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write training data to a file
+ using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.jar">
+<!--   -->
+</a>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
+<caption><span>Classes in <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a> used by <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html#org.cleartk.classifier.jar">DirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that saves files
+ to a training directory using a <a href="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><code>JarClassifierBuilder</code></a>.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriterFactory.html#org.cleartk.classifier.jar">DirectoryDataWriterFactory</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriterFactory.html" title="interface in org.cleartk.classifier"><code>DataWriterFactory</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriterFactory.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriterFactory</code></a> implementations
+ that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingDirectoryDataWriter.html#org.cleartk.classifier.jar">EncodingDirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write
+ training data to a file using a classifier builder with <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s
+ 
+ Note that it does not declare that it implements either of the DataWriter interfaces.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingDirectoryDataWriterFactory.html#org.cleartk.classifier.jar">EncodingDirectoryDataWriterFactory</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriterFactory.html" title="interface in org.cleartk.classifier"><code>DataWriterFactory</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriterFactory.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriterFactory</code></a> implementations
+ that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifier.html#org.cleartk.classifier.jar">EncodingJarClassifier</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> and <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifierBuilder.html#org.cleartk.classifier.jar">EncodingJarClassifierBuilder</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/GenericDataWriterFactory.html#org.cleartk.classifier.jar">GenericDataWriterFactory</a>
+<div class="block">Serves as a common base class for data writer factories such as <a href="../../../../org/cleartk/classifier/jar/DefaultDataWriterFactory.html" title="class in org.cleartk.classifier.jar"><code>DefaultDataWriterFactory</code></a>
+ and <a href="../../../../org/cleartk/classifier/jar/DefaultSequenceDataWriterFactory.html" title="class in org.cleartk.classifier.jar"><code>DefaultSequenceDataWriterFactory</code></a>.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/GenericJarClassifierFactory.html#org.cleartk.classifier.jar">GenericJarClassifierFactory</a>
+<div class="block"><br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/JarClassifierBuilder.html#org.cleartk.classifier.jar">JarClassifierBuilder</a>
+<div class="block">Superclass for builders which package classifiers as jar files.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.liblinear">
+<!--   -->
+</a>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
+<caption><span>Classes in <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a> used by <a href="../../../../org/cleartk/classifier/liblinear/package-summary.html">org.cleartk.classifier.liblinear</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/Classifier_ImplBase.html#org.cleartk.classifier.liblinear">Classifier_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> implementations that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/ClassifierBuilder_ImplBase.html#org.cleartk.classifier.liblinear">ClassifierBuilder_ImplBase</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and build and package <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a>s as jar files.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DataWriter_ImplBase.html#org.cleartk.classifier.liblinear">DataWriter_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> implementations that write training data to a file using
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html#org.cleartk.classifier.liblinear">DirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that saves files
+ to a training directory using a <a href="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><code>JarClassifierBuilder</code></a>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingDirectoryDataWriter.html#org.cleartk.classifier.liblinear">EncodingDirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write
+ training data to a file using a classifier builder with <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s
+ 
+ Note that it does not declare that it implements either of the DataWriter interfaces.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifier.html#org.cleartk.classifier.liblinear">EncodingJarClassifier</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> and <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifierBuilder.html#org.cleartk.classifier.liblinear">EncodingJarClassifierBuilder</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/JarClassifierBuilder.html#org.cleartk.classifier.liblinear">JarClassifierBuilder</a>
+<div class="block">Superclass for builders which package classifiers as jar files.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.libsvm">
+<!--   -->
+</a>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
+<caption><span>Classes in <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a> used by <a href="../../../../org/cleartk/classifier/libsvm/package-summary.html">org.cleartk.classifier.libsvm</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/Classifier_ImplBase.html#org.cleartk.classifier.libsvm">Classifier_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> implementations that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/ClassifierBuilder_ImplBase.html#org.cleartk.classifier.libsvm">ClassifierBuilder_ImplBase</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and build and package <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a>s as jar files.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DataWriter_ImplBase.html#org.cleartk.classifier.libsvm">DataWriter_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> implementations that write training data to a file using
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html#org.cleartk.classifier.libsvm">DirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that saves files
+ to a training directory using a <a href="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><code>JarClassifierBuilder</code></a>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingDirectoryDataWriter.html#org.cleartk.classifier.libsvm">EncodingDirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write
+ training data to a file using a classifier builder with <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s
+ 
+ Note that it does not declare that it implements either of the DataWriter interfaces.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifier.html#org.cleartk.classifier.libsvm">EncodingJarClassifier</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> and <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifierBuilder.html#org.cleartk.classifier.libsvm">EncodingJarClassifierBuilder</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/JarClassifierBuilder.html#org.cleartk.classifier.libsvm">JarClassifierBuilder</a>
+<div class="block">Superclass for builders which package classifiers as jar files.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.mallet">
+<!--   -->
+</a>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
+<caption><span>Classes in <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a> used by <a href="../../../../org/cleartk/classifier/mallet/package-summary.html">org.cleartk.classifier.mallet</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/Classifier_ImplBase.html#org.cleartk.classifier.mallet">Classifier_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> implementations that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/ClassifierBuilder_ImplBase.html#org.cleartk.classifier.mallet">ClassifierBuilder_ImplBase</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and build and package <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a>s as jar files.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DataWriter_ImplBase.html#org.cleartk.classifier.mallet">DataWriter_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> implementations that write training data to a file using
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html#org.cleartk.classifier.mallet">DirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that saves files
+ to a training directory using a <a href="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><code>JarClassifierBuilder</code></a>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingDirectoryDataWriter.html#org.cleartk.classifier.mallet">EncodingDirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write
+ training data to a file using a classifier builder with <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s
+ 
+ Note that it does not declare that it implements either of the DataWriter interfaces.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifier.html#org.cleartk.classifier.mallet">EncodingJarClassifier</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> and <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifierBuilder.html#org.cleartk.classifier.mallet">EncodingJarClassifierBuilder</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/JarClassifierBuilder.html#org.cleartk.classifier.mallet">JarClassifierBuilder</a>
+<div class="block">Superclass for builders which package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/SequenceClassifier_ImplBase.html#org.cleartk.classifier.mallet">SequenceClassifier_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/SequenceClassifierBuilder_ImplBase.html#org.cleartk.classifier.mallet">SequenceClassifierBuilder_ImplBase</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and build and package <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a>s as jar files.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/SequenceDataWriter_ImplBase.html#org.cleartk.classifier.mallet">SequenceDataWriter_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write training data to a file
+ using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.opennlp">
+<!--   -->
+</a>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
+<caption><span>Classes in <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a> used by <a href="../../../../org/cleartk/classifier/opennlp/package-summary.html">org.cleartk.classifier.opennlp</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/Classifier_ImplBase.html#org.cleartk.classifier.opennlp">Classifier_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> implementations that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/ClassifierBuilder_ImplBase.html#org.cleartk.classifier.opennlp">ClassifierBuilder_ImplBase</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and build and package <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a>s as jar files.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DataWriter_ImplBase.html#org.cleartk.classifier.opennlp">DataWriter_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> implementations that write training data to a file using
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html#org.cleartk.classifier.opennlp">DirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that saves files
+ to a training directory using a <a href="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><code>JarClassifierBuilder</code></a>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingDirectoryDataWriter.html#org.cleartk.classifier.opennlp">EncodingDirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write
+ training data to a file using a classifier builder with <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s
+ 
+ Note that it does not declare that it implements either of the DataWriter interfaces.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifier.html#org.cleartk.classifier.opennlp">EncodingJarClassifier</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> and <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifierBuilder.html#org.cleartk.classifier.opennlp">EncodingJarClassifierBuilder</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/JarClassifierBuilder.html#org.cleartk.classifier.opennlp">JarClassifierBuilder</a>
+<div class="block">Superclass for builders which package classifiers as jar files.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.svmlight">
+<!--   -->
+</a>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
+<caption><span>Classes in <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a> used by <a href="../../../../org/cleartk/classifier/svmlight/package-summary.html">org.cleartk.classifier.svmlight</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/Classifier_ImplBase.html#org.cleartk.classifier.svmlight">Classifier_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> implementations that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/ClassifierBuilder_ImplBase.html#org.cleartk.classifier.svmlight">ClassifierBuilder_ImplBase</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and build and package <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a>s as jar files.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DataWriter_ImplBase.html#org.cleartk.classifier.svmlight">DataWriter_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> implementations that write training data to a file using
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html#org.cleartk.classifier.svmlight">DirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that saves files
+ to a training directory using a <a href="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><code>JarClassifierBuilder</code></a>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingDirectoryDataWriter.html#org.cleartk.classifier.svmlight">EncodingDirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write
+ training data to a file using a classifier builder with <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s
+ 
+ Note that it does not declare that it implements either of the DataWriter interfaces.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifier.html#org.cleartk.classifier.svmlight">EncodingJarClassifier</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> and <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifierBuilder.html#org.cleartk.classifier.svmlight">EncodingJarClassifierBuilder</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/JarClassifierBuilder.html#org.cleartk.classifier.svmlight">JarClassifierBuilder</a>
+<div class="block">Superclass for builders which package classifiers as jar files.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.svmlight.rank">
+<!--   -->
+</a>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
+<caption><span>Classes in <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a> used by <a href="../../../../org/cleartk/classifier/svmlight/rank/package-summary.html">org.cleartk.classifier.svmlight.rank</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/Classifier_ImplBase.html#org.cleartk.classifier.svmlight.rank">Classifier_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> implementations that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/ClassifierBuilder_ImplBase.html#org.cleartk.classifier.svmlight.rank">ClassifierBuilder_ImplBase</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and build and package <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a>s as jar files.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DataWriter_ImplBase.html#org.cleartk.classifier.svmlight.rank">DataWriter_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> implementations that write training data to a file using
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html#org.cleartk.classifier.svmlight.rank">DirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that saves files
+ to a training directory using a <a href="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><code>JarClassifierBuilder</code></a>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingDirectoryDataWriter.html#org.cleartk.classifier.svmlight.rank">EncodingDirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write
+ training data to a file using a classifier builder with <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s
+ 
+ Note that it does not declare that it implements either of the DataWriter interfaces.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifier.html#org.cleartk.classifier.svmlight.rank">EncodingJarClassifier</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> and <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifierBuilder.html#org.cleartk.classifier.svmlight.rank">EncodingJarClassifierBuilder</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/JarClassifierBuilder.html#org.cleartk.classifier.svmlight.rank">JarClassifierBuilder</a>
+<div class="block">Superclass for builders which package classifiers as jar files.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.tksvmlight">
+<!--   -->
+</a>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
+<caption><span>Classes in <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a> used by <a href="../../../../org/cleartk/classifier/tksvmlight/package-summary.html">org.cleartk.classifier.tksvmlight</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/Classifier_ImplBase.html#org.cleartk.classifier.tksvmlight">Classifier_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> implementations that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/ClassifierBuilder_ImplBase.html#org.cleartk.classifier.tksvmlight">ClassifierBuilder_ImplBase</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and build and package <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a>s as jar files.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DataWriter_ImplBase.html#org.cleartk.classifier.tksvmlight">DataWriter_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> implementations that write training data to a file using
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html#org.cleartk.classifier.tksvmlight">DirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that saves files
+ to a training directory using a <a href="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><code>JarClassifierBuilder</code></a>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingDirectoryDataWriter.html#org.cleartk.classifier.tksvmlight">EncodingDirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write
+ training data to a file using a classifier builder with <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s
+ 
+ Note that it does not declare that it implements either of the DataWriter interfaces.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifier.html#org.cleartk.classifier.tksvmlight">EncodingJarClassifier</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> and <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifierBuilder.html#org.cleartk.classifier.tksvmlight">EncodingJarClassifierBuilder</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/JarClassifierBuilder.html#org.cleartk.classifier.tksvmlight">JarClassifierBuilder</a>
+<div class="block">Superclass for builders which package classifiers as jar files.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.viterbi">
+<!--   -->
+</a>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
+<caption><span>Classes in <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a> used by <a href="../../../../org/cleartk/classifier/viterbi/package-summary.html">org.cleartk.classifier.viterbi</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html#org.cleartk.classifier.viterbi">DirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that saves files
+ to a training directory using a <a href="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><code>JarClassifierBuilder</code></a>.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriterFactory.html#org.cleartk.classifier.viterbi">DirectoryDataWriterFactory</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriterFactory.html" title="interface in org.cleartk.classifier"><code>DataWriterFactory</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriterFactory.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriterFactory</code></a> implementations
+ that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/JarClassifierBuilder.html#org.cleartk.classifier.viterbi">JarClassifierBuilder</a>
+<div class="block">Superclass for builders which package classifiers as jar files.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList"><a name="org.cleartk.classifier.weka">
+<!--   -->
+</a>
+<table border="0" cellpadding="3" cellspacing="0" summary="Use table, listing classes, and an explanation">
+<caption><span>Classes in <a href="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</a> used by <a href="../../../../org/cleartk/classifier/weka/package-summary.html">org.cleartk.classifier.weka</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Class and Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/Classifier_ImplBase.html#org.cleartk.classifier.weka">Classifier_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> implementations that use <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/ClassifierBuilder_ImplBase.html#org.cleartk.classifier.weka">ClassifierBuilder_ImplBase</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and build and package <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a>s as jar files.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DataWriter_ImplBase.html#org.cleartk.classifier.weka">DataWriter_ImplBase</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> implementations that write training data to a file using
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/DirectoryDataWriter.html#org.cleartk.classifier.weka">DirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that saves files
+ to a training directory using a <a href="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><code>JarClassifierBuilder</code></a>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingDirectoryDataWriter.html#org.cleartk.classifier.weka">EncodingDirectoryDataWriter</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><code>DataWriter</code></a> and <a href="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><code>SequenceDataWriter</code></a> implementations that write
+ training data to a file using a classifier builder with <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s
+ 
+ Note that it does not declare that it implements either of the DataWriter interfaces.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifier.html#org.cleartk.classifier.weka">EncodingJarClassifier</a>
+<div class="block">Superclass for <a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><code>Classifier</code></a> and <a href="../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><code>SequenceClassifier</code></a> implementations that use
+ <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/EncodingJarClassifierBuilder.html#org.cleartk.classifier.weka">EncodingJarClassifierBuilder</a>
+<div class="block">Superclass for builders which write to a training data file using <a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><code>FeaturesEncoder</code></a>s and
+ <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><code>OutcomeEncoder</code></a>s, and package classifiers as jar files.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><a href="../../../../org/cleartk/classifier/jar/class-use/JarClassifierBuilder.html#org.cleartk.classifier.weka">JarClassifierBuilder</a>
+<div class="block">Superclass for builders which package classifiers as jar files.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</div>
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+<!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li>Class</li>
+<li class="navBarCell1Rev">Use</li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../index-all.html">Index</a></li>
+<li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li>Prev</li>
+<li>Next</li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../index.html?org/cleartk/classifier/jar/package-use.html" target="_top">Frames</a></li>
+<li><a href="package-use.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_bottom">
+<li><a href="../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_bottom");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<a name="skip-navbar_bottom">
+<!--   -->
+</a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; 2013. All Rights Reserved.</small></p>
+</body>
+</html>

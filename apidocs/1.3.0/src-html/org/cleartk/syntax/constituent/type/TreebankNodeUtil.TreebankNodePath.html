@@ -1,0 +1,323 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (c) 2011, Regents of the University of Colorado <a name="line.2"></a>
+<span class="sourceLineNo">003</span> * All rights reserved.<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * <a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * <a name="line.7"></a>
+<span class="sourceLineNo">008</span> * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<span class="sourceLineNo">009</span> * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<span class="sourceLineNo">010</span> * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<span class="sourceLineNo">011</span> * <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<span class="sourceLineNo">023</span> */<a name="line.23"></a>
+<span class="sourceLineNo">024</span>package org.cleartk.syntax.constituent.type;<a name="line.24"></a>
+<span class="sourceLineNo">025</span><a name="line.25"></a>
+<span class="sourceLineNo">026</span>import java.util.ArrayList;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import java.util.Arrays;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import java.util.List;<a name="line.28"></a>
+<span class="sourceLineNo">029</span><a name="line.29"></a>
+<span class="sourceLineNo">030</span>import org.apache.uima.jcas.JCas;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import org.apache.uima.jcas.tcas.Annotation;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.cleartk.util.UIMAUtil;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.uimafit.util.JCasUtil;<a name="line.33"></a>
+<span class="sourceLineNo">034</span><a name="line.34"></a>
+<span class="sourceLineNo">035</span>/**<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * &lt;br&gt;<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * Copyright (c) 2011, Regents of the University of Colorado &lt;br&gt;<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * All rights reserved.<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * <a name="line.39"></a>
+<span class="sourceLineNo">040</span> * @author Steven Bethard<a name="line.40"></a>
+<span class="sourceLineNo">041</span> */<a name="line.41"></a>
+<span class="sourceLineNo">042</span>public class TreebankNodeUtil {<a name="line.42"></a>
+<span class="sourceLineNo">043</span><a name="line.43"></a>
+<span class="sourceLineNo">044</span>  /**<a name="line.44"></a>
+<span class="sourceLineNo">045</span>   * Selects a single TreebankNode leaf that has the same span as the given annotation.<a name="line.45"></a>
+<span class="sourceLineNo">046</span>   * <a name="line.46"></a>
+<span class="sourceLineNo">047</span>   * @param jCas<a name="line.47"></a>
+<span class="sourceLineNo">048</span>   *          The JCas containing the TreebankNodes.<a name="line.48"></a>
+<span class="sourceLineNo">049</span>   * @param annotation<a name="line.49"></a>
+<span class="sourceLineNo">050</span>   *          The Annotation whose span should match a TreebankNode leaf.<a name="line.50"></a>
+<span class="sourceLineNo">051</span>   * @return The single TreebankNode leaf that matches the annotation, or null if no such annotation<a name="line.51"></a>
+<span class="sourceLineNo">052</span>   *         exists.<a name="line.52"></a>
+<span class="sourceLineNo">053</span>   */<a name="line.53"></a>
+<span class="sourceLineNo">054</span>  public static TreebankNode selectMatchingLeaf(JCas jCas, Annotation annotation) {<a name="line.54"></a>
+<span class="sourceLineNo">055</span>    TreebankNode leaf = null;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>    for (TreebankNode node : JCasUtil.selectCovered(jCas, TreebankNode.class, annotation)) {<a name="line.56"></a>
+<span class="sourceLineNo">057</span>      if (node.getLeaf() &amp;&amp; node.getBegin() == annotation.getBegin()<a name="line.57"></a>
+<span class="sourceLineNo">058</span>          &amp;&amp; node.getEnd() == annotation.getEnd()) {<a name="line.58"></a>
+<span class="sourceLineNo">059</span>        if (leaf == null) {<a name="line.59"></a>
+<span class="sourceLineNo">060</span>          leaf = node;<a name="line.60"></a>
+<span class="sourceLineNo">061</span>        } else {<a name="line.61"></a>
+<span class="sourceLineNo">062</span>          throw new IllegalArgumentException(String.format(<a name="line.62"></a>
+<span class="sourceLineNo">063</span>              "expected one leaf matching annotation %s, found %s",<a name="line.63"></a>
+<span class="sourceLineNo">064</span>              annotation,<a name="line.64"></a>
+<span class="sourceLineNo">065</span>              Arrays.asList(leaf, node)));<a name="line.65"></a>
+<span class="sourceLineNo">066</span>        }<a name="line.66"></a>
+<span class="sourceLineNo">067</span>      }<a name="line.67"></a>
+<span class="sourceLineNo">068</span>    }<a name="line.68"></a>
+<span class="sourceLineNo">069</span>    return leaf;<a name="line.69"></a>
+<span class="sourceLineNo">070</span>  }<a name="line.70"></a>
+<span class="sourceLineNo">071</span><a name="line.71"></a>
+<span class="sourceLineNo">072</span>  /**<a name="line.72"></a>
+<span class="sourceLineNo">073</span>   * Selects the highest TreebankNode in the parse tree that has the same span as the given<a name="line.73"></a>
+<span class="sourceLineNo">074</span>   * annotation.<a name="line.74"></a>
+<span class="sourceLineNo">075</span>   * <a name="line.75"></a>
+<span class="sourceLineNo">076</span>   * @param jCas<a name="line.76"></a>
+<span class="sourceLineNo">077</span>   *          The JCas containing the TreebankNodes.<a name="line.77"></a>
+<span class="sourceLineNo">078</span>   * @param annotation<a name="line.78"></a>
+<span class="sourceLineNo">079</span>   *          The Annotation whose span should be matched.<a name="line.79"></a>
+<span class="sourceLineNo">080</span>   * @return The highest TreebankNode matching the given span, or null if no such annotation exists.<a name="line.80"></a>
+<span class="sourceLineNo">081</span>   */<a name="line.81"></a>
+<span class="sourceLineNo">082</span>  public static TreebankNode selectHighestMatchingTreebankNode(JCas jCas, Annotation annotation) {<a name="line.82"></a>
+<span class="sourceLineNo">083</span>    TreebankNode highestNode = null;<a name="line.83"></a>
+<span class="sourceLineNo">084</span>    int smallestDepth = Integer.MAX_VALUE;<a name="line.84"></a>
+<span class="sourceLineNo">085</span>    for (TreebankNode node : JCasUtil.selectCovered(jCas, TreebankNode.class, annotation)) {<a name="line.85"></a>
+<span class="sourceLineNo">086</span>      if (node.getBegin() == annotation.getBegin() &amp;&amp; node.getEnd() == annotation.getEnd()) {<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        int depth = getDepth(node);<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        if (depth &lt; smallestDepth) {<a name="line.88"></a>
+<span class="sourceLineNo">089</span>          highestNode = node;<a name="line.89"></a>
+<span class="sourceLineNo">090</span>          smallestDepth = depth;<a name="line.90"></a>
+<span class="sourceLineNo">091</span>        }<a name="line.91"></a>
+<span class="sourceLineNo">092</span>      }<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    }<a name="line.93"></a>
+<span class="sourceLineNo">094</span>    return highestNode;<a name="line.94"></a>
+<span class="sourceLineNo">095</span>  }<a name="line.95"></a>
+<span class="sourceLineNo">096</span><a name="line.96"></a>
+<span class="sourceLineNo">097</span>  /**<a name="line.97"></a>
+<span class="sourceLineNo">098</span>   * Selects the highest TreebankNode in the parse tree that is at least partially covered by the<a name="line.98"></a>
+<span class="sourceLineNo">099</span>   * given annotation.<a name="line.99"></a>
+<span class="sourceLineNo">100</span>   * <a name="line.100"></a>
+<span class="sourceLineNo">101</span>   * @param jCas<a name="line.101"></a>
+<span class="sourceLineNo">102</span>   *          The JCas containing the TreebankNodes.<a name="line.102"></a>
+<span class="sourceLineNo">103</span>   * @param annotation<a name="line.103"></a>
+<span class="sourceLineNo">104</span>   *          The Annotation whose span should be matched.<a name="line.104"></a>
+<span class="sourceLineNo">105</span>   * @return The highest TreebankNode at least partially covered by the given span, or null if no<a name="line.105"></a>
+<span class="sourceLineNo">106</span>   *         such annotation exists.<a name="line.106"></a>
+<span class="sourceLineNo">107</span>   */<a name="line.107"></a>
+<span class="sourceLineNo">108</span>  public static TreebankNode selectHighestCoveredTreebankNode(JCas jCas, Annotation annotation) {<a name="line.108"></a>
+<span class="sourceLineNo">109</span>    TreebankNode highestNode = null;<a name="line.109"></a>
+<span class="sourceLineNo">110</span>    int smallestDepth = Integer.MAX_VALUE;<a name="line.110"></a>
+<span class="sourceLineNo">111</span>    for (TreebankNode node : JCasUtil.selectCovered(jCas, TreebankNode.class, annotation)) {<a name="line.111"></a>
+<span class="sourceLineNo">112</span>      if (annotation.getBegin() &lt;= node.getBegin() &amp;&amp; node.getEnd() &lt;= annotation.getEnd()) {<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        int depth = getDepth(node);<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        if (depth &lt; smallestDepth) {<a name="line.114"></a>
+<span class="sourceLineNo">115</span>          highestNode = node;<a name="line.115"></a>
+<span class="sourceLineNo">116</span>          smallestDepth = depth;<a name="line.116"></a>
+<span class="sourceLineNo">117</span>        }<a name="line.117"></a>
+<span class="sourceLineNo">118</span>      }<a name="line.118"></a>
+<span class="sourceLineNo">119</span>    }<a name="line.119"></a>
+<span class="sourceLineNo">120</span>    return highestNode;<a name="line.120"></a>
+<span class="sourceLineNo">121</span>  }<a name="line.121"></a>
+<span class="sourceLineNo">122</span><a name="line.122"></a>
+<span class="sourceLineNo">123</span>  /**<a name="line.123"></a>
+<span class="sourceLineNo">124</span>   * Calculates the depth of the TreebankNode. The root node has depth 0, children of the root node<a name="line.124"></a>
+<span class="sourceLineNo">125</span>   * have depth 1, etc.<a name="line.125"></a>
+<span class="sourceLineNo">126</span>   * <a name="line.126"></a>
+<span class="sourceLineNo">127</span>   * @param node<a name="line.127"></a>
+<span class="sourceLineNo">128</span>   *          The TreebankNode whose depth is to be calculated.<a name="line.128"></a>
+<span class="sourceLineNo">129</span>   * @return The depth of the TreebankNode.<a name="line.129"></a>
+<span class="sourceLineNo">130</span>   */<a name="line.130"></a>
+<span class="sourceLineNo">131</span>  public static int getDepth(TreebankNode node) {<a name="line.131"></a>
+<span class="sourceLineNo">132</span>    int depth = -1;<a name="line.132"></a>
+<span class="sourceLineNo">133</span>    while (node != null) {<a name="line.133"></a>
+<span class="sourceLineNo">134</span>      depth += 1;<a name="line.134"></a>
+<span class="sourceLineNo">135</span>      node = node.getParent();<a name="line.135"></a>
+<span class="sourceLineNo">136</span>    }<a name="line.136"></a>
+<span class="sourceLineNo">137</span>    return depth;<a name="line.137"></a>
+<span class="sourceLineNo">138</span>  }<a name="line.138"></a>
+<span class="sourceLineNo">139</span><a name="line.139"></a>
+<span class="sourceLineNo">140</span>  /**<a name="line.140"></a>
+<span class="sourceLineNo">141</span>   * Find the path from a TreebankNode to the root of the tree it belongs to.<a name="line.141"></a>
+<span class="sourceLineNo">142</span>   * <a name="line.142"></a>
+<span class="sourceLineNo">143</span>   * @param startNode<a name="line.143"></a>
+<span class="sourceLineNo">144</span>   *          The start node of the path<a name="line.144"></a>
+<span class="sourceLineNo">145</span>   * <a name="line.145"></a>
+<span class="sourceLineNo">146</span>   * @return A list of TreebankNodes that make up the path from &lt;b&gt;startNode&lt;/b&gt; to the root of the<a name="line.146"></a>
+<span class="sourceLineNo">147</span>   *         tree<a name="line.147"></a>
+<span class="sourceLineNo">148</span>   */<a name="line.148"></a>
+<span class="sourceLineNo">149</span>  public static List&lt;TreebankNode&gt; getPathToRoot(TreebankNode startNode) {<a name="line.149"></a>
+<span class="sourceLineNo">150</span>    List&lt;TreebankNode&gt; nlist = new ArrayList&lt;TreebankNode&gt;(20);<a name="line.150"></a>
+<span class="sourceLineNo">151</span>    TreebankNode cursorNode = startNode;<a name="line.151"></a>
+<span class="sourceLineNo">152</span><a name="line.152"></a>
+<span class="sourceLineNo">153</span>    while (cursorNode != null) {<a name="line.153"></a>
+<span class="sourceLineNo">154</span>      nlist.add(cursorNode);<a name="line.154"></a>
+<span class="sourceLineNo">155</span>      cursorNode = cursorNode.getParent();<a name="line.155"></a>
+<span class="sourceLineNo">156</span>    }<a name="line.156"></a>
+<span class="sourceLineNo">157</span><a name="line.157"></a>
+<span class="sourceLineNo">158</span>    return nlist;<a name="line.158"></a>
+<span class="sourceLineNo">159</span>  }<a name="line.159"></a>
+<span class="sourceLineNo">160</span><a name="line.160"></a>
+<span class="sourceLineNo">161</span>  /**<a name="line.161"></a>
+<span class="sourceLineNo">162</span>   * Representation of a path from one TreebankNode to another, via a common ancestor in the tree.<a name="line.162"></a>
+<span class="sourceLineNo">163</span>   */<a name="line.163"></a>
+<span class="sourceLineNo">164</span>  public static class TreebankNodePath {<a name="line.164"></a>
+<span class="sourceLineNo">165</span>    private List&lt;TreebankNode&gt; sourceToAncestor;<a name="line.165"></a>
+<span class="sourceLineNo">166</span><a name="line.166"></a>
+<span class="sourceLineNo">167</span>    private TreebankNode commonAncestor;<a name="line.167"></a>
+<span class="sourceLineNo">168</span><a name="line.168"></a>
+<span class="sourceLineNo">169</span>    private List&lt;TreebankNode&gt; targetToAncestor;<a name="line.169"></a>
+<span class="sourceLineNo">170</span><a name="line.170"></a>
+<span class="sourceLineNo">171</span>    public TreebankNodePath(<a name="line.171"></a>
+<span class="sourceLineNo">172</span>        TreebankNode commonAncestor,<a name="line.172"></a>
+<span class="sourceLineNo">173</span>        List&lt;TreebankNode&gt; sourceToAncestor,<a name="line.173"></a>
+<span class="sourceLineNo">174</span>        List&lt;TreebankNode&gt; targetToAncestor) {<a name="line.174"></a>
+<span class="sourceLineNo">175</span>      this.commonAncestor = commonAncestor;<a name="line.175"></a>
+<span class="sourceLineNo">176</span>      this.sourceToAncestor = sourceToAncestor;<a name="line.176"></a>
+<span class="sourceLineNo">177</span>      this.targetToAncestor = targetToAncestor;<a name="line.177"></a>
+<span class="sourceLineNo">178</span>    }<a name="line.178"></a>
+<span class="sourceLineNo">179</span><a name="line.179"></a>
+<span class="sourceLineNo">180</span>    public TreebankNode getCommonAncestor() {<a name="line.180"></a>
+<span class="sourceLineNo">181</span>      return this.commonAncestor;<a name="line.181"></a>
+<span class="sourceLineNo">182</span>    }<a name="line.182"></a>
+<span class="sourceLineNo">183</span><a name="line.183"></a>
+<span class="sourceLineNo">184</span>    public List&lt;TreebankNode&gt; getSourceToAncestorPath() {<a name="line.184"></a>
+<span class="sourceLineNo">185</span>      return this.sourceToAncestor;<a name="line.185"></a>
+<span class="sourceLineNo">186</span>    }<a name="line.186"></a>
+<span class="sourceLineNo">187</span><a name="line.187"></a>
+<span class="sourceLineNo">188</span>    public List&lt;TreebankNode&gt; getTargetToAncestorPath() {<a name="line.188"></a>
+<span class="sourceLineNo">189</span>      return this.targetToAncestor;<a name="line.189"></a>
+<span class="sourceLineNo">190</span>    }<a name="line.190"></a>
+<span class="sourceLineNo">191</span>  }<a name="line.191"></a>
+<span class="sourceLineNo">192</span><a name="line.192"></a>
+<span class="sourceLineNo">193</span>  /**<a name="line.193"></a>
+<span class="sourceLineNo">194</span>   * Get the path from the source TreebankNode to the target TreebankNode via the least common<a name="line.194"></a>
+<span class="sourceLineNo">195</span>   * ancestor.<a name="line.195"></a>
+<span class="sourceLineNo">196</span>   * <a name="line.196"></a>
+<span class="sourceLineNo">197</span>   * @param source<a name="line.197"></a>
+<span class="sourceLineNo">198</span>   *          The TreebankNode where the path should start.<a name="line.198"></a>
+<span class="sourceLineNo">199</span>   * @param target<a name="line.199"></a>
+<span class="sourceLineNo">200</span>   *          The TreebankNode where the path should end.<a name="line.200"></a>
+<span class="sourceLineNo">201</span>   * @return The path from the source node to the target node.<a name="line.201"></a>
+<span class="sourceLineNo">202</span>   */<a name="line.202"></a>
+<span class="sourceLineNo">203</span>  public static TreebankNodePath getPath(TreebankNode source, TreebankNode target) {<a name="line.203"></a>
+<span class="sourceLineNo">204</span>    List&lt;TreebankNode&gt; sourceToRoot = getPathToRoot(source);<a name="line.204"></a>
+<span class="sourceLineNo">205</span>    List&lt;TreebankNode&gt; targetToRoot = getPathToRoot(target);<a name="line.205"></a>
+<span class="sourceLineNo">206</span><a name="line.206"></a>
+<span class="sourceLineNo">207</span>    TreebankNode ancestor = null;<a name="line.207"></a>
+<span class="sourceLineNo">208</span>    while (sourceToRoot.size() &gt; 0 &amp;&amp; targetToRoot.size() &gt; 0<a name="line.208"></a>
+<span class="sourceLineNo">209</span>        &amp;&amp; sourceToRoot.get(sourceToRoot.size() - 1) == targetToRoot.get(targetToRoot.size() - 1)) {<a name="line.209"></a>
+<span class="sourceLineNo">210</span>      ancestor = sourceToRoot.remove(sourceToRoot.size() - 1);<a name="line.210"></a>
+<span class="sourceLineNo">211</span>      ancestor = targetToRoot.remove(targetToRoot.size() - 1);<a name="line.211"></a>
+<span class="sourceLineNo">212</span>    }<a name="line.212"></a>
+<span class="sourceLineNo">213</span><a name="line.213"></a>
+<span class="sourceLineNo">214</span>    return new TreebankNodePath(ancestor, sourceToRoot, targetToRoot);<a name="line.214"></a>
+<span class="sourceLineNo">215</span>  }<a name="line.215"></a>
+<span class="sourceLineNo">216</span><a name="line.216"></a>
+<span class="sourceLineNo">217</span>  /**<a name="line.217"></a>
+<span class="sourceLineNo">218</span>   * Format the TreebankNode as a Penn-Treebank-style parenthesized string.<a name="line.218"></a>
+<span class="sourceLineNo">219</span>   * <a name="line.219"></a>
+<span class="sourceLineNo">220</span>   * @param node<a name="line.220"></a>
+<span class="sourceLineNo">221</span>   *          The TreebankNode to be formatted.<a name="line.221"></a>
+<span class="sourceLineNo">222</span>   * @return A parenthesized Penn-Treebank-style string.<a name="line.222"></a>
+<span class="sourceLineNo">223</span>   */<a name="line.223"></a>
+<span class="sourceLineNo">224</span>  public static String toTreebankString(TreebankNode node) {<a name="line.224"></a>
+<span class="sourceLineNo">225</span>    StringBuilder builder = new StringBuilder();<a name="line.225"></a>
+<span class="sourceLineNo">226</span>    builder.append('(').append(node.getNodeType());<a name="line.226"></a>
+<span class="sourceLineNo">227</span>    if (node.getLeaf()) {<a name="line.227"></a>
+<span class="sourceLineNo">228</span>      builder.append(' ').append(node.getCoveredText());<a name="line.228"></a>
+<span class="sourceLineNo">229</span>    } else {<a name="line.229"></a>
+<span class="sourceLineNo">230</span>      for (TreebankNode child : UIMAUtil.toList(node.getChildren(), TreebankNode.class)) {<a name="line.230"></a>
+<span class="sourceLineNo">231</span>        builder.append(' ').append(toTreebankString(child));<a name="line.231"></a>
+<span class="sourceLineNo">232</span>      }<a name="line.232"></a>
+<span class="sourceLineNo">233</span>    }<a name="line.233"></a>
+<span class="sourceLineNo">234</span>    builder.append(')');<a name="line.234"></a>
+<span class="sourceLineNo">235</span>    return builder.toString();<a name="line.235"></a>
+<span class="sourceLineNo">236</span>  }<a name="line.236"></a>
+<span class="sourceLineNo">237</span><a name="line.237"></a>
+<span class="sourceLineNo">238</span>  public static TreebankNode getParent(TreebankNode node) {<a name="line.238"></a>
+<span class="sourceLineNo">239</span>    if (node != null) {<a name="line.239"></a>
+<span class="sourceLineNo">240</span>      node = node.getParent();<a name="line.240"></a>
+<span class="sourceLineNo">241</span>    }<a name="line.241"></a>
+<span class="sourceLineNo">242</span>    return node;<a name="line.242"></a>
+<span class="sourceLineNo">243</span>  }<a name="line.243"></a>
+<span class="sourceLineNo">244</span><a name="line.244"></a>
+<span class="sourceLineNo">245</span>  public static TreebankNode getAncestorWithType(TreebankNode node, String type) {<a name="line.245"></a>
+<span class="sourceLineNo">246</span>    while (node != null &amp;&amp; !node.getNodeType().equals(type)) {<a name="line.246"></a>
+<span class="sourceLineNo">247</span>      node = node.getParent();<a name="line.247"></a>
+<span class="sourceLineNo">248</span>    }<a name="line.248"></a>
+<span class="sourceLineNo">249</span>    return node;<a name="line.249"></a>
+<span class="sourceLineNo">250</span>  }<a name="line.250"></a>
+<span class="sourceLineNo">251</span>}<a name="line.251"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
