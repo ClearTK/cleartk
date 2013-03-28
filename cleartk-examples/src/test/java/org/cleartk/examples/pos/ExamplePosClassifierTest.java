@@ -29,6 +29,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.pear.util.FileUtil;
@@ -57,6 +58,7 @@ import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ResourceCreationSpecifierFactory;
 import org.uimafit.pipeline.SimplePipeline;
+import org.uimafit.testing.util.DisableLogging;
 import org.uimafit.testing.util.HideOutput;
 
 /**
@@ -283,9 +285,11 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     }
 
     HideOutput hider = new HideOutput();
+    Level level = DisableLogging.disableLogging();
     try {
       org.cleartk.classifier.jar.Train.main(args);
     } finally {
+      DisableLogging.enableLogging(level);
       hider.restoreOutput();
     }
 
