@@ -32,6 +32,7 @@
 		<module>cleartk-snowball</module>
 		<module>cleartk-opennlp-tools</module>
 		<module>cleartk-berkeleyparser</module>
+		<module>cleartk-clearnlp</module>
 		<module>cleartk-clearparser</module>
 		<module>cleartk-maltparser</module>
 		<module>cleartk-stanford-corenlp</module>
@@ -45,7 +46,6 @@
 		<module>cleartk-examples</module>
 		<!-- module declaring the official release versions -->
 		<module>cleartk-release</module>
-		<module>cleartk-clearnlp</module>
 	</modules>
 	<build>
 		<plugins>
