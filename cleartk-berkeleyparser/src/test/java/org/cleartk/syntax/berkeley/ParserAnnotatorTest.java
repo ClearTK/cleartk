@@ -46,11 +46,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
   @Test
   public void test() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-        ParserAnnotator.class,
-        ParserAnnotator.PARAM_PARSER_MODEL_PATH,
-        MODEL_PATH,
-        ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
-        DefaultOutputTypesHelper.class.getName());
+        ParserAnnotator.getDescription(MODEL_PATH));
     tokenBuilder.buildTokens(
         jCas,
         "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair.",

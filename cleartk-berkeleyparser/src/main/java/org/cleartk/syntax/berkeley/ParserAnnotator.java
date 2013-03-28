@@ -28,12 +28,14 @@ import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.IOUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
+import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
 import edu.berkeley.nlp.PCFGLA.CoarseToFineMaxRuleParser;
@@ -54,6 +56,15 @@ import edu.berkeley.nlp.util.Numberer;
 
 public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, TOP_NODE_TYPE extends Annotation>
     extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Tree<String>, TOP_NODE_TYPE> {
+  
+  public static AnalysisEngineDescription getDescription(String modelPath) throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(
+        ParserAnnotator.class,
+        ParserAnnotator.PARAM_PARSER_MODEL_PATH,
+        modelPath,
+        ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
+        DefaultOutputTypesHelper.class.getName());
+  }
 
   public static final String PARAM_PARSER_MODEL_PATH = ConfigurationParameterFactory.createConfigurationParameterName(
       ParserAnnotator.class,
