@@ -25,6 +25,7 @@ package org.cleartk.classifier.jar;
 
 import java.io.File;
 
+import org.apache.commons.io.FileUtils;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.baseline.MostFrequentStringClassifierBuilder;
 import org.cleartk.classifier.baseline.MostFrequentStringDataWriter;
@@ -55,29 +56,27 @@ public class ClassifierFactoryTest extends DefaultTestBase {
     // move the classifier to the classpath
     File modelDir = new File("target/test-classes");
     File modelFile = JarClassifierBuilder.getModelJarFile(modelDir);
-    JarClassifierBuilder.getModelJarFile(this.outputDirectory).renameTo(modelFile);
-    try {
+    File outputModelFile = JarClassifierBuilder.getModelJarFile(this.outputDirectory);
+    FileUtils.moveFile(outputModelFile, modelFile);
 
-      // test File
-      factory.initialize(UimaContextFactory.createUimaContext(
-          GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-          modelFile));
-      factory.createClassifier();
+    // test File
+    factory.initialize(UimaContextFactory.createUimaContext(
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        modelFile));
+    factory.createClassifier();
 
-      // test URI
-      factory.initialize(UimaContextFactory.createUimaContext(
-          GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-          modelFile.toURI()));
-      factory.createClassifier();
+    // test URI
+    factory.initialize(UimaContextFactory.createUimaContext(
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        modelFile.toURI()));
+    factory.createClassifier();
 
-      // test classpath
-      factory.initialize(UimaContextFactory.createUimaContext(
-          GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-          "/model.jar"));
-      factory.createClassifier();
+    // test classpath
+    factory.initialize(UimaContextFactory.createUimaContext(
+        GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
+        "/model.jar"));
+    factory.createClassifier();
 
-    } finally {
-      Assert.assertTrue(modelFile.delete());
-    }
+    Assert.assertTrue(modelFile.delete());
   }
 }
