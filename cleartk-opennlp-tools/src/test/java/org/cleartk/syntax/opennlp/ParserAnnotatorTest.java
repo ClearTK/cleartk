@@ -245,6 +245,7 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
 
   @Test
   public void testDescriptor() throws UIMAException {
+    this.assumeBigMemoryTestsEnabled();
     AnalysisEngineFactory.createPrimitive(ParserAnnotator.getDescription());
   }
 
