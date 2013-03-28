@@ -121,7 +121,7 @@ public class LIBSVMTest extends DefaultTestBase {
 
     // run the training command
     HideOutput hider = new HideOutput();
-    Train.main(this.outputDirectoryName, "-c", "1.0", "-t", "2");
+    Train.main(this.outputDirectoryName, "-c", "10", "-t", "0");
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
