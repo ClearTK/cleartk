@@ -38,9 +38,10 @@ import org.uimafit.util.JCasUtil;
  * <p>
  * 
  * @author Philip Ogren
- * 
+ * @deprecated this was used by WindowExtractor which is deprecated
  */
 
+@Deprecated
 public class WindowFeature extends Feature {
   private static final long serialVersionUID = 1L;
 

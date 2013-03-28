@@ -36,9 +36,9 @@ import org.cleartk.classifier.Feature;
  * <p>
  * 
  * @author Philip Ogren
- * 
+ * @deprecated this was used by WindowNGramExtractor which is deprecated
  */
-
+@Deprecated
 public class WindowNGramFeature extends Feature {
   private static final long serialVersionUID = 1L;
 

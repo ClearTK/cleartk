@@ -42,8 +42,13 @@ import org.junit.Test;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @deprecated This test class is deprecated to remove compiler warnings related to the use of the
+ *             now deprecated WindowFeature and WindowNgramFeature classes which are now deprecated.
+ *             Because the NameNumber classes are planned to be deprecated also it does not make
+ *             sense to update these tests (see Issue 279)
  */
-
+@Deprecated
 public class NameNumberFeatureEncoderTest extends DefaultTestBase {
 
   @Test
@@ -119,6 +124,13 @@ public class NameNumberFeatureEncoderTest extends DefaultTestBase {
 
   }
 
+  /**
+   * @deprecated This test is deprecated to remove compiler warnings related to the use of the now
+   *             deprecated WindowFeature and WindowNgramFeature classes which are now deprecated.
+   *             Because the NameNumber classes are planned to be deprecated also it doesn not make
+   *             sense to update these tests (see Issue 279)
+   */
+  @Deprecated
   @Test
   public void testOnWindowFeatures() throws CleartkEncoderException {
     NameNumberFeaturesEncoder nnfe = getDefaultEncoder(false, false);
