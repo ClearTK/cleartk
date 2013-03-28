@@ -57,6 +57,7 @@ import clear.reader.AbstractReader;
  * 
  * http://code.google.com/p/clearparser/issues/detail?id=2
  * 
+ * @deprecated cleartk-clearparser is replaced by cleartk-clearnlp.
  */
 
 @Deprecated

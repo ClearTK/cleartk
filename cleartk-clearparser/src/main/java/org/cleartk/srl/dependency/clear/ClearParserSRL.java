@@ -82,6 +82,7 @@ import clear.reader.AbstractReader;
  * important information pertaining to the models provided for this parser.
  * <p>
  * 
+ * @deprecated Please use SemanticRoleLabeler in cleartk-clearnlp instead.
  * @author Lee Becker
  * 
  */
@@ -89,7 +90,6 @@ import clear.reader.AbstractReader;
     "org.cleartk.token.type.Token:pos",
     "org.cleartk.token.type.Token:lemma",
     "org.cleartk.syntax.dependency.type.DependencyNode" })
-@SuppressWarnings("deprecation")
 @Deprecated
 public class ClearParserSRL extends JCasAnnotator_ImplBase {
 

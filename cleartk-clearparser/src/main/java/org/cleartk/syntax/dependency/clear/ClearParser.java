@@ -76,6 +76,7 @@ import clear.parse.AbstractDepParser;
  * parsers may not be interchangeable (without some effort) for most use cases.
  * <p>
  * 
+ * @deprecated Please use DependencyParser in cleartk-clearnlp instead.
  * @author Philip Ogren
  * 
  */

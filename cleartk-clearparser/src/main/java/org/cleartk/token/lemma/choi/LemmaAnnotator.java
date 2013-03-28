@@ -62,6 +62,7 @@ import clear.morph.MorphEnAnalyzer;
  * tags should correspond to PennTreebank set of tags.
  * <p>
  * 
+ * @deprecated cleartk-clearparser is replaced by cleartk-clearnlp.
  * @author Philip Ogren
  * 
  */
