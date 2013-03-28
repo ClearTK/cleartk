@@ -225,6 +225,9 @@
 									<!-- Link to standard Java HTML javadoc -->
 									<linksource>true</linksource>
 
+									<!-- Don't include deprecated APIs -->
+									<nodeprecated>true</nodeprecated>
+
 									<!-- Links to all dependency javadocs -->
 									<links>
 										<!-- args4j -->
