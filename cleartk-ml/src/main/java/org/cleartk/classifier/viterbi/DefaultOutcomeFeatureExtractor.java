@@ -124,7 +124,6 @@ public class DefaultOutcomeFeatureExtractor implements OutcomeFeatureExtractor {
       int index = previousOutcomes.size() - i;
       if (index >= 0) {
         Feature feature = new Feature("PreviousOutcome_L" + i, previousOutcomes.get(index));
-        System.out.println(feature);
         features.add(feature);
       }
     }
