@@ -1,0 +1,507 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+CleartkInitializationException (cleartk-release 1.1.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="CleartkInitializationException (cleartk-release 1.1.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/CleartkInitializationException.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../org/cleartk/util/BaseConversion.html" title="class in org.cleartk.util"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../org/cleartk/util/IOUtil.html" title="class in org.cleartk.util"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../index.html?org/cleartk/util/CleartkInitializationException.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="CleartkInitializationException.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#fields_inherited_from_class_org.apache.uima.resource.ResourceInitializationException">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+org.cleartk.util</FONT>
+<BR>
+Class CleartkInitializationException</H2>
+<PRE>
+<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</A>
+  <IMG SRC="../../../resources/inherit.gif" ALT="extended by "><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">java.lang.Throwable</A>
+      <IMG SRC="../../../resources/inherit.gif" ALT="extended by "><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Exception.html?is-external=true" title="class or interface in java.lang">java.lang.Exception</A>
+          <IMG SRC="../../../resources/inherit.gif" ALT="extended by "><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/InternationalizedException.html?is-external=true" title="class or interface in org.apache.uima">org.apache.uima.InternationalizedException</A>
+              <IMG SRC="../../../resources/inherit.gif" ALT="extended by "><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">org.apache.uima.UIMAException</A>
+                  <IMG SRC="../../../resources/inherit.gif" ALT="extended by "><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">org.apache.uima.resource.ResourceInitializationException</A>
+                      <IMG SRC="../../../resources/inherit.gif" ALT="extended by "><B>org.cleartk.util.CleartkInitializationException</B>
+</PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD><A HREF="http://download.oracle.com/javase/6/docs/api/java/io/Serializable.html?is-external=true" title="class or interface in java.io">Serializable</A></DD>
+</DL>
+<HR>
+<DL>
+<DT><PRE>public class <A HREF="../../../src-html/org/cleartk/util/CleartkInitializationException.html#line.37"><B>CleartkInitializationException</B></A><DT>extends <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></DL>
+</PRE>
+
+<P>
+<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.
+<P>
+
+<P>
+<DL>
+<DT><B>See Also:</B><DD><A HREF="../../../serialized-form.html#org.cleartk.util.CleartkInitializationException">Serialized Form</A></DL>
+<HR>
+
+<P>
+<!-- =========== FIELD SUMMARY =========== -->
+
+<A NAME="field_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Field Summary</B></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;<A NAME="fields_inherited_from_class_org.apache.uima.resource.ResourceInitializationException"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Fields inherited from class org.apache.uima.resource.<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#AGGREGATE_AE_TYPE_SYSTEM" title="class or interface in org.apache.uima.resource">AGGREGATE_AE_TYPE_SYSTEM</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#AGGREGATE_SOFA_NOT_MAPPED" title="class or interface in org.apache.uima.resource">AGGREGATE_SOFA_NOT_MAPPED</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#ALLOWED_VALUES_ON_NON_STRING_TYPE" title="class or interface in org.apache.uima.resource">ALLOWED_VALUES_ON_NON_STRING_TYPE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#ANNOTATOR_CLASS_NOT_FOUND" title="class or interface in org.apache.uima.resource">ANNOTATOR_CLASS_NOT_FOUND</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#ANNOTATOR_INITIALIZATION_FAILED" title="class or interface in org.apache.uima.resource">ANNOTATOR_INITIALIZATION_FAILED</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#ANNOTATOR_INTERFACE_NOT_SUPPORTED" title="class or interface in org.apache.uima.resource">ANNOTATOR_INTERFACE_NOT_SUPPORTED</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#CAS_PROCESSOR_INITIALIZE_FAILED" title="class or interface in org.apache.uima.resource">CAS_PROCESSOR_INITIALIZE_FAILED</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#CLASS_NOT_FOUND" title="class or interface in org.apache.uima.resource">CLASS_NOT_FOUND</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#CONFIG_SETTING_ABSENT" title="class or interface in org.apache.uima.resource">CONFIG_SETTING_ABSENT</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#COULD_NOT_ACCESS_DATA" title="class or interface in org.apache.uima.resource">COULD_NOT_ACCESS_DATA</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#COULD_NOT_INSTANTIATE" title="class or interface in org.apache.uima.resource">COULD_NOT_INSTANTIATE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#COULD_NOT_INSTANTIATE_ANNOTATOR" title="class or interface in org.apache.uima.resource">COULD_NOT_INSTANTIATE_ANNOTATOR</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#DO_NOT_KNOW_HOW" title="class or interface in org.apache.uima.resource">DO_NOT_KNOW_HOW</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#DUPLICATE_CONFIGURATION_PARAMETER_NAME" title="class or interface in org.apache.uima.resource">DUPLICATE_CONFIGURATION_PARAMETER_NAME</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#DUPLICATE_INDEX_NAME" title="class or interface in org.apache.uima.resource">DUPLICATE_INDEX_NAME</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#EMPTY_FLOW_CONTROLLER_DECLARATION" title="class or interface in org.apache.uima.resource">EMPTY_FLOW_CONTROLLER_DECLARATION</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#ERROR_INITIALIZING_FROM_DESCRIPTOR" title="class or interface in org.apache.uima.resource">ERROR_INITIALIZING_FROM_DESCRIPTOR</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#EXCEPTION_WHEN_INITIALIZING_CUSTOM_RESOURCE" title="class or interface in org.apache.uima.resource">EXCEPTION_WHEN_INITIALIZING_CUSTOM_RESOURCE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#FLOW_CONTROLLER_REQUIRES_FLOW_CONSTRAINTS" title="class or interface in org.apache.uima.resource">FLOW_CONTROLLER_REQUIRES_FLOW_CONSTRAINTS</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INCOMPATIBLE_ELEMENT_RANGE_TYPES" title="class or interface in org.apache.uima.resource">INCOMPATIBLE_ELEMENT_RANGE_TYPES</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INCOMPATIBLE_MULTI_REFS" title="class or interface in org.apache.uima.resource">INCOMPATIBLE_MULTI_REFS</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INCOMPATIBLE_RANGE_TYPES" title="class or interface in org.apache.uima.resource">INCOMPATIBLE_RANGE_TYPES</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INCOMPATIBLE_SUPERTYPES" title="class or interface in org.apache.uima.resource">INCOMPATIBLE_SUPERTYPES</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INCORRECT_NUMBER_OF_PARAMETERS" title="class or interface in org.apache.uima.resource">INCORRECT_NUMBER_OF_PARAMETERS</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INDEX_KEY_FEATURE_NOT_FOUND" title="class or interface in org.apache.uima.resource">INDEX_KEY_FEATURE_NOT_FOUND</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INPUT_SOFA_HAS_NO_SOURCE" title="class or interface in org.apache.uima.resource">INPUT_SOFA_HAS_NO_SOURCE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INVALID_ACTION_AFTER_CAS_MULTIPLIER" title="class or interface in org.apache.uima.resource">INVALID_ACTION_AFTER_CAS_MULTIPLIER</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INVALID_MODIFIES_CAS" title="class or interface in org.apache.uima.resource">INVALID_MODIFIES_CAS</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INVALID_MULTIPLE_DEPLOYMENT_ALLOWED" title="class or interface in org.apache.uima.resource">INVALID_MULTIPLE_DEPLOYMENT_ALLOWED</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INVALID_OUTPUTS_NEW_CASES" title="class or interface in org.apache.uima.resource">INVALID_OUTPUTS_NEW_CASES</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INVALID_PARAM_OVERRIDE_NONEXISTENT_DELEGATE" title="class or interface in org.apache.uima.resource">INVALID_PARAM_OVERRIDE_NONEXISTENT_DELEGATE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INVALID_PARAM_OVERRIDE_NONEXISTENT_PARAMETER" title="class or interface in org.apache.uima.resource">INVALID_PARAM_OVERRIDE_NONEXISTENT_PARAMETER</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INVALID_PARAM_OVERRIDE_NONEXISTENT_PARAMETER_IN_GROUP" title="class or interface in org.apache.uima.resource">INVALID_PARAM_OVERRIDE_NONEXISTENT_PARAMETER_IN_GROUP</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INVALID_PARAM_OVERRIDE_SYNTAX" title="class or interface in org.apache.uima.resource">INVALID_PARAM_OVERRIDE_SYNTAX</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#INVALID_TYPE_PRIORITIES" title="class or interface in org.apache.uima.resource">INVALID_TYPE_PRIORITIES</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#MALFORMED_URL" title="class or interface in org.apache.uima.resource">MALFORMED_URL</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#MISSING_ALLOWED_VALUES" title="class or interface in org.apache.uima.resource">MISSING_ALLOWED_VALUES</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#MISSING_ANNOTATOR_CLASS_NAME" title="class or interface in org.apache.uima.resource">MISSING_ANNOTATOR_CLASS_NAME</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#MISSING_FRAMEWORK_IMPLEMENTATION" title="class or interface in org.apache.uima.resource">MISSING_FRAMEWORK_IMPLEMENTATION</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#MISSING_IMPLEMENTATION_CLASS_NAME" title="class or interface in org.apache.uima.resource">MISSING_IMPLEMENTATION_CLASS_NAME</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#NO_RESOURCE_FOR_PARAMETERS" title="class or interface in org.apache.uima.resource">NO_RESOURCE_FOR_PARAMETERS</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#NO_SUPERTYPE" title="class or interface in org.apache.uima.resource">NO_SUPERTYPE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#NOT_A_CAS_CONSUMER" title="class or interface in org.apache.uima.resource">NOT_A_CAS_CONSUMER</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#NOT_A_CAS_INITIALIZER" title="class or interface in org.apache.uima.resource">NOT_A_CAS_INITIALIZER</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#NOT_A_CAS_PROCESSOR" title="class or interface in org.apache.uima.resource">NOT_A_CAS_PROCESSOR</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#NOT_A_COLLECTION_READER" title="class or interface in org.apache.uima.resource">NOT_A_COLLECTION_READER</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#NOT_A_DATA_RESOURCE" title="class or interface in org.apache.uima.resource">NOT_A_DATA_RESOURCE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#NOT_A_FLOW_CONTROLLER_DESCRIPTOR" title="class or interface in org.apache.uima.resource">NOT_A_FLOW_CONTROLLER_DESCRIPTOR</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#NOT_A_SHARED_RESOURCE_OBJECT" title="class or interface in org.apache.uima.resource">NOT_A_SHARED_RESOURCE_OBJECT</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#NOT_AN_ANALYSIS_COMPONENT" title="class or interface in org.apache.uima.resource">NOT_AN_ANALYSIS_COMPONENT</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#NOT_AN_ANNOTATOR" title="class or interface in org.apache.uima.resource">NOT_AN_ANNOTATOR</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#OUTPUT_SOFA_NOT_DECLARED_IN_AGGREGATE" title="class or interface in org.apache.uima.resource">OUTPUT_SOFA_NOT_DECLARED_IN_AGGREGATE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#PARAM_OVERRIDE_IN_PRIMITIVE" title="class or interface in org.apache.uima.resource">PARAM_OVERRIDE_IN_PRIMITIVE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#REDEFINING_BUILTIN_TYPE" title="class or interface in org.apache.uima.resource">REDEFINING_BUILTIN_TYPE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#RESOURCE_DATA_NOT_VALID" title="class or interface in org.apache.uima.resource">RESOURCE_DATA_NOT_VALID</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#RESOURCE_DEPENDENCY_NOT_SATISFIED" title="class or interface in org.apache.uima.resource">RESOURCE_DEPENDENCY_NOT_SATISFIED</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#RESOURCE_DOES_NOT_IMPLEMENT_INTERFACE" title="class or interface in org.apache.uima.resource">RESOURCE_DOES_NOT_IMPLEMENT_INTERFACE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#SOFA_MAPPING_CONFLICT" title="class or interface in org.apache.uima.resource">SOFA_MAPPING_CONFLICT</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#SOFA_MAPPING_HAS_UNDEFINED_COMPONENT_KEY" title="class or interface in org.apache.uima.resource">SOFA_MAPPING_HAS_UNDEFINED_COMPONENT_KEY</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#SOFA_MAPPING_HAS_UNDEFINED_COMPONENT_SOFA" title="class or interface in org.apache.uima.resource">SOFA_MAPPING_HAS_UNDEFINED_COMPONENT_SOFA</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#SOFA_MAPPING_NOT_SUPPORTED_FOR_REMOTE" title="class or interface in org.apache.uima.resource">SOFA_MAPPING_NOT_SUPPORTED_FOR_REMOTE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#TEXT_ANNOTATOR_CANNOT_BE_SOFA_AWARE" title="class or interface in org.apache.uima.resource">TEXT_ANNOTATOR_CANNOT_BE_SOFA_AWARE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#THROWABLE_WHEN_INITIALIZING_CUSTOM_RESOURCE" title="class or interface in org.apache.uima.resource">THROWABLE_WHEN_INITIALIZING_CUSTOM_RESOURCE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#UNDEFINED_KEY_IN_FLOW" title="class or interface in org.apache.uima.resource">UNDEFINED_KEY_IN_FLOW</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#UNDEFINED_RANGE_TYPE" title="class or interface in org.apache.uima.resource">UNDEFINED_RANGE_TYPE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#UNDEFINED_SUPERTYPE" title="class or interface in org.apache.uima.resource">UNDEFINED_SUPERTYPE</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#UNDEFINED_TYPE_FOR_INDEX" title="class or interface in org.apache.uima.resource">UNDEFINED_TYPE_FOR_INDEX</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#UNDEFINED_TYPE_FOR_PRIORITY_LIST" title="class or interface in org.apache.uima.resource">UNDEFINED_TYPE_FOR_PRIORITY_LIST</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#UNKNOWN_PROTOCOL" title="class or interface in org.apache.uima.resource">UNKNOWN_PROTOCOL</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#UNKNOWN_RESOURCE_NAME" title="class or interface in org.apache.uima.resource">UNKNOWN_RESOURCE_NAME</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#UNSUPPORTED_FRAMEWORK_IMPLEMENTATION" title="class or interface in org.apache.uima.resource">UNSUPPORTED_FRAMEWORK_IMPLEMENTATION</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true#UNSUPPORTED_OBJECT_TYPE_IN_CREATE_CAS" title="class or interface in org.apache.uima.resource">UNSUPPORTED_OBJECT_TYPE_IN_CREATE_CAS</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="fields_inherited_from_class_org.apache.uima.UIMAException"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Fields inherited from class org.apache.uima.<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true#STANDARD_MESSAGE_CATALOG" title="class or interface in org.apache.uima">STANDARD_MESSAGE_CATALOG</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+
+<A NAME="constructor_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Constructor Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><B><A HREF="../../../org/cleartk/util/CleartkInitializationException.html#CleartkInitializationException(java.lang.String, java.lang.String, java.lang.Object...)">CleartkInitializationException</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;resourceBundleName,
+                                                             <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;messageKey,
+                                                             <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>...&nbsp;arguments)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><B><A HREF="../../../org/cleartk/util/CleartkInitializationException.html#CleartkInitializationException(java.lang.Throwable, java.lang.String, java.lang.String, java.lang.Object...)">CleartkInitializationException</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</A>&nbsp;cause,
+                                                             <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;resourceBundleName,
+                                                             <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;messageKey,
+                                                             <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>...&nbsp;arguments)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/util/CleartkInitializationException.html#fileNotFound(java.io.File)">fileNotFound</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;file)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/util/CleartkInitializationException.html#incompatibleTypeParameterAndType(java.lang.Object, java.lang.String, java.lang.reflect.Type, java.lang.Class)">incompatibleTypeParameterAndType</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;object1,
+                                                                 <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;typeParamName1,
+                                                                 <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/reflect/Type.html?is-external=true" title="class or interface in java.lang.reflect">Type</A>&nbsp;typeParamValue1,
+                                                                 <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;?&gt;&nbsp;class2)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/util/CleartkInitializationException.html#incompatibleTypeParameters(java.lang.Object, java.lang.String, java.lang.reflect.Type, java.lang.Object, java.lang.String, java.lang.reflect.Type)">incompatibleTypeParameters</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;object1,
+                                                     <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;typeParamName1,
+                                                     <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/reflect/Type.html?is-external=true" title="class or interface in java.lang.reflect">Type</A>&nbsp;typeParamValue1,
+                                                     <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;object2,
+                                                     <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;typeParamName2,
+                                                     <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/reflect/Type.html?is-external=true" title="class or interface in java.lang.reflect">Type</A>&nbsp;typeParamValue2)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/util/CleartkInitializationException.html#invalidParameterValueSelectFrom(java.lang.String, java.util.List, java.lang.Object)">invalidParameterValueSelectFrom</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;paramName,
+                                                               <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;?&gt;&nbsp;expectedValues,
+                                                               <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;actualValue)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/util/CleartkInitializationException.html#neitherParameterSet(java.lang.String, java.lang.Object, java.lang.String, java.lang.Object)">neitherParameterSet</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;param1,
+                                       <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;value1,
+                                       <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;param2,
+                                       <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;value2)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/util/CleartkInitializationException.html#notExactlyOneParameterSet(java.lang.String, java.lang.Object, java.lang.String, java.lang.Object)">notExactlyOneParameterSet</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;param1,
+                                                   <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;value1,
+                                                   <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;param2,
+                                                   <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;value2)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/util/CleartkInitializationException.html#notSingleCharacter(java.lang.String, java.lang.Object)">notSingleCharacter</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;paramName,
+                                     <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;value)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/util/CleartkInitializationException.html#parameterLessThan(java.lang.String, java.lang.Object, java.lang.Object)">parameterLessThan</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;paramName,
+                                   <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;minExpectedValue,
+                                   <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;actualValue)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_org.apache.uima.InternationalizedException"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class org.apache.uima.<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/InternationalizedException.html?is-external=true" title="class or interface in org.apache.uima">InternationalizedException</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/InternationalizedException.html?is-external=true#getArguments()" title="class or interface in org.apache.uima">getArguments</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/InternationalizedException.html?is-external=true#getCause()" title="class or interface in org.apache.uima">getCause</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/InternationalizedException.html?is-external=true#getLocalizedMessage()" title="class or interface in org.apache.uima">getLocalizedMessage</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/InternationalizedException.html?is-external=true#getLocalizedMessage(java.util.Locale)" title="class or interface in org.apache.uima">getLocalizedMessage</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/InternationalizedException.html?is-external=true#getMessage()" title="class or interface in org.apache.uima">getMessage</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/InternationalizedException.html?is-external=true#getMessageKey()" title="class or interface in org.apache.uima">getMessageKey</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/InternationalizedException.html?is-external=true#getResourceBundleName()" title="class or interface in org.apache.uima">getResourceBundleName</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/InternationalizedException.html?is-external=true#hasMessageKey(java.lang.String)" title="class or interface in org.apache.uima">hasMessageKey</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/InternationalizedException.html?is-external=true#initCause(java.lang.Throwable)" title="class or interface in org.apache.uima">initCause</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Throwable"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html?is-external=true#fillInStackTrace()" title="class or interface in java.lang">fillInStackTrace</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html?is-external=true#getStackTrace()" title="class or interface in java.lang">getStackTrace</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html?is-external=true#printStackTrace()" title="class or interface in java.lang">printStackTrace</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html?is-external=true#printStackTrace(java.io.PrintStream)" title="class or interface in java.lang">printStackTrace</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html?is-external=true#printStackTrace(java.io.PrintWriter)" title="class or interface in java.lang">printStackTrace</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html?is-external=true#setStackTrace(java.lang.StackTraceElement[])" title="class or interface in java.lang">setStackTrace</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html?is-external=true#toString()" title="class or interface in java.lang">toString</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+
+<A NAME="constructor_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Constructor Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="CleartkInitializationException(java.lang.String, java.lang.String, java.lang.Object...)"><!-- --></A><H3>
+CleartkInitializationException</H3>
+<PRE>
+public <A HREF="../../../src-html/org/cleartk/util/CleartkInitializationException.html#line.148"><B>CleartkInitializationException</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;resourceBundleName,
+                                      <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;messageKey,
+                                      <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>...&nbsp;arguments)</PRE>
+<DL>
+</DL>
+<HR>
+
+<A NAME="CleartkInitializationException(java.lang.Throwable, java.lang.String, java.lang.String, java.lang.Object...)"><!-- --></A><H3>
+CleartkInitializationException</H3>
+<PRE>
+public <A HREF="../../../src-html/org/cleartk/util/CleartkInitializationException.html#line.155"><B>CleartkInitializationException</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</A>&nbsp;cause,
+                                      <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;resourceBundleName,
+                                      <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;messageKey,
+                                      <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>...&nbsp;arguments)</PRE>
+<DL>
+</DL>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="fileNotFound(java.io.File)"><!-- --></A><H3>
+fileNotFound</H3>
+<PRE>
+public static <A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A> <A HREF="../../../src-html/org/cleartk/util/CleartkInitializationException.html#line.45"><B>fileNotFound</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;file)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="incompatibleTypeParameterAndType(java.lang.Object, java.lang.String, java.lang.reflect.Type, java.lang.Class)"><!-- --></A><H3>
+incompatibleTypeParameterAndType</H3>
+<PRE>
+public static <A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A> <A HREF="../../../src-html/org/cleartk/util/CleartkInitializationException.html#line.50"><B>incompatibleTypeParameterAndType</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;object1,
+                                                                              <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;typeParamName1,
+                                                                              <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/reflect/Type.html?is-external=true" title="class or interface in java.lang.reflect">Type</A>&nbsp;typeParamValue1,
+                                                                              <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;?&gt;&nbsp;class2)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="incompatibleTypeParameters(java.lang.Object, java.lang.String, java.lang.reflect.Type, java.lang.Object, java.lang.String, java.lang.reflect.Type)"><!-- --></A><H3>
+incompatibleTypeParameters</H3>
+<PRE>
+public static <A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A> <A HREF="../../../src-html/org/cleartk/util/CleartkInitializationException.html#line.66"><B>incompatibleTypeParameters</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;object1,
+                                                                        <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;typeParamName1,
+                                                                        <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/reflect/Type.html?is-external=true" title="class or interface in java.lang.reflect">Type</A>&nbsp;typeParamValue1,
+                                                                        <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;object2,
+                                                                        <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;typeParamName2,
+                                                                        <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/reflect/Type.html?is-external=true" title="class or interface in java.lang.reflect">Type</A>&nbsp;typeParamValue2)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="invalidParameterValueSelectFrom(java.lang.String, java.util.List, java.lang.Object)"><!-- --></A><H3>
+invalidParameterValueSelectFrom</H3>
+<PRE>
+public static <A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A> <A HREF="../../../src-html/org/cleartk/util/CleartkInitializationException.html#line.87"><B>invalidParameterValueSelectFrom</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;paramName,
+                                                                             <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;?&gt;&nbsp;expectedValues,
+                                                                             <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;actualValue)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="neitherParameterSet(java.lang.String, java.lang.Object, java.lang.String, java.lang.Object)"><!-- --></A><H3>
+neitherParameterSet</H3>
+<PRE>
+public static <A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A> <A HREF="../../../src-html/org/cleartk/util/CleartkInitializationException.html#line.100"><B>neitherParameterSet</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;param1,
+                                                                 <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;value1,
+                                                                 <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;param2,
+                                                                 <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;value2)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="notExactlyOneParameterSet(java.lang.String, java.lang.Object, java.lang.String, java.lang.Object)"><!-- --></A><H3>
+notExactlyOneParameterSet</H3>
+<PRE>
+public static <A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A> <A HREF="../../../src-html/org/cleartk/util/CleartkInitializationException.html#line.115"><B>notExactlyOneParameterSet</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;param1,
+                                                                       <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;value1,
+                                                                       <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;param2,
+                                                                       <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;value2)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="notSingleCharacter(java.lang.String, java.lang.Object)"><!-- --></A><H3>
+notSingleCharacter</H3>
+<PRE>
+public static <A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A> <A HREF="../../../src-html/org/cleartk/util/CleartkInitializationException.html#line.130"><B>notSingleCharacter</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;paramName,
+                                                                <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;value)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="parameterLessThan(java.lang.String, java.lang.Object, java.lang.Object)"><!-- --></A><H3>
+parameterLessThan</H3>
+<PRE>
+public static <A HREF="../../../org/cleartk/util/CleartkInitializationException.html" title="class in org.cleartk.util">CleartkInitializationException</A> <A HREF="../../../src-html/org/cleartk/util/CleartkInitializationException.html#line.135"><B>parameterLessThan</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;paramName,
+                                                               <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;minExpectedValue,
+                                                               <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;actualValue)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/CleartkInitializationException.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../org/cleartk/util/BaseConversion.html" title="class in org.cleartk.util"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../org/cleartk/util/IOUtil.html" title="class in org.cleartk.util"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../index.html?org/cleartk/util/CleartkInitializationException.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="CleartkInitializationException.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#fields_inherited_from_class_org.apache.uima.resource.ResourceInitializationException">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>

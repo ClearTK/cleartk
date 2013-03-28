@@ -1,0 +1,297 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /** <a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) 2007-2008, Regents of the University of Colorado <a name="line.2"></a>
+<FONT color="green">003</FONT>     * All rights reserved.<a name="line.3"></a>
+<FONT color="green">004</FONT>     * <a name="line.4"></a>
+<FONT color="green">005</FONT>     * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<FONT color="green">006</FONT>     * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<FONT color="green">007</FONT>     * <a name="line.7"></a>
+<FONT color="green">008</FONT>     * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<FONT color="green">009</FONT>     * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<FONT color="green">010</FONT>     * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<FONT color="green">011</FONT>     * <a name="line.11"></a>
+<FONT color="green">012</FONT>     * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<FONT color="green">013</FONT>     * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<FONT color="green">014</FONT>     * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<FONT color="green">015</FONT>     * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<FONT color="green">016</FONT>     * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<FONT color="green">017</FONT>     * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<FONT color="green">018</FONT>     * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<FONT color="green">019</FONT>     * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<FONT color="green">020</FONT>     * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<FONT color="green">021</FONT>     * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<FONT color="green">022</FONT>     * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<FONT color="green">023</FONT>     */<a name="line.23"></a>
+<FONT color="green">024</FONT>    package org.cleartk.syntax.constituent.util;<a name="line.24"></a>
+<FONT color="green">025</FONT>    <a name="line.25"></a>
+<FONT color="green">026</FONT>    import java.io.PrintStream;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import java.util.ArrayList;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import java.util.Arrays;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import java.util.List;<a name="line.29"></a>
+<FONT color="green">030</FONT>    <a name="line.30"></a>
+<FONT color="green">031</FONT>    import org.apache.uima.cas.FeatureStructure;<a name="line.31"></a>
+<FONT color="green">032</FONT>    import org.apache.uima.jcas.JCas;<a name="line.32"></a>
+<FONT color="green">033</FONT>    import org.apache.uima.jcas.cas.FSArray;<a name="line.33"></a>
+<FONT color="green">034</FONT>    import org.cleartk.syntax.constituent.type.TerminalTreebankNode;<a name="line.34"></a>
+<FONT color="green">035</FONT>    import org.cleartk.util.UIMAUtil;<a name="line.35"></a>
+<FONT color="green">036</FONT>    <a name="line.36"></a>
+<FONT color="green">037</FONT>    /**<a name="line.37"></a>
+<FONT color="green">038</FONT>     * &lt;br&gt;<a name="line.38"></a>
+<FONT color="green">039</FONT>     * Copyright (c) 2007-2008, Regents of the University of Colorado &lt;br&gt;<a name="line.39"></a>
+<FONT color="green">040</FONT>     * All rights reserved.<a name="line.40"></a>
+<FONT color="green">041</FONT>     * <a name="line.41"></a>
+<FONT color="green">042</FONT>     * <a name="line.42"></a>
+<FONT color="green">043</FONT>     * @author Philip Ogren<a name="line.43"></a>
+<FONT color="green">044</FONT>     * <a name="line.44"></a>
+<FONT color="green">045</FONT>     */<a name="line.45"></a>
+<FONT color="green">046</FONT>    public class TreebankNodeUtility {<a name="line.46"></a>
+<FONT color="green">047</FONT>      public static org.cleartk.syntax.constituent.type.TopTreebankNode convert(<a name="line.47"></a>
+<FONT color="green">048</FONT>          TopTreebankNode pojoNode,<a name="line.48"></a>
+<FONT color="green">049</FONT>          JCas jCas,<a name="line.49"></a>
+<FONT color="green">050</FONT>          boolean addToIndexes) {<a name="line.50"></a>
+<FONT color="green">051</FONT>        org.cleartk.syntax.constituent.type.TopTreebankNode uimaNode = new org.cleartk.syntax.constituent.type.TopTreebankNode(<a name="line.51"></a>
+<FONT color="green">052</FONT>            jCas,<a name="line.52"></a>
+<FONT color="green">053</FONT>            pojoNode.getTextBegin(),<a name="line.53"></a>
+<FONT color="green">054</FONT>            pojoNode.getTextEnd());<a name="line.54"></a>
+<FONT color="green">055</FONT>        convert(pojoNode, jCas, uimaNode, null, addToIndexes);<a name="line.55"></a>
+<FONT color="green">056</FONT>        uimaNode.setTreebankParse(pojoNode.getTreebankParse());<a name="line.56"></a>
+<FONT color="green">057</FONT>        initTerminalNodes(uimaNode, jCas);<a name="line.57"></a>
+<FONT color="green">058</FONT>        if (addToIndexes)<a name="line.58"></a>
+<FONT color="green">059</FONT>          uimaNode.addToIndexes();<a name="line.59"></a>
+<FONT color="green">060</FONT>        return uimaNode;<a name="line.60"></a>
+<FONT color="green">061</FONT>      }<a name="line.61"></a>
+<FONT color="green">062</FONT>    <a name="line.62"></a>
+<FONT color="green">063</FONT>      public static void initTerminalNodes(<a name="line.63"></a>
+<FONT color="green">064</FONT>          org.cleartk.syntax.constituent.type.TopTreebankNode uimaNode,<a name="line.64"></a>
+<FONT color="green">065</FONT>          JCas jCas) {<a name="line.65"></a>
+<FONT color="green">066</FONT>        List&lt;TerminalTreebankNode&gt; terminals = new ArrayList&lt;org.cleartk.syntax.constituent.type.TerminalTreebankNode&gt;();<a name="line.66"></a>
+<FONT color="green">067</FONT>        _initTerminalNodes(uimaNode, terminals);<a name="line.67"></a>
+<FONT color="green">068</FONT>    <a name="line.68"></a>
+<FONT color="green">069</FONT>        for (int i = 0; i &lt; terminals.size(); i++) {<a name="line.69"></a>
+<FONT color="green">070</FONT>          TerminalTreebankNode terminal = terminals.get(i);<a name="line.70"></a>
+<FONT color="green">071</FONT>          terminal.setIndex(i);<a name="line.71"></a>
+<FONT color="green">072</FONT>        }<a name="line.72"></a>
+<FONT color="green">073</FONT>    <a name="line.73"></a>
+<FONT color="green">074</FONT>        FSArray terminalsFSArray = new FSArray(jCas, terminals.size());<a name="line.74"></a>
+<FONT color="green">075</FONT>        terminalsFSArray.copyFromArray(<a name="line.75"></a>
+<FONT color="green">076</FONT>            terminals.toArray(new FeatureStructure[terminals.size()]),<a name="line.76"></a>
+<FONT color="green">077</FONT>            0,<a name="line.77"></a>
+<FONT color="green">078</FONT>            0,<a name="line.78"></a>
+<FONT color="green">079</FONT>            terminals.size());<a name="line.79"></a>
+<FONT color="green">080</FONT>        uimaNode.setTerminals(terminalsFSArray);<a name="line.80"></a>
+<FONT color="green">081</FONT>      }<a name="line.81"></a>
+<FONT color="green">082</FONT>    <a name="line.82"></a>
+<FONT color="green">083</FONT>      private static void _initTerminalNodes(<a name="line.83"></a>
+<FONT color="green">084</FONT>          org.cleartk.syntax.constituent.type.TreebankNode node,<a name="line.84"></a>
+<FONT color="green">085</FONT>          List&lt;TerminalTreebankNode&gt; terminals) {<a name="line.85"></a>
+<FONT color="green">086</FONT>        FSArray children = node.getChildren();<a name="line.86"></a>
+<FONT color="green">087</FONT>        for (int i = 0; i &lt; children.size(); i++) {<a name="line.87"></a>
+<FONT color="green">088</FONT>          org.cleartk.syntax.constituent.type.TreebankNode child = (org.cleartk.syntax.constituent.type.TreebankNode) children<a name="line.88"></a>
+<FONT color="green">089</FONT>              .get(i);<a name="line.89"></a>
+<FONT color="green">090</FONT>          if (child instanceof TerminalTreebankNode) {<a name="line.90"></a>
+<FONT color="green">091</FONT>            terminals.add((TerminalTreebankNode) child);<a name="line.91"></a>
+<FONT color="green">092</FONT>          } else<a name="line.92"></a>
+<FONT color="green">093</FONT>            _initTerminalNodes(child, terminals);<a name="line.93"></a>
+<FONT color="green">094</FONT>        }<a name="line.94"></a>
+<FONT color="green">095</FONT>      }<a name="line.95"></a>
+<FONT color="green">096</FONT>    <a name="line.96"></a>
+<FONT color="green">097</FONT>      public static org.cleartk.syntax.constituent.type.TreebankNode convert(<a name="line.97"></a>
+<FONT color="green">098</FONT>          TreebankNode pojoNode,<a name="line.98"></a>
+<FONT color="green">099</FONT>          JCas jCas,<a name="line.99"></a>
+<FONT color="green">100</FONT>          org.cleartk.syntax.constituent.type.TreebankNode uimaNode,<a name="line.100"></a>
+<FONT color="green">101</FONT>          org.cleartk.syntax.constituent.type.TreebankNode parentNode,<a name="line.101"></a>
+<FONT color="green">102</FONT>          boolean addToIndexes) {<a name="line.102"></a>
+<FONT color="green">103</FONT>        uimaNode.setNodeType(pojoNode.getType());<a name="line.103"></a>
+<FONT color="green">104</FONT>        uimaNode.setNodeTags(UIMAUtil.toStringArray(jCas, pojoNode.getTags()));<a name="line.104"></a>
+<FONT color="green">105</FONT>        uimaNode.setNodeValue(pojoNode.getValue());<a name="line.105"></a>
+<FONT color="green">106</FONT>        uimaNode.setLeaf(pojoNode.isLeaf());<a name="line.106"></a>
+<FONT color="green">107</FONT>        uimaNode.setParent(parentNode);<a name="line.107"></a>
+<FONT color="green">108</FONT>    <a name="line.108"></a>
+<FONT color="green">109</FONT>        List&lt;org.cleartk.syntax.constituent.type.TreebankNode&gt; uimaChildren = new ArrayList&lt;org.cleartk.syntax.constituent.type.TreebankNode&gt;();<a name="line.109"></a>
+<FONT color="green">110</FONT>        for (TreebankNode child : pojoNode.getChildren()) {<a name="line.110"></a>
+<FONT color="green">111</FONT>          org.cleartk.syntax.constituent.type.TreebankNode childNode;<a name="line.111"></a>
+<FONT color="green">112</FONT>          if (child.isLeaf()) {<a name="line.112"></a>
+<FONT color="green">113</FONT>            childNode = new TerminalTreebankNode(jCas, child.getTextBegin(), child.getTextEnd());<a name="line.113"></a>
+<FONT color="green">114</FONT>          } else {<a name="line.114"></a>
+<FONT color="green">115</FONT>            childNode = new org.cleartk.syntax.constituent.type.TreebankNode(<a name="line.115"></a>
+<FONT color="green">116</FONT>                jCas,<a name="line.116"></a>
+<FONT color="green">117</FONT>                child.getTextBegin(),<a name="line.117"></a>
+<FONT color="green">118</FONT>                child.getTextEnd());<a name="line.118"></a>
+<FONT color="green">119</FONT>          }<a name="line.119"></a>
+<FONT color="green">120</FONT>          uimaChildren.add(convert(child, jCas, childNode, uimaNode, addToIndexes));<a name="line.120"></a>
+<FONT color="green">121</FONT>          if (addToIndexes)<a name="line.121"></a>
+<FONT color="green">122</FONT>            childNode.addToIndexes();<a name="line.122"></a>
+<FONT color="green">123</FONT>        }<a name="line.123"></a>
+<FONT color="green">124</FONT>        FSArray uimaChildrenFSArray = new FSArray(jCas, uimaChildren.size());<a name="line.124"></a>
+<FONT color="green">125</FONT>        uimaChildrenFSArray.copyFromArray(<a name="line.125"></a>
+<FONT color="green">126</FONT>            uimaChildren.toArray(new FeatureStructure[uimaChildren.size()]),<a name="line.126"></a>
+<FONT color="green">127</FONT>            0,<a name="line.127"></a>
+<FONT color="green">128</FONT>            0,<a name="line.128"></a>
+<FONT color="green">129</FONT>            uimaChildren.size());<a name="line.129"></a>
+<FONT color="green">130</FONT>        uimaNode.setChildren(uimaChildrenFSArray);<a name="line.130"></a>
+<FONT color="green">131</FONT>        return uimaNode;<a name="line.131"></a>
+<FONT color="green">132</FONT>      }<a name="line.132"></a>
+<FONT color="green">133</FONT>    <a name="line.133"></a>
+<FONT color="green">134</FONT>      public static org.cleartk.syntax.constituent.type.TopTreebankNode getTopNode(<a name="line.134"></a>
+<FONT color="green">135</FONT>          org.cleartk.syntax.constituent.type.TreebankNode node) {<a name="line.135"></a>
+<FONT color="green">136</FONT>        if (node instanceof org.cleartk.syntax.constituent.type.TopTreebankNode)<a name="line.136"></a>
+<FONT color="green">137</FONT>          return (org.cleartk.syntax.constituent.type.TopTreebankNode) node;<a name="line.137"></a>
+<FONT color="green">138</FONT>    <a name="line.138"></a>
+<FONT color="green">139</FONT>        org.cleartk.syntax.constituent.type.TreebankNode parent = node.getParent();<a name="line.139"></a>
+<FONT color="green">140</FONT>        while (parent != null) {<a name="line.140"></a>
+<FONT color="green">141</FONT>          if (parent instanceof org.cleartk.syntax.constituent.type.TopTreebankNode)<a name="line.141"></a>
+<FONT color="green">142</FONT>            return (org.cleartk.syntax.constituent.type.TopTreebankNode) parent;<a name="line.142"></a>
+<FONT color="green">143</FONT>          node = parent;<a name="line.143"></a>
+<FONT color="green">144</FONT>          parent = node.getParent();<a name="line.144"></a>
+<FONT color="green">145</FONT>        }<a name="line.145"></a>
+<FONT color="green">146</FONT>        return null;<a name="line.146"></a>
+<FONT color="green">147</FONT>      }<a name="line.147"></a>
+<FONT color="green">148</FONT>    <a name="line.148"></a>
+<FONT color="green">149</FONT>      /**<a name="line.149"></a>
+<FONT color="green">150</FONT>       * @return a "pretty print" of this node that may be useful for e.g. debugging.<a name="line.150"></a>
+<FONT color="green">151</FONT>       */<a name="line.151"></a>
+<FONT color="green">152</FONT>      public static void print(PrintStream out, org.cleartk.syntax.constituent.type.TreebankNode node) {<a name="line.152"></a>
+<FONT color="green">153</FONT>        out.println(print(node, 0));<a name="line.153"></a>
+<FONT color="green">154</FONT>      }<a name="line.154"></a>
+<FONT color="green">155</FONT>    <a name="line.155"></a>
+<FONT color="green">156</FONT>      private static String print(org.cleartk.syntax.constituent.type.TreebankNode node, int tabs) {<a name="line.156"></a>
+<FONT color="green">157</FONT>        StringBuffer returnValue = new StringBuffer();<a name="line.157"></a>
+<FONT color="green">158</FONT>        String tabString = getTabs(tabs);<a name="line.158"></a>
+<FONT color="green">159</FONT>        returnValue.append(tabString + node.getNodeType());<a name="line.159"></a>
+<FONT color="green">160</FONT>        if (node.getNodeValue() != null)<a name="line.160"></a>
+<FONT color="green">161</FONT>          returnValue.append(":" + node.getNodeValue() + "\n");<a name="line.161"></a>
+<FONT color="green">162</FONT>        else {<a name="line.162"></a>
+<FONT color="green">163</FONT>          returnValue.append(":" + node.getCoveredText() + "\n");<a name="line.163"></a>
+<FONT color="green">164</FONT>        }<a name="line.164"></a>
+<FONT color="green">165</FONT>        if (node.getChildren().size() &gt; 0) {<a name="line.165"></a>
+<FONT color="green">166</FONT>          List&lt;org.cleartk.syntax.constituent.type.TreebankNode&gt; children = UIMAUtil.toList(<a name="line.166"></a>
+<FONT color="green">167</FONT>              node.getChildren(),<a name="line.167"></a>
+<FONT color="green">168</FONT>              org.cleartk.syntax.constituent.type.TreebankNode.class);<a name="line.168"></a>
+<FONT color="green">169</FONT>          for (org.cleartk.syntax.constituent.type.TreebankNode child : children) {<a name="line.169"></a>
+<FONT color="green">170</FONT>            returnValue.append(print(child, (tabs + 1)));<a name="line.170"></a>
+<FONT color="green">171</FONT>          }<a name="line.171"></a>
+<FONT color="green">172</FONT>        }<a name="line.172"></a>
+<FONT color="green">173</FONT>        return returnValue.toString();<a name="line.173"></a>
+<FONT color="green">174</FONT>      }<a name="line.174"></a>
+<FONT color="green">175</FONT>    <a name="line.175"></a>
+<FONT color="green">176</FONT>      private static String getTabs(int tabs) {<a name="line.176"></a>
+<FONT color="green">177</FONT>        char[] chars = new char[tabs];<a name="line.177"></a>
+<FONT color="green">178</FONT>        Arrays.fill(chars, ' ');<a name="line.178"></a>
+<FONT color="green">179</FONT>        return new String(chars);<a name="line.179"></a>
+<FONT color="green">180</FONT>      }<a name="line.180"></a>
+<FONT color="green">181</FONT>    <a name="line.181"></a>
+<FONT color="green">182</FONT>      /**<a name="line.182"></a>
+<FONT color="green">183</FONT>       * Create a leaf TreebankNode in a JCas.<a name="line.183"></a>
+<FONT color="green">184</FONT>       * <a name="line.184"></a>
+<FONT color="green">185</FONT>       * @param jCas<a name="line.185"></a>
+<FONT color="green">186</FONT>       *          The JCas which the annotation should be added to.<a name="line.186"></a>
+<FONT color="green">187</FONT>       * @param begin<a name="line.187"></a>
+<FONT color="green">188</FONT>       *          The begin offset of the node.<a name="line.188"></a>
+<FONT color="green">189</FONT>       * @param end<a name="line.189"></a>
+<FONT color="green">190</FONT>       *          The end offset of the node.<a name="line.190"></a>
+<FONT color="green">191</FONT>       * @param nodeType<a name="line.191"></a>
+<FONT color="green">192</FONT>       *          The part of speech tag of the node.<a name="line.192"></a>
+<FONT color="green">193</FONT>       * @return The TreebankNode which was added to the JCas.<a name="line.193"></a>
+<FONT color="green">194</FONT>       */<a name="line.194"></a>
+<FONT color="green">195</FONT>      public static org.cleartk.syntax.constituent.type.TreebankNode newNode(JCas jCas, int begin, int end, String nodeType) {<a name="line.195"></a>
+<FONT color="green">196</FONT>        org.cleartk.syntax.constituent.type.TreebankNode node = new org.cleartk.syntax.constituent.type.TreebankNode(jCas, begin, end);<a name="line.196"></a>
+<FONT color="green">197</FONT>        node.setNodeType(nodeType);<a name="line.197"></a>
+<FONT color="green">198</FONT>        node.setChildren(new FSArray(jCas, 0));<a name="line.198"></a>
+<FONT color="green">199</FONT>        node.setLeaf(true);<a name="line.199"></a>
+<FONT color="green">200</FONT>        node.addToIndexes();<a name="line.200"></a>
+<FONT color="green">201</FONT>        return node;<a name="line.201"></a>
+<FONT color="green">202</FONT>      }<a name="line.202"></a>
+<FONT color="green">203</FONT>      <a name="line.203"></a>
+<FONT color="green">204</FONT>      /**<a name="line.204"></a>
+<FONT color="green">205</FONT>       * Create a branch TreebankNode in a JCas. The offsets of this node will be determined by its<a name="line.205"></a>
+<FONT color="green">206</FONT>       * children.<a name="line.206"></a>
+<FONT color="green">207</FONT>       * <a name="line.207"></a>
+<FONT color="green">208</FONT>       * @param jCas<a name="line.208"></a>
+<FONT color="green">209</FONT>       *          The JCas which the annotation should be added to.<a name="line.209"></a>
+<FONT color="green">210</FONT>       * @param nodeType<a name="line.210"></a>
+<FONT color="green">211</FONT>       *          The phrase type tag of the node.<a name="line.211"></a>
+<FONT color="green">212</FONT>       * @param children<a name="line.212"></a>
+<FONT color="green">213</FONT>       *          The TreebankNode children of the node.<a name="line.213"></a>
+<FONT color="green">214</FONT>       * @return The TreebankNode which was added to the JCas.<a name="line.214"></a>
+<FONT color="green">215</FONT>       */<a name="line.215"></a>
+<FONT color="green">216</FONT>      public static org.cleartk.syntax.constituent.type.TreebankNode newNode(JCas jCas, String nodeType, org.cleartk.syntax.constituent.type.TreebankNode... children) {<a name="line.216"></a>
+<FONT color="green">217</FONT>        int begin = children[0].getBegin();<a name="line.217"></a>
+<FONT color="green">218</FONT>        int end = children[children.length - 1].getEnd();<a name="line.218"></a>
+<FONT color="green">219</FONT>        org.cleartk.syntax.constituent.type.TreebankNode node = new org.cleartk.syntax.constituent.type.TreebankNode(jCas, begin, end);<a name="line.219"></a>
+<FONT color="green">220</FONT>        node.setNodeType(nodeType);<a name="line.220"></a>
+<FONT color="green">221</FONT>        node.addToIndexes();<a name="line.221"></a>
+<FONT color="green">222</FONT>        FSArray fsArray = new FSArray(jCas, children.length);<a name="line.222"></a>
+<FONT color="green">223</FONT>        fsArray.copyFromArray(children, 0, 0, children.length);<a name="line.223"></a>
+<FONT color="green">224</FONT>        node.setChildren(fsArray);<a name="line.224"></a>
+<FONT color="green">225</FONT>        for (org.cleartk.syntax.constituent.type.TreebankNode child : children) {<a name="line.225"></a>
+<FONT color="green">226</FONT>          child.setParent(node);<a name="line.226"></a>
+<FONT color="green">227</FONT>        }<a name="line.227"></a>
+<FONT color="green">228</FONT>        return node;<a name="line.228"></a>
+<FONT color="green">229</FONT>      }<a name="line.229"></a>
+<FONT color="green">230</FONT>    <a name="line.230"></a>
+<FONT color="green">231</FONT>    }<a name="line.231"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,214 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) 2011, Regents of the University of Colorado <a name="line.2"></a>
+<FONT color="green">003</FONT>     * All rights reserved.<a name="line.3"></a>
+<FONT color="green">004</FONT>     * <a name="line.4"></a>
+<FONT color="green">005</FONT>     * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<FONT color="green">006</FONT>     * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<FONT color="green">007</FONT>     * <a name="line.7"></a>
+<FONT color="green">008</FONT>     * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<FONT color="green">009</FONT>     * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<FONT color="green">010</FONT>     * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<FONT color="green">011</FONT>     * <a name="line.11"></a>
+<FONT color="green">012</FONT>     * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<FONT color="green">013</FONT>     * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<FONT color="green">014</FONT>     * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<FONT color="green">015</FONT>     * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<FONT color="green">016</FONT>     * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<FONT color="green">017</FONT>     * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<FONT color="green">018</FONT>     * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<FONT color="green">019</FONT>     * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<FONT color="green">020</FONT>     * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<FONT color="green">021</FONT>     * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<FONT color="green">022</FONT>     * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<FONT color="green">023</FONT>     */<a name="line.23"></a>
+<FONT color="green">024</FONT>    <a name="line.24"></a>
+<FONT color="green">025</FONT>    package org.cleartk.eval.provider.corpus.xmi;<a name="line.25"></a>
+<FONT color="green">026</FONT>    <a name="line.26"></a>
+<FONT color="green">027</FONT>    import java.io.File;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import java.io.IOException;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import java.util.ArrayList;<a name="line.29"></a>
+<FONT color="green">030</FONT>    import java.util.Arrays;<a name="line.30"></a>
+<FONT color="green">031</FONT>    import java.util.List;<a name="line.31"></a>
+<FONT color="green">032</FONT>    <a name="line.32"></a>
+<FONT color="green">033</FONT>    import org.apache.uima.pear.util.FileUtil;<a name="line.33"></a>
+<FONT color="green">034</FONT>    import org.apache.uima.resource.ResourceInitializationException;<a name="line.34"></a>
+<FONT color="green">035</FONT>    import org.apache.uima.resource.metadata.TypeSystemDescription;<a name="line.35"></a>
+<FONT color="green">036</FONT>    import org.cleartk.eval.Evaluation_ImplBase;<a name="line.36"></a>
+<FONT color="green">037</FONT>    import org.cleartk.eval.provider.CorpusReaderProvider;<a name="line.37"></a>
+<FONT color="green">038</FONT>    <a name="line.38"></a>
+<FONT color="green">039</FONT>    /**<a name="line.39"></a>
+<FONT color="green">040</FONT>     * Copyright (c) 2011, Regents of the University of Colorado &lt;br&gt;<a name="line.40"></a>
+<FONT color="green">041</FONT>     * All rights reserved. &lt;br&gt;<a name="line.41"></a>
+<FONT color="green">042</FONT>     * This extension of {@link XmiCorpusFactory} assumes that the folds for a corpus are fixed. The<a name="line.42"></a>
+<FONT color="green">043</FONT>     * folds are specified files that contain lists of file names (one file name per line.) So, for<a name="line.43"></a>
+<FONT color="green">044</FONT>     * example, {@link #getTrainFile()} might return a file named "&lt;your-path&gt;/train.txt" that contains<a name="line.44"></a>
+<FONT color="green">045</FONT>     * a list of those XMI files that belong in the training data set.<a name="line.45"></a>
+<FONT color="green">046</FONT>     * &lt;p&gt;<a name="line.46"></a>
+<FONT color="green">047</FONT>     * Please see {@link CorpusReaderProvider} for a description, broadly speaking, of how you should<a name="line.47"></a>
+<FONT color="green">048</FONT>     * set up your corpus. Here, this is implemented by simply creating files that contain file names<a name="line.48"></a>
+<FONT color="green">049</FONT>     * for the different sets and folds. The names of the files that you should create might be:<a name="line.49"></a>
+<FONT color="green">050</FONT>     * &lt;ul&gt;<a name="line.50"></a>
+<FONT color="green">051</FONT>     * &lt;li&gt;fold-1.txt - consists of the xmi file names for the test set for fold 1&lt;/li&gt;<a name="line.51"></a>
+<FONT color="green">052</FONT>     * &lt;li&gt;fold-2.txt&lt;/li&gt;<a name="line.52"></a>
+<FONT color="green">053</FONT>     * &lt;li&gt;...&lt;/li&gt;<a name="line.53"></a>
+<FONT color="green">054</FONT>     * &lt;li&gt;fold-n.txt&lt;/li&gt;<a name="line.54"></a>
+<FONT color="green">055</FONT>     * &lt;li&gt;test.txt - consists of the xmi file names for the test (i.e. holdout evaluation) set.&lt;/li&gt;<a name="line.55"></a>
+<FONT color="green">056</FONT>     * &lt;li&gt;train.txt - consists of the xmi file names for the training set&lt;/li&gt;<a name="line.56"></a>
+<FONT color="green">057</FONT>     * &lt;/ul&gt;<a name="line.57"></a>
+<FONT color="green">058</FONT>     * <a name="line.58"></a>
+<FONT color="green">059</FONT>     * For the list above, the method {@link #getFoldFiles()} would return the paths for the files<a name="line.59"></a>
+<FONT color="green">060</FONT>     * "fold-1.txt" ... "fold-n.txt", {@link #getTrainFile()} would return the path to the file<a name="line.60"></a>
+<FONT color="green">061</FONT>     * "train.txt" and {@link #getTestFile()} would return the path to the file "test.txt".<a name="line.61"></a>
+<FONT color="green">062</FONT>     * <a name="line.62"></a>
+<FONT color="green">063</FONT>     * @author Philip Ogren<a name="line.63"></a>
+<FONT color="green">064</FONT>     * @deprecated Use {@link Evaluation_ImplBase}<a name="line.64"></a>
+<FONT color="green">065</FONT>     */<a name="line.65"></a>
+<FONT color="green">066</FONT>    @Deprecated<a name="line.66"></a>
+<FONT color="green">067</FONT>    public abstract class FixedFoldsXmiCorpusFactory extends XmiCorpusFactory {<a name="line.67"></a>
+<FONT color="green">068</FONT>    <a name="line.68"></a>
+<FONT color="green">069</FONT>      public FixedFoldsXmiCorpusFactory(<a name="line.69"></a>
+<FONT color="green">070</FONT>          TypeSystemDescription typeSystemDescription,<a name="line.70"></a>
+<FONT color="green">071</FONT>          String xmiDirectoryName) {<a name="line.71"></a>
+<FONT color="green">072</FONT>        super(typeSystemDescription, xmiDirectoryName);<a name="line.72"></a>
+<FONT color="green">073</FONT>      }<a name="line.73"></a>
+<FONT color="green">074</FONT>    <a name="line.74"></a>
+<FONT color="green">075</FONT>      /**<a name="line.75"></a>
+<FONT color="green">076</FONT>       * <a name="line.76"></a>
+<FONT color="green">077</FONT>       * @return a list of path names to the files that contain lists of file names for each fold.<a name="line.77"></a>
+<FONT color="green">078</FONT>       */<a name="line.78"></a>
+<FONT color="green">079</FONT>      public abstract List&lt;String&gt; getFoldFiles();<a name="line.79"></a>
+<FONT color="green">080</FONT>    <a name="line.80"></a>
+<FONT color="green">081</FONT>      /**<a name="line.81"></a>
+<FONT color="green">082</FONT>       * @return a path name to the file that contains a list of the file names for the training set.<a name="line.82"></a>
+<FONT color="green">083</FONT>       */<a name="line.83"></a>
+<FONT color="green">084</FONT>      public abstract String getTrainFile();<a name="line.84"></a>
+<FONT color="green">085</FONT>    <a name="line.85"></a>
+<FONT color="green">086</FONT>      /**<a name="line.86"></a>
+<FONT color="green">087</FONT>       * @return a path name to the file that contains a list of the file names for the test set.<a name="line.87"></a>
+<FONT color="green">088</FONT>       */<a name="line.88"></a>
+<FONT color="green">089</FONT>      public abstract String getTestFile();<a name="line.89"></a>
+<FONT color="green">090</FONT>    <a name="line.90"></a>
+<FONT color="green">091</FONT>      @Override<a name="line.91"></a>
+<FONT color="green">092</FONT>      public int getNumberOfFolds() {<a name="line.92"></a>
+<FONT color="green">093</FONT>        return getFoldFiles().size();<a name="line.93"></a>
+<FONT color="green">094</FONT>      }<a name="line.94"></a>
+<FONT color="green">095</FONT>    <a name="line.95"></a>
+<FONT color="green">096</FONT>      @Override<a name="line.96"></a>
+<FONT color="green">097</FONT>      public void setNumberOfFolds(int numberOfFolds) {<a name="line.97"></a>
+<FONT color="green">098</FONT>        throw new UnsupportedOperationException(<a name="line.98"></a>
+<FONT color="green">099</FONT>            "the the number of folds for this corpus factory is fixed to " + getFoldFiles().size());<a name="line.99"></a>
+<FONT color="green">100</FONT>      }<a name="line.100"></a>
+<FONT color="green">101</FONT>    <a name="line.101"></a>
+<FONT color="green">102</FONT>      @Override<a name="line.102"></a>
+<FONT color="green">103</FONT>      public String[] getTrainNames(int fold) throws ResourceInitializationException {<a name="line.103"></a>
+<FONT color="green">104</FONT>        verifyFoldValue(fold);<a name="line.104"></a>
+<FONT color="green">105</FONT>        List&lt;String&gt; foldFiles = new ArrayList&lt;String&gt;(getFoldFiles());<a name="line.105"></a>
+<FONT color="green">106</FONT>        foldFiles.remove(fold);<a name="line.106"></a>
+<FONT color="green">107</FONT>    <a name="line.107"></a>
+<FONT color="green">108</FONT>        try {<a name="line.108"></a>
+<FONT color="green">109</FONT>    <a name="line.109"></a>
+<FONT color="green">110</FONT>          List&lt;String&gt; fileNames = new ArrayList&lt;String&gt;();<a name="line.110"></a>
+<FONT color="green">111</FONT>          for (String foldFile : foldFiles) {<a name="line.111"></a>
+<FONT color="green">112</FONT>            String[] names;<a name="line.112"></a>
+<FONT color="green">113</FONT>            names = FileUtil.loadListOfStrings(new File(foldFile));<a name="line.113"></a>
+<FONT color="green">114</FONT>            fileNames.addAll(Arrays.asList(names));<a name="line.114"></a>
+<FONT color="green">115</FONT>          }<a name="line.115"></a>
+<FONT color="green">116</FONT>          return fileNames.toArray(new String[fileNames.size()]);<a name="line.116"></a>
+<FONT color="green">117</FONT>    <a name="line.117"></a>
+<FONT color="green">118</FONT>        } catch (IOException ioe) {<a name="line.118"></a>
+<FONT color="green">119</FONT>          throw new ResourceInitializationException(ioe);<a name="line.119"></a>
+<FONT color="green">120</FONT>        }<a name="line.120"></a>
+<FONT color="green">121</FONT>    <a name="line.121"></a>
+<FONT color="green">122</FONT>      }<a name="line.122"></a>
+<FONT color="green">123</FONT>    <a name="line.123"></a>
+<FONT color="green">124</FONT>      @Override<a name="line.124"></a>
+<FONT color="green">125</FONT>      public String[] getTestNames(int fold) throws ResourceInitializationException {<a name="line.125"></a>
+<FONT color="green">126</FONT>        verifyFoldValue(fold);<a name="line.126"></a>
+<FONT color="green">127</FONT>        return loadNames(getFoldFiles().get(fold));<a name="line.127"></a>
+<FONT color="green">128</FONT>      }<a name="line.128"></a>
+<FONT color="green">129</FONT>    <a name="line.129"></a>
+<FONT color="green">130</FONT>      @Override<a name="line.130"></a>
+<FONT color="green">131</FONT>      public String[] getTrainNames() throws ResourceInitializationException {<a name="line.131"></a>
+<FONT color="green">132</FONT>        return loadNames(getTrainFile());<a name="line.132"></a>
+<FONT color="green">133</FONT>      }<a name="line.133"></a>
+<FONT color="green">134</FONT>    <a name="line.134"></a>
+<FONT color="green">135</FONT>      @Override<a name="line.135"></a>
+<FONT color="green">136</FONT>      public String[] getTestNames() throws ResourceInitializationException {<a name="line.136"></a>
+<FONT color="green">137</FONT>        return loadNames(getTestFile());<a name="line.137"></a>
+<FONT color="green">138</FONT>      }<a name="line.138"></a>
+<FONT color="green">139</FONT>    <a name="line.139"></a>
+<FONT color="green">140</FONT>      private String[] loadNames(String fileName) throws ResourceInitializationException {<a name="line.140"></a>
+<FONT color="green">141</FONT>        try {<a name="line.141"></a>
+<FONT color="green">142</FONT>          return FileUtil.loadListOfStrings(new File(fileName));<a name="line.142"></a>
+<FONT color="green">143</FONT>        } catch (IOException ioe) {<a name="line.143"></a>
+<FONT color="green">144</FONT>          throw new ResourceInitializationException(ioe);<a name="line.144"></a>
+<FONT color="green">145</FONT>        }<a name="line.145"></a>
+<FONT color="green">146</FONT>    <a name="line.146"></a>
+<FONT color="green">147</FONT>      }<a name="line.147"></a>
+<FONT color="green">148</FONT>    }<a name="line.148"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

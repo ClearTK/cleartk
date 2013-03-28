@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+TrainableExtractor (ClearTK Release 1.2.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="TrainableExtractor (ClearTK Release 1.2.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/TrainableExtractor.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../../org/cleartk/classifier/feature/transform/OneToOneTrainableExtractor_ImplBase.html" title="class in org.cleartk.classifier.feature.transform"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor_ImplBase.html" title="class in org.cleartk.classifier.feature.transform"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../../index.html?org/cleartk/classifier/feature/transform/TrainableExtractor.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="TrainableExtractor.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+org.cleartk.classifier.feature.transform</FONT>
+<BR>
+Interface TrainableExtractor&lt;OUTCOME_T&gt;</H2>
+<DL>
+<DT><B>All Known Implementing Classes:</B> <DD><A HREF="../../../../../org/cleartk/classifier/feature/transform/extractor/CentroidTfidfSimilarityExtractor.html" title="class in org.cleartk.classifier.feature.transform.extractor">CentroidTfidfSimilarityExtractor</A>, <A HREF="../../../../../org/cleartk/classifier/feature/transform/extractor/MinMaxNormalizationExtractor.html" title="class in org.cleartk.classifier.feature.transform.extractor">MinMaxNormalizationExtractor</A>, <A HREF="../../../../../org/cleartk/classifier/feature/transform/OneToOneTrainableExtractor_ImplBase.html" title="class in org.cleartk.classifier.feature.transform">OneToOneTrainableExtractor_ImplBase</A>, <A HREF="../../../../../org/cleartk/classifier/feature/transform/extractor/TfidfExtractor.html" title="class in org.cleartk.classifier.feature.transform.extractor">TfidfExtractor</A>, <A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor_ImplBase.html" title="class in org.cleartk.classifier.feature.transform">TrainableExtractor_ImplBase</A>, <A HREF="../../../../../org/cleartk/classifier/feature/transform/extractor/ZeroMeanUnitStddevExtractor.html" title="class in org.cleartk.classifier.feature.transform.extractor">ZeroMeanUnitStddevExtractor</A></DD>
+</DL>
+<HR>
+<DL>
+<DT><PRE>public interface <A HREF="../../../../../src-html/org/cleartk/classifier/feature/transform/TrainableExtractor.html#line.58"><B>TrainableExtractor&lt;OUTCOME_T&gt;</B></A></DL>
+</PRE>
+
+<P>
+Copyright (c) 2012, Regents of the University of Colorado <br>
+ All rights reserved.
+ <p>
+ TrainableExtractors defines a extractors that can be trained to fix up data based on a set of
+ instances. Prototypical cases include computing statistics for normalization such as mean,
+ standard deviation, min, max, or for computing corpus tf*idf values
+ 
+ <p>
+ TrainableExtractors that have not yet been trained cannot be used as subextractors inside of any
+ other feature extractor, though they can have subextractors of their own. So for example, while
+ the following will work:
+ <p>
+ 
+ <code>
+ new TfidfExtractor(new ContextExtractor<Token>(Token.class, new CoveredTextExtractor(), new
+ Preceding(2)))
+ </code>
+ <p>
+ the following will not:
+ <p>
+ <code>
+ new ContextExtractor<Token>(Token.class, new TfidfExtractor(new CoveredTextExtractor()), new
+ Preceding(2))
+ </code>
+<P>
+
+<P>
+<HR>
+
+<P>
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor.html#load(java.net.URI)">load</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/net/URI.html?is-external=true" title="class or interface in java.net">URI</A>&nbsp;uri)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loads statistics from location URI</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor.html#save(java.net.URI)">save</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/net/URI.html?is-external=true" title="class or interface in java.net">URI</A>&nbsp;uri)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Saves statistics from train in location URI</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor.html#train(java.lang.Iterable)">train</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</A>&lt;<A HREF="../../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor.html" title="type parameter in TrainableExtractor">OUTCOME_T</A>&gt;&gt;&nbsp;instances)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the prototypical case, train takes a collection of instances and computes statistics over
+ the values such as computing mean, standard deviation, TF*IDF, etc...</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor.html" title="type parameter in TrainableExtractor">OUTCOME_T</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor.html#transform(org.cleartk.classifier.Instance)">transform</A></B>(<A HREF="../../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor.html" title="type parameter in TrainableExtractor">OUTCOME_T</A>&gt;&nbsp;instance)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Transforms all features handled by this extractor.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="train(java.lang.Iterable)"><!-- --></A><H3>
+train</H3>
+<PRE>
+void <A HREF="../../../../../src-html/org/cleartk/classifier/feature/transform/TrainableExtractor.html#line.67"><B>train</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</A>&lt;<A HREF="../../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor.html" title="type parameter in TrainableExtractor">OUTCOME_T</A>&gt;&gt;&nbsp;instances)</PRE>
+<DL>
+<DD>In the prototypical case, train takes a collection of instances and computes statistics over
+ the values such as computing mean, standard deviation, TF*IDF, etc...
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>instances</CODE> - - URI pointing to the output location for saving statistics</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="save(java.net.URI)"><!-- --></A><H3>
+save</H3>
+<PRE>
+void <A HREF="../../../../../src-html/org/cleartk/classifier/feature/transform/TrainableExtractor.html#line.72"><B>save</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/net/URI.html?is-external=true" title="class or interface in java.net">URI</A>&nbsp;uri)
+          throws <A HREF="http://download.oracle.com/javase/6/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</A></PRE>
+<DL>
+<DD>Saves statistics from train in location URI
+<P>
+<DD><DL>
+
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="load(java.net.URI)"><!-- --></A><H3>
+load</H3>
+<PRE>
+void <A HREF="../../../../../src-html/org/cleartk/classifier/feature/transform/TrainableExtractor.html#line.77"><B>load</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/net/URI.html?is-external=true" title="class or interface in java.net">URI</A>&nbsp;uri)
+          throws <A HREF="http://download.oracle.com/javase/6/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</A></PRE>
+<DL>
+<DD>Loads statistics from location URI
+<P>
+<DD><DL>
+
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="transform(org.cleartk.classifier.Instance)"><!-- --></A><H3>
+transform</H3>
+<PRE>
+<A HREF="../../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor.html" title="type parameter in TrainableExtractor">OUTCOME_T</A>&gt; <A HREF="../../../../../src-html/org/cleartk/classifier/feature/transform/TrainableExtractor.html#line.87"><B>transform</B></A>(<A HREF="../../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor.html" title="type parameter in TrainableExtractor">OUTCOME_T</A>&gt;&nbsp;instance)</PRE>
+<DL>
+<DD>Transforms all features handled by this extractor. Called on an Instance that was created
+ before <A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor.html#train(java.lang.Iterable)"><CODE>train(Iterable)</CODE></A> was called, to complete the processing of the Instance.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>instance</CODE> - An instance that was created before <A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor.html#train(java.lang.Iterable)"><CODE>train(Iterable)</CODE></A> was called.
+<DT><B>Returns:</B><DD>A copy of the instance, where processing of the instances is complete.</DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/TrainableExtractor.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../../org/cleartk/classifier/feature/transform/OneToOneTrainableExtractor_ImplBase.html" title="class in org.cleartk.classifier.feature.transform"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../../org/cleartk/classifier/feature/transform/TrainableExtractor_ImplBase.html" title="class in org.cleartk.classifier.feature.transform"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../../index.html?org/cleartk/classifier/feature/transform/TrainableExtractor.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="TrainableExtractor.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>

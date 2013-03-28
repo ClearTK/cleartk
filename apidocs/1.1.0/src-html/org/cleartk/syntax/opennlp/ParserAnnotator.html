@@ -1,0 +1,270 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /** <a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) 2007-2008, Regents of the University of Colorado <a name="line.2"></a>
+<FONT color="green">003</FONT>     * All rights reserved.<a name="line.3"></a>
+<FONT color="green">004</FONT>     * <a name="line.4"></a>
+<FONT color="green">005</FONT>     * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<FONT color="green">006</FONT>     * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<FONT color="green">007</FONT>     * <a name="line.7"></a>
+<FONT color="green">008</FONT>     * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<FONT color="green">009</FONT>     * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<FONT color="green">010</FONT>     * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<FONT color="green">011</FONT>     * <a name="line.11"></a>
+<FONT color="green">012</FONT>     * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<FONT color="green">013</FONT>     * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<FONT color="green">014</FONT>     * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<FONT color="green">015</FONT>     * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<FONT color="green">016</FONT>     * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<FONT color="green">017</FONT>     * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<FONT color="green">018</FONT>     * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<FONT color="green">019</FONT>     * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<FONT color="green">020</FONT>     * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<FONT color="green">021</FONT>     * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<FONT color="green">022</FONT>     * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<FONT color="green">023</FONT>     */<a name="line.23"></a>
+<FONT color="green">024</FONT>    package org.cleartk.syntax.opennlp;<a name="line.24"></a>
+<FONT color="green">025</FONT>    <a name="line.25"></a>
+<FONT color="green">026</FONT>    import java.io.IOException;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import java.io.InputStream;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import java.util.Iterator;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import java.util.List;<a name="line.29"></a>
+<FONT color="green">030</FONT>    <a name="line.30"></a>
+<FONT color="green">031</FONT>    import opennlp.tools.parser.AbstractBottomUpParser;<a name="line.31"></a>
+<FONT color="green">032</FONT>    import opennlp.tools.parser.Parse;<a name="line.32"></a>
+<FONT color="green">033</FONT>    import opennlp.tools.parser.ParserModel;<a name="line.33"></a>
+<FONT color="green">034</FONT>    import opennlp.tools.util.Span;<a name="line.34"></a>
+<FONT color="green">035</FONT>    <a name="line.35"></a>
+<FONT color="green">036</FONT>    import org.apache.uima.UimaContext;<a name="line.36"></a>
+<FONT color="green">037</FONT>    import org.apache.uima.analysis_engine.AnalysisEngineDescription;<a name="line.37"></a>
+<FONT color="green">038</FONT>    import org.apache.uima.analysis_engine.AnalysisEngineProcessException;<a name="line.38"></a>
+<FONT color="green">039</FONT>    import org.apache.uima.jcas.JCas;<a name="line.39"></a>
+<FONT color="green">040</FONT>    import org.apache.uima.jcas.tcas.Annotation;<a name="line.40"></a>
+<FONT color="green">041</FONT>    import org.apache.uima.resource.ResourceInitializationException;<a name="line.41"></a>
+<FONT color="green">042</FONT>    import org.cleartk.syntax.SyntaxComponents;<a name="line.42"></a>
+<FONT color="green">043</FONT>    import org.cleartk.syntax.constituent.ParserWrapper_ImplBase;<a name="line.43"></a>
+<FONT color="green">044</FONT>    import org.cleartk.syntax.constituent.types.InputTypesHelper;<a name="line.44"></a>
+<FONT color="green">045</FONT>    import org.cleartk.syntax.opennlp.parser.CasPosTagger;<a name="line.45"></a>
+<FONT color="green">046</FONT>    import org.cleartk.syntax.opennlp.parser.DefaultOutputTypesHelper;<a name="line.46"></a>
+<FONT color="green">047</FONT>    import org.cleartk.syntax.opennlp.parser.Parser;<a name="line.47"></a>
+<FONT color="green">048</FONT>    import org.cleartk.util.IOUtil;<a name="line.48"></a>
+<FONT color="green">049</FONT>    import org.cleartk.util.ParamUtil;<a name="line.49"></a>
+<FONT color="green">050</FONT>    import org.uimafit.descriptor.ConfigurationParameter;<a name="line.50"></a>
+<FONT color="green">051</FONT>    import org.uimafit.factory.AnalysisEngineFactory;<a name="line.51"></a>
+<FONT color="green">052</FONT>    import org.uimafit.factory.ConfigurationParameterFactory;<a name="line.52"></a>
+<FONT color="green">053</FONT>    import org.uimafit.factory.initializable.InitializableFactory;<a name="line.53"></a>
+<FONT color="green">054</FONT>    <a name="line.54"></a>
+<FONT color="green">055</FONT>    /**<a name="line.55"></a>
+<FONT color="green">056</FONT>     * &lt;br&gt;<a name="line.56"></a>
+<FONT color="green">057</FONT>     * Copyright (c) 2010, Regents of the University of Colorado &lt;br&gt;<a name="line.57"></a>
+<FONT color="green">058</FONT>     * All rights reserved.<a name="line.58"></a>
+<FONT color="green">059</FONT>     * <a name="line.59"></a>
+<FONT color="green">060</FONT>     * This class provides a uima wrapper for the OpenNLP chunking parser that is specific to the<a name="line.60"></a>
+<FONT color="green">061</FONT>     * ClearTK type system found in the cleartk-syntax project. However, by specifying your own<a name="line.61"></a>
+<FONT color="green">062</FONT>     * implementations of {@link SentenceHelper} and {@link InputTypesHelper} you can use your own input<a name="line.62"></a>
+<FONT color="green">063</FONT>     * types for sentences, tokens, and part-of-speech tags. Regardless, the resulting syntactic trees<a name="line.63"></a>
+<FONT color="green">064</FONT>     * will use the ClearTK type system.<a name="line.64"></a>
+<FONT color="green">065</FONT>     * &lt;p&gt;<a name="line.65"></a>
+<FONT color="green">066</FONT>     * The default behavior of the OpenNLP chunking parser is to perform part-of-speech tagging in<a name="line.66"></a>
+<FONT color="green">067</FONT>     * addition to syntactic parsing. This may not be desirable in some situations where you have<a name="line.67"></a>
+<FONT color="green">068</FONT>     * already populated the CAS with part-of-speech tags. In such cases you can set the configuration<a name="line.68"></a>
+<FONT color="green">069</FONT>     * parameter with the name {@link #PARAM_USE_TAGS_FROM_CAS} to "true". This will bypass the<a name="line.69"></a>
+<FONT color="green">070</FONT>     * OpenNLP's part-of-speech tagger and instead use tags from the CAS as defined by the<a name="line.70"></a>
+<FONT color="green">071</FONT>     * implementation of {@link InputTypesHelper} you are using.<a name="line.71"></a>
+<FONT color="green">072</FONT>     * <a name="line.72"></a>
+<FONT color="green">073</FONT>     * @author Philipp Wetzler, Philip Ogren.<a name="line.73"></a>
+<FONT color="green">074</FONT>     */<a name="line.74"></a>
+<FONT color="green">075</FONT>    <a name="line.75"></a>
+<FONT color="green">076</FONT>    public class ParserAnnotator&lt;TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, TOP_NODE_TYPE extends Annotation&gt;<a name="line.76"></a>
+<FONT color="green">077</FONT>        extends ParserWrapper_ImplBase&lt;TOKEN_TYPE, SENTENCE_TYPE, Parse, TOP_NODE_TYPE&gt;{<a name="line.77"></a>
+<FONT color="green">078</FONT>    <a name="line.78"></a>
+<FONT color="green">079</FONT>      public static final String DEFAULT_PARSER_MODEL_PATH = "/models/en-parser-chunking.bin";<a name="line.79"></a>
+<FONT color="green">080</FONT>    <a name="line.80"></a>
+<FONT color="green">081</FONT>      public static final int DEFAULT_BEAM_SIZE = AbstractBottomUpParser.defaultBeamSize;<a name="line.81"></a>
+<FONT color="green">082</FONT>    <a name="line.82"></a>
+<FONT color="green">083</FONT>      public static final float DEFAULT_ADVANCE_PERCENTAGE = (float) AbstractBottomUpParser.defaultAdvancePercentage;<a name="line.83"></a>
+<FONT color="green">084</FONT>    <a name="line.84"></a>
+<FONT color="green">085</FONT>      public static final String PARAM_PARSER_MODEL_PATH = ConfigurationParameterFactory<a name="line.85"></a>
+<FONT color="green">086</FONT>          .createConfigurationParameterName(ParserAnnotator.class, "parserModelPath");<a name="line.86"></a>
+<FONT color="green">087</FONT>    <a name="line.87"></a>
+<FONT color="green">088</FONT>      @ConfigurationParameter(defaultValue = DEFAULT_PARSER_MODEL_PATH, description = "provides the path of the OpenNLP parser model build file, e.g. /models/en-parser-chunking.bin.  See javadoc for opennlp.tools.parser.chunking.Parser.")<a name="line.88"></a>
+<FONT color="green">089</FONT>      private String parserModelPath;<a name="line.89"></a>
+<FONT color="green">090</FONT>    <a name="line.90"></a>
+<FONT color="green">091</FONT>      public static final String PARAM_BEAM_SIZE = ConfigurationParameterFactory<a name="line.91"></a>
+<FONT color="green">092</FONT>          .createConfigurationParameterName(ParserAnnotator.class, "beamSize");<a name="line.92"></a>
+<FONT color="green">093</FONT>    <a name="line.93"></a>
+<FONT color="green">094</FONT>      @ConfigurationParameter(defaultValue = "" + DEFAULT_BEAM_SIZE, description = "indicates the beam size that should be used in the parser's search.  See javadoc for opennlp.tools.parser.chunking.Parser.")<a name="line.94"></a>
+<FONT color="green">095</FONT>      private int beamSize;<a name="line.95"></a>
+<FONT color="green">096</FONT>    <a name="line.96"></a>
+<FONT color="green">097</FONT>      public static final String PARAM_ADVANCE_PERCENTAGE = ConfigurationParameterFactory<a name="line.97"></a>
+<FONT color="green">098</FONT>          .createConfigurationParameterName(ParserAnnotator.class, "advancePercentage");<a name="line.98"></a>
+<FONT color="green">099</FONT>    <a name="line.99"></a>
+<FONT color="green">100</FONT>      @ConfigurationParameter(defaultValue = "" + AbstractBottomUpParser.defaultAdvancePercentage, description = "indicates \"the amount of probability mass required of advanced outcomes\".  See javadoc for opennlp.tools.parser.chunking.Parser.")<a name="line.100"></a>
+<FONT color="green">101</FONT>      private float advancePercentage;<a name="line.101"></a>
+<FONT color="green">102</FONT>    <a name="line.102"></a>
+<FONT color="green">103</FONT>      public static final String PARAM_USE_TAGS_FROM_CAS = ConfigurationParameterFactory<a name="line.103"></a>
+<FONT color="green">104</FONT>          .createConfigurationParameterName(ParserAnnotator.class, "useTagsFromCas");<a name="line.104"></a>
+<FONT color="green">105</FONT>    <a name="line.105"></a>
+<FONT color="green">106</FONT>      @ConfigurationParameter(defaultValue = "false", description = "determines whether or not part-of-speech tags that are already in the CAS will be used or not.")<a name="line.106"></a>
+<FONT color="green">107</FONT>      private boolean useTagsFromCas;<a name="line.107"></a>
+<FONT color="green">108</FONT>    <a name="line.108"></a>
+<FONT color="green">109</FONT>      protected Parser parser;<a name="line.109"></a>
+<FONT color="green">110</FONT>    <a name="line.110"></a>
+<FONT color="green">111</FONT>      protected CasPosTagger&lt;TOKEN_TYPE, SENTENCE_TYPE&gt; casTagger;<a name="line.111"></a>
+<FONT color="green">112</FONT>    <a name="line.112"></a>
+<FONT color="green">113</FONT>      @SuppressWarnings("unchecked")<a name="line.113"></a>
+<FONT color="green">114</FONT>      @Override<a name="line.114"></a>
+<FONT color="green">115</FONT>      public void initialize(UimaContext ctx) throws ResourceInitializationException {<a name="line.115"></a>
+<FONT color="green">116</FONT>        super.initialize(ctx);<a name="line.116"></a>
+<FONT color="green">117</FONT>    <a name="line.117"></a>
+<FONT color="green">118</FONT>        inputTypesHelper = InitializableFactory.create(<a name="line.118"></a>
+<FONT color="green">119</FONT>            ctx,<a name="line.119"></a>
+<FONT color="green">120</FONT>            inputTypesHelperClassName,<a name="line.120"></a>
+<FONT color="green">121</FONT>            InputTypesHelper.class);<a name="line.121"></a>
+<FONT color="green">122</FONT>    <a name="line.122"></a>
+<FONT color="green">123</FONT>        try {<a name="line.123"></a>
+<FONT color="green">124</FONT>          InputStream modelInputStream = IOUtil.getInputStream(ParserAnnotator.class, parserModelPath);<a name="line.124"></a>
+<FONT color="green">125</FONT>          ParserModel parserModel = new ParserModel(modelInputStream);<a name="line.125"></a>
+<FONT color="green">126</FONT>          if (useTagsFromCas) {<a name="line.126"></a>
+<FONT color="green">127</FONT>            this.casTagger = new CasPosTagger&lt;TOKEN_TYPE, SENTENCE_TYPE&gt;(inputTypesHelper);<a name="line.127"></a>
+<FONT color="green">128</FONT>            this.parser = new Parser(parserModel, beamSize, advancePercentage, casTagger);<a name="line.128"></a>
+<FONT color="green">129</FONT>          } else {<a name="line.129"></a>
+<FONT color="green">130</FONT>            this.parser = new Parser(parserModel, beamSize, advancePercentage);<a name="line.130"></a>
+<FONT color="green">131</FONT>          }<a name="line.131"></a>
+<FONT color="green">132</FONT>        } catch (IOException e) {<a name="line.132"></a>
+<FONT color="green">133</FONT>          throw new ResourceInitializationException(e);<a name="line.133"></a>
+<FONT color="green">134</FONT>        }<a name="line.134"></a>
+<FONT color="green">135</FONT>      }<a name="line.135"></a>
+<FONT color="green">136</FONT>    <a name="line.136"></a>
+<FONT color="green">137</FONT>      @Override<a name="line.137"></a>
+<FONT color="green">138</FONT>      public void process(JCas jCas) throws AnalysisEngineProcessException {<a name="line.138"></a>
+<FONT color="green">139</FONT>        String text = jCas.getDocumentText();<a name="line.139"></a>
+<FONT color="green">140</FONT>    <a name="line.140"></a>
+<FONT color="green">141</FONT>        List&lt;SENTENCE_TYPE&gt; sentenceList = inputTypesHelper.getSentences(jCas);<a name="line.141"></a>
+<FONT color="green">142</FONT>    <a name="line.142"></a>
+<FONT color="green">143</FONT>        for (SENTENCE_TYPE sentence : sentenceList) {<a name="line.143"></a>
+<FONT color="green">144</FONT>    <a name="line.144"></a>
+<FONT color="green">145</FONT>          Parse parse = new Parse(<a name="line.145"></a>
+<FONT color="green">146</FONT>              text,<a name="line.146"></a>
+<FONT color="green">147</FONT>              new Span(sentence.getBegin(), sentence.getEnd()),<a name="line.147"></a>
+<FONT color="green">148</FONT>              AbstractBottomUpParser.INC_NODE,<a name="line.148"></a>
+<FONT color="green">149</FONT>              1,<a name="line.149"></a>
+<FONT color="green">150</FONT>              null);<a name="line.150"></a>
+<FONT color="green">151</FONT>    <a name="line.151"></a>
+<FONT color="green">152</FONT>          List&lt;TOKEN_TYPE&gt; tokenList = inputTypesHelper.getTokens(jCas, sentence);<a name="line.152"></a>
+<FONT color="green">153</FONT>    <a name="line.153"></a>
+<FONT color="green">154</FONT>          for (TOKEN_TYPE token : tokenList) {<a name="line.154"></a>
+<FONT color="green">155</FONT>            parse.insert(new Parse(<a name="line.155"></a>
+<FONT color="green">156</FONT>                text,<a name="line.156"></a>
+<FONT color="green">157</FONT>                new Span(token.getBegin(), token.getEnd()),<a name="line.157"></a>
+<FONT color="green">158</FONT>                AbstractBottomUpParser.TOK_NODE,<a name="line.158"></a>
+<FONT color="green">159</FONT>                0,<a name="line.159"></a>
+<FONT color="green">160</FONT>                0));<a name="line.160"></a>
+<FONT color="green">161</FONT>          }<a name="line.161"></a>
+<FONT color="green">162</FONT>    <a name="line.162"></a>
+<FONT color="green">163</FONT>          if (useTagsFromCas) {<a name="line.163"></a>
+<FONT color="green">164</FONT>            this.casTagger.setTokens(tokenList);<a name="line.164"></a>
+<FONT color="green">165</FONT>          }<a name="line.165"></a>
+<FONT color="green">166</FONT>    <a name="line.166"></a>
+<FONT color="green">167</FONT>          parse = this.parser.parse(parse);<a name="line.167"></a>
+<FONT color="green">168</FONT>    <a name="line.168"></a>
+<FONT color="green">169</FONT>          // if the sentence was successfully parsed, add the tree to the<a name="line.169"></a>
+<FONT color="green">170</FONT>          // sentence<a name="line.170"></a>
+<FONT color="green">171</FONT>          if (parse.getType() == AbstractBottomUpParser.TOP_NODE) {<a name="line.171"></a>
+<FONT color="green">172</FONT>            outputTypesHelper.addParse(jCas, parse, sentence, tokenList);<a name="line.172"></a>
+<FONT color="green">173</FONT>          }<a name="line.173"></a>
+<FONT color="green">174</FONT>    <a name="line.174"></a>
+<FONT color="green">175</FONT>          // add the POS tags to the tokens<a name="line.175"></a>
+<FONT color="green">176</FONT>          if (!useTagsFromCas) {<a name="line.176"></a>
+<FONT color="green">177</FONT>            setPOSTags(parse, tokenList.iterator(), jCas);<a name="line.177"></a>
+<FONT color="green">178</FONT>          }<a name="line.178"></a>
+<FONT color="green">179</FONT>        }<a name="line.179"></a>
+<FONT color="green">180</FONT>      }<a name="line.180"></a>
+<FONT color="green">181</FONT>    <a name="line.181"></a>
+<FONT color="green">182</FONT>    <a name="line.182"></a>
+<FONT color="green">183</FONT>      protected void setPOSTags(Parse p, Iterator&lt;TOKEN_TYPE&gt; tokenIterator, JCas view) {<a name="line.183"></a>
+<FONT color="green">184</FONT>        if (p.isPosTag()) {<a name="line.184"></a>
+<FONT color="green">185</FONT>          TOKEN_TYPE t = tokenIterator.next();<a name="line.185"></a>
+<FONT color="green">186</FONT>          inputTypesHelper.setPosTag(t, p.getType());<a name="line.186"></a>
+<FONT color="green">187</FONT>        } else {<a name="line.187"></a>
+<FONT color="green">188</FONT>          for (Parse child : p.getChildren()) {<a name="line.188"></a>
+<FONT color="green">189</FONT>            setPOSTags(child, tokenIterator, view);<a name="line.189"></a>
+<FONT color="green">190</FONT>          }<a name="line.190"></a>
+<FONT color="green">191</FONT>        }<a name="line.191"></a>
+<FONT color="green">192</FONT>      }<a name="line.192"></a>
+<FONT color="green">193</FONT>    <a name="line.193"></a>
+<FONT color="green">194</FONT>    <a name="line.194"></a>
+<FONT color="green">195</FONT>      public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {<a name="line.195"></a>
+<FONT color="green">196</FONT>        return AnalysisEngineFactory.createPrimitiveDescription(<a name="line.196"></a>
+<FONT color="green">197</FONT>            ParserAnnotator.class,<a name="line.197"></a>
+<FONT color="green">198</FONT>            SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,<a name="line.198"></a>
+<FONT color="green">199</FONT>            PARAM_PARSER_MODEL_PATH,<a name="line.199"></a>
+<FONT color="green">200</FONT>            ParamUtil.getParameterValue(PARAM_PARSER_MODEL_PATH, "/models/en-parser-chunking.bin"),<a name="line.200"></a>
+<FONT color="green">201</FONT>            PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,<a name="line.201"></a>
+<FONT color="green">202</FONT>            DefaultOutputTypesHelper.class.getName());<a name="line.202"></a>
+<FONT color="green">203</FONT>      }<a name="line.203"></a>
+<FONT color="green">204</FONT>    }<a name="line.204"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

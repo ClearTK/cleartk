@@ -1,0 +1,416 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+CorpusReaderProvider (cleartk-release 1.1.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="CorpusReaderProvider (cleartk-release 1.1.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/CorpusReaderProvider.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider_ImplBase.html" title="class in org.cleartk.eval.provider"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../org/cleartk/eval/provider/EvaluationPipelineProvider.html" title="interface in org.cleartk.eval.provider"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/eval/provider/CorpusReaderProvider.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="CorpusReaderProvider.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+org.cleartk.eval.provider</FONT>
+<BR>
+Interface CorpusReaderProvider</H2>
+<DL>
+<DT><B>All Known Implementing Classes:</B> <DD><A HREF="../../../../org/cleartk/eval/provider/corpus/CorpusFactory_ImplBase.html" title="class in org.cleartk.eval.provider.corpus">CorpusFactory_ImplBase</A>, <A HREF="../../../../org/cleartk/eval/provider/FilesCollectionReaderProvider.html" title="class in org.cleartk.eval.provider">FilesCollectionReaderProvider</A>, <A HREF="../../../../org/cleartk/eval/provider/corpus/xmi/FixedFoldsXmiCorpusFactory.html" title="class in org.cleartk.eval.provider.corpus.xmi">FixedFoldsXmiCorpusFactory</A>, <A HREF="../../../../org/cleartk/eval/provider/NameBasedReaderProvider.html" title="class in org.cleartk.eval.provider">NameBasedReaderProvider</A>, <A HREF="../../../../org/cleartk/timeml/eval/TempEval2010ReaderProvider.html" title="class in org.cleartk.timeml.eval">TempEval2010ReaderProvider</A>, <A HREF="../../../../org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html" title="class in org.cleartk.eval.provider.corpus.xmi">XmiCorpusFactory</A></DD>
+</DL>
+<HR>
+<DL>
+<DT><PRE>public interface <A HREF="../../../../src-html/org/cleartk/eval/provider/CorpusReaderProvider.html#line.51"><B>CorpusReaderProvider</B></A></DL>
+</PRE>
+
+<P>
+CorpusReaderProvider assumes that your corpus is split into two sets - a training set and a
+ testing set. To get the training set call createTrainReader(). To get the testing set call
+ createTestReader(). It further assumes that the training set is split up into n folds which can
+ be used for cross-validation. In this way the testing set is a "holdout" evaluation set not to be
+ polluted/burned by repeated evaluation that occurs with cross-validation. To get a training set
+ for a fold call createTrainReader(int). This should return a fraction of the training set equal
+ to (n-1)/n where n is the number of folds (generally 4/5 or 9/10). To get a testing set for a
+ fold call createTestReader(int). This should return a fraction of the *training* set equal to 1/n
+ (generally 1/5 or 1/10). Remember that we do not want to touch the hold-evalOut evaluation set
+ when performing cross-validation.
+ 
+ <br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved. <br>
+<P>
+
+<P>
+<DL>
+<DT><B>Author:</B></DT>
+  <DD>Philip Ogren, Steven Bethard</DD>
+</DL>
+<HR>
+
+<P>
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;int</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getNumberOfFolds()">getNumberOfFolds</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides the number of folds in the training set that will be used for cross-validation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngine.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngine</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getPreprocessor()">getPreprocessor</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Some corpora will require some preprocessing in order to populate e.g.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getReader()">getReader</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method provides a collection reader for the entire corpus.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getTestReader()">getTestReader</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method returns the testing set for the corpus.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getTestReader(int)">getTestReader</A></B>(int&nbsp;fold)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method returns a testing set for a given fold from the training set.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getTrainReader()">getTrainReader</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method returns the training set for the corpus.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getTrainReader(int)">getTrainReader</A></B>(int&nbsp;fold)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method returns a training set for a given fold from the training set.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#setNumberOfFolds(int)">setNumberOfFolds</A></B>(int&nbsp;numberOfFolds)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set the number of folds to be used for cross-validation.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="getTrainReader()"><!-- --></A><H3>
+getTrainReader</H3>
+<PRE>
+<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A> <A HREF="../../../../src-html/org/cleartk/eval/provider/CorpusReaderProvider.html#line.58"><B>getTrainReader</B></A>()
+                                throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></PRE>
+<DL>
+<DD>This method returns the training set for the corpus.
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>a collection reader for the training set from the corpus
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getTestReader()"><!-- --></A><H3>
+getTestReader</H3>
+<PRE>
+<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A> <A HREF="../../../../src-html/org/cleartk/eval/provider/CorpusReaderProvider.html#line.65"><B>getTestReader</B></A>()
+                               throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></PRE>
+<DL>
+<DD>This method returns the testing set for the corpus.
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>a collection reader for the tresting set from the corpus
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getTrainReader(int)"><!-- --></A><H3>
+getTrainReader</H3>
+<PRE>
+<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A> <A HREF="../../../../src-html/org/cleartk/eval/provider/CorpusReaderProvider.html#line.74"><B>getTrainReader</B></A>(int&nbsp;fold)
+                                throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></PRE>
+<DL>
+<DD>This method returns a training set for a given fold from the training set.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>fold</CODE> - a number between 1 and the value returned by <A HREF="../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getNumberOfFolds()"><CODE>getNumberOfFolds()</CODE></A>.
+<DT><B>Returns:</B><DD>a collection reader for a training set for the fold from the training set.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getTestReader(int)"><!-- --></A><H3>
+getTestReader</H3>
+<PRE>
+<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A> <A HREF="../../../../src-html/org/cleartk/eval/provider/CorpusReaderProvider.html#line.83"><B>getTestReader</B></A>(int&nbsp;fold)
+                               throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></PRE>
+<DL>
+<DD>This method returns a testing set for a given fold from the training set.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>fold</CODE> - a number between 1 and the value returned by <A HREF="../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getNumberOfFolds()"><CODE>getNumberOfFolds()</CODE></A>.
+<DT><B>Returns:</B><DD>a collection reader for a testing set for the fold from the training set.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getReader()"><!-- --></A><H3>
+getReader</H3>
+<PRE>
+<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A> <A HREF="../../../../src-html/org/cleartk/eval/provider/CorpusReaderProvider.html#line.92"><B>getReader</B></A>()
+                           throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></PRE>
+<DL>
+<DD>This method provides a collection reader for the entire corpus. This is useful if, for example,
+ you want to train a model that includes all data from the corpus for using in a runtime system
+ (i.e. evaluation is not going to be performed.)
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>a collection reader for the entire corpus.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getPreprocessor()"><!-- --></A><H3>
+getPreprocessor</H3>
+<PRE>
+<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngine.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngine</A> <A HREF="../../../../src-html/org/cleartk/eval/provider/CorpusReaderProvider.html#line.109"><B>getPreprocessor</B></A>()
+                               throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></PRE>
+<DL>
+<DD>Some corpora will require some preprocessing in order to populate e.g. the gold view with all
+ of the annotated data that is available in the corpus. It is preferable to set up your corpus
+ so that it reads in xmi files such that all the annotation data provided by the corpus is ready
+ to go with no preprocessing. However, this may not be feasible in all situations. This method
+ allows you to provide a preprocessing analysis engine (can be primitive or aggregate) to
+ perform all the necessary work that needs to be done before the data is ready to go. This
+ method should return a valid <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngineDescription.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine"><CODE>AnalysisEngineDescription</CODE></A> regardless of whether there is
+ any preprocessing to do. If no preprocessing is required, then return an
+ AnalysisEngineDescription for the <A HREF="http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/org/uimafit/component/NoOpAnnotator.html?is-external=true" title="class or interface in org.uimafit.component"><CODE>NoOpAnnotator</CODE></A> class as is done in
+ <CODE>GeniaFactory#getPreprocessor()</CODE>.
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>an analysis engine description that defines all of the preprocessing that needs to be
+         done for each document in the corpus
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getNumberOfFolds()"><!-- --></A><H3>
+getNumberOfFolds</H3>
+<PRE>
+int <A HREF="../../../../src-html/org/cleartk/eval/provider/CorpusReaderProvider.html#line.116"><B>getNumberOfFolds</B></A>()</PRE>
+<DL>
+<DD>Provides the number of folds in the training set that will be used for cross-validation.
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>the number of folds in the training set</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="setNumberOfFolds(int)"><!-- --></A><H3>
+setNumberOfFolds</H3>
+<PRE>
+void <A HREF="../../../../src-html/org/cleartk/eval/provider/CorpusReaderProvider.html#line.125"><B>setNumberOfFolds</B></A>(int&nbsp;numberOfFolds)</PRE>
+<DL>
+<DD>Set the number of folds to be used for cross-validation. If the desired number of folds cannot
+ be accommodated by this collection, an <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang"><CODE>IllegalArgumentException</CODE></A> should be thrown.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>numberOfFolds</CODE> - The desired number of folds.</DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/CorpusReaderProvider.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider_ImplBase.html" title="class in org.cleartk.eval.provider"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../org/cleartk/eval/provider/EvaluationPipelineProvider.html" title="interface in org.cleartk.eval.provider"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/eval/provider/CorpusReaderProvider.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="CorpusReaderProvider.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>

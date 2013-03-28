@@ -1,0 +1,177 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /**<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) 2010, University of Würzburg&lt;br&gt;<a name="line.2"></a>
+<FONT color="green">003</FONT>     * All rights reserved.<a name="line.3"></a>
+<FONT color="green">004</FONT>     * <a name="line.4"></a>
+<FONT color="green">005</FONT>     * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<FONT color="green">006</FONT>     * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<FONT color="green">007</FONT>     * <a name="line.7"></a>
+<FONT color="green">008</FONT>     * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<FONT color="green">009</FONT>     * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<FONT color="green">010</FONT>     * Neither the name of the University of Würzburg nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<FONT color="green">011</FONT>     * <a name="line.11"></a>
+<FONT color="green">012</FONT>     * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<FONT color="green">013</FONT>     * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<FONT color="green">014</FONT>     * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<FONT color="green">015</FONT>     * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<FONT color="green">016</FONT>     * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<FONT color="green">017</FONT>     * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<FONT color="green">018</FONT>     * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<FONT color="green">019</FONT>     * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<FONT color="green">020</FONT>     * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<FONT color="green">021</FONT>     * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<FONT color="green">022</FONT>     * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<FONT color="green">023</FONT>     */<a name="line.23"></a>
+<FONT color="green">024</FONT>    package org.cleartk.classifier.grmm;<a name="line.24"></a>
+<FONT color="green">025</FONT>    <a name="line.25"></a>
+<FONT color="green">026</FONT>    import java.io.PrintWriter;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import java.io.StringWriter;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import java.util.ArrayList;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import java.util.Arrays;<a name="line.29"></a>
+<FONT color="green">030</FONT>    import java.util.List;<a name="line.30"></a>
+<FONT color="green">031</FONT>    <a name="line.31"></a>
+<FONT color="green">032</FONT>    import org.cleartk.classifier.CleartkProcessingException;<a name="line.32"></a>
+<FONT color="green">033</FONT>    import org.cleartk.classifier.Feature;<a name="line.33"></a>
+<FONT color="green">034</FONT>    import org.cleartk.classifier.encoder.CleartkEncoderException;<a name="line.34"></a>
+<FONT color="green">035</FONT>    import org.cleartk.classifier.encoder.features.FeaturesEncoder;<a name="line.35"></a>
+<FONT color="green">036</FONT>    import org.cleartk.classifier.encoder.features.NameNumber;<a name="line.36"></a>
+<FONT color="green">037</FONT>    import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;<a name="line.37"></a>
+<FONT color="green">038</FONT>    import org.cleartk.classifier.jar.SequenceClassifier_ImplBase;<a name="line.38"></a>
+<FONT color="green">039</FONT>    <a name="line.39"></a>
+<FONT color="green">040</FONT>    import cc.mallet.grmm.learning.ACRF;<a name="line.40"></a>
+<FONT color="green">041</FONT>    import cc.mallet.pipe.Pipe;<a name="line.41"></a>
+<FONT color="green">042</FONT>    import cc.mallet.types.Instance;<a name="line.42"></a>
+<FONT color="green">043</FONT>    import cc.mallet.types.Labels;<a name="line.43"></a>
+<FONT color="green">044</FONT>    import cc.mallet.types.LabelsSequence;<a name="line.44"></a>
+<FONT color="green">045</FONT>    <a name="line.45"></a>
+<FONT color="green">046</FONT>    /**<a name="line.46"></a>
+<FONT color="green">047</FONT>     * &lt;br&gt;<a name="line.47"></a>
+<FONT color="green">048</FONT>     * Copyright (c) 2010, University of Würzburg&lt;br&gt;<a name="line.48"></a>
+<FONT color="green">049</FONT>     * All rights reserved.<a name="line.49"></a>
+<FONT color="green">050</FONT>     * &lt;p&gt;<a name="line.50"></a>
+<FONT color="green">051</FONT>     * <a name="line.51"></a>
+<FONT color="green">052</FONT>     * @author Martin Toepfer<a name="line.52"></a>
+<FONT color="green">053</FONT>     */<a name="line.53"></a>
+<FONT color="green">054</FONT>    public class GrmmClassifier extends<a name="line.54"></a>
+<FONT color="green">055</FONT>        SequenceClassifier_ImplBase&lt;List&lt;NameNumber&gt;, String[], String[]&gt; {<a name="line.55"></a>
+<FONT color="green">056</FONT>    <a name="line.56"></a>
+<FONT color="green">057</FONT>      protected ACRF acrf;<a name="line.57"></a>
+<FONT color="green">058</FONT>    <a name="line.58"></a>
+<FONT color="green">059</FONT>      protected String outcomeExample;<a name="line.59"></a>
+<FONT color="green">060</FONT>    <a name="line.60"></a>
+<FONT color="green">061</FONT>      public GrmmClassifier(<a name="line.61"></a>
+<FONT color="green">062</FONT>          FeaturesEncoder&lt;List&lt;NameNumber&gt;&gt; featuresEncoder,<a name="line.62"></a>
+<FONT color="green">063</FONT>          OutcomeEncoder&lt;String[], String[]&gt; outcomeEncoder,<a name="line.63"></a>
+<FONT color="green">064</FONT>          ACRF acrf,<a name="line.64"></a>
+<FONT color="green">065</FONT>          String outcomeExample) {<a name="line.65"></a>
+<FONT color="green">066</FONT>        super(featuresEncoder, outcomeEncoder);<a name="line.66"></a>
+<FONT color="green">067</FONT>        this.acrf = acrf;<a name="line.67"></a>
+<FONT color="green">068</FONT>        this.outcomeExample = outcomeExample;<a name="line.68"></a>
+<FONT color="green">069</FONT>      }<a name="line.69"></a>
+<FONT color="green">070</FONT>    <a name="line.70"></a>
+<FONT color="green">071</FONT>      /**<a name="line.71"></a>
+<FONT color="green">072</FONT>       * This method classifies several instances at once<a name="line.72"></a>
+<FONT color="green">073</FONT>       * <a name="line.73"></a>
+<FONT color="green">074</FONT>       * @param features<a name="line.74"></a>
+<FONT color="green">075</FONT>       *          a list of lists of features - each list in the list represents one instance to be<a name="line.75"></a>
+<FONT color="green">076</FONT>       *          classified. The list should correspond to some logical sequence of instances to be<a name="line.76"></a>
+<FONT color="green">077</FONT>       *          classified (e.g. tokens in a sentence or lines in a document) that corresponds to the<a name="line.77"></a>
+<FONT color="green">078</FONT>       *          model that has been built for this classifier.<a name="line.78"></a>
+<FONT color="green">079</FONT>       * @throws CleartkEncoderException<a name="line.79"></a>
+<FONT color="green">080</FONT>       * @throws CleartkException<a name="line.80"></a>
+<FONT color="green">081</FONT>       */<a name="line.81"></a>
+<FONT color="green">082</FONT>      public List&lt;String[]&gt; classify(final List&lt;List&lt;Feature&gt;&gt; features)<a name="line.82"></a>
+<FONT color="green">083</FONT>          throws CleartkProcessingException {<a name="line.83"></a>
+<FONT color="green">084</FONT>        // generate format that is appropriate for the acrf input pipe:<a name="line.84"></a>
+<FONT color="green">085</FONT>        String data = "";<a name="line.85"></a>
+<FONT color="green">086</FONT>        {<a name="line.86"></a>
+<FONT color="green">087</FONT>          StringWriter out = new StringWriter();<a name="line.87"></a>
+<FONT color="green">088</FONT>          PrintWriter printWriter = new PrintWriter(out);<a name="line.88"></a>
+<FONT color="green">089</FONT>          for (List&lt;Feature&gt; f : features) {<a name="line.89"></a>
+<FONT color="green">090</FONT>            List&lt;NameNumber&gt; nameNumbers = this.featuresEncoder.encodeAll(f);<a name="line.90"></a>
+<FONT color="green">091</FONT>            GrmmDataWriter.writeEncoded(nameNumbers, this.outcomeExample.split(" "), printWriter);<a name="line.91"></a>
+<FONT color="green">092</FONT>          }<a name="line.92"></a>
+<FONT color="green">093</FONT>          data = out.toString();<a name="line.93"></a>
+<FONT color="green">094</FONT>        }<a name="line.94"></a>
+<FONT color="green">095</FONT>        // classify:<a name="line.95"></a>
+<FONT color="green">096</FONT>        Pipe pipe = acrf.getInputPipe();<a name="line.96"></a>
+<FONT color="green">097</FONT>        Instance unprocessedInstance = new Instance(data, null, "", null);<a name="line.97"></a>
+<FONT color="green">098</FONT>        Instance instance = pipe.newIteratorFrom(Arrays.asList(unprocessedInstance).iterator()).next();<a name="line.98"></a>
+<FONT color="green">099</FONT>        LabelsSequence bestLabels = acrf.getBestLabels(instance);<a name="line.99"></a>
+<FONT color="green">100</FONT>        List&lt;String[]&gt; returnValues = new ArrayList&lt;String[]&gt;(features.size());<a name="line.100"></a>
+<FONT color="green">101</FONT>        for (int i = 0; i &lt; bestLabels.size(); i++) {<a name="line.101"></a>
+<FONT color="green">102</FONT>          Labels labels = bestLabels.getLabels(i);<a name="line.102"></a>
+<FONT color="green">103</FONT>          String[] outcomes = new String[labels.size()];<a name="line.103"></a>
+<FONT color="green">104</FONT>          for (int j = 0; j &lt; labels.size(); j++) {<a name="line.104"></a>
+<FONT color="green">105</FONT>            outcomes[j] = labels.get(j).getBestLabel().toString();<a name="line.105"></a>
+<FONT color="green">106</FONT>          }<a name="line.106"></a>
+<FONT color="green">107</FONT>          returnValues.add(outcomes);<a name="line.107"></a>
+<FONT color="green">108</FONT>        }<a name="line.108"></a>
+<FONT color="green">109</FONT>        return returnValues;<a name="line.109"></a>
+<FONT color="green">110</FONT>      }<a name="line.110"></a>
+<FONT color="green">111</FONT>    }<a name="line.111"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

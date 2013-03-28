@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+org.cleartk.classifier.feature.extractor (ClearTK Release 1.2.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="org.cleartk.classifier.feature.extractor (ClearTK Release 1.2.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Package</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <FONT CLASS="NavBarFont1">Class</FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-use.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../../org/cleartk/classifier/feature/package-summary.html"><B>PREV PACKAGE</B></A>&nbsp;
+&nbsp;<A HREF="../../../../../org/cleartk/classifier/feature/extractor/annotationpair/package-summary.html"><B>NEXT PACKAGE</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../../index.html?org/cleartk/classifier/feature/extractor/package-summary.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="package-summary.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<H2>
+Package org.cleartk.classifier.feature.extractor
+</H2>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Interface Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/BetweenAnnotationsFeatureExtractor.html" title="interface in org.cleartk.classifier.feature.extractor">BetweenAnnotationsFeatureExtractor</A></B></TD>
+<TD><br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Bounds.html" title="interface in org.cleartk.classifier.feature.extractor">CleartkExtractor.Bounds</A></B></TD>
+<TD>A class representing the bounds within which a <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.html" title="class in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor</CODE></A> should look for
+ annotations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor">CleartkExtractor.Context</A></B></TD>
+<TD>A class representing a location that a <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.html" title="class in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor</CODE></A> should look for annotations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Bounds.html" title="interface in org.cleartk.classifier.feature.extractor">ContextExtractor.Bounds</A></B></TD>
+<TD>A class representing the bounds within which a <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.html" title="class in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor</CODE></A> should look for
+ annotations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor">ContextExtractor.Context</A></B></TD>
+<TD>A class representing a location that a <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.html" title="class in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor</CODE></A> should look for annotations.</TD>
+</TR>
+</TABLE>
+&nbsp;
+
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Class Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractor</A></B></TD>
+<TD>A feature extractor that finds other <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas"><CODE>Annotation</CODE></A>s in the context of a focus annotation and
+ extracts features from these.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Bag.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractor.Bag</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor.Context</CODE></A> that aggregates the features of other contexts into a "bag" where position
+ information of each individual feature is no longer maintained.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Count.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractor.Count</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor.Context</CODE></A> that aggregates the features of other contexts into a bag of counts where
+ only the count of occurrence of each feature value is maintained.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Covered.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractor.Covered</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor.Context</CODE></A> for extracting all annotations within the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.FirstCovered.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractor.FirstCovered</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor.Context</CODE></A> for extracting the first annotations within the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Focus.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractor.Focus</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor.Context</CODE></A> for extracting the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Following.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractor.Following</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor.Context</CODE></A> for extracting annotations appearing after the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.LastCovered.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractor.LastCovered</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor.Context</CODE></A> for extracting the last annotations within the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Ngram.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractor.Ngram</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor.Context</CODE></A> that aggregates the features of other contexts into a single "ngram" feature,
+ where the feature values are concatenated together in order to form a single value.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Ngrams.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractor.Ngrams</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor.Context</CODE></A> that aggregates the features of other contexts into several "ngrams"
+ features, where sub-sequences of the feature values are concatenated together in order to form
+ single values.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Preceding.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractor.Preceding</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor.Context</CODE></A> for extracting annotations appearing before the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor&lt;T extends Annotation&gt;</A></B></TD>
+<TD><B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.html" title="class in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor</CODE></A> instead.</I></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Bag.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Bag</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> that aggregates the features of other contexts into a "bag" where position
+ information of each individual feature is no longer maintained.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Count.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Count</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> that aggregates the features of other contexts into a bag of counts where
+ only the count of occurrence of each feature value is maintained.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Covered.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Covered</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> for extracting all annotations within the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.FirstCovered.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.FirstCovered</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> for extracting the first annotations within the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Focus.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Focus</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> for extracting the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Following.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Following</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> for extracting annotations appearing after the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.LastCovered.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.LastCovered</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> for extracting the last annotations within the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Ngram.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Ngram</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> that aggregates the features of other contexts into a single "ngram" feature,
+ where the feature values are concatenated together in order to form a single value.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Ngrams.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Ngrams</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> that aggregates the features of other contexts into several "ngrams"
+ features, where sub-sequences of the feature values are concatenated together in order to form
+ single values.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Preceding.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Preceding</A></B></TD>
+<TD>A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> for extracting annotations appearing before the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/WindowExtractor.html" title="class in org.cleartk.classifier.feature.extractor">WindowExtractor</A></B></TD>
+<TD><B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.html" title="class in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor</CODE></A> instead.</I></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/WindowNGramExtractor.html" title="class in org.cleartk.classifier.feature.extractor">WindowNGramExtractor</A></B></TD>
+<TD><B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.html" title="class in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor</CODE></A> instead.</I></TD>
+</TR>
+</TABLE>
+&nbsp;
+
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Exception Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractorException.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractorException</A></B></TD>
+<TD><br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+
+<P>
+<DL>
+</DL>
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Package</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <FONT CLASS="NavBarFont1">Class</FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-use.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../../org/cleartk/classifier/feature/package-summary.html"><B>PREV PACKAGE</B></A>&nbsp;
+&nbsp;<A HREF="../../../../../org/cleartk/classifier/feature/extractor/annotationpair/package-summary.html"><B>NEXT PACKAGE</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../../index.html?org/cleartk/classifier/feature/extractor/package-summary.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="package-summary.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>

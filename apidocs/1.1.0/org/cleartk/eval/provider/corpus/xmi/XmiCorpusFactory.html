@@ -1,0 +1,577 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+XmiCorpusFactory (cleartk-release 1.1.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="XmiCorpusFactory (cleartk-release 1.1.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/XmiCorpusFactory.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/FixedFoldsXmiCorpusFactory.html" title="class in org.cleartk.eval.provider.corpus.xmi"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;NEXT CLASS</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../../../index.html?org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="XmiCorpusFactory.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+org.cleartk.eval.provider.corpus.xmi</FONT>
+<BR>
+Class XmiCorpusFactory</H2>
+<PRE>
+<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</A>
+  <IMG SRC="../../../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../../../org/cleartk/eval/provider/corpus/CorpusFactory_ImplBase.html" title="class in org.cleartk.eval.provider.corpus">org.cleartk.eval.provider.corpus.CorpusFactory_ImplBase</A>
+      <IMG SRC="../../../../../../resources/inherit.gif" ALT="extended by "><B>org.cleartk.eval.provider.corpus.xmi.XmiCorpusFactory</B>
+</PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD><A HREF="../../../../../../org/cleartk/eval/provider/CorpusReaderProvider.html" title="interface in org.cleartk.eval.provider">CorpusReaderProvider</A></DD>
+</DL>
+<DL>
+<DT><B>Direct Known Subclasses:</B> <DD><A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/FixedFoldsXmiCorpusFactory.html" title="class in org.cleartk.eval.provider.corpus.xmi">FixedFoldsXmiCorpusFactory</A></DD>
+</DL>
+<HR>
+<DL>
+<DT><PRE>public abstract class <A HREF="../../../../../../src-html/org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#line.55"><B>XmiCorpusFactory</B></A><DT>extends <A HREF="../../../../../../org/cleartk/eval/provider/corpus/CorpusFactory_ImplBase.html" title="class in org.cleartk.eval.provider.corpus">CorpusFactory_ImplBase</A></DL>
+</PRE>
+
+<P>
+Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.
+ 
+ <br>
+ A convenient way to manage a corpus of annotations is to use XMI files. If you have a way to load
+ your annotations into a CAS, then you can create an XMI file - one for each document. Once you
+ have your XMI files, this factory class provides a simple way to split up your XMI files into a
+ training set, a test set, and folds from your training set. It assumes that all of your XMI files
+ are in single directory specified by <CODE>#getXmiDirectory()</CODE>. Your job is to serve up the
+ names of the XMI files that belong to the various splits of the data.
+<P>
+
+<P>
+<DL>
+<DT><B>Author:</B></DT>
+  <DD>Philip Ogren</DD>
+</DL>
+<HR>
+
+<P>
+<!-- =========== FIELD SUMMARY =========== -->
+
+<A NAME="field_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Field Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#xmiDirectoryName">xmiDirectoryName</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="fields_inherited_from_class_org.cleartk.eval.provider.corpus.CorpusFactory_ImplBase"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Fields inherited from class org.cleartk.eval.provider.corpus.<A HREF="../../../../../../org/cleartk/eval/provider/corpus/CorpusFactory_ImplBase.html" title="class in org.cleartk.eval.provider.corpus">CorpusFactory_ImplBase</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="../../../../../../org/cleartk/eval/provider/corpus/CorpusFactory_ImplBase.html#typeSystemDescription">typeSystemDescription</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+
+<A NAME="constructor_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Constructor Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><B><A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#XmiCorpusFactory(org.apache.uima.resource.metadata.TypeSystemDescription, java.lang.String)">XmiCorpusFactory</A></B>(<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/metadata/TypeSystemDescription.html?is-external=true" title="class or interface in org.apache.uima.resource.metadata">TypeSystemDescription</A>&nbsp;typeSystemDescription,
+                                 <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;xmiDirectoryName)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#createReader(int...)">createReader</A></B>(int...&nbsp;folds)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#getReader()">getReader</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method provides a collection reader for the entire corpus.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>abstract &nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[]</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#getTestNames()">getTestNames</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides the file names for the test set.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>abstract &nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[]</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#getTestNames(int)">getTestNames</A></B>(int&nbsp;fold)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for a given fold, give the file names for the test set.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#getTestReader()">getTestReader</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method returns the testing set for the corpus.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#getTestReader(int)">getTestReader</A></B>(int&nbsp;fold)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method returns a testing set for a given fold from the training set.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>abstract &nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[]</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#getTrainNames()">getTrainNames</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Provides the file names for the training set.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>abstract &nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[]</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#getTrainNames(int)">getTrainNames</A></B>(int&nbsp;fold)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for a given fold, give the file names for the training set.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#getTrainReader()">getTrainReader</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method returns the training set for the corpus.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#getTrainReader(int)">getTrainReader</A></B>(int&nbsp;fold)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method returns a training set for a given fold from the training set.</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_org.cleartk.eval.provider.corpus.CorpusFactory_ImplBase"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class org.cleartk.eval.provider.corpus.<A HREF="../../../../../../org/cleartk/eval/provider/corpus/CorpusFactory_ImplBase.html" title="class in org.cleartk.eval.provider.corpus">CorpusFactory_ImplBase</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="../../../../../../org/cleartk/eval/provider/corpus/CorpusFactory_ImplBase.html#getPreprocessor()">getPreprocessor</A>, <A HREF="../../../../../../org/cleartk/eval/provider/corpus/CorpusFactory_ImplBase.html#verifyFoldValue(int)">verifyFoldValue</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_org.cleartk.eval.provider.CorpusReaderProvider"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from interface org.cleartk.eval.provider.<A HREF="../../../../../../org/cleartk/eval/provider/CorpusReaderProvider.html" title="interface in org.cleartk.eval.provider">CorpusReaderProvider</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="../../../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getNumberOfFolds()">getNumberOfFolds</A>, <A HREF="../../../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#setNumberOfFolds(int)">setNumberOfFolds</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ============ FIELD DETAIL =========== -->
+
+<A NAME="field_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Field Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="xmiDirectoryName"><!-- --></A><H3>
+xmiDirectoryName</H3>
+<PRE>
+protected <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A> <A HREF="../../../../../../src-html/org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#line.57"><B>xmiDirectoryName</B></A></PRE>
+<DL>
+<DL>
+</DL>
+</DL>
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+
+<A NAME="constructor_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Constructor Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="XmiCorpusFactory(org.apache.uima.resource.metadata.TypeSystemDescription, java.lang.String)"><!-- --></A><H3>
+XmiCorpusFactory</H3>
+<PRE>
+public <A HREF="../../../../../../src-html/org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#line.66"><B>XmiCorpusFactory</B></A>(<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/metadata/TypeSystemDescription.html?is-external=true" title="class or interface in org.apache.uima.resource.metadata">TypeSystemDescription</A>&nbsp;typeSystemDescription,
+                        <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;xmiDirectoryName)</PRE>
+<DL>
+<DL>
+<DT><B>Parameters:</B><DD><CODE>typeSystemDescription</CODE> - <DD><CODE>xmiDirectoryName</CODE> - directory contains all of the xmi files in the corpus</DL>
+</DL>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="getTrainNames(int)"><!-- --></A><H3>
+getTrainNames</H3>
+<PRE>
+public abstract <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[] <A HREF="../../../../../../src-html/org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#line.78"><B>getTrainNames</B></A>(int&nbsp;fold)
+                                throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></PRE>
+<DL>
+<DD>for a given fold, give the file names for the training set.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>fold</CODE> - the fold number
+<DT><B>Returns:</B><DD>an array of file names used for the training set for this fold.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getTestNames(int)"><!-- --></A><H3>
+getTestNames</H3>
+<PRE>
+public abstract <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[] <A HREF="../../../../../../src-html/org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#line.87"><B>getTestNames</B></A>(int&nbsp;fold)
+                               throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></PRE>
+<DL>
+<DD>for a given fold, give the file names for the test set.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>fold</CODE> - the fold number
+<DT><B>Returns:</B><DD>an array of file names used for the test set for this fold.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getTrainNames()"><!-- --></A><H3>
+getTrainNames</H3>
+<PRE>
+public abstract <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[] <A HREF="../../../../../../src-html/org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#line.94"><B>getTrainNames</B></A>()
+                                throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></PRE>
+<DL>
+<DD>Provides the file names for the training set.
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>an array of file names used for the training set for this corpus.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getTestNames()"><!-- --></A><H3>
+getTestNames</H3>
+<PRE>
+public abstract <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[] <A HREF="../../../../../../src-html/org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#line.101"><B>getTestNames</B></A>()
+                               throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></PRE>
+<DL>
+<DD>Provides the file names for the test set.
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>an array of file names used for the test set for this corpus.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getTrainReader(int)"><!-- --></A><H3>
+getTrainReader</H3>
+<PRE>
+public <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A> <A HREF="../../../../../../src-html/org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#line.116"><B>getTrainReader</B></A>(int&nbsp;fold)
+                                throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></PRE>
+<DL>
+<DD><B>Description copied from interface: <CODE><A HREF="../../../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getTrainReader(int)">CorpusReaderProvider</A></CODE></B></DD>
+<DD>This method returns a training set for a given fold from the training set.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>fold</CODE> - a number between 1 and the value returned by <A HREF="../../../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getNumberOfFolds()"><CODE>CorpusReaderProvider.getNumberOfFolds()</CODE></A>.
+<DT><B>Returns:</B><DD>a collection reader for a training set for the fold from the training set.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getTestReader(int)"><!-- --></A><H3>
+getTestReader</H3>
+<PRE>
+public <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A> <A HREF="../../../../../../src-html/org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#line.123"><B>getTestReader</B></A>(int&nbsp;fold)
+                               throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></PRE>
+<DL>
+<DD><B>Description copied from interface: <CODE><A HREF="../../../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getTestReader(int)">CorpusReaderProvider</A></CODE></B></DD>
+<DD>This method returns a testing set for a given fold from the training set.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>fold</CODE> - a number between 1 and the value returned by <A HREF="../../../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getNumberOfFolds()"><CODE>CorpusReaderProvider.getNumberOfFolds()</CODE></A>.
+<DT><B>Returns:</B><DD>a collection reader for a testing set for the fold from the training set.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getTrainReader()"><!-- --></A><H3>
+getTrainReader</H3>
+<PRE>
+public <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A> <A HREF="../../../../../../src-html/org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#line.130"><B>getTrainReader</B></A>()
+                                throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></PRE>
+<DL>
+<DD><B>Description copied from interface: <CODE><A HREF="../../../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getTrainReader()">CorpusReaderProvider</A></CODE></B></DD>
+<DD>This method returns the training set for the corpus.
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>a collection reader for the training set from the corpus
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getTestReader()"><!-- --></A><H3>
+getTestReader</H3>
+<PRE>
+public <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A> <A HREF="../../../../../../src-html/org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#line.136"><B>getTestReader</B></A>()
+                               throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></PRE>
+<DL>
+<DD><B>Description copied from interface: <CODE><A HREF="../../../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getTestReader()">CorpusReaderProvider</A></CODE></B></DD>
+<DD>This method returns the testing set for the corpus.
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>a collection reader for the tresting set from the corpus
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getReader()"><!-- --></A><H3>
+getReader</H3>
+<PRE>
+public <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A> <A HREF="../../../../../../src-html/org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#line.142"><B>getReader</B></A>()
+                           throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></PRE>
+<DL>
+<DD><B>Description copied from interface: <CODE><A HREF="../../../../../../org/cleartk/eval/provider/CorpusReaderProvider.html#getReader()">CorpusReaderProvider</A></CODE></B></DD>
+<DD>This method provides a collection reader for the entire corpus. This is useful if, for example,
+ you want to train a model that includes all data from the corpus for using in a runtime system
+ (i.e. evaluation is not going to be performed.)
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>a collection reader for the entire corpus.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="createReader(int...)"><!-- --></A><H3>
+createReader</H3>
+<PRE>
+public <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/collection/CollectionReader.html?is-external=true" title="class or interface in org.apache.uima.collection">CollectionReader</A> <A HREF="../../../../../../src-html/org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html#line.151"><B>createReader</B></A>(int...&nbsp;folds)
+                              throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></PRE>
+<DL>
+<DD><DL>
+
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></CODE></DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/XmiCorpusFactory.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../../../org/cleartk/eval/provider/corpus/xmi/FixedFoldsXmiCorpusFactory.html" title="class in org.cleartk.eval.provider.corpus.xmi"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;NEXT CLASS</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../../../index.html?org/cleartk/eval/provider/corpus/xmi/XmiCorpusFactory.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="XmiCorpusFactory.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>

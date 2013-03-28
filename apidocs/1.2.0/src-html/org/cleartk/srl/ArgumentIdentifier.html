@@ -1,0 +1,383 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /** <a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) 2007-2008, Regents of the University of Colorado <a name="line.2"></a>
+<FONT color="green">003</FONT>     * All rights reserved.<a name="line.3"></a>
+<FONT color="green">004</FONT>     * <a name="line.4"></a>
+<FONT color="green">005</FONT>     * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<FONT color="green">006</FONT>     * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<FONT color="green">007</FONT>     * <a name="line.7"></a>
+<FONT color="green">008</FONT>     * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<FONT color="green">009</FONT>     * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<FONT color="green">010</FONT>     * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<FONT color="green">011</FONT>     * <a name="line.11"></a>
+<FONT color="green">012</FONT>     * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<FONT color="green">013</FONT>     * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<FONT color="green">014</FONT>     * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<FONT color="green">015</FONT>     * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<FONT color="green">016</FONT>     * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<FONT color="green">017</FONT>     * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<FONT color="green">018</FONT>     * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<FONT color="green">019</FONT>     * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<FONT color="green">020</FONT>     * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<FONT color="green">021</FONT>     * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<FONT color="green">022</FONT>     * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<FONT color="green">023</FONT>     */<a name="line.23"></a>
+<FONT color="green">024</FONT>    package org.cleartk.srl;<a name="line.24"></a>
+<FONT color="green">025</FONT>    <a name="line.25"></a>
+<FONT color="green">026</FONT>    import java.io.File;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import java.util.ArrayList;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import java.util.Collection;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import java.util.List;<a name="line.29"></a>
+<FONT color="green">030</FONT>    import java.util.logging.Logger;<a name="line.30"></a>
+<FONT color="green">031</FONT>    <a name="line.31"></a>
+<FONT color="green">032</FONT>    import org.apache.uima.UimaContext;<a name="line.32"></a>
+<FONT color="green">033</FONT>    import org.apache.uima.analysis_engine.AnalysisEngineDescription;<a name="line.33"></a>
+<FONT color="green">034</FONT>    import org.apache.uima.analysis_engine.AnalysisEngineProcessException;<a name="line.34"></a>
+<FONT color="green">035</FONT>    import org.apache.uima.jcas.JCas;<a name="line.35"></a>
+<FONT color="green">036</FONT>    import org.apache.uima.resource.ResourceInitializationException;<a name="line.36"></a>
+<FONT color="green">037</FONT>    import org.cleartk.classifier.CleartkAnnotator;<a name="line.37"></a>
+<FONT color="green">038</FONT>    import org.cleartk.classifier.DataWriterFactory;<a name="line.38"></a>
+<FONT color="green">039</FONT>    import org.cleartk.classifier.Feature;<a name="line.39"></a>
+<FONT color="green">040</FONT>    import org.cleartk.classifier.Instance;<a name="line.40"></a>
+<FONT color="green">041</FONT>    import org.cleartk.classifier.feature.extractor.CleartkExtractor;<a name="line.41"></a>
+<FONT color="green">042</FONT>    import org.cleartk.classifier.feature.extractor.CleartkExtractor.FirstCovered;<a name="line.42"></a>
+<FONT color="green">043</FONT>    import org.cleartk.classifier.feature.extractor.CleartkExtractor.LastCovered;<a name="line.43"></a>
+<FONT color="green">044</FONT>    import org.cleartk.classifier.feature.extractor.CleartkExtractorException;<a name="line.44"></a>
+<FONT color="green">045</FONT>    import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFeatureExtractor;<a name="line.45"></a>
+<FONT color="green">046</FONT>    import org.cleartk.classifier.feature.extractor.annotationpair.MatchingAnnotationPairExtractor;<a name="line.46"></a>
+<FONT color="green">047</FONT>    import org.cleartk.classifier.feature.extractor.annotationpair.NamingAnnotationPairFeatureExtractor;<a name="line.47"></a>
+<FONT color="green">048</FONT>    import org.cleartk.classifier.feature.extractor.annotationpair.RelativePositionExtractor;<a name="line.48"></a>
+<FONT color="green">049</FONT>    import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;<a name="line.49"></a>
+<FONT color="green">050</FONT>    import org.cleartk.classifier.feature.extractor.simple.MatchingAnnotationExtractor;<a name="line.50"></a>
+<FONT color="green">051</FONT>    import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;<a name="line.51"></a>
+<FONT color="green">052</FONT>    import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;<a name="line.52"></a>
+<FONT color="green">053</FONT>    import org.cleartk.classifier.jar.DirectoryDataWriterFactory;<a name="line.53"></a>
+<FONT color="green">054</FONT>    import org.cleartk.classifier.jar.GenericJarClassifierFactory;<a name="line.54"></a>
+<FONT color="green">055</FONT>    import org.cleartk.srl.feature.NamedEntityExtractor;<a name="line.55"></a>
+<FONT color="green">056</FONT>    import org.cleartk.srl.feature.NodeTypeExtractor;<a name="line.56"></a>
+<FONT color="green">057</FONT>    import org.cleartk.srl.feature.POSExtractor;<a name="line.57"></a>
+<FONT color="green">058</FONT>    import org.cleartk.srl.feature.StemExtractor;<a name="line.58"></a>
+<FONT color="green">059</FONT>    import org.cleartk.srl.type.Argument;<a name="line.59"></a>
+<FONT color="green">060</FONT>    import org.cleartk.srl.type.Predicate;<a name="line.60"></a>
+<FONT color="green">061</FONT>    import org.cleartk.srl.type.SemanticArgument;<a name="line.61"></a>
+<FONT color="green">062</FONT>    import org.cleartk.syntax.constituent.type.TopTreebankNode;<a name="line.62"></a>
+<FONT color="green">063</FONT>    import org.cleartk.syntax.constituent.type.TreebankNode;<a name="line.63"></a>
+<FONT color="green">064</FONT>    import org.cleartk.syntax.feature.HeadWordExtractor;<a name="line.64"></a>
+<FONT color="green">065</FONT>    import org.cleartk.syntax.feature.SubCategorizationExtractor;<a name="line.65"></a>
+<FONT color="green">066</FONT>    import org.cleartk.syntax.feature.SyntacticPathExtractor;<a name="line.66"></a>
+<FONT color="green">067</FONT>    import org.cleartk.token.type.Sentence;<a name="line.67"></a>
+<FONT color="green">068</FONT>    import org.cleartk.token.type.Token;<a name="line.68"></a>
+<FONT color="green">069</FONT>    import org.cleartk.util.AnnotationUtil;<a name="line.69"></a>
+<FONT color="green">070</FONT>    import org.cleartk.util.UIMAUtil;<a name="line.70"></a>
+<FONT color="green">071</FONT>    import org.uimafit.factory.AnalysisEngineFactory;<a name="line.71"></a>
+<FONT color="green">072</FONT>    import org.uimafit.util.JCasUtil;<a name="line.72"></a>
+<FONT color="green">073</FONT>    <a name="line.73"></a>
+<FONT color="green">074</FONT>    /**<a name="line.74"></a>
+<FONT color="green">075</FONT>     * &lt;br&gt;<a name="line.75"></a>
+<FONT color="green">076</FONT>     * Copyright (c) 2007-2008, Regents of the University of Colorado &lt;br&gt;<a name="line.76"></a>
+<FONT color="green">077</FONT>     * All rights reserved.<a name="line.77"></a>
+<FONT color="green">078</FONT>     * <a name="line.78"></a>
+<FONT color="green">079</FONT>     * <a name="line.79"></a>
+<FONT color="green">080</FONT>     * &lt;p&gt;<a name="line.80"></a>
+<FONT color="green">081</FONT>     * ArgumentIdentifier can work in 3 modes: &lt;il&gt;<a name="line.81"></a>
+<FONT color="green">082</FONT>     * &lt;li&gt;&lt;b&gt;training mode&lt;/b&gt;: take in fully annotated Propbank style data and generate training data<a name="line.82"></a>
+<FONT color="green">083</FONT>     * for detection of arguments&lt;/li&gt;<a name="line.83"></a>
+<FONT color="green">084</FONT>     * &lt;li&gt;&lt;b&gt;filter mode&lt;/b&gt;: take in fully annotated Propbank style data and a model, then add<a name="line.84"></a>
+<FONT color="green">085</FONT>     * annotations for falsely detected arguments, and remove annotations for missed arguments; this is<a name="line.85"></a>
+<FONT color="green">086</FONT>     * to facilitate training of AnnotationClassifier&lt;/li&gt;<a name="line.86"></a>
+<FONT color="green">087</FONT>     * &lt;li&gt;&lt;b&gt;annotation mode&lt;/b&gt;: take in unlabeled Treebank style data and annotate all detected<a name="line.87"></a>
+<FONT color="green">088</FONT>     * arguments (no labeling is done by this annotator)&lt;/li&gt;<a name="line.88"></a>
+<FONT color="green">089</FONT>     * &lt;/il&gt;<a name="line.89"></a>
+<FONT color="green">090</FONT>     * &lt;/p&gt;<a name="line.90"></a>
+<FONT color="green">091</FONT>     * <a name="line.91"></a>
+<FONT color="green">092</FONT>     * @author Philipp Wetzler, Philip Ogren<a name="line.92"></a>
+<FONT color="green">093</FONT>     */<a name="line.93"></a>
+<FONT color="green">094</FONT>    public class ArgumentIdentifier extends CleartkAnnotator&lt;Boolean&gt; {<a name="line.94"></a>
+<FONT color="green">095</FONT>    <a name="line.95"></a>
+<FONT color="green">096</FONT>      public static AnalysisEngineDescription getWriterDescription(<a name="line.96"></a>
+<FONT color="green">097</FONT>          Class&lt;? extends DataWriterFactory&lt;Boolean&gt;&gt; dataWriterFactoryClass,<a name="line.97"></a>
+<FONT color="green">098</FONT>          File outputDirectory) throws ResourceInitializationException {<a name="line.98"></a>
+<FONT color="green">099</FONT>        return AnalysisEngineFactory.createPrimitiveDescription(<a name="line.99"></a>
+<FONT color="green">100</FONT>            ArgumentIdentifier.class,<a name="line.100"></a>
+<FONT color="green">101</FONT>            CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,<a name="line.101"></a>
+<FONT color="green">102</FONT>            dataWriterFactoryClass.getName(),<a name="line.102"></a>
+<FONT color="green">103</FONT>            DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,<a name="line.103"></a>
+<FONT color="green">104</FONT>            outputDirectory.toString());<a name="line.104"></a>
+<FONT color="green">105</FONT>      }<a name="line.105"></a>
+<FONT color="green">106</FONT>    <a name="line.106"></a>
+<FONT color="green">107</FONT>      public static AnalysisEngineDescription getClassifierDescription(File classifierJar)<a name="line.107"></a>
+<FONT color="green">108</FONT>          throws ResourceInitializationException {<a name="line.108"></a>
+<FONT color="green">109</FONT>        return AnalysisEngineFactory.createPrimitiveDescription(<a name="line.109"></a>
+<FONT color="green">110</FONT>            ArgumentIdentifier.class,<a name="line.110"></a>
+<FONT color="green">111</FONT>            GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,<a name="line.111"></a>
+<FONT color="green">112</FONT>            classifierJar.toString());<a name="line.112"></a>
+<FONT color="green">113</FONT>      }<a name="line.113"></a>
+<FONT color="green">114</FONT>    <a name="line.114"></a>
+<FONT color="green">115</FONT>      @Override<a name="line.115"></a>
+<FONT color="green">116</FONT>      public void initialize(UimaContext context) throws ResourceInitializationException {<a name="line.116"></a>
+<FONT color="green">117</FONT>        super.initialize(context);<a name="line.117"></a>
+<FONT color="green">118</FONT>    <a name="line.118"></a>
+<FONT color="green">119</FONT>        SimpleFeatureExtractor defaultTokenExtractorSet = new MatchingAnnotationExtractor(<a name="line.119"></a>
+<FONT color="green">120</FONT>            Token.class,<a name="line.120"></a>
+<FONT color="green">121</FONT>            new CoveredTextExtractor(),<a name="line.121"></a>
+<FONT color="green">122</FONT>            new StemExtractor(),<a name="line.122"></a>
+<FONT color="green">123</FONT>            new POSExtractor());<a name="line.123"></a>
+<FONT color="green">124</FONT>    <a name="line.124"></a>
+<FONT color="green">125</FONT>        this.perPredicateExtractor = new NamingExtractor("Predicate", new MatchingAnnotationExtractor(<a name="line.125"></a>
+<FONT color="green">126</FONT>            Token.class,<a name="line.126"></a>
+<FONT color="green">127</FONT>            defaultTokenExtractorSet), new MatchingAnnotationExtractor(<a name="line.127"></a>
+<FONT color="green">128</FONT>            TreebankNode.class,<a name="line.128"></a>
+<FONT color="green">129</FONT>            new SubCategorizationExtractor()));<a name="line.129"></a>
+<FONT color="green">130</FONT>    <a name="line.130"></a>
+<FONT color="green">131</FONT>        this.perConstituentExtractor = new NamingExtractor("Constituent", new NodeTypeExtractor(),<a name="line.131"></a>
+<FONT color="green">132</FONT>        // new TypePathExtractor(TreebankNode.class, "nodeTags"),<a name="line.132"></a>
+<FONT color="green">133</FONT>            new HeadWordExtractor(defaultTokenExtractorSet),<a name="line.133"></a>
+<FONT color="green">134</FONT>            new CleartkExtractor(Token.class, defaultTokenExtractorSet, new FirstCovered(1)),<a name="line.134"></a>
+<FONT color="green">135</FONT>            new CleartkExtractor(Token.class, defaultTokenExtractorSet, new LastCovered(1)),<a name="line.135"></a>
+<FONT color="green">136</FONT>            new NamedEntityExtractor());<a name="line.136"></a>
+<FONT color="green">137</FONT>    <a name="line.137"></a>
+<FONT color="green">138</FONT>        this.perPredicatAndConstituentExtractor = new NamingAnnotationPairFeatureExtractor(<a name="line.138"></a>
+<FONT color="green">139</FONT>            "PredicateAndConstituent",<a name="line.139"></a>
+<FONT color="green">140</FONT>            new MatchingAnnotationPairExtractor(<a name="line.140"></a>
+<FONT color="green">141</FONT>                TreebankNode.class,<a name="line.141"></a>
+<FONT color="green">142</FONT>                TreebankNode.class,<a name="line.142"></a>
+<FONT color="green">143</FONT>                new SyntacticPathExtractor(new NodeTypeExtractor()),<a name="line.143"></a>
+<FONT color="green">144</FONT>                new RelativePositionExtractor()));<a name="line.144"></a>
+<FONT color="green">145</FONT>      }<a name="line.145"></a>
+<FONT color="green">146</FONT>    <a name="line.146"></a>
+<FONT color="green">147</FONT>      @Override<a name="line.147"></a>
+<FONT color="green">148</FONT>      public void process(JCas jCas) throws AnalysisEngineProcessException {<a name="line.148"></a>
+<FONT color="green">149</FONT>        /*<a name="line.149"></a>
+<FONT color="green">150</FONT>         * Iterate over sentences in document<a name="line.150"></a>
+<FONT color="green">151</FONT>         */<a name="line.151"></a>
+<FONT color="green">152</FONT>        Collection&lt;Sentence&gt; sentences = JCasUtil.select(jCas, Sentence.class);<a name="line.152"></a>
+<FONT color="green">153</FONT>    <a name="line.153"></a>
+<FONT color="green">154</FONT>        nSentences = 0;<a name="line.154"></a>
+<FONT color="green">155</FONT>        nPredicates = 0;<a name="line.155"></a>
+<FONT color="green">156</FONT>        nConstituents = 0;<a name="line.156"></a>
+<FONT color="green">157</FONT>    <a name="line.157"></a>
+<FONT color="green">158</FONT>        for (Sentence sentence : sentences) {<a name="line.158"></a>
+<FONT color="green">159</FONT>          processSentence(jCas, sentence);<a name="line.159"></a>
+<FONT color="green">160</FONT>        }<a name="line.160"></a>
+<FONT color="green">161</FONT>    <a name="line.161"></a>
+<FONT color="green">162</FONT>        logger.info(String.format(<a name="line.162"></a>
+<FONT color="green">163</FONT>            "processed %d sentences, %d predicates, ~%d constituents per predicate",<a name="line.163"></a>
+<FONT color="green">164</FONT>            nSentences,<a name="line.164"></a>
+<FONT color="green">165</FONT>            nPredicates,<a name="line.165"></a>
+<FONT color="green">166</FONT>            nPredicates == 0 ? 0 : nConstituents / nPredicates));<a name="line.166"></a>
+<FONT color="green">167</FONT>      }<a name="line.167"></a>
+<FONT color="green">168</FONT>    <a name="line.168"></a>
+<FONT color="green">169</FONT>      void processSentence(JCas jCas, Sentence sentence) throws AnalysisEngineProcessException {<a name="line.169"></a>
+<FONT color="green">170</FONT>        nSentences += 1;<a name="line.170"></a>
+<FONT color="green">171</FONT>    <a name="line.171"></a>
+<FONT color="green">172</FONT>        if (sentence.getCoveredText().length() &gt; 40)<a name="line.172"></a>
+<FONT color="green">173</FONT>          logger.fine(String.format(<a name="line.173"></a>
+<FONT color="green">174</FONT>              "process sentence \"%s ...\"",<a name="line.174"></a>
+<FONT color="green">175</FONT>              sentence.getCoveredText().substring(0, 39)));<a name="line.175"></a>
+<FONT color="green">176</FONT>        else<a name="line.176"></a>
+<FONT color="green">177</FONT>          logger.fine(String.format("process sentence \"%s\"", sentence.getCoveredText()));<a name="line.177"></a>
+<FONT color="green">178</FONT>    <a name="line.178"></a>
+<FONT color="green">179</FONT>        /*<a name="line.179"></a>
+<FONT color="green">180</FONT>         * Pre-compute sentence level data: sentenceConstituents: list of all constituents in sentence<a name="line.180"></a>
+<FONT color="green">181</FONT>         */<a name="line.181"></a>
+<FONT color="green">182</FONT>        TopTreebankNode top = AnnotationUtil.selectFirstMatching(jCas, TopTreebankNode.class, sentence);<a name="line.182"></a>
+<FONT color="green">183</FONT>        if (top == null) {<a name="line.183"></a>
+<FONT color="green">184</FONT>          CleartkExtractorException.noAnnotationInWindow(TopTreebankNode.class, sentence);<a name="line.184"></a>
+<FONT color="green">185</FONT>        }<a name="line.185"></a>
+<FONT color="green">186</FONT>        List&lt;TreebankNode&gt; sentenceConstituents = new ArrayList&lt;TreebankNode&gt;(200);<a name="line.186"></a>
+<FONT color="green">187</FONT>        collectConstituents(top, sentenceConstituents);<a name="line.187"></a>
+<FONT color="green">188</FONT>    <a name="line.188"></a>
+<FONT color="green">189</FONT>        /*<a name="line.189"></a>
+<FONT color="green">190</FONT>         * Compute constituent features for all constituents in sentence<a name="line.190"></a>
+<FONT color="green">191</FONT>         */<a name="line.191"></a>
+<FONT color="green">192</FONT>        List&lt;List&lt;Feature&gt;&gt; sentenceConstituentFeatures = new ArrayList&lt;List&lt;Feature&gt;&gt;(<a name="line.192"></a>
+<FONT color="green">193</FONT>            sentenceConstituents.size());<a name="line.193"></a>
+<FONT color="green">194</FONT>        for (TreebankNode constituent : sentenceConstituents) {<a name="line.194"></a>
+<FONT color="green">195</FONT>          sentenceConstituentFeatures.add(perConstituentExtractor.extract(jCas, constituent));<a name="line.195"></a>
+<FONT color="green">196</FONT>        }<a name="line.196"></a>
+<FONT color="green">197</FONT>    <a name="line.197"></a>
+<FONT color="green">198</FONT>        /*<a name="line.198"></a>
+<FONT color="green">199</FONT>         * Iterate over predicates in sentence<a name="line.199"></a>
+<FONT color="green">200</FONT>         */<a name="line.200"></a>
+<FONT color="green">201</FONT>        List&lt;Predicate&gt; predicates = JCasUtil.selectCovered(jCas, Predicate.class, sentence);<a name="line.201"></a>
+<FONT color="green">202</FONT>        for (Predicate predicate : predicates) {<a name="line.202"></a>
+<FONT color="green">203</FONT>          processPredicate(jCas, predicate, sentenceConstituents, sentenceConstituentFeatures);<a name="line.203"></a>
+<FONT color="green">204</FONT>        }<a name="line.204"></a>
+<FONT color="green">205</FONT>      }<a name="line.205"></a>
+<FONT color="green">206</FONT>    <a name="line.206"></a>
+<FONT color="green">207</FONT>      public void processPredicate(<a name="line.207"></a>
+<FONT color="green">208</FONT>          JCas jCas,<a name="line.208"></a>
+<FONT color="green">209</FONT>          Predicate predicate,<a name="line.209"></a>
+<FONT color="green">210</FONT>          List&lt;TreebankNode&gt; sentenceConstituents,<a name="line.210"></a>
+<FONT color="green">211</FONT>          List&lt;List&lt;Feature&gt;&gt; sentenceConstituentFeatures) throws AnalysisEngineProcessException {<a name="line.211"></a>
+<FONT color="green">212</FONT>        nPredicates += 1;<a name="line.212"></a>
+<FONT color="green">213</FONT>    <a name="line.213"></a>
+<FONT color="green">214</FONT>        /*<a name="line.214"></a>
+<FONT color="green">215</FONT>         * Compute predicate features<a name="line.215"></a>
+<FONT color="green">216</FONT>         */<a name="line.216"></a>
+<FONT color="green">217</FONT>        List&lt;Feature&gt; predicateFeatures = new ArrayList&lt;Feature&gt;(12);<a name="line.217"></a>
+<FONT color="green">218</FONT>        predicateFeatures.addAll(perPredicateExtractor.extract(jCas, predicate.getAnnotation()));<a name="line.218"></a>
+<FONT color="green">219</FONT>    <a name="line.219"></a>
+<FONT color="green">220</FONT>        /*<a name="line.220"></a>
+<FONT color="green">221</FONT>         * Iterate over constituents in sentence<a name="line.221"></a>
+<FONT color="green">222</FONT>         */<a name="line.222"></a>
+<FONT color="green">223</FONT>        for (int i = 0; i &lt; sentenceConstituents.size(); i++) {<a name="line.223"></a>
+<FONT color="green">224</FONT>          nConstituents += 1;<a name="line.224"></a>
+<FONT color="green">225</FONT>          TreebankNode constituent = sentenceConstituents.get(i);<a name="line.225"></a>
+<FONT color="green">226</FONT>    <a name="line.226"></a>
+<FONT color="green">227</FONT>          Instance&lt;Boolean&gt; instance = new Instance&lt;Boolean&gt;();<a name="line.227"></a>
+<FONT color="green">228</FONT>    <a name="line.228"></a>
+<FONT color="green">229</FONT>          /*<a name="line.229"></a>
+<FONT color="green">230</FONT>           * Compute predicate-constituent features<a name="line.230"></a>
+<FONT color="green">231</FONT>           */<a name="line.231"></a>
+<FONT color="green">232</FONT>          instance.addAll(perPredicatAndConstituentExtractor.extract(<a name="line.232"></a>
+<FONT color="green">233</FONT>              jCas,<a name="line.233"></a>
+<FONT color="green">234</FONT>              constituent,<a name="line.234"></a>
+<FONT color="green">235</FONT>              predicate.getAnnotation()));<a name="line.235"></a>
+<FONT color="green">236</FONT>    <a name="line.236"></a>
+<FONT color="green">237</FONT>          /*<a name="line.237"></a>
+<FONT color="green">238</FONT>           * Add constituent features<a name="line.238"></a>
+<FONT color="green">239</FONT>           */<a name="line.239"></a>
+<FONT color="green">240</FONT>          instance.addAll(sentenceConstituentFeatures.get(i));<a name="line.240"></a>
+<FONT color="green">241</FONT>    <a name="line.241"></a>
+<FONT color="green">242</FONT>          /*<a name="line.242"></a>
+<FONT color="green">243</FONT>           * Add predicate features<a name="line.243"></a>
+<FONT color="green">244</FONT>           */<a name="line.244"></a>
+<FONT color="green">245</FONT>          instance.addAll(predicateFeatures);<a name="line.245"></a>
+<FONT color="green">246</FONT>    <a name="line.246"></a>
+<FONT color="green">247</FONT>          if (isTraining()) {<a name="line.247"></a>
+<FONT color="green">248</FONT>            instance.setOutcome(false);<a name="line.248"></a>
+<FONT color="green">249</FONT>    <a name="line.249"></a>
+<FONT color="green">250</FONT>            for (int j = 0; j &lt; predicate.getArguments().size(); j++) {<a name="line.250"></a>
+<FONT color="green">251</FONT>              Argument arg = predicate.getArguments(j);<a name="line.251"></a>
+<FONT color="green">252</FONT>              if (arg.getAnnotation().equals(constituent)) {<a name="line.252"></a>
+<FONT color="green">253</FONT>                instance.setOutcome(true);<a name="line.253"></a>
+<FONT color="green">254</FONT>                break;<a name="line.254"></a>
+<FONT color="green">255</FONT>              }<a name="line.255"></a>
+<FONT color="green">256</FONT>            }<a name="line.256"></a>
+<FONT color="green">257</FONT>          }<a name="line.257"></a>
+<FONT color="green">258</FONT>    <a name="line.258"></a>
+<FONT color="green">259</FONT>          if (this.isTraining()) {<a name="line.259"></a>
+<FONT color="green">260</FONT>            this.dataWriter.write(instance);<a name="line.260"></a>
+<FONT color="green">261</FONT>          } else {<a name="line.261"></a>
+<FONT color="green">262</FONT>            boolean isArgument = this.classifier.classify(instance.getFeatures());<a name="line.262"></a>
+<FONT color="green">263</FONT>    <a name="line.263"></a>
+<FONT color="green">264</FONT>            if (isArgument) {<a name="line.264"></a>
+<FONT color="green">265</FONT>              SemanticArgument arg = new SemanticArgument(jCas);<a name="line.265"></a>
+<FONT color="green">266</FONT>              arg.setAnnotation(constituent);<a name="line.266"></a>
+<FONT color="green">267</FONT>              arg.setBegin(constituent.getBegin());<a name="line.267"></a>
+<FONT color="green">268</FONT>              arg.setEnd(constituent.getEnd());<a name="line.268"></a>
+<FONT color="green">269</FONT>              arg.setLabel("?");<a name="line.269"></a>
+<FONT color="green">270</FONT>              arg.addToIndexes();<a name="line.270"></a>
+<FONT color="green">271</FONT>    <a name="line.271"></a>
+<FONT color="green">272</FONT>              List&lt;Argument&gt; args = UIMAUtil.toList(predicate.getArguments(), Argument.class);<a name="line.272"></a>
+<FONT color="green">273</FONT>              args.add(arg);<a name="line.273"></a>
+<FONT color="green">274</FONT>              predicate.setArguments(UIMAUtil.toFSArray(jCas, args));<a name="line.274"></a>
+<FONT color="green">275</FONT>            }<a name="line.275"></a>
+<FONT color="green">276</FONT>          }<a name="line.276"></a>
+<FONT color="green">277</FONT>    <a name="line.277"></a>
+<FONT color="green">278</FONT>        }<a name="line.278"></a>
+<FONT color="green">279</FONT>      }<a name="line.279"></a>
+<FONT color="green">280</FONT>    <a name="line.280"></a>
+<FONT color="green">281</FONT>      /**<a name="line.281"></a>
+<FONT color="green">282</FONT>       * Recursively build a list of constituents under a TreebankNode.<a name="line.282"></a>
+<FONT color="green">283</FONT>       * <a name="line.283"></a>
+<FONT color="green">284</FONT>       * @param top<a name="line.284"></a>
+<FONT color="green">285</FONT>       *          the root of the parse tree to operate on; &lt;b&gt;top&lt;/b&gt; itself will also be added, unless<a name="line.285"></a>
+<FONT color="green">286</FONT>       *          it is of type TopTrebankNode<a name="line.286"></a>
+<FONT color="green">287</FONT>       * @param constituents<a name="line.287"></a>
+<FONT color="green">288</FONT>       *          list of nodes to add to<a name="line.288"></a>
+<FONT color="green">289</FONT>       */<a name="line.289"></a>
+<FONT color="green">290</FONT>      protected void collectConstituents(TreebankNode top, List&lt;TreebankNode&gt; constituents) {<a name="line.290"></a>
+<FONT color="green">291</FONT>        if (!(top instanceof TopTreebankNode))<a name="line.291"></a>
+<FONT color="green">292</FONT>          constituents.add(top);<a name="line.292"></a>
+<FONT color="green">293</FONT>    <a name="line.293"></a>
+<FONT color="green">294</FONT>        if (top.getChildren() == null)<a name="line.294"></a>
+<FONT color="green">295</FONT>          return;<a name="line.295"></a>
+<FONT color="green">296</FONT>    <a name="line.296"></a>
+<FONT color="green">297</FONT>        int numberOfChildren = top.getChildren().size();<a name="line.297"></a>
+<FONT color="green">298</FONT>        for (int i = 0; i &lt; numberOfChildren; i++) {<a name="line.298"></a>
+<FONT color="green">299</FONT>          collectConstituents(top.getChildren(i), constituents);<a name="line.299"></a>
+<FONT color="green">300</FONT>        }<a name="line.300"></a>
+<FONT color="green">301</FONT>      }<a name="line.301"></a>
+<FONT color="green">302</FONT>    <a name="line.302"></a>
+<FONT color="green">303</FONT>      private SimpleFeatureExtractor perPredicateExtractor;<a name="line.303"></a>
+<FONT color="green">304</FONT>    <a name="line.304"></a>
+<FONT color="green">305</FONT>      private SimpleFeatureExtractor perConstituentExtractor;<a name="line.305"></a>
+<FONT color="green">306</FONT>    <a name="line.306"></a>
+<FONT color="green">307</FONT>      private AnnotationPairFeatureExtractor perPredicatAndConstituentExtractor;<a name="line.307"></a>
+<FONT color="green">308</FONT>    <a name="line.308"></a>
+<FONT color="green">309</FONT>      private int nSentences;<a name="line.309"></a>
+<FONT color="green">310</FONT>    <a name="line.310"></a>
+<FONT color="green">311</FONT>      private int nPredicates;<a name="line.311"></a>
+<FONT color="green">312</FONT>    <a name="line.312"></a>
+<FONT color="green">313</FONT>      private int nConstituents;<a name="line.313"></a>
+<FONT color="green">314</FONT>    <a name="line.314"></a>
+<FONT color="green">315</FONT>      private Logger logger = Logger.getLogger(this.getClass().getName());<a name="line.315"></a>
+<FONT color="green">316</FONT>    <a name="line.316"></a>
+<FONT color="green">317</FONT>    }<a name="line.317"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

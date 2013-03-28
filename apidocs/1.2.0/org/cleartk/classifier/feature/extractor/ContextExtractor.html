@@ -1,0 +1,479 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+ContextExtractor (ClearTK Release 1.2.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="ContextExtractor (ClearTK Release 1.2.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/ContextExtractor.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractorException.html" title="class in org.cleartk.classifier.feature.extractor"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Bag.html" title="class in org.cleartk.classifier.feature.extractor"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../../index.html?org/cleartk/classifier/feature/extractor/ContextExtractor.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="ContextExtractor.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;<A HREF="#nested_class_summary">NESTED</A>&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+org.cleartk.classifier.feature.extractor</FONT>
+<BR>
+Class ContextExtractor&lt;T extends <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&gt;</H2>
+<PRE>
+<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</A>
+  <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>org.cleartk.classifier.feature.extractor.ContextExtractor&lt;T&gt;</B>
+</PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD><A HREF="../../../../../org/cleartk/classifier/feature/extractor/BetweenAnnotationsFeatureExtractor.html" title="interface in org.cleartk.classifier.feature.extractor">BetweenAnnotationsFeatureExtractor</A>, <A HREF="../../../../../org/cleartk/classifier/feature/extractor/simple/SimpleFeatureExtractor.html" title="interface in org.cleartk.classifier.feature.extractor.simple">SimpleFeatureExtractor</A></DD>
+</DL>
+<HR>
+<B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.html" title="class in org.cleartk.classifier.feature.extractor"><CODE>CleartkExtractor</CODE></A> instead.</I>
+<P>
+<DL>
+<DT><PRE><FONT SIZE="-1"><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Deprecated.html?is-external=true" title="class or interface in java.lang">@Deprecated</A>
+</FONT>public class <A HREF="../../../../../src-html/org/cleartk/classifier/feature/extractor/ContextExtractor.html#line.63"><B>ContextExtractor&lt;T extends <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&gt;</B></A><DT>extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A><DT>implements <A HREF="../../../../../org/cleartk/classifier/feature/extractor/simple/SimpleFeatureExtractor.html" title="interface in org.cleartk.classifier.feature.extractor.simple">SimpleFeatureExtractor</A>, <A HREF="../../../../../org/cleartk/classifier/feature/extractor/BetweenAnnotationsFeatureExtractor.html" title="interface in org.cleartk.classifier.feature.extractor">BetweenAnnotationsFeatureExtractor</A></DL>
+</PRE>
+
+<P>
+A feature extractor that finds other <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas"><CODE>Annotation</CODE></A>s in the context of a focus annotation and
+ extracts features from these. It can be used, for example, to:
+ <ul>
+ <li>Get the text of the 2 tokens before a focus annotation</li>
+ <li>Get the parts of speech of the 3 tokens after a focus annotation</li>
+ <li>Get the tokens after a focus annotation, beginning 2 after and ending 5 after, as a bag of
+ words</li>
+ <li>Get an ngram concatenating the stem of the first word before a focus annotation and the first
+ word contained in the focus annotation</li>
+ <li></li>
+ </ul>
+ 
+ <br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.
+<P>
+
+<P>
+<DL>
+<DT><B>Author:</B></DT>
+  <DD>Steven Bethard</DD>
+</DL>
+<HR>
+
+<P>
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+
+<A NAME="nested_class_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Nested Class Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Bag.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Bag</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> that aggregates the features of other contexts into a "bag" where position
+ information of each individual feature is no longer maintained.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;interface</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Bounds.html" title="interface in org.cleartk.classifier.feature.extractor">ContextExtractor.Bounds</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;A class representing the bounds within which a <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.html" title="class in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor</CODE></A> should look for
+ annotations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;interface</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor">ContextExtractor.Context</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;A class representing a location that a <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.html" title="class in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor</CODE></A> should look for annotations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Count.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Count</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> that aggregates the features of other contexts into a bag of counts where
+ only the count of occurrence of each feature value is maintained.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Covered.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Covered</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> for extracting all annotations within the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.FirstCovered.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.FirstCovered</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> for extracting the first annotations within the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Focus.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Focus</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> for extracting the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Following.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Following</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> for extracting annotations appearing after the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.LastCovered.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.LastCovered</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> for extracting the last annotations within the focus annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Ngram.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Ngram</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> that aggregates the features of other contexts into a single "ngram" feature,
+ where the feature values are concatenated together in order to form a single value.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Ngrams.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Ngrams</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> that aggregates the features of other contexts into several "ngrams"
+ features, where sub-sequences of the feature values are concatenated together in order to form
+ single values.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Preceding.html" title="class in org.cleartk.classifier.feature.extractor">ContextExtractor.Preceding</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;A <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A> for extracting annotations appearing before the focus annotation.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+
+<A NAME="constructor_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Constructor Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.html#ContextExtractor(java.lang.Class, org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor, org.cleartk.classifier.feature.extractor.ContextExtractor.Context...)">ContextExtractor</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;<A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.html" title="type parameter in ContextExtractor">T</A>&gt;&nbsp;annotationClass,
+                                 <A HREF="../../../../../org/cleartk/classifier/feature/extractor/simple/SimpleFeatureExtractor.html" title="interface in org.cleartk.classifier.feature.extractor.simple">SimpleFeatureExtractor</A>&nbsp;extractor,
+                                 <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor">ContextExtractor.Context</A>...&nbsp;contexts)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;Create an extractor that finds <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas"><CODE>Annotation</CODE></A>s of the given type at the specified
+ <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A>s and applies the given feature extractor to the annotations.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.html#extract(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation)">extract</A></B>(<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</A>&nbsp;view,
+               <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&nbsp;focusAnnotation)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;Some feature extractors will require some specific number of annotations that is greater than
+ one.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.html#extractBetween(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation, org.apache.uima.jcas.tcas.Annotation)">extractBetween</A></B>(<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</A>&nbsp;view,
+                             <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&nbsp;annotation1,
+                             <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&nbsp;annotation2)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;Extract features from between two annotations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.html#extractWithin(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation, org.apache.uima.jcas.tcas.Annotation)">extractWithin</A></B>(<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</A>&nbsp;view,
+                           <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&nbsp;focusAnnotation,
+                           <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&nbsp;boundsAnnotation)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;Extract features from the annotations around the focus annotation and within the given bounds.</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+
+<A NAME="constructor_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Constructor Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="ContextExtractor(java.lang.Class, org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor, org.cleartk.classifier.feature.extractor.ContextExtractor.Context...)"><!-- --></A><H3>
+ContextExtractor</H3>
+<PRE>
+public <A HREF="../../../../../src-html/org/cleartk/classifier/feature/extractor/ContextExtractor.html#line.83"><B>ContextExtractor</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</A>&lt;<A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.html" title="type parameter in ContextExtractor">T</A>&gt;&nbsp;annotationClass,
+                        <A HREF="../../../../../org/cleartk/classifier/feature/extractor/simple/SimpleFeatureExtractor.html" title="interface in org.cleartk.classifier.feature.extractor.simple">SimpleFeatureExtractor</A>&nbsp;extractor,
+                        <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor">ContextExtractor.Context</A>...&nbsp;contexts)</PRE>
+<DL>
+<DD><B>Deprecated.</B>&nbsp;<DD>Create an extractor that finds <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas"><CODE>Annotation</CODE></A>s of the given type at the specified
+ <A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Context.html" title="interface in org.cleartk.classifier.feature.extractor"><CODE>ContextExtractor.Context</CODE></A>s and applies the given feature extractor to the annotations.
+<P>
+<DL>
+<DT><B>Parameters:</B><DD><CODE>annotationClass</CODE> - The type of annotation which should be searched for in the context.<DD><CODE>extractor</CODE> - The feature extractor to apply to each annotation found.<DD><CODE>contexts</CODE> - The contexts where the extractor should look for annotations.</DL>
+</DL>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="extract(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation)"><!-- --></A><H3>
+extract</H3>
+<PRE>
+public <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt; <A HREF="../../../../../src-html/org/cleartk/classifier/feature/extractor/ContextExtractor.html#line.93"><B>extract</B></A>(<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</A>&nbsp;view,
+                             <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&nbsp;focusAnnotation)
+                      throws <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractorException.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractorException</A></PRE>
+<DL>
+<DD><B>Deprecated.</B>&nbsp;<DD><B>Description copied from interface: <CODE><A HREF="../../../../../org/cleartk/classifier/feature/extractor/simple/SimpleFeatureExtractor.html#extract(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation)">SimpleFeatureExtractor</A></CODE></B></DD>
+<DD>Some feature extractors will require some specific number of annotations that is greater than
+ one. Such extractors should not implement this interface.
+<P>
+<DD><DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../../org/cleartk/classifier/feature/extractor/simple/SimpleFeatureExtractor.html#extract(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation)">extract</A></CODE> in interface <CODE><A HREF="../../../../../org/cleartk/classifier/feature/extractor/simple/SimpleFeatureExtractor.html" title="interface in org.cleartk.classifier.feature.extractor.simple">SimpleFeatureExtractor</A></CODE></DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>view</CODE> - the current view of the document.<DD><CODE>focusAnnotation</CODE> - the annotation for which to collect features.
+<DT><B>Returns:</B><DD>a list of features generated by the extractor for the focus annotation.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractorException.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractorException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="extractWithin(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation, org.apache.uima.jcas.tcas.Annotation)"><!-- --></A><H3>
+extractWithin</H3>
+<PRE>
+public <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt; <A HREF="../../../../../src-html/org/cleartk/classifier/feature/extractor/ContextExtractor.html#line.109"><B>extractWithin</B></A>(<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</A>&nbsp;view,
+                                   <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&nbsp;focusAnnotation,
+                                   <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&nbsp;boundsAnnotation)
+                            throws <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractorException.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractorException</A></PRE>
+<DL>
+<DD><B>Deprecated.</B>&nbsp;<DD>Extract features from the annotations around the focus annotation and within the given bounds.
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>view</CODE> - The JCas containing the focus annotation.<DD><CODE>focusAnnotation</CODE> - The annotation whose context is to be searched.<DD><CODE>boundsAnnotation</CODE> - The boundary within which context annotations may be identified.
+<DT><B>Returns:</B><DD>The features extracted in the context of the focus annotation.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractorException.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractorException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="extractBetween(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation, org.apache.uima.jcas.tcas.Annotation)"><!-- --></A><H3>
+extractBetween</H3>
+<PRE>
+public <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt; <A HREF="../../../../../src-html/org/cleartk/classifier/feature/extractor/ContextExtractor.html#line.118"><B>extractBetween</B></A>(<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</A>&nbsp;view,
+                                    <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&nbsp;annotation1,
+                                    <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&nbsp;annotation2)
+                             throws <A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractorException.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractorException</A></PRE>
+<DL>
+<DD><B>Deprecated.</B>&nbsp;<DD><B>Description copied from interface: <CODE><A HREF="../../../../../org/cleartk/classifier/feature/extractor/BetweenAnnotationsFeatureExtractor.html#extractBetween(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation, org.apache.uima.jcas.tcas.Annotation)">BetweenAnnotationsFeatureExtractor</A></CODE></B></DD>
+<DD>Extract features from between two annotations.
+<P>
+<DD><DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../../org/cleartk/classifier/feature/extractor/BetweenAnnotationsFeatureExtractor.html#extractBetween(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation, org.apache.uima.jcas.tcas.Annotation)">extractBetween</A></CODE> in interface <CODE><A HREF="../../../../../org/cleartk/classifier/feature/extractor/BetweenAnnotationsFeatureExtractor.html" title="interface in org.cleartk.classifier.feature.extractor">BetweenAnnotationsFeatureExtractor</A></CODE></DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>view</CODE> - The JCas containing the annotations.<DD><CODE>annotation1</CODE> - The first annotation.<DD><CODE>annotation2</CODE> - The second annotation.
+<DT><B>Returns:</B><DD>Features extracted over the window between the two annotations.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractorException.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractorException</A></CODE></DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/ContextExtractor.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../../org/cleartk/classifier/feature/extractor/CleartkExtractorException.html" title="class in org.cleartk.classifier.feature.extractor"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../../org/cleartk/classifier/feature/extractor/ContextExtractor.Bag.html" title="class in org.cleartk.classifier.feature.extractor"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../../index.html?org/cleartk/classifier/feature/extractor/ContextExtractor.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="ContextExtractor.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;<A HREF="#nested_class_summary">NESTED</A>&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>

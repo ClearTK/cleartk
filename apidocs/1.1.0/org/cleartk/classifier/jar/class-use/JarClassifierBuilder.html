@@ -1,0 +1,725 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+Uses of Class org.cleartk.classifier.jar.JarClassifierBuilder (cleartk-release 1.1.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="Uses of Class org.cleartk.classifier.jar.JarClassifierBuilder (cleartk-release 1.1.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><FONT CLASS="NavBarFont1"><B>Class</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Use</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../../index.html?org/cleartk/classifier/jar//class-useJarClassifierBuilder.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="JarClassifierBuilder.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<CENTER>
+<H2>
+<B>Uses of Class<br>org.cleartk.classifier.jar.JarClassifierBuilder</B></H2>
+</CENTER>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Packages that use <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.baseline"><B>org.cleartk.classifier.baseline</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.grmm"><B>org.cleartk.classifier.grmm</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.jar"><B>org.cleartk.classifier.jar</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.liblinear"><B>org.cleartk.classifier.liblinear</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.libsvm"><B>org.cleartk.classifier.libsvm</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.mallet"><B>org.cleartk.classifier.mallet</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.opennlp"><B>org.cleartk.classifier.opennlp</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.svmlight"><B>org.cleartk.classifier.svmlight</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.svmlight.rank"><B>org.cleartk.classifier.svmlight.rank</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.tksvmlight"><B>org.cleartk.classifier.tksvmlight</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.viterbi"><B>org.cleartk.classifier.viterbi</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.baseline"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/baseline/package-summary.html">org.cleartk.classifier.baseline</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Subclasses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/baseline/package-summary.html">org.cleartk.classifier.baseline</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/baseline/MeanValueClassifierBuilder.html" title="class in org.cleartk.classifier.baseline">MeanValueClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/baseline/MostFrequentBooleanClassifierBuilder.html" title="class in org.cleartk.classifier.baseline">MostFrequentBooleanClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/baseline/MostFrequentStringClassifierBuilder.html" title="class in org.cleartk.classifier.baseline">MostFrequentStringClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/baseline/MostFrequentValueClassifierBuilder.html" title="class in org.cleartk.classifier.baseline">MostFrequentValueClassifierBuilder&lt;OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/baseline/SingleOutcomeClassifierBuilder.html" title="class in org.cleartk.classifier.baseline">SingleOutcomeClassifierBuilder&lt;OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.grmm"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/grmm/package-summary.html">org.cleartk.classifier.grmm</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Subclasses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/grmm/package-summary.html">org.cleartk.classifier.grmm</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/grmm/GrmmClassifierBuilder.html" title="class in org.cleartk.classifier.grmm">GrmmClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2010, University of Würzburg<br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.jar"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</A> with type parameters of type <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="class in org.cleartk.classifier.jar">DirectoryDataWriter&lt;CLASSIFIER_BUILDER extends JarClassifierBuilder&lt;? extends CLASSIFIER_TYPE&gt;,CLASSIFIER_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Superclass for <A HREF="../../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><CODE>DataWriter</CODE></A> and <A HREF="../../../../../org/cleartk/classifier/SequenceDataWriter.html" title="interface in org.cleartk.classifier"><CODE>SequenceDataWriter</CODE></A> implementations that saves files
+ to a training directory using a <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><CODE>JarClassifierBuilder</CODE></A>.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Subclasses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/jar/ClassifierBuilder_ImplBase.html" title="class in org.cleartk.classifier.jar">ClassifierBuilder_ImplBase&lt;CLASSIFIER_TYPE extends Classifier&lt;OUTCOME_TYPE&gt;,ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Superclass for builders which write to a training data file using <A HREF="../../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><CODE>FeaturesEncoder</CODE></A>s and
+ <A HREF="../../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><CODE>OutcomeEncoder</CODE></A>s, and build and package <A HREF="../../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier"><CODE>Classifier</CODE></A>s as jar files.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">EncodingJarClassifierBuilder&lt;CLASSIFIER_TYPE,ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Superclass for builders which write to a training data file using <A HREF="../../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><CODE>FeaturesEncoder</CODE></A>s and
+ <A HREF="../../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><CODE>OutcomeEncoder</CODE></A>s, and package classifiers as jar files.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/jar/SequenceClassifierBuilder_ImplBase.html" title="class in org.cleartk.classifier.jar">SequenceClassifierBuilder_ImplBase&lt;CLASSIFIER_TYPE extends SequenceClassifier&lt;OUTCOME_TYPE&gt;,ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Superclass for builders which write to a training data file using <A HREF="../../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><CODE>FeaturesEncoder</CODE></A>s and
+ <A HREF="../../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><CODE>OutcomeEncoder</CODE></A>s, and build and package <A HREF="../../../../../org/cleartk/classifier/SequenceClassifier.html" title="interface in org.cleartk.classifier"><CODE>SequenceClassifier</CODE></A>s as jar files.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Fields in <A HREF="../../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</A> declared as <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html" title="type parameter in DirectoryDataWriter">CLASSIFIER_BUILDER</A></CODE></FONT></TD>
+<TD><CODE><B>DirectoryDataWriter.</B><B><A HREF="../../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html#classifierBuilder">classifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</A> that return <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A>&lt;?&gt;</CODE></FONT></TD>
+<TD><CODE><B>JarClassifierBuilder.</B><B><A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#fromManifest(java.util.jar.Manifest)">fromManifest</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/jar/Manifest.html?is-external=true" title="class or interface in java.util.jar">Manifest</A>&nbsp;manifest)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loads a classifier builder from a manifest.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A>&lt;?&gt;</CODE></FONT></TD>
+<TD><CODE><B>JarClassifierBuilder.</B><B><A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#fromTrainingDirectory(java.io.File)">fromTrainingDirectory</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;dir)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loads a classifier builder from manifest in the training directory.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.liblinear"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/liblinear/package-summary.html">org.cleartk.classifier.liblinear</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Subclasses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/liblinear/package-summary.html">org.cleartk.classifier.liblinear</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/liblinear/BinaryLIBLINEARClassifierBuilder.html" title="class in org.cleartk.classifier.liblinear">BinaryLIBLINEARClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.libsvm"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/libsvm/package-summary.html">org.cleartk.classifier.libsvm</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Subclasses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/libsvm/package-summary.html">org.cleartk.classifier.libsvm</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/libsvm/BinaryLIBSVMClassifierBuilder.html" title="class in org.cleartk.classifier.libsvm">BinaryLIBSVMClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/libsvm/GenericLIBSVMClassifierBuilder.html" title="class in org.cleartk.classifier.libsvm">GenericLIBSVMClassifierBuilder&lt;CLASSIFIER_TYPE extends Classifier&lt;OUTCOME_TYPE&gt;,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE,MODEL_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/libsvm/LIBSVMClassifierBuilder.html" title="class in org.cleartk.classifier.libsvm">LIBSVMClassifierBuilder&lt;CLASSIFIER_TYPE extends LIBSVMClassifier&lt;OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE,MODEL_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/libsvm/MultiClassLIBSVMClassifierBuilder.html" title="class in org.cleartk.classifier.libsvm">MultiClassLIBSVMClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.mallet"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/mallet/package-summary.html">org.cleartk.classifier.mallet</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Subclasses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/mallet/package-summary.html">org.cleartk.classifier.mallet</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/mallet/BinaryMalletClassifierBuilder.html" title="class in org.cleartk.classifier.mallet">BinaryMalletClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/mallet/MalletClassifierBuilder.html" title="class in org.cleartk.classifier.mallet">MalletClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/mallet/MalletClassifierBuilder_ImplBase.html" title="class in org.cleartk.classifier.mallet">MalletClassifierBuilder_ImplBase&lt;CLASSIFIER_TYPE extends MalletClassifier_ImplBase&lt;OUTCOME_TYPE&gt;,OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/mallet/MalletCRFClassifierBuilder.html" title="class in org.cleartk.classifier.mallet">MalletCRFClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.opennlp"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/opennlp/package-summary.html">org.cleartk.classifier.opennlp</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Subclasses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/opennlp/package-summary.html">org.cleartk.classifier.opennlp</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/opennlp/BinaryMaxentClassifierBuilder.html" title="class in org.cleartk.classifier.opennlp">BinaryMaxentClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/opennlp/MaxentClassifierBuilder.html" title="class in org.cleartk.classifier.opennlp">MaxentClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/opennlp/MaxentClassifierBuilder_ImplBase.html" title="class in org.cleartk.classifier.opennlp">MaxentClassifierBuilder_ImplBase&lt;CLASSIFIER_TYPE extends MaxentClassifier_ImplBase&lt;OUTCOME_TYPE&gt;,OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.svmlight"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/svmlight/package-summary.html">org.cleartk.classifier.svmlight</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Subclasses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/svmlight/package-summary.html">org.cleartk.classifier.svmlight</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/svmlight/OVASVMlightClassifierBuilder.html" title="class in org.cleartk.classifier.svmlight">OVASVMlightClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/svmlight/SVMlightClassifierBuilder.html" title="class in org.cleartk.classifier.svmlight">SVMlightClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/svmlight/SVMlightClassifierBuilder_ImplBase.html" title="class in org.cleartk.classifier.svmlight">SVMlightClassifierBuilder_ImplBase&lt;CLASSIFIER_TYPE extends Classifier&lt;OUTCOME_TYPE&gt;,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/svmlight/SVMlightRegressionBuilder.html" title="class in org.cleartk.classifier.svmlight">SVMlightRegressionBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.svmlight.rank"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/svmlight/rank/package-summary.html">org.cleartk.classifier.svmlight.rank</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Subclasses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/svmlight/rank/package-summary.html">org.cleartk.classifier.svmlight.rank</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/svmlight/rank/SVMlightRankBuilder.html" title="class in org.cleartk.classifier.svmlight.rank">SVMlightRankBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.tksvmlight"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/tksvmlight/package-summary.html">org.cleartk.classifier.tksvmlight</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Subclasses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/tksvmlight/package-summary.html">org.cleartk.classifier.tksvmlight</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/tksvmlight/OVATKSVMlightClassifierBuilder.html" title="class in org.cleartk.classifier.tksvmlight">OVATKSVMlightClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/tksvmlight/TKSVMlightClassifierBuilder.html" title="class in org.cleartk.classifier.tksvmlight">TKSVMlightClassifierBuilder</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.viterbi"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/viterbi/package-summary.html">org.cleartk.classifier.viterbi</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Subclasses of <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A> in <A HREF="../../../../../org/cleartk/classifier/viterbi/package-summary.html">org.cleartk.classifier.viterbi</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../org/cleartk/classifier/viterbi/ViterbiClassifierBuilder.html" title="class in org.cleartk.classifier.viterbi">ViterbiClassifierBuilder&lt;OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar"><FONT CLASS="NavBarFont1"><B>Class</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Use</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../../index.html?org/cleartk/classifier/jar//class-useJarClassifierBuilder.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="JarClassifierBuilder.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>

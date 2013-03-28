@@ -1,0 +1,493 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+TempEval2010PipelineProvider (cleartk-release 1.1.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="TempEval2010PipelineProvider (cleartk-release 1.1.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/TempEval2010PipelineProvider.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../org/cleartk/timeml/eval/TempEval2010Main.html" title="class in org.cleartk.timeml.eval"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../org/cleartk/timeml/eval/TempEval2010PipelineProvider.XMIAnnotator.html" title="class in org.cleartk.timeml.eval"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/timeml/eval/TempEval2010PipelineProvider.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="TempEval2010PipelineProvider.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;<A HREF="#nested_class_summary">NESTED</A>&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+org.cleartk.timeml.eval</FONT>
+<BR>
+Class TempEval2010PipelineProvider</H2>
+<PRE>
+<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</A>
+  <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider_ImplBase.html" title="class in org.cleartk.eval.provider">org.cleartk.eval.provider.CleartkPipelineProvider_ImplBase</A>
+      <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>org.cleartk.timeml.eval.TempEval2010PipelineProvider</B>
+</PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD><A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider.html" title="interface in org.cleartk.eval.provider">CleartkPipelineProvider</A></DD>
+</DL>
+<HR>
+<DL>
+<DT><PRE>public class <A HREF="../../../../src-html/org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#line.76"><B>TempEval2010PipelineProvider</B></A><DT>extends <A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider_ImplBase.html" title="class in org.cleartk.eval.provider">CleartkPipelineProvider_ImplBase</A></DL>
+</PRE>
+
+<P>
+<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.
+<P>
+
+<P>
+<DL>
+<DT><B>Author:</B></DT>
+  <DD>Steven Bethard</DD>
+</DL>
+<HR>
+
+<P>
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+
+<A NAME="nested_class_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Nested Class Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/eval/TempEval2010PipelineProvider.XMIAnnotator.html" title="class in org.cleartk.timeml.eval">TempEval2010PipelineProvider.XMIAnnotator</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/eval/TempEval2010PipelineProvider.XMIReader.html" title="class in org.cleartk.timeml.eval">TempEval2010PipelineProvider.XMIReader</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/eval/TempEval2010PipelineProvider.XMIWriter.html" title="class in org.cleartk.timeml.eval">TempEval2010PipelineProvider.XMIWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;<!-- =========== FIELD SUMMARY =========== -->
+
+<A NAME="field_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Field Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#GOLD_VIEW_NAME">GOLD_VIEW_NAME</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngine.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngine</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#goldAnnotator">goldAnnotator</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#SYSTEM_VIEW_NAME">SYSTEM_VIEW_NAME</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</A>&lt;<A HREF="../../../../org/cleartk/timeml/util/CleartkInternalModelFactory.html" title="class in org.cleartk.timeml.util">CleartkInternalModelFactory</A>,<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngine.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngine</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#systemAnnotators">systemAnnotators</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+
+<A NAME="constructor_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Constructor Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#TempEval2010PipelineProvider(java.io.File, java.io.File, java.util.Collection, java.lang.String, java.util.Collection, java.util.List)">TempEval2010PipelineProvider</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;modelDirectory,
+                                                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;xmiDirectory,
+                                                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;&nbsp;requiredViewParams,
+                                                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;annotatedViewParam,
+                                                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</A>&lt;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngineDescription.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngineDescription</A>&gt;&nbsp;preprocessingAnnotators,
+                                                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/timeml/util/CleartkInternalModelFactory.html" title="class in org.cleartk.timeml.util">CleartkInternalModelFactory</A>&gt;&nbsp;systemAnnotatorFactories)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngine.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngine</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#getClassifyingPipeline(java.lang.String)">getClassifyingPipeline</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;runName)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method creates a pipeline of analysis engines that will run the task using the model(s)
+ generated by <A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider.html#train(java.lang.String, java.lang.String...)"><CODE>CleartkPipelineProvider.train(String, String...)</CODE></A>.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngine.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngine</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#getTrainingPipeline(java.lang.String)">getTrainingPipeline</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;runName)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method creates a pipeline of analysis engines that will create a training data for the
+ learner being used.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#train(java.lang.String, java.lang.String...)">train</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;runName,
+           <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>...&nbsp;trainingArguments)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method trains a model(s) for a given training pipeline (identified by name) using whatever
+ training data was generated as a result of running the training pipeline.</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_org.cleartk.eval.provider.CleartkPipelineProvider_ImplBase"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class org.cleartk.eval.provider.<A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider_ImplBase.html" title="class in org.cleartk.eval.provider">CleartkPipelineProvider_ImplBase</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider_ImplBase.html#classifyingComplete()">classifyingComplete</A>, <A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider_ImplBase.html#classifyingPipelineComplete(java.lang.String, java.util.List)">classifyingPipelineComplete</A>, <A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider_ImplBase.html#trainingComplete()">trainingComplete</A>, <A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider_ImplBase.html#trainingPipelineComplete(java.lang.String, java.util.List)">trainingPipelineComplete</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ============ FIELD DETAIL =========== -->
+
+<A NAME="field_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Field Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="GOLD_VIEW_NAME"><!-- --></A><H3>
+GOLD_VIEW_NAME</H3>
+<PRE>
+public static final <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A> <A HREF="../../../../src-html/org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#line.78"><B>GOLD_VIEW_NAME</B></A></PRE>
+<DL>
+<DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../constant-values.html#org.cleartk.timeml.eval.TempEval2010PipelineProvider.GOLD_VIEW_NAME">Constant Field Values</A></DL>
+</DL>
+<HR>
+
+<A NAME="SYSTEM_VIEW_NAME"><!-- --></A><H3>
+SYSTEM_VIEW_NAME</H3>
+<PRE>
+public static final <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A> <A HREF="../../../../src-html/org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#line.80"><B>SYSTEM_VIEW_NAME</B></A></PRE>
+<DL>
+<DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../constant-values.html#org.cleartk.timeml.eval.TempEval2010PipelineProvider.SYSTEM_VIEW_NAME">Constant Field Values</A></DL>
+</DL>
+<HR>
+
+<A NAME="goldAnnotator"><!-- --></A><H3>
+goldAnnotator</H3>
+<PRE>
+protected <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngine.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngine</A> <A HREF="../../../../src-html/org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#line.92"><B>goldAnnotator</B></A></PRE>
+<DL>
+<DL>
+</DL>
+</DL>
+<HR>
+
+<A NAME="systemAnnotators"><!-- --></A><H3>
+systemAnnotators</H3>
+<PRE>
+protected <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</A>&lt;<A HREF="../../../../org/cleartk/timeml/util/CleartkInternalModelFactory.html" title="class in org.cleartk.timeml.util">CleartkInternalModelFactory</A>,<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngine.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngine</A>&gt; <A HREF="../../../../src-html/org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#line.96"><B>systemAnnotators</B></A></PRE>
+<DL>
+<DL>
+</DL>
+</DL>
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+
+<A NAME="constructor_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Constructor Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="TempEval2010PipelineProvider(java.io.File, java.io.File, java.util.Collection, java.lang.String, java.util.Collection, java.util.List)"><!-- --></A><H3>
+TempEval2010PipelineProvider</H3>
+<PRE>
+public <A HREF="../../../../src-html/org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#line.100"><B>TempEval2010PipelineProvider</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;modelDirectory,
+                                    <A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;xmiDirectory,
+                                    <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;&nbsp;requiredViewParams,
+                                    <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;annotatedViewParam,
+                                    <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</A>&lt;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngineDescription.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngineDescription</A>&gt;&nbsp;preprocessingAnnotators,
+                                    <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/timeml/util/CleartkInternalModelFactory.html" title="class in org.cleartk.timeml.util">CleartkInternalModelFactory</A>&gt;&nbsp;systemAnnotatorFactories)
+                             throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></PRE>
+<DL>
+<DL>
+
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></CODE></DL>
+</DL>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="getTrainingPipeline(java.lang.String)"><!-- --></A><H3>
+getTrainingPipeline</H3>
+<PRE>
+public <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngine.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngine</A>&gt; <A HREF="../../../../src-html/org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#line.159"><B>getTrainingPipeline</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;runName)
+                                         throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></PRE>
+<DL>
+<DD><B>Description copied from interface: <CODE><A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider.html#getTrainingPipeline(java.lang.String)">CleartkPipelineProvider</A></CODE></B></DD>
+<DD>This method creates a pipeline of analysis engines that will create a training data for the
+ learner being used. This will generally include a <A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html" title="class in org.cleartk.classifier"><CODE>CleartkAnnotator</CODE></A> that is initialized
+ with a <A HREF="../../../../org/cleartk/classifier/DataWriterFactory.html" title="interface in org.cleartk.classifier"><CODE>DataWriterFactory</CODE></A>. However, a number of other analysis engines may also be
+ required depending on what data from the gold-standard corpus is provided and what needs to be
+ generated. This aggregate analysis engine should generally operate on the
+ <CODE>ViewNames#GOLD_VIEW</CODE>.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>runName</CODE> - will generally be a value such as 'fold-01' or 'holdout'. It provides a name for this
+          method to provide to the pipeline it returns that serves as a key for that pipeline.
+          One expected use of the name is for naming a subdirectory that a data writer could use
+          to write training data to.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="train(java.lang.String, java.lang.String...)"><!-- --></A><H3>
+train</H3>
+<PRE>
+public void <A HREF="../../../../src-html/org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#line.191"><B>train</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;runName,
+                  <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>...&nbsp;trainingArguments)
+           throws <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Exception.html?is-external=true" title="class or interface in java.lang">Exception</A></PRE>
+<DL>
+<DD><B>Description copied from interface: <CODE><A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider.html#train(java.lang.String, java.lang.String...)">CleartkPipelineProvider</A></CODE></B></DD>
+<DD>This method trains a model(s) for a given training pipeline (identified by name) using whatever
+ training data was generated as a result of running the training pipeline. If your task involves
+ only a single <A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html" title="class in org.cleartk.classifier"><CODE>CleartkAnnotator</CODE></A> which runs off of a single classification model, then
+ this method will generally consist of a single line of code. However, it is not uncommmon for a
+ task to require many models. In such cases, this method needs to know how to train each model
+ that needs to be trained.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>runName</CODE> - will generally be a value such as 'fold-01' or 'holdout'. It provides a name for this
+          method for the pipeline whose data we are training a model(s) for. One expected use of
+          the name is to identify a subdirectory where training data is located.<DD><CODE>trainingArguments</CODE> - arguments that are passed on to the classifiers model trainer.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Exception.html?is-external=true" title="class or interface in java.lang">Exception</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getClassifyingPipeline(java.lang.String)"><!-- --></A><H3>
+getClassifyingPipeline</H3>
+<PRE>
+public <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngine.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngine</A>&gt; <A HREF="../../../../src-html/org/cleartk/timeml/eval/TempEval2010PipelineProvider.html#line.224"><B>getClassifyingPipeline</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;runName)
+                                            throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></PRE>
+<DL>
+<DD><B>Description copied from interface: <CODE><A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider.html#getClassifyingPipeline(java.lang.String)">CleartkPipelineProvider</A></CODE></B></DD>
+<DD>This method creates a pipeline of analysis engines that will run the task using the model(s)
+ generated by <A HREF="../../../../org/cleartk/eval/provider/CleartkPipelineProvider.html#train(java.lang.String, java.lang.String...)"><CODE>CleartkPipelineProvider.train(String, String...)</CODE></A>. This will generally include a
+ <A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html" title="class in org.cleartk.classifier"><CODE>CleartkAnnotator</CODE></A> that is initialized with a <A HREF="../../../../org/cleartk/classifier/ClassifierFactory.html" title="interface in org.cleartk.classifier"><CODE>ClassifierFactory</CODE></A>. However, a
+ number of other analysis engines may also be required depending on what data from the
+ gold-standard corpus is provided and what needs to be generated. This pipeline of analysis
+ engines should generally operate on the <CODE>ViewNames#SYSTEM_VIEW</CODE>.
+<P>
+<DD><DL>
+
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UIMAException.html?is-external=true" title="class or interface in org.apache.uima">UIMAException</A></CODE></DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/TempEval2010PipelineProvider.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../org/cleartk/timeml/eval/TempEval2010Main.html" title="class in org.cleartk.timeml.eval"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../org/cleartk/timeml/eval/TempEval2010PipelineProvider.XMIAnnotator.html" title="class in org.cleartk.timeml.eval"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/timeml/eval/TempEval2010PipelineProvider.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="TempEval2010PipelineProvider.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;<A HREF="#nested_class_summary">NESTED</A>&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>

@@ -1,0 +1,1168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+Uses of Interface org.cleartk.classifier.DataWriter (ClearTK Release 1.2.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="Uses of Interface org.cleartk.classifier.DataWriter (ClearTK Release 1.2.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><FONT CLASS="NavBarFont1"><B>Class</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Use</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/classifier//class-useDataWriter.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="DataWriter.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<CENTER>
+<H2>
+<B>Uses of Interface<br>org.cleartk.classifier.DataWriter</B></H2>
+</CENTER>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Packages that use <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier"><B>org.cleartk.classifier</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.baseline"><B>org.cleartk.classifier.baseline</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.feature.transform"><B>org.cleartk.classifier.feature.transform</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.jar"><B>org.cleartk.classifier.jar</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.liblinear"><B>org.cleartk.classifier.liblinear</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.libsvm"><B>org.cleartk.classifier.libsvm</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.mallet"><B>org.cleartk.classifier.mallet</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.multi"><B>org.cleartk.classifier.multi</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.opennlp"><B>org.cleartk.classifier.opennlp</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.svmlight"><B>org.cleartk.classifier.svmlight</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.svmlight.rank"><B>org.cleartk.classifier.svmlight.rank</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.tksvmlight"><B>org.cleartk.classifier.tksvmlight</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.util"><B>org.cleartk.classifier.util</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.util.tfidf"><B>org.cleartk.classifier.util.tfidf</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.viterbi"><B>org.cleartk.classifier.viterbi</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.weka"><B>org.cleartk.classifier.weka</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/package-summary.html">org.cleartk.classifier</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Fields in <A HREF="../../../../org/cleartk/classifier/package-summary.html">org.cleartk.classifier</A> declared as <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html" title="type parameter in CleartkAnnotator">OUTCOME_TYPE</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>CleartkAnnotator.</B><B><A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html#dataWriter">dataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/package-summary.html">org.cleartk.classifier</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="../../../../org/cleartk/classifier/DataWriterFactory.html" title="type parameter in DataWriterFactory">OUTCOME_TYPE</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/DataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.baseline"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/baseline/package-summary.html">org.cleartk.classifier.baseline</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../org/cleartk/classifier/baseline/package-summary.html">org.cleartk.classifier.baseline</A> that implement <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/baseline/MeanValueDataWriter.html" title="class in org.cleartk.classifier.baseline">MeanValueDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/baseline/MostFrequentBooleanDataWriter.html" title="class in org.cleartk.classifier.baseline">MostFrequentBooleanDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/baseline/MostFrequentStringDataWriter.html" title="class in org.cleartk.classifier.baseline">MostFrequentStringDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/baseline/OutcomeOnlyDataWriter.html" title="class in org.cleartk.classifier.baseline">OutcomeOnlyDataWriter&lt;CLASSIFIER_BUILDER extends SingleOutcomeClassifierBuilder&lt;OUTCOME_TYPE&gt;,OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/baseline/package-summary.html">org.cleartk.classifier.baseline</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultMostFrequentStringDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/baseline/DefaultMostFrequentStringDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultMostFrequentBooleanDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/baseline/DefaultMostFrequentBooleanDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultMeanValueDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/baseline/DefaultMeanValueDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.feature.transform"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/feature/transform/package-summary.html">org.cleartk.classifier.feature.transform</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../org/cleartk/classifier/feature/transform/package-summary.html">org.cleartk.classifier.feature.transform</A> that implement <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/feature/transform/InstanceDataWriter.html" title="class in org.cleartk.classifier.feature.transform">InstanceDataWriter&lt;OUTCOME_T&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011-2012, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/feature/transform/package-summary.html">org.cleartk.classifier.feature.transform</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="../../../../org/cleartk/classifier/feature/transform/DefaultInstanceDataWriterFactory.html" title="type parameter in DefaultInstanceDataWriterFactory">OUTCOME_TYPE</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultInstanceDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/feature/transform/DefaultInstanceDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.jar"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</A> that implement <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/jar/DataWriter_ImplBase.html" title="class in org.cleartk.classifier.jar">DataWriter_ImplBase&lt;CLASSIFIER_BUILDER_TYPE extends EncodingJarClassifierBuilder&lt;? extends Classifier&lt;OUTCOME_TYPE&gt;,ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;,ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Superclass for <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><CODE>DataWriter</CODE></A> implementations that write training data to a file using
+ <A HREF="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features"><CODE>FeaturesEncoder</CODE></A>s and <A HREF="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome"><CODE>OutcomeEncoder</CODE></A>s.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="../../../../org/cleartk/classifier/jar/DefaultDataWriterFactory.html" title="type parameter in DefaultDataWriterFactory">OUTCOME_TYPE</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/jar/DefaultDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.liblinear"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/liblinear/package-summary.html">org.cleartk.classifier.liblinear</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../org/cleartk/classifier/liblinear/package-summary.html">org.cleartk.classifier.liblinear</A> that implement <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/liblinear/BinaryLIBLINEARDataWriter.html" title="class in org.cleartk.classifier.liblinear">BinaryLIBLINEARDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../org/cleartk/classifier/liblinear/LIBLINEARBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.liblinear"><CODE>LIBLINEARBooleanOutcomeDataWriter</CODE></A> instead.</I></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/liblinear/LIBLINEARBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.liblinear">LIBLINEARBooleanOutcomeDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/liblinear/package-summary.html">org.cleartk.classifier.liblinear</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultBinaryLIBLINEARDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/liblinear/DefaultBinaryLIBLINEARDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.libsvm"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/libsvm/package-summary.html">org.cleartk.classifier.libsvm</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../org/cleartk/classifier/libsvm/package-summary.html">org.cleartk.classifier.libsvm</A> that implement <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/libsvm/BinaryLIBSVMDataWriter.html" title="class in org.cleartk.classifier.libsvm">BinaryLIBSVMDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../org/cleartk/classifier/libsvm/LIBSVMBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.libsvm"><CODE>LIBSVMBooleanOutcomeDataWriter</CODE></A> instead.</I></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/libsvm/LIBSVMBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.libsvm">LIBSVMBooleanOutcomeDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/libsvm/LIBSVMDataWriter.html" title="class in org.cleartk.classifier.libsvm">LIBSVMDataWriter&lt;CLASSIFIER_BUILDER_TYPE extends GenericLIBSVMClassifierBuilder&lt;? extends Classifier&lt;OUTCOME_TYPE&gt;,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE,MODEL_TYPE&gt;,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE,MODEL_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/libsvm/LIBSVMStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.libsvm">LIBSVMStringOutcomeDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/libsvm/MultiClassLIBSVMDataWriter.html" title="class in org.cleartk.classifier.libsvm">MultiClassLIBSVMDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../org/cleartk/classifier/libsvm/LIBSVMStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.libsvm"><CODE>LIBSVMStringOutcomeDataWriter</CODE></A> instead.</I></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/libsvm/package-summary.html">org.cleartk.classifier.libsvm</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultMultiClassLIBSVMDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/libsvm/DefaultMultiClassLIBSVMDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultBinaryLIBSVMDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/libsvm/DefaultBinaryLIBSVMDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.mallet"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/mallet/package-summary.html">org.cleartk.classifier.mallet</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../org/cleartk/classifier/mallet/package-summary.html">org.cleartk.classifier.mallet</A> that implement <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/mallet/BinaryMalletDataWriter.html" title="class in org.cleartk.classifier.mallet">BinaryMalletDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../org/cleartk/classifier/mallet/MalletBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.mallet"><CODE>MalletBooleanOutcomeDataWriter</CODE></A> instead.</I></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/mallet/MalletBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.mallet">MalletBooleanOutcomeDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/mallet/MalletDataWriter.html" title="class in org.cleartk.classifier.mallet">MalletDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../org/cleartk/classifier/mallet/MalletStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.mallet"><CODE>MalletStringOutcomeDataWriter</CODE></A> instead.</I></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/mallet/MalletDataWriter_ImplBase.html" title="class in org.cleartk.classifier.mallet">MalletDataWriter_ImplBase&lt;CLASSIFIER_BUILDER_TYPE extends MalletClassifierBuilder_ImplBase&lt;? extends MalletClassifier_ImplBase&lt;OUTCOME_TYPE&gt;,OUTCOME_TYPE&gt;,OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/mallet/MalletStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.mallet">MalletStringOutcomeDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/mallet/package-summary.html">org.cleartk.classifier.mallet</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultMalletDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/mallet/DefaultMalletDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultBinaryMalletDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/mallet/DefaultBinaryMalletDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.multi"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/multi/package-summary.html">org.cleartk.classifier.multi</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Fields in <A HREF="../../../../org/cleartk/classifier/multi/package-summary.html">org.cleartk.classifier.multi</A> with type parameters of type <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>,<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="../../../../org/cleartk/classifier/multi/CleartkMultiAnnotator.html" title="type parameter in CleartkMultiAnnotator">OUTCOME_TYPE</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>CleartkMultiAnnotator.</B><B><A HREF="../../../../org/cleartk/classifier/multi/CleartkMultiAnnotator.html#dataWriters">dataWriters</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/multi/package-summary.html">org.cleartk.classifier.multi</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="../../../../org/cleartk/classifier/multi/CleartkMultiAnnotator.html" title="type parameter in CleartkMultiAnnotator">OUTCOME_TYPE</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>CleartkMultiAnnotator.</B><B><A HREF="../../../../org/cleartk/classifier/multi/CleartkMultiAnnotator.html#getDataWriter(java.lang.String)">getDataWriter</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;name)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gets the <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><CODE>DataWriter</CODE></A> associated with name.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.opennlp"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/opennlp/package-summary.html">org.cleartk.classifier.opennlp</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../org/cleartk/classifier/opennlp/package-summary.html">org.cleartk.classifier.opennlp</A> that implement <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/opennlp/BinaryMaxentDataWriter.html" title="class in org.cleartk.classifier.opennlp">BinaryMaxentDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../org/cleartk/classifier/opennlp/MaxentBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.opennlp"><CODE>MaxentBooleanOutcomeDataWriter</CODE></A> instead.</I></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/opennlp/MaxentBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.opennlp">MaxentBooleanOutcomeDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/opennlp/MaxentDataWriter.html" title="class in org.cleartk.classifier.opennlp">MaxentDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../org/cleartk/classifier/opennlp/MaxentStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.opennlp"><CODE>MaxentStringOutcomeDataWriter</CODE></A> instead.</I></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/opennlp/MaxentDataWriter_ImplBase.html" title="class in org.cleartk.classifier.opennlp">MaxentDataWriter_ImplBase&lt;CLASSIFIER_BUILDER_TYPE extends MaxentClassifierBuilder_ImplBase&lt;? extends MaxentClassifier_ImplBase&lt;OUTCOME_TYPE&gt;,OUTCOME_TYPE&gt;,OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/opennlp/MaxentStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.opennlp">MaxentStringOutcomeDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/opennlp/package-summary.html">org.cleartk.classifier.opennlp</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultMaxentDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/opennlp/DefaultMaxentDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultBinaryMaxentDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/opennlp/DefaultBinaryMaxentDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.svmlight"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/svmlight/package-summary.html">org.cleartk.classifier.svmlight</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../org/cleartk/classifier/svmlight/package-summary.html">org.cleartk.classifier.svmlight</A> that implement <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/svmlight/OVASVMlightDataWriter.html" title="class in org.cleartk.classifier.svmlight">OVASVMlightDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.svmlight"><CODE>SVMlightStringOutcomeDataWriter</CODE></A> instead.</I></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.svmlight">SVMlightBooleanOutcomeDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightDataWriter.html" title="class in org.cleartk.classifier.svmlight">SVMlightDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.svmlight"><CODE>SVMlightBooleanOutcomeDataWriter</CODE></A> instead.</I></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightDataWriter_ImplBase.html" title="class in org.cleartk.classifier.svmlight">SVMlightDataWriter_ImplBase&lt;CLASSIFIER_BUILDER_TYPE extends EncodingJarClassifierBuilder&lt;? extends Classifier&lt;OUTCOME_TYPE&gt;,<A HREF="../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</A>,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2009-2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightRegressionDataWriter.html" title="class in org.cleartk.classifier.svmlight">SVMlightRegressionDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.svmlight">SVMlightStringOutcomeDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/svmlight/package-summary.html">org.cleartk.classifier.svmlight</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultSVMlightRegressionDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/DefaultSVMlightRegressionDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultSVMlightDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/DefaultSVMlightDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultOVASVMlightDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/DefaultOVASVMlightDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.svmlight.rank"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/svmlight/rank/package-summary.html">org.cleartk.classifier.svmlight.rank</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../org/cleartk/classifier/svmlight/rank/package-summary.html">org.cleartk.classifier.svmlight.rank</A> that implement <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/svmlight/rank/SVMlightRankDataWriter.html" title="class in org.cleartk.classifier.svmlight.rank">SVMlightRankDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/svmlight/rank/package-summary.html">org.cleartk.classifier.svmlight.rank</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultSVMlightRankDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/rank/DefaultSVMlightRankDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.tksvmlight"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/tksvmlight/package-summary.html">org.cleartk.classifier.tksvmlight</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../org/cleartk/classifier/tksvmlight/package-summary.html">org.cleartk.classifier.tksvmlight</A> that implement <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/OVATKSVMlightDataWriter.html" title="class in org.cleartk.classifier.tksvmlight">OVATKSVMlightDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.tksvmlight"><CODE>TKSVMlightStringOutcomeDataWriter</CODE></A> instead.</I></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.tksvmlight">TKSVMlightBooleanOutcomeDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The data writer for tree kernel svm light.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightDataWriter.html" title="class in org.cleartk.classifier.tksvmlight">TKSVMlightDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.tksvmlight"><CODE>TKSVMlightBooleanOutcomeDataWriter</CODE></A> instead.</I></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.tksvmlight">TKSVMlightStringOutcomeDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2009, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/tksvmlight/package-summary.html">org.cleartk.classifier.tksvmlight</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultTKSVMlightDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/DefaultTKSVMlightDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultOVATKSVMlightDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/DefaultOVATKSVMlightDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.util"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/util/package-summary.html">org.cleartk.classifier.util</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../org/cleartk/classifier/util/package-summary.html">org.cleartk.classifier.util</A> that implement <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/util/PublicFieldDataWriter.html" title="class in org.cleartk.classifier.util">PublicFieldDataWriter&lt;T&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A simple <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><CODE>DataWriter</CODE></A> that stores all instances in a public attribute.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/util/package-summary.html">org.cleartk.classifier.util</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>PublicFieldDataWriter.StringFactory.</B><B><A HREF="../../../../org/cleartk/classifier/util/PublicFieldDataWriter.StringFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>PublicFieldDataWriter.BooleanFactory.</B><B><A HREF="../../../../org/cleartk/classifier/util/PublicFieldDataWriter.BooleanFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.util.tfidf"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/util/tfidf/package-summary.html">org.cleartk.classifier.util.tfidf</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../org/cleartk/classifier/util/tfidf/package-summary.html">org.cleartk.classifier.util.tfidf</A> that implement <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/util/tfidf/IDFMapWriter.html" title="class in org.cleartk.classifier.util.tfidf">IDFMapWriter&lt;OUTCOME_TYPE&gt;</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.viterbi"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/viterbi/package-summary.html">org.cleartk.classifier.viterbi</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Fields in <A HREF="../../../../org/cleartk/classifier/viterbi/package-summary.html">org.cleartk.classifier.viterbi</A> declared as <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="../../../../org/cleartk/classifier/viterbi/ViterbiDataWriter.html" title="type parameter in ViterbiDataWriter">OUTCOME_TYPE</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>ViterbiDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/viterbi/ViterbiDataWriter.html#delegatedDataWriter">delegatedDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/viterbi/package-summary.html">org.cleartk.classifier.viterbi</A> with parameters of type <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>ViterbiDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/viterbi/ViterbiDataWriter.html#setDelegatedDataWriter(org.cleartk.classifier.DataWriter)">setDelegatedDataWriter</A></B>(<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="../../../../org/cleartk/classifier/viterbi/ViterbiDataWriter.html" title="type parameter in ViterbiDataWriter">OUTCOME_TYPE</A>&gt;&nbsp;delegatedDataWriter)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.weka"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A> in <A HREF="../../../../org/cleartk/classifier/weka/package-summary.html">org.cleartk.classifier.weka</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Classes in <A HREF="../../../../org/cleartk/classifier/weka/package-summary.html">org.cleartk.classifier.weka</A> that implement <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/weka/WekaDataWriter.html" title="class in org.cleartk.classifier.weka">WekaDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>Use <A HREF="../../../../org/cleartk/classifier/weka/WekaStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.weka"><CODE>WekaStringOutcomeDataWriter</CODE></A> instead.</I></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/weka/WekaStringOutcomeDataWriter.html" title="class in org.cleartk.classifier.weka">WekaStringOutcomeDataWriter</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copyright (c) 2012, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/weka/package-summary.html">org.cleartk.classifier.weka</A> that return <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier">DataWriter</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>DefaultWekaDataWriterFactory.</B><B><A HREF="../../../../org/cleartk/classifier/weka/DefaultWekaDataWriterFactory.html#createDataWriter()">createDataWriter</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="interface in org.cleartk.classifier"><FONT CLASS="NavBarFont1"><B>Class</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Use</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/classifier//class-useDataWriter.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="DataWriter.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>

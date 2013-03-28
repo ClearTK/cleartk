@@ -1,0 +1,124 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /** <a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) 2012, Regents of the University of Colorado <a name="line.2"></a>
+<FONT color="green">003</FONT>     * All rights reserved.<a name="line.3"></a>
+<FONT color="green">004</FONT>     * <a name="line.4"></a>
+<FONT color="green">005</FONT>     * This program is free software; you can redistribute it and/or<a name="line.5"></a>
+<FONT color="green">006</FONT>     * modify it under the terms of the GNU General Public License<a name="line.6"></a>
+<FONT color="green">007</FONT>     * as published by the Free Software Foundation; either version 2<a name="line.7"></a>
+<FONT color="green">008</FONT>     * of the License, or (at your option) any later version.<a name="line.8"></a>
+<FONT color="green">009</FONT>     * <a name="line.9"></a>
+<FONT color="green">010</FONT>     * This program is distributed in the hope that it will be useful,<a name="line.10"></a>
+<FONT color="green">011</FONT>     * but WITHOUT ANY WARRANTY; without even the implied warranty of<a name="line.11"></a>
+<FONT color="green">012</FONT>     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the<a name="line.12"></a>
+<FONT color="green">013</FONT>     * GNU General Public License for more details.<a name="line.13"></a>
+<FONT color="green">014</FONT>     * <a name="line.14"></a>
+<FONT color="green">015</FONT>     * For a complete copy of the license please see the file LICENSE distributed <a name="line.15"></a>
+<FONT color="green">016</FONT>     * with the cleartk-syntax-berkeley project or visit <a name="line.16"></a>
+<FONT color="green">017</FONT>     * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.<a name="line.17"></a>
+<FONT color="green">018</FONT>     */<a name="line.18"></a>
+<FONT color="green">019</FONT>    package org.cleartk.classifier.weka;<a name="line.19"></a>
+<FONT color="green">020</FONT>    <a name="line.20"></a>
+<FONT color="green">021</FONT>    import java.util.List;<a name="line.21"></a>
+<FONT color="green">022</FONT>    <a name="line.22"></a>
+<FONT color="green">023</FONT>    import org.apache.commons.lang.NotImplementedException;<a name="line.23"></a>
+<FONT color="green">024</FONT>    import org.cleartk.classifier.Feature;<a name="line.24"></a>
+<FONT color="green">025</FONT>    import org.cleartk.classifier.ScoredOutcome;<a name="line.25"></a>
+<FONT color="green">026</FONT>    import org.cleartk.classifier.encoder.features.FeaturesEncoder;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import org.cleartk.classifier.jar.Classifier_ImplBase;<a name="line.28"></a>
+<FONT color="green">029</FONT>    <a name="line.29"></a>
+<FONT color="green">030</FONT>    import weka.core.Instance;<a name="line.30"></a>
+<FONT color="green">031</FONT>    <a name="line.31"></a>
+<FONT color="green">032</FONT>    /**<a name="line.32"></a>
+<FONT color="green">033</FONT>     * Copyright (c) 2012, Regents of the University of Colorado &lt;br&gt;<a name="line.33"></a>
+<FONT color="green">034</FONT>     * All rights reserved.<a name="line.34"></a>
+<FONT color="green">035</FONT>     * @author Philip Ogren<a name="line.35"></a>
+<FONT color="green">036</FONT>     * <a name="line.36"></a>
+<FONT color="green">037</FONT>     */<a name="line.37"></a>
+<FONT color="green">038</FONT>    public abstract class WekaStringOutcomeClassifier extends Classifier_ImplBase&lt;Instance, String, String&gt; {<a name="line.38"></a>
+<FONT color="green">039</FONT>    <a name="line.39"></a>
+<FONT color="green">040</FONT>            //TODO need to add the Weka model as a parameter<a name="line.40"></a>
+<FONT color="green">041</FONT>            public WekaStringOutcomeClassifier(       FeaturesEncoder&lt;Instance&gt; featuresEncoder,<a name="line.41"></a>
+<FONT color="green">042</FONT>                          OutcomeEncoder&lt;String, String&gt; outcomeEncoder) throws Exception {<a name="line.42"></a>
+<FONT color="green">043</FONT>                                    super(featuresEncoder, outcomeEncoder);<a name="line.43"></a>
+<FONT color="green">044</FONT>         }<a name="line.44"></a>
+<FONT color="green">045</FONT>            <a name="line.45"></a>
+<FONT color="green">046</FONT>            //TODO no implementation of classify method<a name="line.46"></a>
+<FONT color="green">047</FONT>            public String classify(List&lt;Feature&gt; features) throws UnsupportedOperationException {<a name="line.47"></a>
+<FONT color="green">048</FONT>                    throw new NotImplementedException();<a name="line.48"></a>
+<FONT color="green">049</FONT>            }<a name="line.49"></a>
+<FONT color="green">050</FONT>            <a name="line.50"></a>
+<FONT color="green">051</FONT>            //TODO no implementation of the score method<a name="line.51"></a>
+<FONT color="green">052</FONT>            @Override<a name="line.52"></a>
+<FONT color="green">053</FONT>            public List&lt;ScoredOutcome&lt;String&gt;&gt; score(List&lt;Feature&gt; features, int maxResults) {<a name="line.53"></a>
+<FONT color="green">054</FONT>                    throw new NotImplementedException();<a name="line.54"></a>
+<FONT color="green">055</FONT>            }<a name="line.55"></a>
+<FONT color="green">056</FONT>    <a name="line.56"></a>
+<FONT color="green">057</FONT>    <a name="line.57"></a>
+<FONT color="green">058</FONT>    }<a name="line.58"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,690 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+AnnotationStatistics (ClearTK Release 1.2.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="AnnotationStatistics (ClearTK Release 1.2.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/AnnotationStatistics.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;PREV CLASS&nbsp;
+&nbsp;<A HREF="../../../org/cleartk/eval/Evaluation.html" title="class in org.cleartk.eval"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../index.html?org/cleartk/eval/AnnotationStatistics.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="AnnotationStatistics.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+org.cleartk.eval</FONT>
+<BR>
+Class AnnotationStatistics&lt;OUTCOME_TYPE extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</A>&lt;? super OUTCOME_TYPE&gt;&gt;</H2>
+<PRE>
+<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</A>
+  <IMG SRC="../../../resources/inherit.gif" ALT="extended by "><B>org.cleartk.eval.AnnotationStatistics&lt;OUTCOME_TYPE&gt;</B>
+</PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD><A HREF="http://download.oracle.com/javase/6/docs/api/java/io/Serializable.html?is-external=true" title="class or interface in java.io">Serializable</A></DD>
+</DL>
+<HR>
+<DL>
+<DT><PRE>public class <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.57"><B>AnnotationStatistics&lt;OUTCOME_TYPE extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</A>&lt;? super OUTCOME_TYPE&gt;&gt;</B></A><DT>extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A><DT>implements <A HREF="http://download.oracle.com/javase/6/docs/api/java/io/Serializable.html?is-external=true" title="class or interface in java.io">Serializable</A></DL>
+</PRE>
+
+<P>
+Stores statistics for comparing <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas"><CODE>Annotation</CODE></A>s extracted by a system to gold
+ <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas"><CODE>Annotation</CODE></A>s.
+ 
+ <br>
+ Copyright (c) 2012, Regents of the University of Colorado <br>
+ All rights reserved.
+<P>
+
+<P>
+<DL>
+<DT><B>Author:</B></DT>
+  <DD>Steven Bethard</DD>
+<DT><B>See Also:</B><DD><A HREF="../../../serialized-form.html#org.cleartk.eval.AnnotationStatistics">Serialized Form</A></DL>
+<HR>
+
+<P>
+
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+
+<A NAME="constructor_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Constructor Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#AnnotationStatistics()">AnnotationStatistics</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create an AnnotationStatistics that compares <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas"><CODE>Annotation</CODE></A>s based on their begin and end
+ offsets, plus a <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/cas/Feature.html?is-external=true" title="class or interface in org.apache.uima.cas"><CODE>Feature</CODE></A> of the <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas"><CODE>Annotation</CODE></A> that represents the outcome or label.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" SUMMARY="">
+<TR ALIGN="right" VALIGN="">
+<TD NOWRAP><FONT SIZE="-1">
+<CODE>&lt;ANNOTATION_TYPE extends <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&gt; 
+<BR>
+void</CODE></FONT></TD>
+</TR>
+</TABLE>
+</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#add(java.util.Collection, java.util.Collection)">add</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</A>&lt;? extends ANNOTATION_TYPE&gt;&nbsp;referenceAnnotations,
+       <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</A>&lt;? extends ANNOTATION_TYPE&gt;&nbsp;predictedAnnotations)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update the statistics, comparing the reference annotations to the predicted annotations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" SUMMARY="">
+<TR ALIGN="right" VALIGN="">
+<TD NOWRAP><FONT SIZE="-1">
+<CODE>&lt;ANNOTATION_TYPE,SPAN_TYPE&gt; 
+<BR>
+void</CODE></FONT></TD>
+</TR>
+</TABLE>
+</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#add(java.util.Collection, java.util.Collection, com.google.common.base.Function, com.google.common.base.Function)">add</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</A>&lt;? extends ANNOTATION_TYPE&gt;&nbsp;referenceAnnotations,
+       <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</A>&lt;? extends ANNOTATION_TYPE&gt;&nbsp;predictedAnnotations,
+       <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</A>&lt;ANNOTATION_TYPE,SPAN_TYPE&gt;&nbsp;annotationToSpan,
+       <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</A>&lt;ANNOTATION_TYPE,<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="type parameter in AnnotationStatistics">OUTCOME_TYPE</A>&gt;&nbsp;annotationToOutcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update the statistics, comparing the reference annotations to the predicted annotations.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#addAll(org.cleartk.eval.AnnotationStatistics)">addAll</A></B>(<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="class in org.cleartk.eval">AnnotationStatistics</A>&lt;<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="type parameter in AnnotationStatistics">OUTCOME_TYPE</A>&gt;&nbsp;that)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adds all the statistics collected by another AnnotationStatistics to this one.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" SUMMARY="">
+<TR ALIGN="right" VALIGN="">
+<TD NOWRAP><FONT SIZE="-1">
+<CODE>&lt;OUTCOME_TYPE extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</A>&lt;? super OUTCOME_TYPE&gt;&gt; 
+<BR>
+<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="class in org.cleartk.eval">AnnotationStatistics</A>&lt;OUTCOME_TYPE&gt;</CODE></FONT></TD>
+</TR>
+</TABLE>
+</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#addAll(java.lang.Iterable)">addAll</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</A>&lt;<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="class in org.cleartk.eval">AnnotationStatistics</A>&lt;OUTCOME_TYPE&gt;&gt;&nbsp;statistics)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add all statistics together.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" SUMMARY="">
+<TR ALIGN="right" VALIGN="">
+<TD NOWRAP><FONT SIZE="-1">
+<CODE>&lt;ANNOTATION_TYPE extends <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/cas/TOP.html?is-external=true" title="class or interface in org.apache.uima.jcas.cas">TOP</A>&gt; 
+<BR>
+<A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</A>&lt;ANNOTATION_TYPE,<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;</CODE></FONT></TD>
+</TR>
+</TABLE>
+</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#annotationToFeatureValue(java.lang.String)">annotationToFeatureValue</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;featureName)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base"><CODE>Function</CODE></A> that extracts a feature value from a <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/cas/TOP.html?is-external=true" title="class or interface in org.apache.uima.jcas.cas"><CODE>TOP</CODE></A>.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" SUMMARY="">
+<TR ALIGN="right" VALIGN="">
+<TD NOWRAP><FONT SIZE="-1">
+<CODE>&lt;ANNOTATION_TYPE,OUTCOME_TYPE&gt; 
+<BR>
+<A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</A>&lt;ANNOTATION_TYPE,OUTCOME_TYPE&gt;</CODE></FONT></TD>
+</TR>
+</TABLE>
+</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#annotationToNull()">annotationToNull</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base"><CODE>Function</CODE></A> that always returns null.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" SUMMARY="">
+<TR ALIGN="right" VALIGN="">
+<TD NOWRAP><FONT SIZE="-1">
+<CODE>&lt;ANNOTATION_TYPE extends <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&gt; 
+<BR>
+<A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</A>&lt;ANNOTATION_TYPE,org.cleartk.eval.AnnotationStatistics.Span&gt;</CODE></FONT></TD>
+</TR>
+</TABLE>
+</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#annotationToSpan()">annotationToSpan</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Creates a <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base"><CODE>Function</CODE></A> that converts an <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas"><CODE>Annotation</CODE></A> into a hashable representation
+ of its begin and end offsets.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../org/cleartk/eval/util/ConfusionMatrix.html" title="class in org.cleartk.eval.util">ConfusionMatrix</A>&lt;<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="type parameter in AnnotationStatistics">OUTCOME_TYPE</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#confusions()">confusions</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the <A HREF="../../../org/cleartk/eval/util/ConfusionMatrix.html" title="class in org.cleartk.eval.util"><CODE>ConfusionMatrix</CODE></A> tabulating reference outcomes matched to predicted
+ outcomes.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#f1()">f1</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#f1(OUTCOME_TYPE)">f1</A></B>(<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="type parameter in AnnotationStatistics">OUTCOME_TYPE</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#precision()">precision</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#precision(OUTCOME_TYPE)">precision</A></B>(<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="type parameter in AnnotationStatistics">OUTCOME_TYPE</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#recall()">recall</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#recall(OUTCOME_TYPE)">recall</A></B>(<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="type parameter in AnnotationStatistics">OUTCOME_TYPE</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#toString()">toString</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+
+<A NAME="constructor_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Constructor Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="AnnotationStatistics()"><!-- --></A><H3>
+AnnotationStatistics</H3>
+<PRE>
+public <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.144"><B>AnnotationStatistics</B></A>()</PRE>
+<DL>
+<DD>Create an AnnotationStatistics that compares <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas"><CODE>Annotation</CODE></A>s based on their begin and end
+ offsets, plus a <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/cas/Feature.html?is-external=true" title="class or interface in org.apache.uima.cas"><CODE>Feature</CODE></A> of the <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas"><CODE>Annotation</CODE></A> that represents the outcome or label.
+<P>
+</DL>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="annotationToSpan()"><!-- --></A><H3>
+annotationToSpan</H3>
+<PRE>
+public static &lt;ANNOTATION_TYPE extends <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&gt; <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</A>&lt;ANNOTATION_TYPE,org.cleartk.eval.AnnotationStatistics.Span&gt; <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.77"><B>annotationToSpan</B></A>()</PRE>
+<DL>
+<DD>Creates a <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base"><CODE>Function</CODE></A> that converts an <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas"><CODE>Annotation</CODE></A> into a hashable representation
+ of its begin and end offsets.
+ 
+ The <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base"><CODE>Function</CODE></A> created by this method is suitable for passing to the first
+ <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base"><CODE>Function</CODE></A> argument of <A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#add(java.util.Collection, java.util.Collection, com.google.common.base.Function, com.google.common.base.Function)"><CODE>add(Collection, Collection, Function, Function)</CODE></A>.
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="annotationToFeatureValue(java.lang.String)"><!-- --></A><H3>
+annotationToFeatureValue</H3>
+<PRE>
+public static &lt;ANNOTATION_TYPE extends <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/cas/TOP.html?is-external=true" title="class or interface in org.apache.uima.jcas.cas">TOP</A>&gt; <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</A>&lt;ANNOTATION_TYPE,<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt; <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.95"><B>annotationToFeatureValue</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;featureName)</PRE>
+<DL>
+<DD>Creates a <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base"><CODE>Function</CODE></A> that extracts a feature value from a <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/cas/TOP.html?is-external=true" title="class or interface in org.apache.uima.jcas.cas"><CODE>TOP</CODE></A>.
+ 
+ The <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base"><CODE>Function</CODE></A> created by this method is suitable for passing to the second
+ <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base"><CODE>Function</CODE></A> argument of <A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#add(java.util.Collection, java.util.Collection, com.google.common.base.Function, com.google.common.base.Function)"><CODE>add(Collection, Collection, Function, Function)</CODE></A>.
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>featureName</CODE> - The name of the feature whose value is to be extracted.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="annotationToNull()"><!-- --></A><H3>
+annotationToNull</H3>
+<PRE>
+public static &lt;ANNOTATION_TYPE,OUTCOME_TYPE&gt; <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</A>&lt;ANNOTATION_TYPE,OUTCOME_TYPE&gt; <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.112"><B>annotationToNull</B></A>()</PRE>
+<DL>
+<DD>Creates a <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base"><CODE>Function</CODE></A> that always returns null.
+ 
+ This may be useful when only the span of the offset is important, but you still need to pass in
+ the final argument of <A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#add(java.util.Collection, java.util.Collection, com.google.common.base.Function, com.google.common.base.Function)"><CODE>add(Collection, Collection, Function, Function)</CODE></A>.
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="addAll(java.lang.Iterable)"><!-- --></A><H3>
+addAll</H3>
+<PRE>
+public static &lt;OUTCOME_TYPE extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</A>&lt;? super OUTCOME_TYPE&gt;&gt; <A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="class in org.cleartk.eval">AnnotationStatistics</A>&lt;OUTCOME_TYPE&gt; <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.131"><B>addAll</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Iterable.html?is-external=true" title="class or interface in java.lang">Iterable</A>&lt;<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="class in org.cleartk.eval">AnnotationStatistics</A>&lt;OUTCOME_TYPE&gt;&gt;&nbsp;statistics)</PRE>
+<DL>
+<DD>Add all statistics together.
+ 
+ This is often useful for combining individual fold statistics that result from methods like
+ <A HREF="../../../org/cleartk/eval/Evaluation_ImplBase.html#crossValidation(java.util.List, int)"><CODE>Evaluation_ImplBase.crossValidation(List, int)</CODE></A>.
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>statistics</CODE> - The sequence of statistics that should be combined.
+<DT><B>Returns:</B><DD>The combination of all the individual statistics.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="add(java.util.Collection, java.util.Collection)"><!-- --></A><H3>
+add</H3>
+<PRE>
+public &lt;ANNOTATION_TYPE extends <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</A>&gt; void <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.162"><B>add</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</A>&lt;? extends ANNOTATION_TYPE&gt;&nbsp;referenceAnnotations,
+                                                     <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</A>&lt;? extends ANNOTATION_TYPE&gt;&nbsp;predictedAnnotations)</PRE>
+<DL>
+<DD>Update the statistics, comparing the reference annotations to the predicted annotations.
+ 
+ Annotations are considered to match if they have the same character offsets in the text. All
+ outcomes (e.g. as returned in <A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#confusions()"><CODE>confusions()</CODE></A>) will be <code>null</code>.
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>referenceAnnotations</CODE> - The reference annotations, typically identified by humans.<DD><CODE>predictedAnnotations</CODE> - The predicted annotations, typically identified by a model.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="add(java.util.Collection, java.util.Collection, com.google.common.base.Function, com.google.common.base.Function)"><!-- --></A><H3>
+add</H3>
+<PRE>
+public &lt;ANNOTATION_TYPE,SPAN_TYPE&gt; void <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.193"><B>add</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</A>&lt;? extends ANNOTATION_TYPE&gt;&nbsp;referenceAnnotations,
+                                            <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Collection.html?is-external=true" title="class or interface in java.util">Collection</A>&lt;? extends ANNOTATION_TYPE&gt;&nbsp;predictedAnnotations,
+                                            <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</A>&lt;ANNOTATION_TYPE,SPAN_TYPE&gt;&nbsp;annotationToSpan,
+                                            <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/base/Function.html?is-external=true" title="class or interface in com.google.common.base">Function</A>&lt;ANNOTATION_TYPE,<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="type parameter in AnnotationStatistics">OUTCOME_TYPE</A>&gt;&nbsp;annotationToOutcome)</PRE>
+<DL>
+<DD>Update the statistics, comparing the reference annotations to the predicted annotations.
+ 
+ Annotations are considered to match if they have the same span (according to
+ <code>annotationToSpan</code>) and if they have the same outcome (according to
+ <code>annotationToOutcome</code>).
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>referenceAnnotations</CODE> - The reference annotations, typically identified by humans.<DD><CODE>predictedAnnotations</CODE> - The predicted annotations, typically identified by a model.<DD><CODE>annotationToSpan</CODE> - A function that defines how to convert an annotation into a hashable object that
+          represents the span of that annotation. The <A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#annotationToSpan()"><CODE>annotationToSpan()</CODE></A> method
+          provides an example function that could be used here.<DD><CODE>annotationToOutcome</CODE> - A function that defines how to convert an annotation into an object that represents
+          the outcome (or "label") assigned to that annotation. The
+          <A HREF="../../../org/cleartk/eval/AnnotationStatistics.html#annotationToFeatureValue(java.lang.String)"><CODE>annotationToFeatureValue(String)</CODE></A> method provides a sample function that could
+          be used here.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="addAll(org.cleartk.eval.AnnotationStatistics)"><!-- --></A><H3>
+addAll</H3>
+<PRE>
+public void <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.244"><B>addAll</B></A>(<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="class in org.cleartk.eval">AnnotationStatistics</A>&lt;<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="type parameter in AnnotationStatistics">OUTCOME_TYPE</A>&gt;&nbsp;that)</PRE>
+<DL>
+<DD>Adds all the statistics collected by another AnnotationStatistics to this one.
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>that</CODE> - The other statistics that should be added to this one.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="confusions()"><!-- --></A><H3>
+confusions</H3>
+<PRE>
+public <A HREF="../../../org/cleartk/eval/util/ConfusionMatrix.html" title="class in org.cleartk.eval.util">ConfusionMatrix</A>&lt;<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="type parameter in AnnotationStatistics">OUTCOME_TYPE</A>&gt; <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.257"><B>confusions</B></A>()</PRE>
+<DL>
+<DD>Returns the <A HREF="../../../org/cleartk/eval/util/ConfusionMatrix.html" title="class in org.cleartk.eval.util"><CODE>ConfusionMatrix</CODE></A> tabulating reference outcomes matched to predicted
+ outcomes.
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>The confusion matrix.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="precision()"><!-- --></A><H3>
+precision</H3>
+<PRE>
+public double <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.261"><B>precision</B></A>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="precision(java.lang.Comparable)"><!-- --></A><A NAME="precision(OUTCOME_TYPE)"><!-- --></A><H3>
+precision</H3>
+<PRE>
+public double <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.266"><B>precision</B></A>(<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="type parameter in AnnotationStatistics">OUTCOME_TYPE</A>&nbsp;outcome)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="recall()"><!-- --></A><H3>
+recall</H3>
+<PRE>
+public double <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.271"><B>recall</B></A>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="recall(java.lang.Comparable)"><!-- --></A><A NAME="recall(OUTCOME_TYPE)"><!-- --></A><H3>
+recall</H3>
+<PRE>
+public double <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.276"><B>recall</B></A>(<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="type parameter in AnnotationStatistics">OUTCOME_TYPE</A>&nbsp;outcome)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="f1()"><!-- --></A><H3>
+f1</H3>
+<PRE>
+public double <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.281"><B>f1</B></A>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="f1(java.lang.Comparable)"><!-- --></A><A NAME="f1(OUTCOME_TYPE)"><!-- --></A><H3>
+f1</H3>
+<PRE>
+public double <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.288"><B>f1</B></A>(<A HREF="../../../org/cleartk/eval/AnnotationStatistics.html" title="type parameter in AnnotationStatistics">OUTCOME_TYPE</A>&nbsp;outcome)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="toString()"><!-- --></A><H3>
+toString</H3>
+<PRE>
+public <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A> <A HREF="../../../src-html/org/cleartk/eval/AnnotationStatistics.html#line.296"><B>toString</B></A>()</PRE>
+<DL>
+<DD><DL>
+<DT><B>Overrides:</B><DD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</A></CODE> in class <CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A></CODE></DL>
+</DD>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/AnnotationStatistics.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;PREV CLASS&nbsp;
+&nbsp;<A HREF="../../../org/cleartk/eval/Evaluation.html" title="class in org.cleartk.eval"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../index.html?org/cleartk/eval/AnnotationStatistics.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="AnnotationStatistics.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>

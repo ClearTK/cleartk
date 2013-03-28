@@ -1,0 +1,882 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+FCollections (ClearTK Release 1.2.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="FCollections (ClearTK Release 1.2.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/FCollections.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../org/cleartk/eval/util/FCollection.html" title="class in org.cleartk.eval.util"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;NEXT CLASS</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/eval/util/FCollections.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="FCollections.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+org.cleartk.eval.util</FONT>
+<BR>
+Class FCollections&lt;T extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</A>&lt;T&gt;&gt;</H2>
+<PRE>
+<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</A>
+  <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>org.cleartk.eval.util.FCollections&lt;T&gt;</B>
+</PRE>
+<HR>
+<DL>
+<DT><PRE>public class <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.49"><B>FCollections&lt;T extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</A>&lt;T&gt;&gt;</B></A><DT>extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A></DL>
+</PRE>
+
+<P>
+This data structure is convenient if you want to stratify evaluation across different dimensions.
+ For example, if you wanted to see how good a part-of-speech tagger works for different tags you
+ might declare a FCollection of type String. Another example is a named-entity recognizer for
+ which you want to measure performance for different lengths of named entities (in tokens). For
+ this example, you could declare a FCollection of type Integer.
+ 
+ <br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.
+<P>
+
+<P>
+<DL>
+<DT><B>Author:</B></DT>
+  <DD>Philip Ogren</DD>
+</DL>
+<HR>
+
+<P>
+<!-- =========== FIELD SUMMARY =========== -->
+
+<A NAME="field_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Field Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect">Multiset</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#falseNegatives">falseNegatives</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect">Multiset</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#falsePositives">falsePositives</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#objects">objects</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;int</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#totalFalseNegatives">totalFalseNegatives</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;int</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#totalFalsePositives">totalFalsePositives</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;int</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#totalTruePositives">totalTruePositives</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect">Multiset</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#truePositives">truePositives</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+
+<A NAME="constructor_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Constructor Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#FCollections()">FCollections</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#addFalseNegative(T)">addFalseNegative</A></B>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;falseNegative)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#addFalseNegatives(T, int)">addFalseNegatives</A></B>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;falseNegative,
+                                   int&nbsp;countIncrement)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#addFalsePositive(T)">addFalsePositive</A></B>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;falsePositive)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#addFalsePositives(T, int)">addFalsePositives</A></B>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;falsePositive,
+                                   int&nbsp;countIncrement)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#addTruePositive(T)">addTruePositive</A></B>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;truePositive)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#addTruePositives(T, int)">addTruePositives</A></B>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;truePositive,
+                                 int&nbsp;countIncrement)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#F(int, int, int)">F</A></B>(int&nbsp;tps,
+   int&nbsp;fps,
+   int&nbsp;fns)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When the beta weight is .5, F-measure works out to be a very simple ratio if you work out the
+ algebra (which I did once.) This result is published in the literature here:
+ 
+ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1090460/
+ 
+ See equation 3.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#F(int, int, int, double)">F</A></B>(int&nbsp;tps,
+   int&nbsp;fps,
+   int&nbsp;fns,
+   double&nbsp;B)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getF()">getF</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getF(T)">getF</A></B>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getF(T, double)">getF</A></B>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object,
+         double&nbsp;B)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;int</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getFalseNegativesCount()">getFalseNegativesCount</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;int</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getFalseNegativesCount(T)">getFalseNegativesCount</A></B>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;int</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getFalsePositivesCount()">getFalsePositivesCount</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;int</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getFalsePositivesCount(T)">getFalsePositivesCount</A></B>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getPrecision()">getPrecision</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getPrecision(T)">getPrecision</A></B>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getRecall()">getRecall</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getRecall(T)">getRecall</A></B>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getSortedObjects()">getSortedObjects</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;int</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getTruePositivesCount()">getTruePositivesCount</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;int</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#getTruePositivesCount(T)">getTruePositivesCount</A></B>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#precision(int, int)">precision</A></B>(int&nbsp;tps,
+                   int&nbsp;fps)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/eval/util/FCollections.html#recall(int, int)">recall</A></B>(int&nbsp;tps,
+             int&nbsp;fns)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ============ FIELD DETAIL =========== -->
+
+<A NAME="field_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Field Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="truePositives"><!-- --></A><H3>
+truePositives</H3>
+<PRE>
+protected <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect">Multiset</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A> extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&gt;&gt; <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.51"><B>truePositives</B></A></PRE>
+<DL>
+<DL>
+</DL>
+</DL>
+<HR>
+
+<A NAME="falsePositives"><!-- --></A><H3>
+falsePositives</H3>
+<PRE>
+protected <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect">Multiset</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A> extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&gt;&gt; <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.53"><B>falsePositives</B></A></PRE>
+<DL>
+<DL>
+</DL>
+</DL>
+<HR>
+
+<A NAME="falseNegatives"><!-- --></A><H3>
+falseNegatives</H3>
+<PRE>
+protected <A HREF="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Multiset.html?is-external=true" title="class or interface in com.google.common.collect">Multiset</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A> extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&gt;&gt; <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.55"><B>falseNegatives</B></A></PRE>
+<DL>
+<DL>
+</DL>
+</DL>
+<HR>
+
+<A NAME="totalTruePositives"><!-- --></A><H3>
+totalTruePositives</H3>
+<PRE>
+protected int <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.57"><B>totalTruePositives</B></A></PRE>
+<DL>
+<DL>
+</DL>
+</DL>
+<HR>
+
+<A NAME="totalFalsePositives"><!-- --></A><H3>
+totalFalsePositives</H3>
+<PRE>
+protected int <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.59"><B>totalFalsePositives</B></A></PRE>
+<DL>
+<DL>
+</DL>
+</DL>
+<HR>
+
+<A NAME="totalFalseNegatives"><!-- --></A><H3>
+totalFalseNegatives</H3>
+<PRE>
+protected int <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.61"><B>totalFalseNegatives</B></A></PRE>
+<DL>
+<DL>
+</DL>
+</DL>
+<HR>
+
+<A NAME="objects"><!-- --></A><H3>
+objects</H3>
+<PRE>
+protected <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Set.html?is-external=true" title="class or interface in java.util">Set</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A> extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Comparable.html?is-external=true" title="class or interface in java.lang">Comparable</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&gt;&gt; <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.63"><B>objects</B></A></PRE>
+<DL>
+<DL>
+</DL>
+</DL>
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+
+<A NAME="constructor_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Constructor Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="FCollections()"><!-- --></A><H3>
+FCollections</H3>
+<PRE>
+public <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.65"><B>FCollections</B></A>()</PRE>
+<DL>
+</DL>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="addTruePositive(java.lang.Comparable)"><!-- --></A><A NAME="addTruePositive(T)"><!-- --></A><H3>
+addTruePositive</H3>
+<PRE>
+public void <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.72"><B>addTruePositive</B></A>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;truePositive)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="addTruePositives(java.lang.Comparable,int)"><!-- --></A><A NAME="addTruePositives(T, int)"><!-- --></A><H3>
+addTruePositives</H3>
+<PRE>
+public void <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.78"><B>addTruePositives</B></A>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;truePositive,
+                             int&nbsp;countIncrement)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getTruePositivesCount(java.lang.Comparable)"><!-- --></A><A NAME="getTruePositivesCount(T)"><!-- --></A><H3>
+getTruePositivesCount</H3>
+<PRE>
+public int <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.84"><B>getTruePositivesCount</B></A>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getTruePositivesCount()"><!-- --></A><H3>
+getTruePositivesCount</H3>
+<PRE>
+public int <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.88"><B>getTruePositivesCount</B></A>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="addFalsePositive(java.lang.Comparable)"><!-- --></A><A NAME="addFalsePositive(T)"><!-- --></A><H3>
+addFalsePositive</H3>
+<PRE>
+public void <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.92"><B>addFalsePositive</B></A>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;falsePositive)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="addFalsePositives(java.lang.Comparable,int)"><!-- --></A><A NAME="addFalsePositives(T, int)"><!-- --></A><H3>
+addFalsePositives</H3>
+<PRE>
+public void <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.98"><B>addFalsePositives</B></A>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;falsePositive,
+                              int&nbsp;countIncrement)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getFalsePositivesCount(java.lang.Comparable)"><!-- --></A><A NAME="getFalsePositivesCount(T)"><!-- --></A><H3>
+getFalsePositivesCount</H3>
+<PRE>
+public int <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.104"><B>getFalsePositivesCount</B></A>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getFalsePositivesCount()"><!-- --></A><H3>
+getFalsePositivesCount</H3>
+<PRE>
+public int <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.108"><B>getFalsePositivesCount</B></A>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="addFalseNegative(java.lang.Comparable)"><!-- --></A><A NAME="addFalseNegative(T)"><!-- --></A><H3>
+addFalseNegative</H3>
+<PRE>
+public void <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.112"><B>addFalseNegative</B></A>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;falseNegative)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="addFalseNegatives(java.lang.Comparable,int)"><!-- --></A><A NAME="addFalseNegatives(T, int)"><!-- --></A><H3>
+addFalseNegatives</H3>
+<PRE>
+public void <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.118"><B>addFalseNegatives</B></A>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;falseNegative,
+                              int&nbsp;countIncrement)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getFalseNegativesCount(java.lang.Comparable)"><!-- --></A><A NAME="getFalseNegativesCount(T)"><!-- --></A><H3>
+getFalseNegativesCount</H3>
+<PRE>
+public int <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.124"><B>getFalseNegativesCount</B></A>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getFalseNegativesCount()"><!-- --></A><H3>
+getFalseNegativesCount</H3>
+<PRE>
+public int <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.128"><B>getFalseNegativesCount</B></A>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getSortedObjects()"><!-- --></A><H3>
+getSortedObjects</H3>
+<PRE>
+public <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&gt; <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.132"><B>getSortedObjects</B></A>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getPrecision(java.lang.Comparable)"><!-- --></A><A NAME="getPrecision(T)"><!-- --></A><H3>
+getPrecision</H3>
+<PRE>
+public double <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.138"><B>getPrecision</B></A>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getPrecision()"><!-- --></A><H3>
+getPrecision</H3>
+<PRE>
+public double <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.142"><B>getPrecision</B></A>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="precision(int, int)"><!-- --></A><H3>
+precision</H3>
+<PRE>
+public static double <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.146"><B>precision</B></A>(int&nbsp;tps,
+                               int&nbsp;fps)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getRecall(java.lang.Comparable)"><!-- --></A><A NAME="getRecall(T)"><!-- --></A><H3>
+getRecall</H3>
+<PRE>
+public double <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.150"><B>getRecall</B></A>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getRecall()"><!-- --></A><H3>
+getRecall</H3>
+<PRE>
+public double <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.154"><B>getRecall</B></A>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="recall(int, int)"><!-- --></A><H3>
+recall</H3>
+<PRE>
+public static double <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.158"><B>recall</B></A>(int&nbsp;tps,
+                            int&nbsp;fns)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getF(java.lang.Comparable)"><!-- --></A><A NAME="getF(T)"><!-- --></A><H3>
+getF</H3>
+<PRE>
+public double <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.162"><B>getF</B></A>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getF()"><!-- --></A><H3>
+getF</H3>
+<PRE>
+public double <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.169"><B>getF</B></A>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="F(int, int, int)"><!-- --></A><H3>
+F</H3>
+<PRE>
+public static double <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.181"><B>F</B></A>(int&nbsp;tps,
+                       int&nbsp;fps,
+                       int&nbsp;fns)</PRE>
+<DL>
+<DD>When the beta weight is .5, F-measure works out to be a very simple ratio if you work out the
+ algebra (which I did once.) This result is published in the literature here:
+ 
+ http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1090460/
+ 
+ See equation 3.
+<P>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="F(int, int, int, double)"><!-- --></A><H3>
+F</H3>
+<PRE>
+public static double <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.185"><B>F</B></A>(int&nbsp;tps,
+                       int&nbsp;fps,
+                       int&nbsp;fns,
+                       double&nbsp;B)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getF(java.lang.Comparable,double)"><!-- --></A><A NAME="getF(T, double)"><!-- --></A><H3>
+getF</H3>
+<PRE>
+public double <A HREF="../../../../src-html/org/cleartk/eval/util/FCollections.html#line.193"><B>getF</B></A>(<A HREF="../../../../org/cleartk/eval/util/FCollections.html" title="type parameter in FCollections">T</A>&nbsp;object,
+                   double&nbsp;B)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/FCollections.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../org/cleartk/eval/util/FCollection.html" title="class in org.cleartk.eval.util"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;NEXT CLASS</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/eval/util/FCollections.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="FCollections.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>

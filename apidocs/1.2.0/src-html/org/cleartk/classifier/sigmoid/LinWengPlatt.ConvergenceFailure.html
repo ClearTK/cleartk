@@ -1,0 +1,231 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /** <a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) 2009, Regents of the University of Colorado <a name="line.2"></a>
+<FONT color="green">003</FONT>     * All rights reserved.<a name="line.3"></a>
+<FONT color="green">004</FONT>     * <a name="line.4"></a>
+<FONT color="green">005</FONT>     * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<FONT color="green">006</FONT>     * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<FONT color="green">007</FONT>     * <a name="line.7"></a>
+<FONT color="green">008</FONT>     * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<FONT color="green">009</FONT>     * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<FONT color="green">010</FONT>     * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<FONT color="green">011</FONT>     * <a name="line.11"></a>
+<FONT color="green">012</FONT>     * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<FONT color="green">013</FONT>     * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<FONT color="green">014</FONT>     * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<FONT color="green">015</FONT>     * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<FONT color="green">016</FONT>     * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<FONT color="green">017</FONT>     * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<FONT color="green">018</FONT>     * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<FONT color="green">019</FONT>     * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<FONT color="green">020</FONT>     * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<FONT color="green">021</FONT>     * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<FONT color="green">022</FONT>     * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<FONT color="green">023</FONT>     */<a name="line.23"></a>
+<FONT color="green">024</FONT>    package org.cleartk.classifier.sigmoid;<a name="line.24"></a>
+<FONT color="green">025</FONT>    <a name="line.25"></a>
+<FONT color="green">026</FONT>    import java.util.logging.Logger;<a name="line.26"></a>
+<FONT color="green">027</FONT>    <a name="line.27"></a>
+<FONT color="green">028</FONT>    /**<a name="line.28"></a>
+<FONT color="green">029</FONT>     * &lt;br&gt;<a name="line.29"></a>
+<FONT color="green">030</FONT>     * Copyright (c) 2009, Regents of the University of Colorado &lt;br&gt;<a name="line.30"></a>
+<FONT color="green">031</FONT>     * All rights reserved.<a name="line.31"></a>
+<FONT color="green">032</FONT>     * &lt;p&gt;<a name="line.32"></a>
+<FONT color="green">033</FONT>     * This class implements an algorithm to fit a sigmoid function to the output of an SVM classifier.<a name="line.33"></a>
+<FONT color="green">034</FONT>     * The algorithm is the one introduced by Hsuan-Tien Lin, Chih-Jen Lin, and Ruby C. Weng (who were<a name="line.34"></a>
+<FONT color="green">035</FONT>     * in turn extending work by J. Platt), and this implementation is a direct translation of their<a name="line.35"></a>
+<FONT color="green">036</FONT>     * pseudo-code as presented in<a name="line.36"></a>
+<FONT color="green">037</FONT>     * <a name="line.37"></a>
+<FONT color="green">038</FONT>     * Lin, Lin, Weng. A note on Platt's probabilistic outputs for support vector machines. In Machine<a name="line.38"></a>
+<FONT color="green">039</FONT>     * Learning, vol. 68, pp. 267-276, 2007.<a name="line.39"></a>
+<FONT color="green">040</FONT>     * <a name="line.40"></a>
+<FONT color="green">041</FONT>     * @author Philipp G. Wetzler<a name="line.41"></a>
+<FONT color="green">042</FONT>     */<a name="line.42"></a>
+<FONT color="green">043</FONT>    public class LinWengPlatt {<a name="line.43"></a>
+<FONT color="green">044</FONT>    <a name="line.44"></a>
+<FONT color="green">045</FONT>      public static Sigmoid fit(double[] decisionValues, boolean[] labels) throws ConvergenceFailure {<a name="line.45"></a>
+<FONT color="green">046</FONT>    <a name="line.46"></a>
+<FONT color="green">047</FONT>        assert (decisionValues.length == labels.length);<a name="line.47"></a>
+<FONT color="green">048</FONT>    <a name="line.48"></a>
+<FONT color="green">049</FONT>        int nPlus = 0;<a name="line.49"></a>
+<FONT color="green">050</FONT>        for (boolean l : labels)<a name="line.50"></a>
+<FONT color="green">051</FONT>          if (l)<a name="line.51"></a>
+<FONT color="green">052</FONT>            nPlus += 1;<a name="line.52"></a>
+<FONT color="green">053</FONT>        int nMinus = labels.length - nPlus;<a name="line.53"></a>
+<FONT color="green">054</FONT>    <a name="line.54"></a>
+<FONT color="green">055</FONT>        int maxIterations = 100;<a name="line.55"></a>
+<FONT color="green">056</FONT>        double minimumStepsize = 1e-10;<a name="line.56"></a>
+<FONT color="green">057</FONT>        double sigma = 1e-12;<a name="line.57"></a>
+<FONT color="green">058</FONT>    <a name="line.58"></a>
+<FONT color="green">059</FONT>        double hiTarget = (nPlus + 1.0) / (nPlus + 2.0);<a name="line.59"></a>
+<FONT color="green">060</FONT>        double loTarget = 1 / (nMinus + 2.0);<a name="line.60"></a>
+<FONT color="green">061</FONT>        int n = nMinus + nPlus;<a name="line.61"></a>
+<FONT color="green">062</FONT>    <a name="line.62"></a>
+<FONT color="green">063</FONT>        double t[] = new double[n];<a name="line.63"></a>
+<FONT color="green">064</FONT>        for (int i = 0; i &lt; n; i++) {<a name="line.64"></a>
+<FONT color="green">065</FONT>          if (labels[i])<a name="line.65"></a>
+<FONT color="green">066</FONT>            t[i] = hiTarget;<a name="line.66"></a>
+<FONT color="green">067</FONT>          else<a name="line.67"></a>
+<FONT color="green">068</FONT>            t[i] = loTarget;<a name="line.68"></a>
+<FONT color="green">069</FONT>        }<a name="line.69"></a>
+<FONT color="green">070</FONT>    <a name="line.70"></a>
+<FONT color="green">071</FONT>        double a = 0.0;<a name="line.71"></a>
+<FONT color="green">072</FONT>        double b = Math.log((nMinus + 1.0) / (nPlus + 1.0));<a name="line.72"></a>
+<FONT color="green">073</FONT>        double f = 0.0;<a name="line.73"></a>
+<FONT color="green">074</FONT>    <a name="line.74"></a>
+<FONT color="green">075</FONT>        for (int i = 0; i &lt; n; i++) {<a name="line.75"></a>
+<FONT color="green">076</FONT>          double fApB = decisionValues[i] * a + b;<a name="line.76"></a>
+<FONT color="green">077</FONT>          if (fApB &gt;= 0)<a name="line.77"></a>
+<FONT color="green">078</FONT>            f += t[i] * fApB + Math.log(1 + Math.exp(-fApB));<a name="line.78"></a>
+<FONT color="green">079</FONT>          else<a name="line.79"></a>
+<FONT color="green">080</FONT>            f += (t[i] - 1) * fApB + Math.log(1 + Math.exp(fApB));<a name="line.80"></a>
+<FONT color="green">081</FONT>        }<a name="line.81"></a>
+<FONT color="green">082</FONT>    <a name="line.82"></a>
+<FONT color="green">083</FONT>        int iterations;<a name="line.83"></a>
+<FONT color="green">084</FONT>        for (iterations = 0; iterations &lt; maxIterations; iterations++) {<a name="line.84"></a>
+<FONT color="green">085</FONT>          double h11 = sigma;<a name="line.85"></a>
+<FONT color="green">086</FONT>          double h22 = sigma;<a name="line.86"></a>
+<FONT color="green">087</FONT>          double h21 = 0.0;<a name="line.87"></a>
+<FONT color="green">088</FONT>          double g1 = 0.0;<a name="line.88"></a>
+<FONT color="green">089</FONT>          double g2 = 0.0;<a name="line.89"></a>
+<FONT color="green">090</FONT>    <a name="line.90"></a>
+<FONT color="green">091</FONT>          for (int i = 0; i &lt; n; i++) {<a name="line.91"></a>
+<FONT color="green">092</FONT>            double fApB = decisionValues[i] * a + b;<a name="line.92"></a>
+<FONT color="green">093</FONT>            double p, q;<a name="line.93"></a>
+<FONT color="green">094</FONT>            if (fApB &gt;= 0) {<a name="line.94"></a>
+<FONT color="green">095</FONT>              p = Math.exp(-fApB) / (1.0 + Math.exp(-fApB));<a name="line.95"></a>
+<FONT color="green">096</FONT>              q = 1.0 / (1.0 + Math.exp(-fApB));<a name="line.96"></a>
+<FONT color="green">097</FONT>            } else {<a name="line.97"></a>
+<FONT color="green">098</FONT>              p = 1.0 / (1.0 + Math.exp(fApB));<a name="line.98"></a>
+<FONT color="green">099</FONT>              q = Math.exp(fApB) / (1.0 + Math.exp(fApB));<a name="line.99"></a>
+<FONT color="green">100</FONT>            }<a name="line.100"></a>
+<FONT color="green">101</FONT>            double d2 = p * q;<a name="line.101"></a>
+<FONT color="green">102</FONT>            h11 += decisionValues[i] * decisionValues[i] * d2;<a name="line.102"></a>
+<FONT color="green">103</FONT>            h22 += d2;<a name="line.103"></a>
+<FONT color="green">104</FONT>            h21 += decisionValues[i] * d2;<a name="line.104"></a>
+<FONT color="green">105</FONT>            double d1 = t[i] - p;<a name="line.105"></a>
+<FONT color="green">106</FONT>            g1 += decisionValues[i] * d1;<a name="line.106"></a>
+<FONT color="green">107</FONT>            g2 += d1;<a name="line.107"></a>
+<FONT color="green">108</FONT>          }<a name="line.108"></a>
+<FONT color="green">109</FONT>    <a name="line.109"></a>
+<FONT color="green">110</FONT>          if (Math.abs(g1) &lt; 1e-5 &amp;&amp; Math.abs(g2) &lt; 1e-5)<a name="line.110"></a>
+<FONT color="green">111</FONT>            break;<a name="line.111"></a>
+<FONT color="green">112</FONT>    <a name="line.112"></a>
+<FONT color="green">113</FONT>          double det = h11 * h22 - h21 * h21;<a name="line.113"></a>
+<FONT color="green">114</FONT>          double dA = -(h22 * g1 - h21 * g2) / det;<a name="line.114"></a>
+<FONT color="green">115</FONT>          double dB = -(-h21 * g1 + h11 * g2) / det;<a name="line.115"></a>
+<FONT color="green">116</FONT>          double gd = g1 * dA + g2 * dB;<a name="line.116"></a>
+<FONT color="green">117</FONT>          double stepsize = 1;<a name="line.117"></a>
+<FONT color="green">118</FONT>    <a name="line.118"></a>
+<FONT color="green">119</FONT>          while (stepsize &gt;= minimumStepsize) {<a name="line.119"></a>
+<FONT color="green">120</FONT>            double newA = a + stepsize * dA;<a name="line.120"></a>
+<FONT color="green">121</FONT>            double newB = b + stepsize * dB;<a name="line.121"></a>
+<FONT color="green">122</FONT>            double newf = 0.0;<a name="line.122"></a>
+<FONT color="green">123</FONT>    <a name="line.123"></a>
+<FONT color="green">124</FONT>            for (int i = 1; i &lt; n; i++) {<a name="line.124"></a>
+<FONT color="green">125</FONT>              double fApB = decisionValues[i] * newA + newB;<a name="line.125"></a>
+<FONT color="green">126</FONT>              if (fApB &gt;= 0)<a name="line.126"></a>
+<FONT color="green">127</FONT>                newf += t[i] * fApB + Math.log(1 + Math.exp(-fApB));<a name="line.127"></a>
+<FONT color="green">128</FONT>              else<a name="line.128"></a>
+<FONT color="green">129</FONT>                newf += (t[i] - 1) * fApB + Math.log(1 + Math.exp(fApB));<a name="line.129"></a>
+<FONT color="green">130</FONT>            }<a name="line.130"></a>
+<FONT color="green">131</FONT>    <a name="line.131"></a>
+<FONT color="green">132</FONT>            if (newf &lt; f + 0.0001 * stepsize * gd) {<a name="line.132"></a>
+<FONT color="green">133</FONT>              a = newA;<a name="line.133"></a>
+<FONT color="green">134</FONT>              b = newB;<a name="line.134"></a>
+<FONT color="green">135</FONT>              f = newf;<a name="line.135"></a>
+<FONT color="green">136</FONT>              break;<a name="line.136"></a>
+<FONT color="green">137</FONT>            } else {<a name="line.137"></a>
+<FONT color="green">138</FONT>              stepsize /= 2.0;<a name="line.138"></a>
+<FONT color="green">139</FONT>            }<a name="line.139"></a>
+<FONT color="green">140</FONT>          }<a name="line.140"></a>
+<FONT color="green">141</FONT>    <a name="line.141"></a>
+<FONT color="green">142</FONT>          if (stepsize &lt; minimumStepsize) {<a name="line.142"></a>
+<FONT color="green">143</FONT>            Logger logger = Logger.getLogger(LinWengPlatt.class.getName());<a name="line.143"></a>
+<FONT color="green">144</FONT>            logger.fine("line search failure");<a name="line.144"></a>
+<FONT color="green">145</FONT>            break;<a name="line.145"></a>
+<FONT color="green">146</FONT>          }<a name="line.146"></a>
+<FONT color="green">147</FONT>        }<a name="line.147"></a>
+<FONT color="green">148</FONT>    <a name="line.148"></a>
+<FONT color="green">149</FONT>        if (iterations &gt;= maxIterations)<a name="line.149"></a>
+<FONT color="green">150</FONT>          throw new ConvergenceFailure("Reaching maximum iterations");<a name="line.150"></a>
+<FONT color="green">151</FONT>    <a name="line.151"></a>
+<FONT color="green">152</FONT>        return new Sigmoid(a, b);<a name="line.152"></a>
+<FONT color="green">153</FONT>      }<a name="line.153"></a>
+<FONT color="green">154</FONT>    <a name="line.154"></a>
+<FONT color="green">155</FONT>      public static class ConvergenceFailure extends Exception {<a name="line.155"></a>
+<FONT color="green">156</FONT>    <a name="line.156"></a>
+<FONT color="green">157</FONT>        private static final long serialVersionUID = -7570320408478887106L;<a name="line.157"></a>
+<FONT color="green">158</FONT>    <a name="line.158"></a>
+<FONT color="green">159</FONT>        public ConvergenceFailure(String message) {<a name="line.159"></a>
+<FONT color="green">160</FONT>          super(message);<a name="line.160"></a>
+<FONT color="green">161</FONT>        }<a name="line.161"></a>
+<FONT color="green">162</FONT>    <a name="line.162"></a>
+<FONT color="green">163</FONT>      }<a name="line.163"></a>
+<FONT color="green">164</FONT>    <a name="line.164"></a>
+<FONT color="green">165</FONT>    }<a name="line.165"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

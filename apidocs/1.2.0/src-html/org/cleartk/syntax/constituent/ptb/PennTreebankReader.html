@@ -1,0 +1,280 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /** <a name="line.1"></a>
+<FONT color="green">002</FONT>     * Copyright (c) 2007-2008, Regents of the University of Colorado <a name="line.2"></a>
+<FONT color="green">003</FONT>     * All rights reserved.<a name="line.3"></a>
+<FONT color="green">004</FONT>     * <a name="line.4"></a>
+<FONT color="green">005</FONT>     * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<FONT color="green">006</FONT>     * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<FONT color="green">007</FONT>     * <a name="line.7"></a>
+<FONT color="green">008</FONT>     * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<FONT color="green">009</FONT>     * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<FONT color="green">010</FONT>     * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<FONT color="green">011</FONT>     * <a name="line.11"></a>
+<FONT color="green">012</FONT>     * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<FONT color="green">013</FONT>     * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<FONT color="green">014</FONT>     * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<FONT color="green">015</FONT>     * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<FONT color="green">016</FONT>     * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<FONT color="green">017</FONT>     * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<FONT color="green">018</FONT>     * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<FONT color="green">019</FONT>     * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<FONT color="green">020</FONT>     * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<FONT color="green">021</FONT>     * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<FONT color="green">022</FONT>     * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<FONT color="green">023</FONT>     */<a name="line.23"></a>
+<FONT color="green">024</FONT>    package org.cleartk.syntax.constituent.ptb;<a name="line.24"></a>
+<FONT color="green">025</FONT>    <a name="line.25"></a>
+<FONT color="green">026</FONT>    import java.io.File;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import java.io.IOException;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import java.util.Collections;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import java.util.LinkedList;<a name="line.29"></a>
+<FONT color="green">030</FONT>    import java.util.List;<a name="line.30"></a>
+<FONT color="green">031</FONT>    <a name="line.31"></a>
+<FONT color="green">032</FONT>    import org.apache.uima.UimaContext;<a name="line.32"></a>
+<FONT color="green">033</FONT>    import org.apache.uima.analysis_engine.AnalysisEngineProcessException;<a name="line.33"></a>
+<FONT color="green">034</FONT>    import org.apache.uima.collection.CollectionException;<a name="line.34"></a>
+<FONT color="green">035</FONT>    import org.apache.uima.jcas.JCas;<a name="line.35"></a>
+<FONT color="green">036</FONT>    import org.apache.uima.resource.ResourceInitializationException;<a name="line.36"></a>
+<FONT color="green">037</FONT>    import org.apache.uima.util.FileUtils;<a name="line.37"></a>
+<FONT color="green">038</FONT>    import org.apache.uima.util.Level;<a name="line.38"></a>
+<FONT color="green">039</FONT>    import org.apache.uima.util.Progress;<a name="line.39"></a>
+<FONT color="green">040</FONT>    import org.apache.uima.util.ProgressImpl;<a name="line.40"></a>
+<FONT color="green">041</FONT>    import org.cleartk.syntax.constituent.TreebankConstants;<a name="line.41"></a>
+<FONT color="green">042</FONT>    import org.cleartk.syntax.constituent.TreebankGoldAnnotator;<a name="line.42"></a>
+<FONT color="green">043</FONT>    import org.cleartk.util.ViewURIUtil;<a name="line.43"></a>
+<FONT color="green">044</FONT>    import org.uimafit.component.JCasCollectionReader_ImplBase;<a name="line.44"></a>
+<FONT color="green">045</FONT>    import org.uimafit.component.ViewCreatorAnnotator;<a name="line.45"></a>
+<FONT color="green">046</FONT>    import org.uimafit.descriptor.ConfigurationParameter;<a name="line.46"></a>
+<FONT color="green">047</FONT>    import org.uimafit.descriptor.SofaCapability;<a name="line.47"></a>
+<FONT color="green">048</FONT>    import org.uimafit.factory.ConfigurationParameterFactory;<a name="line.48"></a>
+<FONT color="green">049</FONT>    <a name="line.49"></a>
+<FONT color="green">050</FONT>    /**<a name="line.50"></a>
+<FONT color="green">051</FONT>     * /** &lt;br&gt;<a name="line.51"></a>
+<FONT color="green">052</FONT>     * Copyright (c) 2007-2008, Regents of the University of Colorado &lt;br&gt;<a name="line.52"></a>
+<FONT color="green">053</FONT>     * All rights reserved.<a name="line.53"></a>
+<FONT color="green">054</FONT>     * <a name="line.54"></a>
+<FONT color="green">055</FONT>     * <a name="line.55"></a>
+<FONT color="green">056</FONT>     * <a name="line.56"></a>
+<FONT color="green">057</FONT>     * &lt;p&gt;<a name="line.57"></a>
+<FONT color="green">058</FONT>     * PennTreebankReader reads in the PennTreebank (PTB) data distributed by the LDC. It simply reads<a name="line.58"></a>
+<FONT color="green">059</FONT>     * the raw treebank data into a view called "TreebankView". To actually parse the treebank data and<a name="line.59"></a>
+<FONT color="green">060</FONT>     * post it to the CAS, you will need to use the TreebankGoldAnnotator which does the real work of<a name="line.60"></a>
+<FONT color="green">061</FONT>     * parsing the treebank format. In general, treebank data can be read in by a<a name="line.61"></a>
+<FONT color="green">062</FONT>     * PlainTextCollectionReader or some other simple collection reader. This class exists because the<a name="line.62"></a>
+<FONT color="green">063</FONT>     * PennTreebank has a specific directory structure that corresponds to sections which are often used<a name="line.63"></a>
+<FONT color="green">064</FONT>     * in specific ways to conduct experiments - e.g. section 02-20 for training and sections 21-24 for<a name="line.64"></a>
+<FONT color="green">065</FONT>     * testing. This collection reader makes it easy to read in specific sections for later processing.<a name="line.65"></a>
+<FONT color="green">066</FONT>     * Only files ending with ".mrg" will be read in.<a name="line.66"></a>
+<FONT color="green">067</FONT>     * &lt;/p&gt;<a name="line.67"></a>
+<FONT color="green">068</FONT>     * &lt;p&gt;<a name="line.68"></a>
+<FONT color="green">069</FONT>     * The acronym WSJ stands for Wall Street Journal which is the source of the articles treebanked by<a name="line.69"></a>
+<FONT color="green">070</FONT>     * PTB.<a name="line.70"></a>
+<FONT color="green">071</FONT>     * &lt;p&gt;<a name="line.71"></a>
+<FONT color="green">072</FONT>     * If you are concerned that your copy of PTB is not working correctly with this collection reader<a name="line.72"></a>
+<FONT color="green">073</FONT>     * (or TreebankGoldAnnotator) then please see the corresponding unit tests.<a name="line.73"></a>
+<FONT color="green">074</FONT>     * <a name="line.74"></a>
+<FONT color="green">075</FONT>     * @see TreebankGoldAnnotator<a name="line.75"></a>
+<FONT color="green">076</FONT>     * <a name="line.76"></a>
+<FONT color="green">077</FONT>     * @author Philip Ogren, Philipp Wetzler<a name="line.77"></a>
+<FONT color="green">078</FONT>     */<a name="line.78"></a>
+<FONT color="green">079</FONT>    <a name="line.79"></a>
+<FONT color="green">080</FONT>    @SofaCapability(outputSofas = { TreebankConstants.TREEBANK_VIEW, ViewURIUtil.URI })<a name="line.80"></a>
+<FONT color="green">081</FONT>    public class PennTreebankReader extends JCasCollectionReader_ImplBase {<a name="line.81"></a>
+<FONT color="green">082</FONT>      public static final String PARAM_CORPUS_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(<a name="line.82"></a>
+<FONT color="green">083</FONT>          PennTreebankReader.class,<a name="line.83"></a>
+<FONT color="green">084</FONT>          "corpusDirectoryName");<a name="line.84"></a>
+<FONT color="green">085</FONT>    <a name="line.85"></a>
+<FONT color="green">086</FONT>      private static final String CORPUS_DIRECTORY_DESCRIPTION = "Specifies the location of WSJ/PennTreebank treebank files.  "<a name="line.86"></a>
+<FONT color="green">087</FONT>          + "The directory should contain subdirectories corresponding to the sections (e.g. '00', '01', etc.) "<a name="line.87"></a>
+<FONT color="green">088</FONT>          + "That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. "<a name="line.88"></a>
+<FONT color="green">089</FONT>          + "There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24. ";<a name="line.89"></a>
+<FONT color="green">090</FONT>    <a name="line.90"></a>
+<FONT color="green">091</FONT>      @ConfigurationParameter(mandatory = true, description = CORPUS_DIRECTORY_DESCRIPTION)<a name="line.91"></a>
+<FONT color="green">092</FONT>      private String corpusDirectoryName;<a name="line.92"></a>
+<FONT color="green">093</FONT>    <a name="line.93"></a>
+<FONT color="green">094</FONT>      public static final String PARAM_SECTIONS_SPECIFIER = ConfigurationParameterFactory.createConfigurationParameterName(<a name="line.94"></a>
+<FONT color="green">095</FONT>          PennTreebankReader.class,<a name="line.95"></a>
+<FONT color="green">096</FONT>          "sectionsSpecifier");<a name="line.96"></a>
+<FONT color="green">097</FONT>    <a name="line.97"></a>
+<FONT color="green">098</FONT>      private static final String SECTIONS_DESCRIPTION = "specifies which sections of PTB to read in.  "<a name="line.98"></a>
+<FONT color="green">099</FONT>          + "The required format for values of this parameter allows for comma-separated section numbers and section ranges, "<a name="line.99"></a>
+<FONT color="green">100</FONT>          + "for example '02,07-12,16'.";<a name="line.100"></a>
+<FONT color="green">101</FONT>    <a name="line.101"></a>
+<FONT color="green">102</FONT>      @ConfigurationParameter(defaultValue = "00-24", description = SECTIONS_DESCRIPTION)<a name="line.102"></a>
+<FONT color="green">103</FONT>      private String sectionsSpecifier;<a name="line.103"></a>
+<FONT color="green">104</FONT>    <a name="line.104"></a>
+<FONT color="green">105</FONT>      protected File directory;<a name="line.105"></a>
+<FONT color="green">106</FONT>    <a name="line.106"></a>
+<FONT color="green">107</FONT>      protected LinkedList&lt;File&gt; files;<a name="line.107"></a>
+<FONT color="green">108</FONT>    <a name="line.108"></a>
+<FONT color="green">109</FONT>      protected int numberOfFiles;<a name="line.109"></a>
+<FONT color="green">110</FONT>    <a name="line.110"></a>
+<FONT color="green">111</FONT>      protected ListSpecification sections;<a name="line.111"></a>
+<FONT color="green">112</FONT>    <a name="line.112"></a>
+<FONT color="green">113</FONT>      @Override<a name="line.113"></a>
+<FONT color="green">114</FONT>      public void initialize(UimaContext context) throws ResourceInitializationException {<a name="line.114"></a>
+<FONT color="green">115</FONT>        this.sections = new ListSpecification(sectionsSpecifier);<a name="line.115"></a>
+<FONT color="green">116</FONT>    <a name="line.116"></a>
+<FONT color="green">117</FONT>        this.directory = new File(corpusDirectoryName);<a name="line.117"></a>
+<FONT color="green">118</FONT>        this.files = new LinkedList&lt;File&gt;();<a name="line.118"></a>
+<FONT color="green">119</FONT>        collectSections(new File(directory.getPath()), this.files, this.sections);<a name="line.119"></a>
+<FONT color="green">120</FONT>        Collections.sort(files);<a name="line.120"></a>
+<FONT color="green">121</FONT>        this.numberOfFiles = files.size();<a name="line.121"></a>
+<FONT color="green">122</FONT>    <a name="line.122"></a>
+<FONT color="green">123</FONT>      }<a name="line.123"></a>
+<FONT color="green">124</FONT>    <a name="line.124"></a>
+<FONT color="green">125</FONT>      /**<a name="line.125"></a>
+<FONT color="green">126</FONT>       * This will add all the &lt;tt&gt;.mrg&lt;/tt&gt; files in the given WSJ sections to &lt;em&gt;treebankFiles&lt;/em&gt;.<a name="line.126"></a>
+<FONT color="green">127</FONT>       * <a name="line.127"></a>
+<FONT color="green">128</FONT>       * @param wsjDirectory<a name="line.128"></a>
+<FONT color="green">129</FONT>       *          The top level of the WSJ part of Treebank. Underneath here are the section<a name="line.129"></a>
+<FONT color="green">130</FONT>       *          subdirectories.<a name="line.130"></a>
+<FONT color="green">131</FONT>       * @param treebankFiles<a name="line.131"></a>
+<FONT color="green">132</FONT>       *          The {@link List} to which the treebank files should be added.<a name="line.132"></a>
+<FONT color="green">133</FONT>       * @param wsjSections<a name="line.133"></a>
+<FONT color="green">134</FONT>       *          The set of sections to include.<a name="line.134"></a>
+<FONT color="green">135</FONT>       */<a name="line.135"></a>
+<FONT color="green">136</FONT>      public static void collectSections(<a name="line.136"></a>
+<FONT color="green">137</FONT>          File wsjDirectory,<a name="line.137"></a>
+<FONT color="green">138</FONT>          List&lt;File&gt; treebankFiles,<a name="line.138"></a>
+<FONT color="green">139</FONT>          ListSpecification wsjSections) {<a name="line.139"></a>
+<FONT color="green">140</FONT>        if (!wsjDirectory.isDirectory())<a name="line.140"></a>
+<FONT color="green">141</FONT>          return;<a name="line.141"></a>
+<FONT color="green">142</FONT>    <a name="line.142"></a>
+<FONT color="green">143</FONT>        for (File subFile : wsjDirectory.listFiles()) {<a name="line.143"></a>
+<FONT color="green">144</FONT>          if (!subFile.isDirectory())<a name="line.144"></a>
+<FONT color="green">145</FONT>            continue;<a name="line.145"></a>
+<FONT color="green">146</FONT>    <a name="line.146"></a>
+<FONT color="green">147</FONT>          try {<a name="line.147"></a>
+<FONT color="green">148</FONT>            int section = Integer.valueOf(subFile.getName());<a name="line.148"></a>
+<FONT color="green">149</FONT>    <a name="line.149"></a>
+<FONT color="green">150</FONT>            if (!wsjSections.contains(section))<a name="line.150"></a>
+<FONT color="green">151</FONT>              continue;<a name="line.151"></a>
+<FONT color="green">152</FONT>          } catch (NumberFormatException e) {<a name="line.152"></a>
+<FONT color="green">153</FONT>            continue;<a name="line.153"></a>
+<FONT color="green">154</FONT>          }<a name="line.154"></a>
+<FONT color="green">155</FONT>    <a name="line.155"></a>
+<FONT color="green">156</FONT>          collectFiles(subFile, treebankFiles);<a name="line.156"></a>
+<FONT color="green">157</FONT>        }<a name="line.157"></a>
+<FONT color="green">158</FONT>      }<a name="line.158"></a>
+<FONT color="green">159</FONT>    <a name="line.159"></a>
+<FONT color="green">160</FONT>      static void collectFiles(File file, List&lt;File&gt; treebankFiles) {<a name="line.160"></a>
+<FONT color="green">161</FONT>        if (file.isFile() &amp;&amp; file.getName().endsWith(".mrg")) {<a name="line.161"></a>
+<FONT color="green">162</FONT>          treebankFiles.add(file);<a name="line.162"></a>
+<FONT color="green">163</FONT>        } else if (file.isDirectory()) {<a name="line.163"></a>
+<FONT color="green">164</FONT>          for (File subFile : file.listFiles()) {<a name="line.164"></a>
+<FONT color="green">165</FONT>            collectFiles(subFile, treebankFiles);<a name="line.165"></a>
+<FONT color="green">166</FONT>          }<a name="line.166"></a>
+<FONT color="green">167</FONT>        }<a name="line.167"></a>
+<FONT color="green">168</FONT>      }<a name="line.168"></a>
+<FONT color="green">169</FONT>    <a name="line.169"></a>
+<FONT color="green">170</FONT>      /**<a name="line.170"></a>
+<FONT color="green">171</FONT>       * Reads the next file and stores its text in &lt;b&gt;cas&lt;/b&gt; as the "TreebankView" SOFA.<a name="line.171"></a>
+<FONT color="green">172</FONT>       */<a name="line.172"></a>
+<FONT color="green">173</FONT>      public void getNext(JCas jCas) throws IOException, CollectionException {<a name="line.173"></a>
+<FONT color="green">174</FONT>        File treebankFile = files.removeFirst();<a name="line.174"></a>
+<FONT color="green">175</FONT>        getUimaContext().getLogger().log(<a name="line.175"></a>
+<FONT color="green">176</FONT>            Level.FINEST,<a name="line.176"></a>
+<FONT color="green">177</FONT>            "reading treebank file: " + treebankFile.getPath());<a name="line.177"></a>
+<FONT color="green">178</FONT>        ViewURIUtil.setURI(jCas, treebankFile.toURI());<a name="line.178"></a>
+<FONT color="green">179</FONT>        try {<a name="line.179"></a>
+<FONT color="green">180</FONT>          JCas treebankView = ViewCreatorAnnotator.createViewSafely(<a name="line.180"></a>
+<FONT color="green">181</FONT>              jCas,<a name="line.181"></a>
+<FONT color="green">182</FONT>              TreebankConstants.TREEBANK_VIEW);<a name="line.182"></a>
+<FONT color="green">183</FONT>          treebankView.setSofaDataString(FileUtils.file2String(treebankFile), "text/plain");<a name="line.183"></a>
+<FONT color="green">184</FONT>        } catch (AnalysisEngineProcessException aepe) {<a name="line.184"></a>
+<FONT color="green">185</FONT>          throw new CollectionException(aepe);<a name="line.185"></a>
+<FONT color="green">186</FONT>        }<a name="line.186"></a>
+<FONT color="green">187</FONT>      }<a name="line.187"></a>
+<FONT color="green">188</FONT>    <a name="line.188"></a>
+<FONT color="green">189</FONT>      public void close() throws IOException {<a name="line.189"></a>
+<FONT color="green">190</FONT>      }<a name="line.190"></a>
+<FONT color="green">191</FONT>    <a name="line.191"></a>
+<FONT color="green">192</FONT>      public Progress[] getProgress() {<a name="line.192"></a>
+<FONT color="green">193</FONT>        return new Progress[] { new ProgressImpl(<a name="line.193"></a>
+<FONT color="green">194</FONT>            numberOfFiles - files.size(),<a name="line.194"></a>
+<FONT color="green">195</FONT>            numberOfFiles,<a name="line.195"></a>
+<FONT color="green">196</FONT>            Progress.ENTITIES) };<a name="line.196"></a>
+<FONT color="green">197</FONT>      }<a name="line.197"></a>
+<FONT color="green">198</FONT>    <a name="line.198"></a>
+<FONT color="green">199</FONT>      public boolean hasNext() throws IOException, CollectionException {<a name="line.199"></a>
+<FONT color="green">200</FONT>        if (files.size() &gt; 0)<a name="line.200"></a>
+<FONT color="green">201</FONT>          return true;<a name="line.201"></a>
+<FONT color="green">202</FONT>        else<a name="line.202"></a>
+<FONT color="green">203</FONT>          return false;<a name="line.203"></a>
+<FONT color="green">204</FONT>      }<a name="line.204"></a>
+<FONT color="green">205</FONT>    <a name="line.205"></a>
+<FONT color="green">206</FONT>      public void setCorpusDirectoryName(String corpusDirectoryName) {<a name="line.206"></a>
+<FONT color="green">207</FONT>        this.corpusDirectoryName = corpusDirectoryName;<a name="line.207"></a>
+<FONT color="green">208</FONT>      }<a name="line.208"></a>
+<FONT color="green">209</FONT>    <a name="line.209"></a>
+<FONT color="green">210</FONT>      public void setSectionsSpecifier(String sectionsString) {<a name="line.210"></a>
+<FONT color="green">211</FONT>        this.sectionsSpecifier = sectionsString;<a name="line.211"></a>
+<FONT color="green">212</FONT>      }<a name="line.212"></a>
+<FONT color="green">213</FONT>    <a name="line.213"></a>
+<FONT color="green">214</FONT>    }<a name="line.214"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

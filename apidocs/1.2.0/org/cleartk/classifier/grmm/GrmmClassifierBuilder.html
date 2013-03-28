@@ -1,0 +1,543 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+GrmmClassifierBuilder (ClearTK Release 1.2.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="GrmmClassifierBuilder (ClearTK Release 1.2.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/GrmmClassifierBuilder.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifier.html" title="class in org.cleartk.classifier.grmm"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../org/cleartk/classifier/grmm/GrmmDataWriter.html" title="class in org.cleartk.classifier.grmm"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/classifier/grmm/GrmmClassifierBuilder.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="GrmmClassifierBuilder.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+org.cleartk.classifier.grmm</FONT>
+<BR>
+Class GrmmClassifierBuilder</H2>
+<PRE>
+<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</A>
+  <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">org.cleartk.classifier.jar.JarClassifierBuilder</A>&lt;CLASSIFIER_TYPE&gt;
+      <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">org.cleartk.classifier.jar.EncodingJarClassifierBuilder</A>&lt;CLASSIFIER_TYPE,ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;
+          <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../org/cleartk/classifier/jar/SequenceClassifierBuilder_ImplBase.html" title="class in org.cleartk.classifier.jar">org.cleartk.classifier.jar.SequenceClassifierBuilder_ImplBase</A>&lt;<A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifier.html" title="class in org.cleartk.classifier.grmm">GrmmClassifier</A>,<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/encoder/features/NameNumber.html" title="class in org.cleartk.classifier.encoder.features">NameNumber</A>&gt;,<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[],<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[]&gt;
+              <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>org.cleartk.classifier.grmm.GrmmClassifierBuilder</B>
+</PRE>
+<HR>
+<DL>
+<DT><PRE>public class <A HREF="../../../../src-html/org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#line.56"><B>GrmmClassifierBuilder</B></A><DT>extends <A HREF="../../../../org/cleartk/classifier/jar/SequenceClassifierBuilder_ImplBase.html" title="class in org.cleartk.classifier.jar">SequenceClassifierBuilder_ImplBase</A>&lt;<A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifier.html" title="class in org.cleartk.classifier.grmm">GrmmClassifier</A>,<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/encoder/features/NameNumber.html" title="class in org.cleartk.classifier.encoder.features">NameNumber</A>&gt;,<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[],<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[]&gt;</DL>
+</PRE>
+
+<P>
+<br>
+ Copyright (c) 2010, University of Würzburg<br>
+ All rights reserved.
+ <p>
+<P>
+
+<P>
+<DL>
+<DT><B>Author:</B></DT>
+  <DD>Martin Toepfer</DD>
+</DL>
+<HR>
+
+<P>
+<!-- =========== FIELD SUMMARY =========== -->
+
+<A NAME="field_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Field Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="http://mallet.cs.umass.edu/api/cc/mallet/grmm/learning/ACRF.html?is-external=true" title="class or interface in cc.mallet.grmm.learning">ACRF</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#acrf">acrf</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#outcomeExample">outcomeExample</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="fields_inherited_from_class_org.cleartk.classifier.jar.EncodingJarClassifierBuilder"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Fields inherited from class org.cleartk.classifier.jar.<A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">EncodingJarClassifierBuilder</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html#featuresEncoder">featuresEncoder</A>, <A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html#outcomeEncoder">outcomeEncoder</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="fields_inherited_from_class_org.cleartk.classifier.jar.JarClassifierBuilder"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Fields inherited from class org.cleartk.classifier.jar.<A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#manifest">manifest</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+
+<A NAME="constructor_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Constructor Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#GrmmClassifierBuilder()">GrmmClassifierBuilder</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#getTrainingDataFile(java.io.File)">getTrainingDataFile</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;dir)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifier.html" title="class in org.cleartk.classifier.grmm">GrmmClassifier</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#newClassifier()">newClassifier</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a new classifier using the attributes loaded by
+ <A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#unpackageClassifier(java.util.jar.JarInputStream)"><CODE>JarClassifierBuilder.unpackageClassifier(JarInputStream)</CODE></A>.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#packageClassifier(java.io.File, java.util.jar.JarOutputStream)">packageClassifier</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;dir,
+                                   <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/jar/JarOutputStream.html?is-external=true" title="class or interface in java.util.jar">JarOutputStream</A>&nbsp;modelStream)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add elements to a classifier jar.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#trainClassifier(java.io.File, java.lang.String...)">trainClassifier</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;dir,
+                               <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>...&nbsp;args)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parameters:<br>
+ <table border="1">
+ <thead>
+ 
+ position
+ type
+ description
+ 
+ </thead>
+ 
+ 0
+ required
+ path to template file
+ 
+ 
+ 1
+ optional
+ inferencer, see GRMM docs for possible values
+ 
+ 
+ 
+ 
+ default: LoopyBP
+ 
+ 
+ 2
+ optional
+ max-inferencer, see GRMM docs for possible values
+ 
+ 
+ 
+ 
+ default: LoopyBP.createForMaxProduct()
+ 
+ </TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#unpackageClassifier(java.util.jar.JarInputStream)">unpackageClassifier</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/jar/JarInputStream.html?is-external=true" title="class or interface in java.util.jar">JarInputStream</A>&nbsp;modelStream)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Load classifier elements from a classifier jar.</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_org.cleartk.classifier.jar.EncodingJarClassifierBuilder"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class org.cleartk.classifier.jar.<A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">EncodingJarClassifierBuilder</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html#getEncodersFile(java.io.File)">getEncodersFile</A>, <A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html#getFeaturesEncoder()">getFeaturesEncoder</A>, <A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html#getOutcomeEncoder()">getOutcomeEncoder</A>, <A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html#saveToTrainingDirectory(java.io.File)">saveToTrainingDirectory</A>, <A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html#setFeaturesEncoder(org.cleartk.classifier.encoder.features.FeaturesEncoder)">setFeaturesEncoder</A>, <A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html#setOutcomeEncoder(org.cleartk.classifier.encoder.outcome.OutcomeEncoder)">setOutcomeEncoder</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_org.cleartk.classifier.jar.JarClassifierBuilder"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class org.cleartk.classifier.jar.<A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#fromManifest(java.util.jar.Manifest)">fromManifest</A>, <A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#fromTrainingDirectory(java.io.File)">fromTrainingDirectory</A>, <A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#getModelJarFile(java.io.File)">getModelJarFile</A>, <A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#loadClassifier(java.io.InputStream)">loadClassifier</A>, <A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#loadClassifierFromTrainingDirectory(java.io.File)">loadClassifierFromTrainingDirectory</A>, <A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#packageClassifier(java.io.File)">packageClassifier</A>, <A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#trainAndPackage(java.io.File, java.lang.String...)">trainAndPackage</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ============ FIELD DETAIL =========== -->
+
+<A NAME="field_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Field Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="acrf"><!-- --></A><H3>
+acrf</H3>
+<PRE>
+protected <A HREF="http://mallet.cs.umass.edu/api/cc/mallet/grmm/learning/ACRF.html?is-external=true" title="class or interface in cc.mallet.grmm.learning">ACRF</A> <A HREF="../../../../src-html/org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#line.167"><B>acrf</B></A></PRE>
+<DL>
+<DL>
+</DL>
+</DL>
+<HR>
+
+<A NAME="outcomeExample"><!-- --></A><H3>
+outcomeExample</H3>
+<PRE>
+protected <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A> <A HREF="../../../../src-html/org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#line.169"><B>outcomeExample</B></A></PRE>
+<DL>
+<DL>
+</DL>
+</DL>
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+
+<A NAME="constructor_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Constructor Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="GrmmClassifierBuilder()"><!-- --></A><H3>
+GrmmClassifierBuilder</H3>
+<PRE>
+public <A HREF="../../../../src-html/org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#line.56"><B>GrmmClassifierBuilder</B></A>()</PRE>
+<DL>
+</DL>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="getTrainingDataFile(java.io.File)"><!-- --></A><H3>
+getTrainingDataFile</H3>
+<PRE>
+public <A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A> <A HREF="../../../../src-html/org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#line.66"><B>getTrainingDataFile</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;dir)</PRE>
+<DL>
+<DD><DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html#getTrainingDataFile(java.io.File)">getTrainingDataFile</A></CODE> in class <CODE><A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">EncodingJarClassifierBuilder</A>&lt;<A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifier.html" title="class in org.cleartk.classifier.grmm">GrmmClassifier</A>,<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/encoder/features/NameNumber.html" title="class in org.cleartk.classifier.encoder.features">NameNumber</A>&gt;,<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[],<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[]&gt;</CODE></DL>
+</DD>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="trainClassifier(java.io.File, java.lang.String...)"><!-- --></A><H3>
+trainClassifier</H3>
+<PRE>
+public void <A HREF="../../../../src-html/org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#line.107"><B>trainClassifier</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;dir,
+                            <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>...&nbsp;args)
+                     throws <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Exception.html?is-external=true" title="class or interface in java.lang">Exception</A></PRE>
+<DL>
+<DD>Parameters:<br>
+ <table border="1">
+ <thead>
+ <tr>
+ <th>position</th>
+ <th>type</th>
+ <th>description</td></th>
+ </tr>
+ </thead>
+ <tr>
+ <td>0</td>
+ <td>required</td>
+ <td>path to template file</td>
+ </tr>
+ <tr>
+ <td>1</td>
+ <td>optional</td>
+ <td>inferencer, see GRMM docs for possible values</td>
+ </tr>
+ <tr>
+ <td></td>
+ <td></td>
+ <td>default: LoopyBP</td>
+ </tr>
+ <tr>
+ <td>2</td>
+ <td>optional</td>
+ <td>max-inferencer, see GRMM docs for possible values</td>
+ </tr>
+ <tr>
+ <td></td>
+ <td></td>
+ <td>default: LoopyBP.createForMaxProduct()</td>
+ </tr>
+ </table>
+<P>
+<DD><DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#trainClassifier(java.io.File, java.lang.String...)">trainClassifier</A></CODE> in class <CODE><A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A>&lt;<A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifier.html" title="class in org.cleartk.classifier.grmm">GrmmClassifier</A>&gt;</CODE></DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>dir</CODE> - The directory where training data and other classifier information has been written
+          and where the trained classifier should be stored.<DD><CODE>args</CODE> - Additional command line arguments for the classifier trainer.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Exception.html?is-external=true" title="class or interface in java.lang">Exception</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="packageClassifier(java.io.File, java.util.jar.JarOutputStream)"><!-- --></A><H3>
+packageClassifier</H3>
+<PRE>
+protected void <A HREF="../../../../src-html/org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#line.143"><B>packageClassifier</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;dir,
+                                 <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/jar/JarOutputStream.html?is-external=true" title="class or interface in java.util.jar">JarOutputStream</A>&nbsp;modelStream)
+                          throws <A HREF="http://download.oracle.com/javase/6/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</A></PRE>
+<DL>
+<DD><B>Description copied from class: <CODE><A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#packageClassifier(java.io.File, java.util.jar.JarOutputStream)">JarClassifierBuilder</A></CODE></B></DD>
+<DD>Add elements to a classifier jar.
+<P>
+<DD><DL>
+<DT><B>Overrides:</B><DD><CODE><A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html#packageClassifier(java.io.File, java.util.jar.JarOutputStream)">packageClassifier</A></CODE> in class <CODE><A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">EncodingJarClassifierBuilder</A>&lt;<A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifier.html" title="class in org.cleartk.classifier.grmm">GrmmClassifier</A>,<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/encoder/features/NameNumber.html" title="class in org.cleartk.classifier.encoder.features">NameNumber</A>&gt;,<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[],<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[]&gt;</CODE></DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>dir</CODE> - The directory where the classifier model was trained.<DD><CODE>modelStream</CODE> - The jar where the classifier is being written.
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</A></CODE> - For errors reading the directory or writing to the jar.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="unpackageClassifier(java.util.jar.JarInputStream)"><!-- --></A><H3>
+unpackageClassifier</H3>
+<PRE>
+protected void <A HREF="../../../../src-html/org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#line.172"><B>unpackageClassifier</B></A>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/jar/JarInputStream.html?is-external=true" title="class or interface in java.util.jar">JarInputStream</A>&nbsp;modelStream)
+                            throws <A HREF="http://download.oracle.com/javase/6/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</A></PRE>
+<DL>
+<DD><B>Description copied from class: <CODE><A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#unpackageClassifier(java.util.jar.JarInputStream)">JarClassifierBuilder</A></CODE></B></DD>
+<DD>Load classifier elements from a classifier jar. This will typically save such attributes as
+ instance variables in preparation for a call to <A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#newClassifier()"><CODE>JarClassifierBuilder.newClassifier()</CODE></A>.
+<P>
+<DD><DL>
+<DT><B>Overrides:</B><DD><CODE><A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html#unpackageClassifier(java.util.jar.JarInputStream)">unpackageClassifier</A></CODE> in class <CODE><A HREF="../../../../org/cleartk/classifier/jar/EncodingJarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">EncodingJarClassifierBuilder</A>&lt;<A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifier.html" title="class in org.cleartk.classifier.grmm">GrmmClassifier</A>,<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/encoder/features/NameNumber.html" title="class in org.cleartk.classifier.encoder.features">NameNumber</A>&gt;,<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[],<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[]&gt;</CODE></DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>modelStream</CODE> - The classifier jar
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/io/IOException.html?is-external=true" title="class or interface in java.io">IOException</A></CODE> - For errors reading from the jar.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="newClassifier()"><!-- --></A><H3>
+newClassifier</H3>
+<PRE>
+protected <A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifier.html" title="class in org.cleartk.classifier.grmm">GrmmClassifier</A> <A HREF="../../../../src-html/org/cleartk/classifier/grmm/GrmmClassifierBuilder.html#line.185"><B>newClassifier</B></A>()</PRE>
+<DL>
+<DD><B>Description copied from class: <CODE><A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#newClassifier()">JarClassifierBuilder</A></CODE></B></DD>
+<DD>Create a new classifier using the attributes loaded by
+ <A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#unpackageClassifier(java.util.jar.JarInputStream)"><CODE>JarClassifierBuilder.unpackageClassifier(JarInputStream)</CODE></A>.
+<P>
+<DD><DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#newClassifier()">newClassifier</A></CODE> in class <CODE><A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html" title="class in org.cleartk.classifier.jar">JarClassifierBuilder</A>&lt;<A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifier.html" title="class in org.cleartk.classifier.grmm">GrmmClassifier</A>&gt;</CODE></DL>
+</DD>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>The loaded and initialized classifier.</DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/GrmmClassifierBuilder.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifier.html" title="class in org.cleartk.classifier.grmm"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../org/cleartk/classifier/grmm/GrmmDataWriter.html" title="class in org.cleartk.classifier.grmm"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/classifier/grmm/GrmmClassifierBuilder.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="GrmmClassifierBuilder.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>

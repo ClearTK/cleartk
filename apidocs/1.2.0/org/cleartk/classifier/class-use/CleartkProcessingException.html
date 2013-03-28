@@ -1,0 +1,1303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+Uses of Class org.cleartk.classifier.CleartkProcessingException (ClearTK Release 1.2.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="Uses of Class org.cleartk.classifier.CleartkProcessingException (ClearTK Release 1.2.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier"><FONT CLASS="NavBarFont1"><B>Class</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Use</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/classifier//class-useCleartkProcessingException.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="CleartkProcessingException.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<CENTER>
+<H2>
+<B>Uses of Class<br>org.cleartk.classifier.CleartkProcessingException</B></H2>
+</CENTER>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Packages that use <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier"><B>org.cleartk.classifier</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.baseline"><B>org.cleartk.classifier.baseline</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.crfsuite"><B>org.cleartk.classifier.crfsuite</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.encoder"><B>org.cleartk.classifier.encoder</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.feature.extractor"><B>org.cleartk.classifier.feature.extractor</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.feature.transform"><B>org.cleartk.classifier.feature.transform</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.grmm"><B>org.cleartk.classifier.grmm</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.jar"><B>org.cleartk.classifier.jar</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.liblinear"><B>org.cleartk.classifier.liblinear</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.libsvm"><B>org.cleartk.classifier.libsvm</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.mallet"><B>org.cleartk.classifier.mallet</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.opennlp"><B>org.cleartk.classifier.opennlp</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.svmlight"><B>org.cleartk.classifier.svmlight</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.svmlight.rank"><B>org.cleartk.classifier.svmlight.rank</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.tksvmlight"><B>org.cleartk.classifier.tksvmlight</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.util.tfidf"><B>org.cleartk.classifier.util.tfidf</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.viterbi"><B>org.cleartk.classifier.viterbi</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.classifier.weka"><B>org.cleartk.classifier.weka</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><A HREF="#org.cleartk.timeml.tlink"><B>org.cleartk.timeml.tlink</B></A></TD>
+<TD>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/package-summary.html">org.cleartk.classifier</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/package-summary.html">org.cleartk.classifier</A> that return <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></CODE></FONT></TD>
+<TD><CODE><B>CleartkProcessingException.</B><B><A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html#multipleExceptions(java.util.List)">multipleExceptions</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;? extends <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html?is-external=true" title="class or interface in java.lang">Throwable</A>&gt;&nbsp;causes)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></CODE></FONT></TD>
+<TD><CODE><B>CleartkProcessingException.</B><B><A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html#noInstanceOutcome(java.util.List)">noInstanceOutcome</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;?&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></CODE></FONT></TD>
+<TD><CODE><B>CleartkProcessingException.</B><B><A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html#unsupportedOperationSetParameter(java.lang.Object, java.lang.String, java.lang.String, java.lang.Object)">unsupportedOperationSetParameter</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;object,
+                                                                 <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;methodName,
+                                                                 <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;paramName,
+                                                                 <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A>&nbsp;paramValue)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/package-summary.html">org.cleartk.classifier</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/Classifier.html" title="type parameter in Classifier">OUTCOME_TYPE</A></CODE></FONT></TD>
+<TD><CODE><B>Classifier.</B><B><A HREF="../../../../org/cleartk/classifier/Classifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Classifies a list of features.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/CleartkSequenceAnnotator.html" title="type parameter in CleartkSequenceAnnotator">OUTCOME_TYPE</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>CleartkSequenceAnnotator.</B><B><A HREF="../../../../org/cleartk/classifier/CleartkSequenceAnnotator.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../org/cleartk/classifier/CleartkSequenceAnnotator.html" title="type parameter in CleartkSequenceAnnotator">OUTCOME_TYPE</A>&gt;&gt;&nbsp;instances)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/SequenceClassifier.html" title="type parameter in SequenceClassifier">OUTCOME_TYPE</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>SequenceClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/SequenceClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Classifies a sequence of feature lists.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>SequenceDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/SequenceDataWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>DataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/DataWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="../../../../org/cleartk/classifier/Classifier.html" title="type parameter in Classifier">OUTCOME_TYPE</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>Classifier.</B><B><A HREF="../../../../org/cleartk/classifier/Classifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get the N best classifications along with their scores.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/SequenceClassifier.html" title="type parameter in SequenceClassifier">OUTCOME_TYPE</A>&gt;&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>SequenceClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/SequenceClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get the N best sequence classifications along with their scores.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>DataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/DataWriter.html#write(org.cleartk.classifier.Instance)">write</A></B>(<A HREF="../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../org/cleartk/classifier/DataWriter.html" title="type parameter in DataWriter">OUTCOME_TYPE</A>&gt;&nbsp;instance)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>SequenceDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/SequenceDataWriter.html#write(java.util.List)">write</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../org/cleartk/classifier/SequenceDataWriter.html" title="type parameter in SequenceDataWriter">OUTCOME_TYPE</A>&gt;&gt;&nbsp;instances)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.baseline"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/baseline/package-summary.html">org.cleartk.classifier.baseline</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/baseline/package-summary.html">org.cleartk.classifier.baseline</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/baseline/SingleOutcomeClassifier.html" title="type parameter in SingleOutcomeClassifier">OUTCOME_TYPE</A></CODE></FONT></TD>
+<TD><CODE><B>SingleOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/baseline/SingleOutcomeClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>OutcomeOnlyDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/baseline/OutcomeOnlyDataWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="../../../../org/cleartk/classifier/baseline/SingleOutcomeClassifier.html" title="type parameter in SingleOutcomeClassifier">OUTCOME_TYPE</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>SingleOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/baseline/SingleOutcomeClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>OutcomeOnlyDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/baseline/OutcomeOnlyDataWriter.html#write(org.cleartk.classifier.Instance)">write</A></B>(<A HREF="../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../org/cleartk/classifier/baseline/OutcomeOnlyDataWriter.html" title="type parameter in OutcomeOnlyDataWriter">OUTCOME_TYPE</A>&gt;&nbsp;instance)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.crfsuite"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/crfsuite/package-summary.html">org.cleartk.classifier.crfsuite</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/crfsuite/package-summary.html">org.cleartk.classifier.crfsuite</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>CRFSuiteStringOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/crfsuite/CRFSuiteStringOutcomeClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>CRFSuiteClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/crfsuite/CRFSuiteClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.encoder"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/encoder/package-summary.html">org.cleartk.classifier.encoder</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Subclasses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/encoder/package-summary.html">org.cleartk.classifier.encoder</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/encoder/CleartkEncoderException.html" title="class in org.cleartk.classifier.encoder">CleartkEncoderException</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.feature.extractor"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/feature/extractor/package-summary.html">org.cleartk.classifier.feature.extractor</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Subclasses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/feature/extractor/package-summary.html">org.cleartk.classifier.feature.extractor</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/classifier/feature/extractor/CleartkExtractorException.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractorException</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+ Copyright (c) 2011, Regents of the University of Colorado <br>
+ All rights reserved.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.feature.transform"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/feature/transform/package-summary.html">org.cleartk.classifier.feature.transform</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/feature/transform/package-summary.html">org.cleartk.classifier.feature.transform</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>InstanceDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/feature/transform/InstanceDataWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>InstanceDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/feature/transform/InstanceDataWriter.html#write(org.cleartk.classifier.Instance)">write</A></B>(<A HREF="../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../org/cleartk/classifier/feature/transform/InstanceDataWriter.html" title="type parameter in InstanceDataWriter">OUTCOME_T</A>&gt;&nbsp;instance)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.grmm"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/grmm/package-summary.html">org.cleartk.classifier.grmm</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/grmm/package-summary.html">org.cleartk.classifier.grmm</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>[]&gt;</CODE></FONT></TD>
+<TD><CODE><B>GrmmClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/grmm/GrmmClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method classifies several instances at once</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.jar"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/jar/package-summary.html">org.cleartk.classifier.jar</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>EncodingDirectoryDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/jar/EncodingDirectoryDataWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>DirectoryDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/jar/DirectoryDataWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Basic implementation of <A HREF="../../../../org/cleartk/classifier/DataWriter.html#finish()"><CODE>DataWriter.finish()</CODE></A> and <A HREF="../../../../org/cleartk/classifier/SequenceDataWriter.html#finish()"><CODE>SequenceDataWriter.finish()</CODE></A>
+ that calls <A HREF="../../../../org/cleartk/classifier/jar/JarClassifierBuilder.html#saveToTrainingDirectory(java.io.File)"><CODE>JarClassifierBuilder.saveToTrainingDirectory(File)</CODE></A></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="../../../../org/cleartk/classifier/jar/Classifier_ImplBase.html" title="type parameter in Classifier_ImplBase">OUTCOME_TYPE</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>Classifier_ImplBase.</B><B><A HREF="../../../../org/cleartk/classifier/jar/Classifier_ImplBase.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>DataWriter_ImplBase.</B><B><A HREF="../../../../org/cleartk/classifier/jar/DataWriter_ImplBase.html#write(org.cleartk.classifier.Instance)">write</A></B>(<A HREF="../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../org/cleartk/classifier/jar/DataWriter_ImplBase.html" title="type parameter in DataWriter_ImplBase">OUTCOME_TYPE</A>&gt;&nbsp;instance)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>SequenceDataWriter_ImplBase.</B><B><A HREF="../../../../org/cleartk/classifier/jar/SequenceDataWriter_ImplBase.html#write(java.util.List)">write</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../org/cleartk/classifier/jar/SequenceDataWriter_ImplBase.html" title="type parameter in SequenceDataWriter_ImplBase">OUTCOME_TYPE</A>&gt;&gt;&nbsp;instances)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected abstract &nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>SequenceDataWriter_ImplBase.</B><B><A HREF="../../../../org/cleartk/classifier/jar/SequenceDataWriter_ImplBase.html#writeEncoded(ENCODED_FEATURES_TYPE, ENCODED_OUTCOME_TYPE)">writeEncoded</A></B>(<A HREF="../../../../org/cleartk/classifier/jar/SequenceDataWriter_ImplBase.html" title="type parameter in SequenceDataWriter_ImplBase">ENCODED_FEATURES_TYPE</A>&nbsp;features,
+                         <A HREF="../../../../org/cleartk/classifier/jar/SequenceDataWriter_ImplBase.html" title="type parameter in SequenceDataWriter_ImplBase">ENCODED_OUTCOME_TYPE</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write the encoded features and encoded outcome to the output directory.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected abstract &nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>DataWriter_ImplBase.</B><B><A HREF="../../../../org/cleartk/classifier/jar/DataWriter_ImplBase.html#writeEncoded(ENCODED_FEATURES_TYPE, ENCODED_OUTCOME_TYPE)">writeEncoded</A></B>(<A HREF="../../../../org/cleartk/classifier/jar/DataWriter_ImplBase.html" title="type parameter in DataWriter_ImplBase">ENCODED_FEATURES_TYPE</A>&nbsp;features,
+                         <A HREF="../../../../org/cleartk/classifier/jar/DataWriter_ImplBase.html" title="type parameter in DataWriter_ImplBase">ENCODED_OUTCOME_TYPE</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write the encoded features and encoded outcome to the output directory.</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.liblinear"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/liblinear/package-summary.html">org.cleartk.classifier.liblinear</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/liblinear/package-summary.html">org.cleartk.classifier.liblinear</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A></CODE></FONT></TD>
+<TD><CODE><B>LIBLINEARBooleanOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/liblinear/LIBLINEARBooleanOutcomeClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A></CODE></FONT></TD>
+<TD><CODE><B>BinaryLIBLINEARClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/liblinear/BinaryLIBLINEARClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>LIBLINEARBooleanOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/liblinear/LIBLINEARBooleanOutcomeClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>BinaryLIBLINEARClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/liblinear/BinaryLIBLINEARClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.libsvm"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/libsvm/package-summary.html">org.cleartk.classifier.libsvm</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/libsvm/package-summary.html">org.cleartk.classifier.libsvm</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">OUTCOME_TYPE</A></CODE></FONT></TD>
+<TD><CODE><B>LIBSVMClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">OUTCOME_TYPE</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>LIBSVMClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>LIBSVMDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/libsvm/LIBSVMDataWriter.html#writeEncoded(org.cleartk.classifier.util.featurevector.FeatureVector, ENCODED_OUTCOME_TYPE)">writeEncoded</A></B>(<A HREF="../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</A>&nbsp;features,
+                         <A HREF="../../../../org/cleartk/classifier/libsvm/LIBSVMDataWriter.html" title="type parameter in LIBSVMDataWriter">ENCODED_OUTCOME_TYPE</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.mallet"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/mallet/package-summary.html">org.cleartk.classifier.mallet</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/mallet/package-summary.html">org.cleartk.classifier.mallet</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/mallet/MalletClassifier_ImplBase.html" title="type parameter in MalletClassifier_ImplBase">OUTCOME_TYPE</A></CODE></FONT></TD>
+<TD><CODE><B>MalletClassifier_ImplBase.</B><B><A HREF="../../../../org/cleartk/classifier/mallet/MalletClassifier_ImplBase.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>MalletCRFStringOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/mallet/MalletCRFStringOutcomeClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method classifies several instances at once</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>MalletCRFClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/mallet/MalletCRFClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;This method classifies several instances at once</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="../../../../org/cleartk/classifier/mallet/MalletClassifier_ImplBase.html" title="type parameter in MalletClassifier_ImplBase">OUTCOME_TYPE</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>MalletClassifier_ImplBase.</B><B><A HREF="../../../../org/cleartk/classifier/mallet/MalletClassifier_ImplBase.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>MalletDataWriter_ImplBase.</B><B><A HREF="../../../../org/cleartk/classifier/mallet/MalletDataWriter_ImplBase.html#writeEncoded(java.util.List, java.lang.String)">writeEncoded</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/encoder/features/NameNumber.html" title="class in org.cleartk.classifier.encoder.features">NameNumber</A>&gt;&nbsp;features,
+                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.opennlp"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/opennlp/package-summary.html">org.cleartk.classifier.opennlp</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/opennlp/package-summary.html">org.cleartk.classifier.opennlp</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/opennlp/MaxentClassifier_ImplBase.html" title="type parameter in MaxentClassifier_ImplBase">OUTCOME_TYPE</A></CODE></FONT></TD>
+<TD><CODE><B>MaxentClassifier_ImplBase.</B><B><A HREF="../../../../org/cleartk/classifier/opennlp/MaxentClassifier_ImplBase.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="../../../../org/cleartk/classifier/opennlp/MaxentClassifier_ImplBase.html" title="type parameter in MaxentClassifier_ImplBase">OUTCOME_TYPE</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>MaxentClassifier_ImplBase.</B><B><A HREF="../../../../org/cleartk/classifier/opennlp/MaxentClassifier_ImplBase.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>MaxentDataWriter_ImplBase.</B><B><A HREF="../../../../org/cleartk/classifier/opennlp/MaxentDataWriter_ImplBase.html#writeEncoded(java.util.List, java.lang.String)">writeEncoded</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/encoder/features/NameNumber.html" title="class in org.cleartk.classifier.encoder.features">NameNumber</A>&gt;&nbsp;features,
+                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.svmlight"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/svmlight/package-summary.html">org.cleartk.classifier.svmlight</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/svmlight/package-summary.html">org.cleartk.classifier.svmlight</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A></CODE></FONT></TD>
+<TD><CODE><B>SVMlightStringOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightStringOutcomeClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightClassifier_ImplBase.html" title="type parameter in SVMlightClassifier_ImplBase">OUTCOME_TYPE</A></CODE></FONT></TD>
+<TD><CODE><B>SVMlightClassifier_ImplBase.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightClassifier_ImplBase.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A></CODE></FONT></TD>
+<TD><CODE><B>OVASVMlightClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/OVASVMlightClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>SVMlightStringOutcomeDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightStringOutcomeDataWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>OVASVMlightDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/OVASVMlightDataWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>SVMlightStringOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightStringOutcomeClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>SVMlightClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>SVMlightBooleanOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightBooleanOutcomeClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>OVASVMlightClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/OVASVMlightClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>SVMlightDataWriter_ImplBase.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightDataWriter_ImplBase.html#writeEncoded(org.cleartk.classifier.util.featurevector.FeatureVector, ENCODED_OUTCOME_TYPE)">writeEncoded</A></B>(<A HREF="../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</A>&nbsp;features,
+                         <A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightDataWriter_ImplBase.html" title="type parameter in SVMlightDataWriter_ImplBase">ENCODED_OUTCOME_TYPE</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>SVMlightStringOutcomeDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/SVMlightStringOutcomeDataWriter.html#writeEncoded(org.cleartk.classifier.util.featurevector.FeatureVector, java.lang.Integer)">writeEncoded</A></B>(<A HREF="../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</A>&nbsp;features,
+                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>OVASVMlightDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/OVASVMlightDataWriter.html#writeEncoded(org.cleartk.classifier.util.featurevector.FeatureVector, java.lang.Integer)">writeEncoded</A></B>(<A HREF="../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</A>&nbsp;features,
+                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.svmlight.rank"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/svmlight/rank/package-summary.html">org.cleartk.classifier.svmlight.rank</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/svmlight/rank/package-summary.html">org.cleartk.classifier.svmlight.rank</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>SVMlightRankDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/rank/SVMlightRankDataWriter.html#write(org.cleartk.classifier.Instance)">write</A></B>(<A HREF="../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</A>&gt;&nbsp;instance)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>SVMlightRankDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/svmlight/rank/SVMlightRankDataWriter.html#writeEncoded(int, org.cleartk.classifier.util.featurevector.FeatureVector, java.lang.Double)">writeEncoded</A></B>(int&nbsp;qid,
+                         <A HREF="../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</A>&nbsp;features,
+                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.tksvmlight"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/tksvmlight/package-summary.html">org.cleartk.classifier.tksvmlight</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/tksvmlight/package-summary.html">org.cleartk.classifier.tksvmlight</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A></CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightStringOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightStringOutcomeClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Classify a features list.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A></CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;Classify a features list.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A></CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightBooleanOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightBooleanOutcomeClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Classify a features list.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A></CODE></FONT></TD>
+<TD><CODE><B>OVATKSVMlightClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/OVATKSVMlightClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;Classify a features list.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A></CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightDataWriter.html#createString(org.cleartk.classifier.tksvmlight.TreeFeatureVector)">createString</A></B>(<A HREF="../../../../org/cleartk/classifier/tksvmlight/TreeFeatureVector.html" title="class in org.cleartk.classifier.tksvmlight">TreeFeatureVector</A>&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;creates and formats a string (without the outcome) for a specific feature vector.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A></CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightBooleanOutcomeDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightBooleanOutcomeDataWriter.html#createString(org.cleartk.classifier.tksvmlight.TreeFeatureVector)">createString</A></B>(<A HREF="../../../../org/cleartk/classifier/tksvmlight/TreeFeatureVector.html" title="class in org.cleartk.classifier.tksvmlight">TreeFeatureVector</A>&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creates and formats a string (without the outcome) for a specific feature vector.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightStringOutcomeDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightStringOutcomeDataWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Callback called after the last feature vector has been written.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>OVATKSVMlightDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/OVATKSVMlightDataWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;Callback called after the last feature vector has been written.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightStringOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightStringOutcomeClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score a list of features against the various models used by the One Verse All SVM classifier.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;Score a list of features against the model.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightBooleanOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightBooleanOutcomeClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score a list of features against the model.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</A>&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>OVATKSVMlightClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/OVATKSVMlightClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;Score a list of features against the various models used by the One Verse All SVM classifier.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightClassifier.html#tkSvmLightPredict(java.io.File, org.cleartk.classifier.tksvmlight.TreeFeatureVector)">tkSvmLightPredict</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;mFile,
+                                   <A HREF="../../../../org/cleartk/classifier/tksvmlight/TreeFeatureVector.html" title="class in org.cleartk.classifier.tksvmlight">TreeFeatureVector</A>&nbsp;featureVector)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;Predict which side of the line a feature vector resides upon for a particular svm model.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;double</CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightBooleanOutcomeClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightBooleanOutcomeClassifier.html#tkSvmLightPredict(java.io.File, org.cleartk.classifier.tksvmlight.TreeFeatureVector)">tkSvmLightPredict</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</A>&nbsp;mFile,
+                                   <A HREF="../../../../org/cleartk/classifier/tksvmlight/TreeFeatureVector.html" title="class in org.cleartk.classifier.tksvmlight">TreeFeatureVector</A>&nbsp;featureVector)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Predict which side of the line a feature vector resides upon for a particular svm model.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightDataWriter.html#writeEncoded(org.cleartk.classifier.tksvmlight.TreeFeatureVector, java.lang.Boolean)">writeEncoded</A></B>(<A HREF="../../../../org/cleartk/classifier/tksvmlight/TreeFeatureVector.html" title="class in org.cleartk.classifier.tksvmlight">TreeFeatureVector</A>&nbsp;features,
+                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;Write a line representing the feature vector with the appropriate outcome to be used by the
+ tk_svm_classify command.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightBooleanOutcomeDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightBooleanOutcomeDataWriter.html#writeEncoded(org.cleartk.classifier.tksvmlight.TreeFeatureVector, java.lang.Boolean)">writeEncoded</A></B>(<A HREF="../../../../org/cleartk/classifier/tksvmlight/TreeFeatureVector.html" title="class in org.cleartk.classifier.tksvmlight">TreeFeatureVector</A>&nbsp;features,
+                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Boolean.html?is-external=true" title="class or interface in java.lang">Boolean</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write a line representing the feature vector with the appropriate outcome to be used by the
+ tk_svm_classify command.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>TKSVMlightStringOutcomeDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/TKSVMlightStringOutcomeDataWriter.html#writeEncoded(org.cleartk.classifier.tksvmlight.TreeFeatureVector, java.lang.Integer)">writeEncoded</A></B>(<A HREF="../../../../org/cleartk/classifier/tksvmlight/TreeFeatureVector.html" title="class in org.cleartk.classifier.tksvmlight">TreeFeatureVector</A>&nbsp;features,
+                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write the feature vector into the appropriate files (ultimately, it's one line in each of the
+ model file.)</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>OVATKSVMlightDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/tksvmlight/OVATKSVMlightDataWriter.html#writeEncoded(org.cleartk.classifier.tksvmlight.TreeFeatureVector, java.lang.Integer)">writeEncoded</A></B>(<A HREF="../../../../org/cleartk/classifier/tksvmlight/TreeFeatureVector.html" title="class in org.cleartk.classifier.tksvmlight">TreeFeatureVector</A>&nbsp;features,
+                         <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Integer.html?is-external=true" title="class or interface in java.lang">Integer</A>&nbsp;outcome)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;Write the feature vector into the appropriate files (ultimately, it's one line in each of the
+ model file.)</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.util.tfidf"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/util/tfidf/package-summary.html">org.cleartk.classifier.util.tfidf</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/util/tfidf/package-summary.html">org.cleartk.classifier.util.tfidf</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>IDFMapWriter.</B><B><A HREF="../../../../org/cleartk/classifier/util/tfidf/IDFMapWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>IDFMapWriter.</B><B><A HREF="../../../../org/cleartk/classifier/util/tfidf/IDFMapWriter.html#write(org.cleartk.classifier.Instance)">write</A></B>(<A HREF="../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../org/cleartk/classifier/util/tfidf/IDFMapWriter.html" title="type parameter in IDFMapWriter">OUTCOME_TYPE</A>&gt;&nbsp;instance)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.viterbi"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/viterbi/package-summary.html">org.cleartk.classifier.viterbi</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/viterbi/package-summary.html">org.cleartk.classifier.viterbi</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/viterbi/ViterbiClassifier.html" title="type parameter in ViterbiClassifier">OUTCOME_TYPE</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>ViterbiClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/viterbi/ViterbiClassifier.html#classify(java.util.List)">classify</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>ViterbiDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/viterbi/ViterbiDataWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/viterbi/ViterbiClassifier.html" title="type parameter in ViterbiClassifier">OUTCOME_TYPE</A>&gt;&gt;&gt;</CODE></FONT></TD>
+<TD><CODE><B>ViterbiClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/viterbi/ViterbiClassifier.html#score(java.util.List, int)">score</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&gt;&nbsp;features,
+           int&nbsp;maxResults)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/viterbi/ViterbiClassifier.html" title="type parameter in ViterbiClassifier">OUTCOME_TYPE</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B>ViterbiClassifier.</B><B><A HREF="../../../../org/cleartk/classifier/viterbi/ViterbiClassifier.html#viterbi(java.util.List)">viterbi</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</A>&gt;&gt;&nbsp;features)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This implementation of Viterbi requires at most stackSize * sequenceLength calls to the
+ classifier.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>ViterbiDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/viterbi/ViterbiDataWriter.html#write(java.util.List)">write</A></B>(<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/Instance.html" title="class in org.cleartk.classifier">Instance</A>&lt;<A HREF="../../../../org/cleartk/classifier/viterbi/ViterbiDataWriter.html" title="type parameter in ViterbiDataWriter">OUTCOME_TYPE</A>&gt;&gt;&nbsp;instances)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.classifier.weka"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/classifier/weka/package-summary.html">org.cleartk.classifier.weka</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/classifier/weka/package-summary.html">org.cleartk.classifier.weka</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>WekaStringOutcomeDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/weka/WekaStringOutcomeDataWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>WekaDataWriter.</B><B><A HREF="../../../../org/cleartk/classifier/weka/WekaDataWriter.html#finish()">finish</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<A NAME="org.cleartk.timeml.tlink"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+Uses of <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A> in <A HREF="../../../../org/cleartk/timeml/tlink/package-summary.html">org.cleartk.timeml.tlink</A></FONT></TH>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left" COLSPAN="2">Methods in <A HREF="../../../../org/cleartk/timeml/tlink/package-summary.html">org.cleartk.timeml.tlink</A> that throw <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</A></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;void</CODE></FONT></TD>
+<TD><CODE><B>TemporalLinkAnnotator_ImplBase.</B><B><A HREF="../../../../org/cleartk/timeml/tlink/TemporalLinkAnnotator_ImplBase.html#processLink(SOURCE, TARGET, java.util.Map, org.apache.uima.jcas.JCas)">processLink</A></B>(<A HREF="../../../../org/cleartk/timeml/tlink/TemporalLinkAnnotator_ImplBase.html" title="type parameter in TemporalLinkAnnotator_ImplBase">SOURCE</A>&nbsp;source,
+                       <A HREF="../../../../org/cleartk/timeml/tlink/TemporalLinkAnnotator_ImplBase.html" title="type parameter in TemporalLinkAnnotator_ImplBase">TARGET</A>&nbsp;target,
+                       <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</A>&lt;<A HREF="../../../../org/cleartk/timeml/tlink/TemporalLinkAnnotator_ImplBase.html" title="type parameter in TemporalLinkAnnotator_ImplBase">SOURCE</A>,<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</A>&lt;<A HREF="../../../../org/cleartk/timeml/tlink/TemporalLinkAnnotator_ImplBase.html" title="type parameter in TemporalLinkAnnotator_ImplBase">TARGET</A>,<A HREF="../../../../org/cleartk/timeml/type/TemporalLink.html" title="class in org.cleartk.timeml.type">TemporalLink</A>&gt;&gt;&nbsp;links,
+                       <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</A>&nbsp;jCas)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier"><FONT CLASS="NavBarFont1"><B>Class</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Use</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;PREV&nbsp;
+&nbsp;NEXT</FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/classifier//class-useCleartkProcessingException.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="CleartkProcessingException.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>

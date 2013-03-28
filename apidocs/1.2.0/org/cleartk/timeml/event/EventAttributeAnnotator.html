@@ -1,0 +1,499 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--NewPage-->
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<TITLE>
+EventAttributeAnnotator (ClearTK Release 1.2.0 API)
+</TITLE>
+
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
+
+<SCRIPT type="text/javascript">
+function windowTitle()
+{
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="EventAttributeAnnotator (ClearTK Release 1.2.0 API)";
+    }
+}
+</SCRIPT>
+<NOSCRIPT>
+</NOSCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
+
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<A NAME="navbar_top"><!-- --></A>
+<A HREF="#skip-navbar_top" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_top_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/EventAttributeAnnotator.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../org/cleartk/timeml/event/EventAspectAnnotator.html" title="class in org.cleartk.timeml.event"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../org/cleartk/timeml/event/EventClassAnnotator.html" title="class in org.cleartk.timeml.event"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/timeml/event/EventAttributeAnnotator.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="EventAttributeAnnotator.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_top"></A>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<HR>
+<!-- ======== START OF CLASS DATA ======== -->
+<H2>
+<FONT SIZE="-1">
+org.cleartk.timeml.event</FONT>
+<BR>
+Class EventAttributeAnnotator&lt;OUTCOME_TYPE&gt;</H2>
+<PRE>
+<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</A>
+  <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/AnalysisComponent_ImplBase.html?is-external=true" title="class or interface in org.apache.uima.analysis_component">org.apache.uima.analysis_component.AnalysisComponent_ImplBase</A>
+      <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/Annotator_ImplBase.html?is-external=true" title="class or interface in org.apache.uima.analysis_component">org.apache.uima.analysis_component.Annotator_ImplBase</A>
+          <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/JCasAnnotator_ImplBase.html?is-external=true" title="class or interface in org.apache.uima.analysis_component">org.apache.uima.analysis_component.JCasAnnotator_ImplBase</A>
+              <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><A HREF="http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/org/uimafit/component/JCasAnnotator_ImplBase.html?is-external=true" title="class or interface in org.uimafit.component">org.uimafit.component.JCasAnnotator_ImplBase</A>
+                  <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html" title="class in org.cleartk.classifier">org.cleartk.classifier.CleartkAnnotator</A>&lt;OUTCOME_TYPE&gt;
+                      <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>org.cleartk.timeml.event.EventAttributeAnnotator&lt;OUTCOME_TYPE&gt;</B>
+</PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/AnalysisComponent.html?is-external=true" title="class or interface in org.apache.uima.analysis_component">AnalysisComponent</A>, <A HREF="http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/org/uimafit/factory/initializable/Initializable.html?is-external=true" title="class or interface in org.uimafit.factory.initializable">Initializable</A></DD>
+</DL>
+<DL>
+<DT><B>Direct Known Subclasses:</B> <DD><A HREF="../../../../org/cleartk/timeml/event/EventAspectAnnotator.html" title="class in org.cleartk.timeml.event">EventAspectAnnotator</A>, <A HREF="../../../../org/cleartk/timeml/event/EventClassAnnotator.html" title="class in org.cleartk.timeml.event">EventClassAnnotator</A>, <A HREF="../../../../org/cleartk/timeml/event/EventModalityAnnotator.html" title="class in org.cleartk.timeml.event">EventModalityAnnotator</A>, <A HREF="../../../../org/cleartk/timeml/event/EventPolarityAnnotator.html" title="class in org.cleartk.timeml.event">EventPolarityAnnotator</A>, <A HREF="../../../../org/cleartk/timeml/event/EventTenseAnnotator.html" title="class in org.cleartk.timeml.event">EventTenseAnnotator</A></DD>
+</DL>
+<HR>
+<DL>
+<DT><PRE>public abstract class <A HREF="../../../../src-html/org/cleartk/timeml/event/EventAttributeAnnotator.html#line.51"><B>EventAttributeAnnotator&lt;OUTCOME_TYPE&gt;</B></A><DT>extends <A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html" title="class in org.cleartk.classifier">CleartkAnnotator</A>&lt;OUTCOME_TYPE&gt;</DL>
+</PRE>
+
+<P>
+<br>
+ Copyright (c) 2010, Regents of the University of Colorado <br>
+ All rights reserved.
+ 
+ Base class for annotators of TimeML EVENT attributes.
+<P>
+
+<P>
+<DL>
+<DT><B>Author:</B></DT>
+  <DD>Steven Bethard</DD>
+</DL>
+<HR>
+
+<P>
+<!-- =========== FIELD SUMMARY =========== -->
+
+<A NAME="field_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Field Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractor</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html#contextExtractors">contextExtractors</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The list of feature extractors that will be applied to the Event annotation, with a Sentence
+ window.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected &nbsp;<A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/feature/extractor/simple/SimpleFeatureExtractor.html" title="interface in org.cleartk.classifier.feature.extractor.simple">SimpleFeatureExtractor</A>&gt;</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html#eventFeatureExtractors">eventFeatureExtractors</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The list of feature extractors that will be applied directly to the Event annotation.</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="fields_inherited_from_class_org.cleartk.classifier.CleartkAnnotator"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Fields inherited from class org.cleartk.classifier.<A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html" title="class in org.cleartk.classifier">CleartkAnnotator</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html#classifier">classifier</A>, <A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html#dataWriter">dataWriter</A>, <A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html#PARAM_CLASSIFIER_FACTORY_CLASS_NAME">PARAM_CLASSIFIER_FACTORY_CLASS_NAME</A>, <A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html#PARAM_DATA_WRITER_FACTORY_CLASS_NAME">PARAM_DATA_WRITER_FACTORY_CLASS_NAME</A>, <A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html#PARAM_IS_TRAINING">PARAM_IS_TRAINING</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+
+<A NAME="constructor_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Constructor Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html#EventAttributeAnnotator()">EventAttributeAnnotator</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- ========== METHOD SUMMARY =========== -->
+
+<A NAME="method_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Method Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected abstract &nbsp;<A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html" title="type parameter in EventAttributeAnnotator">OUTCOME_TYPE</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html#getAttribute(org.cleartk.timeml.type.Event)">getAttribute</A></B>(<A HREF="../../../../org/cleartk/timeml/type/Event.html" title="class in org.cleartk.timeml.type">Event</A>&nbsp;event)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get the attribute value from the Event annotation.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected abstract &nbsp;<A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html" title="type parameter in EventAttributeAnnotator">OUTCOME_TYPE</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html#getDefaultValue()">getDefaultValue</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The attribute value that should be considered as a default, e.g.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html#initialize(org.apache.uima.UimaContext)">initialize</A></B>(<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UimaContext.html?is-external=true" title="class or interface in org.apache.uima">UimaContext</A>&nbsp;context)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html#process(org.apache.uima.jcas.JCas)">process</A></B>(<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</A>&nbsp;jCas)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>protected abstract &nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html#setAttribute(org.cleartk.timeml.type.Event, OUTCOME_TYPE)">setAttribute</A></B>(<A HREF="../../../../org/cleartk/timeml/type/Event.html" title="class in org.cleartk.timeml.type">Event</A>&nbsp;event,
+                         <A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html" title="type parameter in EventAttributeAnnotator">OUTCOME_TYPE</A>&nbsp;value)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set the attribute value on the Event annotation.</TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_org.cleartk.classifier.CleartkAnnotator"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class org.cleartk.classifier.<A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html" title="class in org.cleartk.classifier">CleartkAnnotator</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html#collectionProcessComplete()">collectionProcessComplete</A>, <A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html#isTraining()">isTraining</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_org.uimafit.component.JCasAnnotator_ImplBase"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class org.uimafit.component.<A HREF="http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/org/uimafit/component/JCasAnnotator_ImplBase.html?is-external=true" title="class or interface in org.uimafit.component">JCasAnnotator_ImplBase</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/org/uimafit/component/JCasAnnotator_ImplBase.html?is-external=true#getLogger()" title="class or interface in org.uimafit.component">getLogger</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_org.apache.uima.analysis_component.JCasAnnotator_ImplBase"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class org.apache.uima.analysis_component.<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/JCasAnnotator_ImplBase.html?is-external=true" title="class or interface in org.apache.uima.analysis_component">JCasAnnotator_ImplBase</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/JCasAnnotator_ImplBase.html?is-external=true#getRequiredCasInterface()" title="class or interface in org.apache.uima.analysis_component">getRequiredCasInterface</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/JCasAnnotator_ImplBase.html?is-external=true#process(org.apache.uima.cas.AbstractCas)" title="class or interface in org.apache.uima.analysis_component">process</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_org.apache.uima.analysis_component.Annotator_ImplBase"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class org.apache.uima.analysis_component.<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/Annotator_ImplBase.html?is-external=true" title="class or interface in org.apache.uima.analysis_component">Annotator_ImplBase</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/Annotator_ImplBase.html?is-external=true#getCasInstancesRequired()" title="class or interface in org.apache.uima.analysis_component">getCasInstancesRequired</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/Annotator_ImplBase.html?is-external=true#hasNext()" title="class or interface in org.apache.uima.analysis_component">hasNext</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/Annotator_ImplBase.html?is-external=true#next()" title="class or interface in org.apache.uima.analysis_component">next</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_org.apache.uima.analysis_component.AnalysisComponent_ImplBase"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class org.apache.uima.analysis_component.<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/AnalysisComponent_ImplBase.html?is-external=true" title="class or interface in org.apache.uima.analysis_component">AnalysisComponent_ImplBase</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/AnalysisComponent_ImplBase.html?is-external=true#batchProcessComplete()" title="class or interface in org.apache.uima.analysis_component">batchProcessComplete</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/AnalysisComponent_ImplBase.html?is-external=true#destroy()" title="class or interface in org.apache.uima.analysis_component">destroy</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/AnalysisComponent_ImplBase.html?is-external=true#getContext()" title="class or interface in org.apache.uima.analysis_component">getContext</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/AnalysisComponent_ImplBase.html?is-external=true#getResultSpecification()" title="class or interface in org.apache.uima.analysis_component">getResultSpecification</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/AnalysisComponent_ImplBase.html?is-external=true#reconfigure()" title="class or interface in org.apache.uima.analysis_component">reconfigure</A>, <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/AnalysisComponent_ImplBase.html?is-external=true#setResultSpecification(org.apache.uima.analysis_engine.ResultSpecification)" title="class or interface in org.apache.uima.analysis_component">setResultSpecification</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Methods inherited from class java.lang.<A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</A>, <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<P>
+
+<!-- ============ FIELD DETAIL =========== -->
+
+<A NAME="field_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Field Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="eventFeatureExtractors"><!-- --></A><H3>
+eventFeatureExtractors</H3>
+<PRE>
+protected <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/feature/extractor/simple/SimpleFeatureExtractor.html" title="interface in org.cleartk.classifier.feature.extractor.simple">SimpleFeatureExtractor</A>&gt; <A HREF="../../../../src-html/org/cleartk/timeml/event/EventAttributeAnnotator.html#line.58"><B>eventFeatureExtractors</B></A></PRE>
+<DL>
+<DD>The list of feature extractors that will be applied directly to the Event annotation.
+ 
+ Subclasses should override <A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html#initialize(org.apache.uima.UimaContext)"><CODE>initialize(org.apache.uima.UimaContext)</CODE></A> to fill this list.
+<P>
+<DL>
+</DL>
+</DL>
+<HR>
+
+<A NAME="contextExtractors"><!-- --></A><H3>
+contextExtractors</H3>
+<PRE>
+protected <A HREF="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</A>&lt;<A HREF="../../../../org/cleartk/classifier/feature/extractor/CleartkExtractor.html" title="class in org.cleartk.classifier.feature.extractor">CleartkExtractor</A>&gt; <A HREF="../../../../src-html/org/cleartk/timeml/event/EventAttributeAnnotator.html#line.66"><B>contextExtractors</B></A></PRE>
+<DL>
+<DD>The list of feature extractors that will be applied to the Event annotation, with a Sentence
+ window.
+ 
+ Subclasses should override <A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html#initialize(org.apache.uima.UimaContext)"><CODE>initialize(org.apache.uima.UimaContext)</CODE></A> to fill this list.
+<P>
+<DL>
+</DL>
+</DL>
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+
+<A NAME="constructor_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Constructor Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="EventAttributeAnnotator()"><!-- --></A><H3>
+EventAttributeAnnotator</H3>
+<PRE>
+public <A HREF="../../../../src-html/org/cleartk/timeml/event/EventAttributeAnnotator.html#line.51"><B>EventAttributeAnnotator</B></A>()</PRE>
+<DL>
+</DL>
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<A NAME="method_detail"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
+<B>Method Detail</B></FONT></TH>
+</TR>
+</TABLE>
+
+<A NAME="getDefaultValue()"><!-- --></A><H3>
+getDefaultValue</H3>
+<PRE>
+protected abstract <A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html" title="type parameter in EventAttributeAnnotator">OUTCOME_TYPE</A> <A HREF="../../../../src-html/org/cleartk/timeml/event/EventAttributeAnnotator.html#line.75"><B>getDefaultValue</B></A>()</PRE>
+<DL>
+<DD>The attribute value that should be considered as a default, e.g. "NONE". When the attribute
+ value is null in the CAS, this value will be used instead. Additionally, when the classifier
+ produces this value, no attribute will be added.
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>The default attribute value.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getAttribute(org.cleartk.timeml.type.Event)"><!-- --></A><H3>
+getAttribute</H3>
+<PRE>
+protected abstract <A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html" title="type parameter in EventAttributeAnnotator">OUTCOME_TYPE</A> <A HREF="../../../../src-html/org/cleartk/timeml/event/EventAttributeAnnotator.html#line.88"><B>getAttribute</B></A>(<A HREF="../../../../org/cleartk/timeml/type/Event.html" title="class in org.cleartk.timeml.type">Event</A>&nbsp;event)</PRE>
+<DL>
+<DD>Get the attribute value from the Event annotation. Typically this will be by calling something
+ like <A HREF="../../../../org/cleartk/timeml/type/Event.html#getTense()"><CODE>Event.getTense()</CODE></A>.
+ 
+ If this method returns null, <A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html#getDefaultValue()"><CODE>getDefaultValue()</CODE></A> will be called to produce an
+ appropriate attribute value.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>event</CODE> - The Event annotation whose attribute is to be retrieved.
+<DT><B>Returns:</B><DD>The selected attribute value.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="setAttribute(org.cleartk.timeml.type.Event,java.lang.Object)"><!-- --></A><A NAME="setAttribute(org.cleartk.timeml.type.Event, OUTCOME_TYPE)"><!-- --></A><H3>
+setAttribute</H3>
+<PRE>
+protected abstract void <A HREF="../../../../src-html/org/cleartk/timeml/event/EventAttributeAnnotator.html#line.101"><B>setAttribute</B></A>(<A HREF="../../../../org/cleartk/timeml/type/Event.html" title="class in org.cleartk.timeml.type">Event</A>&nbsp;event,
+                                     <A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html" title="type parameter in EventAttributeAnnotator">OUTCOME_TYPE</A>&nbsp;value)</PRE>
+<DL>
+<DD>Set the attribute value on the Event annotation. Typically this will be by calling something
+ like <A HREF="../../../../org/cleartk/timeml/type/Event.html#setTense(java.lang.String)"><CODE>Event.setTense(String)</CODE></A>.
+ 
+ This method will not be called if the value is equal to <A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html#getDefaultValue()"><CODE>getDefaultValue()</CODE></A>.
+<P>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>event</CODE> - The Event annotation whose attribute is to be set.<DD><CODE>value</CODE> - The new attribute value.</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="initialize(org.apache.uima.UimaContext)"><!-- --></A><H3>
+initialize</H3>
+<PRE>
+public void <A HREF="../../../../src-html/org/cleartk/timeml/event/EventAttributeAnnotator.html#line.104"><B>initialize</B></A>(<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/UimaContext.html?is-external=true" title="class or interface in org.apache.uima">UimaContext</A>&nbsp;context)
+                throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></PRE>
+<DL>
+<DD><DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/AnalysisComponent.html?is-external=true#initialize(org.apache.uima.UimaContext)" title="class or interface in org.apache.uima.analysis_component">initialize</A></CODE> in interface <CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/AnalysisComponent.html?is-external=true" title="class or interface in org.apache.uima.analysis_component">AnalysisComponent</A></CODE><DT><B>Specified by:</B><DD><CODE><A HREF="http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/org/uimafit/factory/initializable/Initializable.html?is-external=true#initialize(org.apache.uima.UimaContext)" title="class or interface in org.uimafit.factory.initializable">initialize</A></CODE> in interface <CODE><A HREF="http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/org/uimafit/factory/initializable/Initializable.html?is-external=true" title="class or interface in org.uimafit.factory.initializable">Initializable</A></CODE><DT><B>Overrides:</B><DD><CODE><A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html#initialize(org.apache.uima.UimaContext)">initialize</A></CODE> in class <CODE><A HREF="../../../../org/cleartk/classifier/CleartkAnnotator.html" title="class in org.cleartk.classifier">CleartkAnnotator</A>&lt;<A HREF="../../../../org/cleartk/timeml/event/EventAttributeAnnotator.html" title="type parameter in EventAttributeAnnotator">OUTCOME_TYPE</A>&gt;</CODE></DL>
+</DD>
+<DD><DL>
+
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/resource/ResourceInitializationException.html?is-external=true" title="class or interface in org.apache.uima.resource">ResourceInitializationException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="process(org.apache.uima.jcas.JCas)"><!-- --></A><H3>
+process</H3>
+<PRE>
+public void <A HREF="../../../../src-html/org/cleartk/timeml/event/EventAttributeAnnotator.html#line.111"><B>process</B></A>(<A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</A>&nbsp;jCas)
+             throws <A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngineProcessException.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngineProcessException</A></PRE>
+<DL>
+<DD><DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/JCasAnnotator_ImplBase.html?is-external=true#process(org.apache.uima.jcas.JCas)" title="class or interface in org.apache.uima.analysis_component">process</A></CODE> in class <CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_component/JCasAnnotator_ImplBase.html?is-external=true" title="class or interface in org.apache.uima.analysis_component">JCasAnnotator_ImplBase</A></CODE></DL>
+</DD>
+<DD><DL>
+
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/analysis_engine/AnalysisEngineProcessException.html?is-external=true" title="class or interface in org.apache.uima.analysis_engine">AnalysisEngineProcessException</A></CODE></DL>
+</DD>
+</DL>
+<!-- ========= END OF CLASS DATA ========= -->
+<HR>
+
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<A NAME="navbar_bottom"><!-- --></A>
+<A HREF="#skip-navbar_bottom" title="Skip navigation links"></A>
+<TABLE BORDER="0" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" SUMMARY="">
+<TR>
+<TD COLSPAN=2 BGCOLOR="#EEEEFF" CLASS="NavBarCell1">
+<A NAME="navbar_bottom_firstrow"><!-- --></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="3" SUMMARY="">
+  <TR ALIGN="center" VALIGN="top">
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../overview-summary.html"><FONT CLASS="NavBarFont1"><B>Overview</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-summary.html"><FONT CLASS="NavBarFont1"><B>Package</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#FFFFFF" CLASS="NavBarCell1Rev"> &nbsp;<FONT CLASS="NavBarFont1Rev"><B>Class</B></FONT>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="class-use/EventAttributeAnnotator.html"><FONT CLASS="NavBarFont1"><B>Use</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="package-tree.html"><FONT CLASS="NavBarFont1"><B>Tree</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../deprecated-list.html"><FONT CLASS="NavBarFont1"><B>Deprecated</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../index-all.html"><FONT CLASS="NavBarFont1"><B>Index</B></FONT></A>&nbsp;</TD>
+  <TD BGCOLOR="#EEEEFF" CLASS="NavBarCell1">    <A HREF="../../../../help-doc.html"><FONT CLASS="NavBarFont1"><B>Help</B></FONT></A>&nbsp;</TD>
+  </TR>
+</TABLE>
+</TD>
+<TD ALIGN="right" VALIGN="top" ROWSPAN=3><EM>
+</EM>
+</TD>
+</TR>
+
+<TR>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+&nbsp;<A HREF="../../../../org/cleartk/timeml/event/EventAspectAnnotator.html" title="class in org.cleartk.timeml.event"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../org/cleartk/timeml/event/EventClassAnnotator.html" title="class in org.cleartk.timeml.event"><B>NEXT CLASS</B></A></FONT></TD>
+<TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
+  <A HREF="../../../../index.html?org/cleartk/timeml/event/EventAttributeAnnotator.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="EventAttributeAnnotator.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+&nbsp;<SCRIPT type="text/javascript">
+  <!--
+  if(window==top) {
+    document.writeln('<A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>');
+  }
+  //-->
+</SCRIPT>
+<NOSCRIPT>
+  <A HREF="../../../../allclasses-noframe.html"><B>All Classes</B></A>
+</NOSCRIPT>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+<TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
+DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+</TR>
+</TABLE>
+<A NAME="skip-navbar_bottom"></A>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+<HR>
+Copyright &#169; 2012. All Rights Reserved.
+</BODY>
+</HTML>
