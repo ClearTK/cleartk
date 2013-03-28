@@ -34,6 +34,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.apache.uima.jcas.JCas;
@@ -190,9 +191,9 @@ public class TfidfExtractor<OUTCOME_T> extends OneToOneTrainableExtractor_ImplBa
       File out = new File(outputURI);
       BufferedWriter writer = null;
       writer = new BufferedWriter(new FileWriter(out));
-      writer.append(String.format("#NUM DOCUMENTS\t%d\n", this.totalDocumentCount));
+      writer.append(String.format(Locale.ROOT, "NUM DOCUMENTS\t%d\n", this.totalDocumentCount));
       for (Multiset.Entry<String> entry : this.documentFreqMap.entrySet()) {
-        writer.append(String.format("%s\t%d\n", entry.getElement(), entry.getCount()));
+        writer.append(String.format(Locale.ROOT, "%s\t%d\n", entry.getElement(), entry.getCount()));
       }
       writer.close();
     }

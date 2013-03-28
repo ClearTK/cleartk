@@ -33,6 +33,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -191,7 +192,7 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
         writer.append(featureName);
         for (OUTCOME_T outcome : this.classConditionalCounts.columnKeySet()) {
           writer.append("\t");
-          writer.append(String.format("%f", this.mutualInformation(featureName, outcome)));
+          writer.append(String.format(Locale.ROOT, "%f", this.mutualInformation(featureName, outcome)));
         }
         writer.append("\n");
       }
@@ -345,7 +346,7 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
 
     ComputeFeatureScore<OUTCOME_T> computeScore = this.mutualInfoStats.getScoreFunction(this.combineScoreMethod);
     for (String feature : this.selectedFeatures) {
-      writer.append(String.format("%s\t%f\n", feature, computeScore.apply(feature)));
+      writer.append(String.format(Locale.ROOT, "%s\t%f\n", feature, computeScore.apply(feature)));
     }
 
     writer.close();

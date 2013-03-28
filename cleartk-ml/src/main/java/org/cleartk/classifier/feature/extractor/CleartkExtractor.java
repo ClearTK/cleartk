@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.uima.jcas.JCas;
@@ -246,7 +247,7 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
     }
 
     public ContextFeature(String baseName, int position, int oobPosition, String featureName) {
-      this.feature = new Feature(featureName, String.format("OOB%d", oobPosition));
+      this.feature = new Feature(featureName, String.format(Locale.ROOT, "OOB%d", oobPosition));
       this.setName(Feature.createName(baseName, String.valueOf(position), featureName));
       this.setValue(this.feature.getValue());
     }

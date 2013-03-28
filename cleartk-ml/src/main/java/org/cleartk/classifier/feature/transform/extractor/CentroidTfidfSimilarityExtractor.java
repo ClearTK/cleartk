@@ -36,6 +36,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.uima.jcas.JCas;
@@ -199,7 +200,7 @@ public class CentroidTfidfSimilarityExtractor<OUTCOME_T> extends TfidfExtractor<
     writer = new BufferedWriter(new FileWriter(out));
 
     for (Map.Entry<String, Double> entry : this.centroidMap.entrySet()) {
-      writer.append(String.format("%s\t%f\n", entry.getKey(), entry.getValue()));
+      writer.append(String.format(Locale.ROOT, "%s\t%f\n", entry.getKey(), entry.getValue()));
     }
     writer.close();
   }

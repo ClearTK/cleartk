@@ -35,6 +35,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.uima.jcas.JCas;
@@ -156,7 +157,7 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends
 
     for (Map.Entry<String, MinMaxPair> entry : this.minMaxMap.entrySet()) {
       MinMaxPair pair = entry.getValue();
-      writer.append(String.format("%s\t%f\t%f\n", entry.getKey(), pair.min, pair.max));
+      writer.append(String.format(Locale.ROOT, "%s\t%f\t%f\n", entry.getKey(), pair.min, pair.max));
     }
     writer.close();
   }

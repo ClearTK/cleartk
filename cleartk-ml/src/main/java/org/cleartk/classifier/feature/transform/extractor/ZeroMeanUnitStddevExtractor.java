@@ -37,6 +37,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.uima.jcas.JCas;
@@ -156,7 +157,7 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T> extends
 
     for (Map.Entry<String, MeanStddevTuple> entry : this.meanStddevMap.entrySet()) {
       MeanStddevTuple tuple = entry.getValue();
-      writer.append(String.format("%s\t%f\t%f\n", entry.getKey(), tuple.mean, tuple.stddev));
+      writer.append(String.format(Locale.ROOT, "%s\t%f\t%f\n", entry.getKey(), tuple.mean, tuple.stddev));
     }
     writer.close();
   }

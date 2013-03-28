@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.uima.jcas.JCas;
@@ -248,7 +249,7 @@ public class ContextExtractor<T extends Annotation> implements SimpleFeatureExtr
     }
 
     public ContextFeature(String baseName, int position, int oobPosition) {
-      this.feature = new Feature(null, String.format("OOB%d", oobPosition));
+      this.feature = new Feature(null, String.format(Locale.ROOT, "OOB%d", oobPosition));
       this.setName(Feature.createName(baseName, String.valueOf(position)));
       this.setValue(this.feature.getValue());
     }
