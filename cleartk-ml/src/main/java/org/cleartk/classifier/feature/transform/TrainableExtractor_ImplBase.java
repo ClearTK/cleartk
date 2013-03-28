@@ -62,7 +62,7 @@ public abstract class TrainableExtractor_ImplBase<OUTCOME_T> implements
       Feature currFeature = featuresToProcess.pop();
       if (currFeature instanceof TransformableFeature) {
         TransformableFeature transformable = (TransformableFeature) currFeature;
-        if (transformable.getName() == this.name) {
+        if (transformable.getName().equals(this.name)) {
           features.add(transformable);
         } else {
           featuresToProcess.addAll(transformable.getFeatures());
