@@ -35,15 +35,6 @@
 			<name>Lee Becker</name>
 		</developer>
 	</developers>
-	<repositories>
-		<repository>
-			<id>ukp-oss</id>
-			<url>http://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-releases</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 	<parent>
 		<artifactId>cleartk-parent</artifactId>
 		<groupId>org.cleartk</groupId>
@@ -65,30 +56,12 @@
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
 			<artifactId>de.tudarmstadt.ukp.dkpro.core.api.resources-asl</artifactId>
-			<version>1.3.0</version>
-			<!-- 
-			DKPro Core 1.3.0 has the bad habit of dragging in several dependencies for all DKPro
-			modules - no matter if they actually need them or not. A reason for this is UIMA-2155.
-			Once this is fixed in DKPro Core, these excludes here can be removed.
-			See also: http://code.google.com/p/dkpro-core-asl/issues/detail?id=57
-			- REC, 2012-05-05
-			-->
+			<version>1.4.0</version>
 			<exclusions>
+				<!-- excluded because we currently use a different version -->
 				<exclusion>
-					<artifactId>junit</artifactId>
-					<groupId>junit</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>xercesImpl</artifactId>
-					<groupId>xerces</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>xalan</artifactId>
-					<groupId>xalan</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>serializer</artifactId>
-					<groupId>xalan</groupId>
+					<artifactId>commons-lang</artifactId>
+					<groupId>commons-lang</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
