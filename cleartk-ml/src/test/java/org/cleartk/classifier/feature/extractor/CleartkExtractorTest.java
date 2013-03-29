@@ -71,7 +71,9 @@ public class CleartkExtractorTest extends DefaultTestBase {
         new LastCovered(1),
         new LastCovered(1, 3),
         new Following(1, 3),
-        new Following(3, 5));
+        new Following(3, 5),
+        new Preceding(5, 6),
+        new Following(5, 6));
 
     this.tokenBuilder.buildTokens(
         this.jCas,
@@ -83,7 +85,7 @@ public class CleartkExtractorTest extends DefaultTestBase {
     Assert.assertEquals("jumped over", chunk.getCoveredText());
 
     List<Feature> features = extractor.extract(this.jCas, chunk);
-    Assert.assertEquals(17, features.size());
+    Assert.assertEquals(19, features.size());
     Iterator<Feature> iter = features.iterator();
     this.assertFeature("Preceding_0_2_1", "brown", iter.next());
     this.assertFeature("Preceding_0_2_0", "fox", iter.next());
@@ -102,6 +104,8 @@ public class CleartkExtractorTest extends DefaultTestBase {
     this.assertFeature("Following_1_3_2", "dog", iter.next());
     this.assertFeature("Following_3_5_3", ".", iter.next());
     this.assertFeature("Following_3_5_4", "OOB1", iter.next());
+    this.assertFeature("Preceding_5_6_5", "OOB2", iter.next());
+    this.assertFeature("Following_5_6_5", "OOB2", iter.next());
   }
 
   @Test

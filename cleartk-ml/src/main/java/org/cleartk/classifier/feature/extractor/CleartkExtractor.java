@@ -325,8 +325,8 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
 
       // slice the appropriate annotations from the CAS
       List<T> anns = this.select(jCas, focusAnnotation, annotationClass, this.end);
-      anns = anns.subList(0, anns.size() - this.begin);
-      int missing = this.end - this.begin - anns.size();
+      int missing = this.end - anns.size();
+      anns = anns.subList(0, Math.max(0, anns.size() - this.begin));
 
       // figure out how many items are out of bounds
       int oobPos = missing;
@@ -379,10 +379,17 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
           ? ((SimpleNamedFeatureExtractor) extractor).getFeatureName()
           : null;
       List<T> anns = this.select(jCas, focusAnnotation, annotationClass, this.end);
-      anns = anns.subList(this.begin, anns.size());
+      int oobStart;
+      if (this.begin <= anns.size()) {
+        oobStart = 1;
+        anns = anns.subList(this.begin, anns.size());
+      } else {
+        oobStart = this.begin - anns.size() + 1;
+        anns = new ArrayList<T>();
+      }
       List<Feature> features = new ArrayList<Feature>();
       Iterator<T> iter = anns.iterator();
-      for (int pos = this.begin, oobPos = 1; pos < this.end; pos += 1) {
+      for (int pos = this.begin, oobPos = oobStart; pos < this.end; pos += 1) {
         T ann = iter.hasNext() ? iter.next() : null;
         if (ann != null && bounds.contains(ann)) {
           for (Feature feature : extractor.extract(jCas, ann)) {
