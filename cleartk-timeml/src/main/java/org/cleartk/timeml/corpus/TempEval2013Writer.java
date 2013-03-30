@@ -173,6 +173,10 @@ public class TempEval2013Writer extends JCasAnnotator_ImplBase {
     // write the XML to the output file
     XMLOutputter outputter = new XMLOutputter();
     String fileName = new File(ViewURIUtil.getURI(jCas).getPath()).getName();
+    String inputSuffix = ".TE3input";
+    if (fileName.endsWith(inputSuffix)) {
+      fileName = fileName.substring(0, fileName.length() - inputSuffix.length());
+    }
     if (!fileName.endsWith(".tml")) {
       fileName += ".tml";
     }
