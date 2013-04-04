@@ -24,17 +24,13 @@
 package org.cleartk.clearnlp;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.List;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -55,44 +51,32 @@ import org.uimafit.util.JCasUtil;
 @TypeCapability(
     inputs = { "org.cleartk.token.type.Token" },
     outputs = {"org.cleartk.token.type.Token:pos"})
-public class PosTagger extends PosTagger_ImplBase<Sentence, Token> {
-	
-	/**
-	 * Convenience method to create Analysis Engine for ClearNLP's POSTagger 
-	 */
-	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(PosTagger.class);
-	}
-	
-	
-	/**
-	 * Convenience method to create Analysis Engine for ClearNLP's POSTagger 
-	 */
-	public static AnalysisEngineDescription getDescription(String languageCode, URI modelUri) throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(PosTagger.class,
-		    PosTagger_ImplBase.PARAM_LANGUAGE_CODE,
-		    languageCode,
-		    PosTagger_ImplBase.PARAM_MODEL_URI,
-		    modelUri);
-	}
-	
-	@Override
-	protected Collection<Sentence> selectWindows(JCas jCas) {
-	  return JCasUtil.select(jCas, Sentence.class);
-	}
-	
-	/**
-	 * Provides a list of tokens contained within a window
-	 */
-	protected List<Token> selectTokens(JCas jCas, Sentence sentence) {
-	  return JCasUtil.selectCovered(jCas, Token.class, sentence);
-	}
-	
-	/**
-	 * Assigns or POS tag to token (or potentially creates a POS span)
-	 */
-	protected void setPos(JCas jCas, Token token, String posTag) {
-	  token.setPos(posTag);
-	}
+public class PosTagger extends PosTagger_ImplBase<Token> {
+		
+  private CleartkTokenOps tokenOps;
+  
+  
+  public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(PosTagger.class);
+  }
+  
+  public static AnalysisEngineDescription getDescription(String languageCode, URI modelUri) throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(PosTagger.class,
+        PosTagger_ImplBase.PARAM_LANGUAGE_CODE,
+        languageCode,
+        PosTagger_ImplBase.PARAM_MODEL_URI,
+        modelUri);
+  }
+
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    this.tokenOps = new CleartkTokenOps();
+  }
+  
+  @Override
+  protected TokenOps<Token> getTokenOps() {
+    return this.tokenOps;
+  }
 }
 	

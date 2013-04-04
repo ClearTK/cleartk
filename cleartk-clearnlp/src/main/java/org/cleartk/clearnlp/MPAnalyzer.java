@@ -24,17 +24,12 @@
 package org.cleartk.clearnlp;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.List;
-
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -55,7 +50,7 @@ import org.uimafit.util.JCasUtil;
 @TypeCapability(
     inputs = { "org.cleartk.token.type.Token:pos" },
     outputs = {"org.cleartk.token.type.Token:lemma"})
-public class MPAnalyzer extends MPAnalyzer_ImplBase<Sentence, Token> {
+public class MPAnalyzer extends MPAnalyzer_ImplBase<Token> {
 	
 	public static final String DEFAULT_DICTIONARY_FILE_NAME= "dictionary-1.2.0.zip";
 	
@@ -72,25 +67,17 @@ public class MPAnalyzer extends MPAnalyzer_ImplBase<Sentence, Token> {
 	      MPAnalyzer_ImplBase.PARAM_DICTIONARY_URI, dictionaryUri);
 	}
 
+  private CleartkTokenOps tokenOps;
 	
-  @Override
-  protected Collection<Sentence> selectWindows(JCas jCas) {
-    return JCasUtil.select(jCas, Sentence.class);
-  }
+	@Override
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+	  super.initialize(context);
+	  this.tokenOps = new CleartkTokenOps();
+	}
 
-  @Override
-  protected List<Token> selectTokens(JCas jCas, Sentence sentence) {
-    return JCasUtil.selectCovered(jCas, Token.class, sentence);
-  }
-
-  @Override
-  protected void setLemma(JCas jCas, Token token, String lemma) {
-    token.setLemma(lemma);
-  }
-
-  @Override
-  protected String getPos(JCas jCas, Token token) {
-    return token.getPos();
+	@Override
+  protected TokenOps<Token> getTokenOps() {
+    return this.tokenOps;
   }
 
 }

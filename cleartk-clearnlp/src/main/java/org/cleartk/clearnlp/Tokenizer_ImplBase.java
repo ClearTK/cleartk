@@ -23,28 +23,42 @@
  */
 package org.cleartk.clearnlp;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.JCasUtil;
 
 import com.googlecode.clearnlp.engine.EngineGetter;
 import com.googlecode.clearnlp.reader.AbstractReader;
 import com.googlecode.clearnlp.tokenization.AbstractTokenizer;
 
-public abstract class Tokenizer_ImplBase<WINDOW_TYPE extends Annotation> extends JCasAnnotator_ImplBase{
+/**
+ * <br>
+ * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * <p>
+ * This class provides a wrapper for the ClearNLP part of speech tokenizer for UIMA and/or ClearTK type systems. 
+ * 
+ * Subclasses should override the abstract methods to produce the annotations relevant for the target type system.
+ * 
+ * This tagger is available here:
+ * <p>
+ * http://clearnlp.googlecode.com
+ * <p>
+* 
+ * @author Lee Becker
+ * 
+ */
+public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation> extends JCasAnnotator_ImplBase{
 	public static final String DEFAULT_DICTIONARY_FILE_NAME= "dictionary-1.2.0.zip";
 
     public static final String PARAM_LANGUAGE_CODE = ConfigurationParameterFactory.createConfigurationParameterName(
@@ -63,23 +77,25 @@ public abstract class Tokenizer_ImplBase<WINDOW_TYPE extends Annotation> extends
     @ConfigurationParameter(
         description = "This parameter provides the URI of the tokenizer dictionary file.")
     private URI dictionaryUri;
+    
+    public static final String PARAM_WINDOW_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
+        Tokenizer_ImplBase.class,
+        "windowClass");
+
+    private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
+        + "By default, the tokenizer will tokenize a document sentence by sentence.  If you do not want to precede tokenization with"
+        + "sentence segmentation, then a reasonable value for this parameter is 'org.apache.uima.jcas.tcas.DocumentAnnotation'";
+
+    @ConfigurationParameter(
+        description = WINDOW_TYPE_DESCRIPTION,
+        defaultValue = "org.cleartk.token.type.Sentence")
+    private Class<? extends Annotation> windowClass;
 
 	
     private AbstractTokenizer tokenizer;
 	
-    
-    /**
-     * Convenience method for getting an Analysis Engine for ClearNLP's English tokenizer.
-     */
-    public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    	return AnalysisEngineFactory.createPrimitiveDescription(Tokenizer_ImplBase.class); 
-    }
-    
+    protected abstract TokenOps<TOKEN_TYPE> getTokenOps();
       
-    protected abstract Collection<WINDOW_TYPE> selectWindows(JCas jCas);
-    
-    protected abstract void createToken(JCas jCas, int begin, int end) throws InstantiationException, InvocationTargetException, IllegalAccessException;
- 
     @Override
     public void initialize(UimaContext context)
         throws ResourceInitializationException {
@@ -97,7 +113,7 @@ public abstract class Tokenizer_ImplBase<WINDOW_TYPE extends Annotation> extends
 
     @Override
     public void process(JCas jCas) throws AnalysisEngineProcessException {
-      for (WINDOW_TYPE window : this.selectWindows(jCas)) {
+      for (Annotation window : JCasUtil.select(jCas, this.windowClass)) {
         String windowText = window.getCoveredText();
         int windowOffset = window.getBegin();
         List<String> tokens = tokenizer.getTokens(windowText);
@@ -107,7 +123,7 @@ public abstract class Tokenizer_ImplBase<WINDOW_TYPE extends Annotation> extends
           int tokenBegin = windowText.indexOf(token, offset);
           int tokenEnd = tokenBegin + token.length();
           try {
-            this.createToken(jCas, windowOffset + tokenBegin, windowOffset + tokenEnd);
+            this.getTokenOps().createToken(jCas, windowOffset + tokenBegin, windowOffset + tokenEnd);
           } catch (Exception e) {
             throw new AnalysisEngineProcessException(e);
           }

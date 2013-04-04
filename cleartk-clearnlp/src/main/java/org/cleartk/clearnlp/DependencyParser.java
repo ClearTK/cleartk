@@ -24,27 +24,23 @@
 package org.cleartk.clearnlp;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.List;
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.dependency.type.DependencyNode;
 import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
- * This class provides a UIMA/ClearTK wrapper for the ClearNLP dependency parser. A typical
+ * This class provides a UIMA/ClearTK wrapper for the ClearNLP dependency parser that outputs to the ClearTK type system. A typical
  * pipeline preceding this analysis engine would consist of a tokenizer, sentence segmenter,
  * POS tagger, and lemmatizer (mp analyzer).
  * <p>
@@ -80,60 +76,26 @@ public class DependencyParser extends DependencyParser_ImplBase<Sentence, Token,
         DependencyParser_ImplBase.PARAM_PARSER_MODEL_URI,
         modelUri);
   }
+
+  private CleartkTokenOps tokenOps;
+  private CleartkDependencyOps dependencyOps;
+  
+  @Override
+  public void initialize(UimaContext aContext) throws ResourceInitializationException {
+    super.initialize(aContext);
+    this.tokenOps = new CleartkTokenOps();
+    this.dependencyOps = new CleartkDependencyOps();
+  }
+
+  @Override
+  protected TokenOps<Token> getTokenOps() {
+    return this.tokenOps;
+  }
+
+  @Override
+  protected DependencyOps<DependencyNode, TopDependencyNode, DependencyRelation, Token> getDependencyOps() {
+    return this.dependencyOps;
+  }
 	
-  @Override
-  protected Collection<Sentence> selectWindows(JCas jCas) {
-    return JCasUtil.select(jCas, Sentence.class);
-  }
 
-  @Override
-  protected List<Token> selectTokens(JCas jCas, Sentence sentence) {
-    return JCasUtil.selectCovered(jCas, Token.class, sentence);
-  }
-
-  @Override
-  protected String getLemma(JCas jCas, Token token) {
-    return token.getLemma();
-  }
-
-  @Override
-  protected String getPos(JCas jCas, Token token) {
-    return token.getPos();
-  }
-
-  @Override
-  protected TopDependencyNode createTopDependencyNode(JCas jCas, int begin, int end) {
-    return new TopDependencyNode(jCas, begin, end);
-  }
-
-  @Override
-  protected DependencyNode createDependencyNode(JCas jCas, int begin, int end) {
-    return new DependencyNode(jCas, begin, end);
-  }
-
-  @Override
-  protected DependencyRelation createRelation(JCas jCas, DependencyNode head, DependencyNode child, String relation) {
-    DependencyRelation rel = new DependencyRelation(jCas);
-    rel.setChild(child);
-    rel.setHead(head);
-    rel.setRelation(relation);
-    return rel;
-  }
-
-  @Override
-  protected void setHeadRelations(
-      JCas jCas,
-      DependencyNode node,
-      List<DependencyRelation> headRelations) {
-    node.setHeadRelations(UIMAUtil.toFSArray(jCas, headRelations));
-    
-  }
-
-  @Override
-  protected void setChildRelations(
-      JCas jCas,
-      DependencyNode node,
-      List<DependencyRelation> childRelations) {
-    node.setChildRelations(UIMAUtil.toFSArray(jCas, childRelations));
-  }
 }

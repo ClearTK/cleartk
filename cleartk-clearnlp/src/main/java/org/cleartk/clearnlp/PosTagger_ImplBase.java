@@ -25,19 +25,15 @@ package org.cleartk.clearnlp;
 
 import java.net.URI;
 import java.net.URL;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.descriptor.TypeCapability;
-import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
@@ -56,6 +52,8 @@ import com.googlecode.clearnlp.reader.AbstractReader;
  * This class provides a UIMA/ClearTK wrapper for the ClearNLP part of speech (POS) tagger. This engine
  * requires tokenize input and produces POS tags on the tokens.
  * 
+ * Subclasses should override the abstract methods to produce the annotations relevant for the target type system.
+ * 
  * This tagger is available here:
  * <p>
  * http://clearnlp.googlecode.com
@@ -64,10 +62,7 @@ import com.googlecode.clearnlp.reader.AbstractReader;
  * @author Lee Becker
  * 
  */
-@TypeCapability(
-    inputs = { "org.cleartk.token.type.Token" },
-    outputs = {"org.cleartk.token.type.Token:pos"})
-public abstract class PosTagger_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_TYPE extends Annotation> extends JCasAnnotator_ImplBase {
+public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends JCasAnnotator_ImplBase {
 	
 	public static final String DEFAULT_MODEL_FILE_NAME = "ontonotes-en-pos-1.3.0.tgz";
 	
@@ -88,28 +83,21 @@ public abstract class PosTagger_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_T
       defaultValue = AbstractReader.LANG_EN)
   private String languageCode;
 	
+  public static final String PARAM_WINDOW_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
+      PosTagger_ImplBase.class,
+      "windowClass"); 
+  
+  private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
+      + "By default, the tokenizer will tokenize a document sentence by sentence.  If you do not want to precede tokenization with"
+      + "sentence segmentation, then a reasonable value for this parameter is 'org.apache.uima.jcas.tcas.DocumentAnnotation'";
+
+  @ConfigurationParameter(
+      description = WINDOW_TYPE_DESCRIPTION,
+      defaultValue = "org.cleartk.token.type.Sentence")
+  private Class<? extends Annotation> windowClass; 
 	
-	/**
-	 * Convenience method to create Analysis Engine for ClearNLP's POSTagger + Lemmatizer using default English models and dictionaries.
-	 */
-	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(PosTagger.class);
-	}
-	
-	/**
-	 * Provides the PosTagger the windows (spans) in which it looks for tokens
-	 */
-	protected abstract Collection<WINDOW_TYPE> selectWindows(JCas jCas);
-	
-	/**
-	 * Provides a list of tokens contained within a window
-	 */
-	protected abstract List<TOKEN_TYPE> selectTokens(JCas jCas, WINDOW_TYPE window);
-	
-	/**
-	 * Assigns or POS tag to token (or potentially creates a POS span)
-	 */
-	protected abstract void setPos(JCas jCas, TOKEN_TYPE token, String posTag);
+  
+  protected abstract TokenOps<TOKEN_TYPE> getTokenOps();
 	
 	@Override
 	public void initialize(UimaContext context)
@@ -135,8 +123,8 @@ public abstract class PosTagger_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_T
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 	  
-		for (WINDOW_TYPE window : this.selectWindows(jCas)) {
-			List<TOKEN_TYPE> tokens = this.selectTokens(jCas, window);
+		for (Annotation window : JCasUtil.select(jCas, this.windowClass)) {
+			List<TOKEN_TYPE> tokens = this.getTokenOps().selectTokens(jCas, window);
 			if (tokens.size() <= 0) { return; }
 			
 			List<String> tokenStrings = JCasUtil.toText(tokens);
@@ -150,7 +138,7 @@ public abstract class PosTagger_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_T
 			// are shifted by one from the token indices
 			for (int i = 0; i < tokens.size(); i++) {
 				TOKEN_TYPE token = tokens.get(i);
-				this.setPos(jCas, token, posTags[i+1]);
+				this.getTokenOps().setPos(jCas, token, posTags[i+1]);
 			}
 		}
 	}

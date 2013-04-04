@@ -25,7 +25,6 @@ package org.cleartk.clearnlp;
 
 import java.net.URI;
 import java.net.URL;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
@@ -53,8 +52,10 @@ import com.googlecode.clearnlp.reader.AbstractReader;
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
- * This class provides a UIMA/ClearTK wrapper for the ClearNLP morphological analyzer. This engine
+ * This class provides a base class for wrapping the ClearNLP morphological analyzer into a UIMA based type system. This engine
  * requires POS-tagged tokens and produces lemmatized forms of said tokens.
+ * 
+ * Subclasses should override the abstract methods to produce the annotations relevant for the target type system.
  * 
  * This analyzer is available here:
  * <p>
@@ -64,7 +65,7 @@ import com.googlecode.clearnlp.reader.AbstractReader;
  * @author Lee Becker
  * 
  */
-public abstract class MPAnalyzer_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_TYPE extends Annotation> extends JCasAnnotator_ImplBase {
+public abstract class MPAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends JCasAnnotator_ImplBase {
 	
 	public static final String DEFAULT_DICTIONARY_FILE_NAME= "dictionary-1.2.0.zip";
 	
@@ -86,6 +87,19 @@ public abstract class MPAnalyzer_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_
 			description = "This parameter provides the URI to the morphological analyzer dictionary used for lemmatizing.")
 	private URI dictionaryUri;
 	
+	public static final String PARAM_WINDOW_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
+      MPAnalyzer_ImplBase.class,
+      "windowClass"); 
+  
+  private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
+      + "By default, the tokenizer will tokenize a document sentence by sentence.  If you do not want to precede tokenization with"
+      + "sentence segmentation, then a reasonable value for this parameter is 'org.apache.uima.jcas.tcas.DocumentAnnotation'";
+
+  @ConfigurationParameter(
+      description = WINDOW_TYPE_DESCRIPTION,
+      defaultValue = "org.cleartk.token.type.Sentence")
+  private Class<? extends Annotation> windowClass; 
+	
 	/**
 	 * Convenience method to create Analysis Engine for ClearNLP's POSTagger + Lemmatizer using default English models and dictionaries.
 	 */
@@ -100,26 +114,7 @@ public abstract class MPAnalyzer_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_
 	  
 	}
 	
-	
-	 /**
-   * Provides the PosTagger the windows (spans) in which it looks for tokens
-   */
-  protected abstract Collection<WINDOW_TYPE> selectWindows(JCas jCas);
-  
-  /**
-   * Provides a list of tokens contained within a window
-   */
-  protected abstract List<TOKEN_TYPE> selectTokens(JCas jCas, WINDOW_TYPE window);
-  
-  /**
-   * Assigns or POS tag to token (or potentially creates a POS span)
-   */
-  protected abstract void setLemma(JCas jCas, TOKEN_TYPE token, String lemma);
-  
-  /**
-   * Retrieves POS tag associated with the token
-   */
-  protected abstract String getPos(JCas jCas, TOKEN_TYPE token);
+  protected abstract TokenOps<TOKEN_TYPE> getTokenOps();
 	
 	@Override
 	public void initialize(UimaContext context)
@@ -143,8 +138,8 @@ public abstract class MPAnalyzer_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_
 
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
-	  for (WINDOW_TYPE window : this.selectWindows(jCas)) {
-		  List<TOKEN_TYPE> tokens = this.selectTokens(jCas, window);
+	  for (Annotation window : JCasUtil.select(jCas, this.windowClass)) {
+		  List<TOKEN_TYPE> tokens = this.getTokenOps().selectTokens(jCas, window);
 		  List<String> tokenStrings = JCasUtil.toText(tokens);
 		  
 		  // All processing in ClearNLP goes through the DEPTree structures,
@@ -153,7 +148,7 @@ public abstract class MPAnalyzer_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_
 		  for (int i = 1; i < depTree.size(); i++) {
 		    TOKEN_TYPE token = tokens.get(i-1);
 		    DEPNode node = depTree.get(i);
-		    node.pos = this.getPos(jCas, token);
+		    node.pos = this.getTokenOps().getPos(jCas, token);
 		  }
 		  // Run the morphological analyzer
 		  this.mpAnalyzer.process(depTree);
@@ -162,7 +157,7 @@ public abstract class MPAnalyzer_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_
 		  for (int i = 1; i < depTree.size(); i++) {
 		    TOKEN_TYPE token = tokens.get(i-1);
 		    DEPNode node = depTree.get(i);
-		    this.setLemma(jCas, token, node.lemma);
+		    this.getTokenOps().setLemma(jCas, token, node.lemma);
 		  }
 		}
 	}

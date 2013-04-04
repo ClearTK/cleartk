@@ -25,24 +25,17 @@ package org.cleartk.clearnlp;
 
 import java.io.File;
 import java.net.URI;
-import java.util.Collection;
-import java.util.List;
-
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.dependency.type.DependencyNode;
+import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
-import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
-
-import com.googlecode.clearnlp.dependency.DEPArc;
 
 /**
  * <br>
@@ -73,7 +66,7 @@ import com.googlecode.clearnlp.dependency.DEPArc;
         "org.cleartk.srl.type.Predicate",
         "org.cleartk.srl.type.SemanticArgument"} )
   
-public class SemanticRoleLabeler extends SemanticRoleLabeler_ImplBase<Sentence, Token, DependencyNode, SemanticArgument, Predicate> {
+public class SemanticRoleLabeler extends SemanticRoleLabeler_ImplBase<Token, DependencyNode, TopDependencyNode, DependencyRelation, SemanticArgument, Predicate> {
   
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(SemanticRoleLabeler.class);
@@ -91,75 +84,31 @@ public class SemanticRoleLabeler extends SemanticRoleLabeler_ImplBase<Sentence, 
       new File("src/test/resources/models/sample-en-srl-1.3.0.tgz").toURI());
   }
 
+  private CleartkTokenOps tokenOps;
+  private CleartkDependencyOps dependencyOps;
+  private CleartkSrlOps srlOps;
+  
   @Override
-  protected Collection<Sentence> selectWindows(JCas jCas) {
-    return JCasUtil.select(jCas, Sentence.class);
-  }
-
-  @Override
-  protected List<Token> selectTokens(JCas jCas, Sentence sentence) {
-    return JCasUtil.selectCovered(jCas, Token.class, sentence);
-  }
-
-  @Override
-  protected String getLemma(JCas jCas, Token token) {
-    return token.getLemma();
-  }
-
-  @Override
-  protected String getPos(JCas jCas, Token token) {
-    return token.getPos();
-  }
-
-  @Override
-  protected boolean isTopNode(JCas jCas, DependencyNode depNode) {
-    return depNode instanceof TopDependencyNode;
-  }
-
-  @Override
-  protected boolean hasHeadRelation(JCas jCas, DependencyNode node) {
-    return node.getHeadRelations().size() != 0;
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    this.tokenOps = new CleartkTokenOps();
+    this.dependencyOps = new CleartkDependencyOps();
+    this.srlOps = new CleartkSrlOps();
     
   }
 
   @Override
-  protected List<DependencyNode> selectDependencyNodes(JCas jCas, Sentence sentence) {
-    return JCasUtil.selectCovered(jCas, DependencyNode.class, sentence);
+  protected TokenOps<Token> getTokenOps() {
+    return this.tokenOps;
   }
 
   @Override
-  protected DependencyNode getDependencyNode(JCas jCas, Token token) {
-    return JCasUtil.selectCovered(jCas, DependencyNode.class, token).get(0);
+  protected DependencyOps<DependencyNode, TopDependencyNode, DependencyRelation, Token> getDependencyOps() {
+    return this.dependencyOps;
   }
 
   @Override
-  protected String getHeadRelation(JCas jCas, DependencyNode node) {
-    return node.getHeadRelations(0).getRelation();
-  }
-
-  @Override
-  protected DependencyNode getHead(JCas jCas, DependencyNode node) {
-    return node.getHeadRelations(0).getHead();
-  }
-
-  @Override
-  protected SemanticArgument createArgument(JCas jCas, DEPArc head, Token token) {
-    SemanticArgument argument = new SemanticArgument(jCas, token.getBegin(), token.getEnd());
-    argument.setLabel(head.getLabel());
-    argument.addToIndexes();
-    return argument;
-  }
-
-  @Override
-  protected Predicate createPredicate(JCas jCas, String rolesetId, Token token) {
-    Predicate pred = new Predicate(jCas, token.getBegin(), token.getEnd());
-    pred.setFrameSet(rolesetId);
-    pred.addToIndexes();
-    return pred;
-  }
-
-  @Override
-  protected void setPredicateArguments(JCas jCas, Predicate predicate, List<SemanticArgument> arguments) {
-    predicate.setArguments(UIMAUtil.toFSArray(jCas, arguments));
+  protected SrlOps<SemanticArgument, Predicate, Token> getSrlOps() {
+    return this.srlOps;
   }
 }

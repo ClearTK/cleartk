@@ -23,18 +23,23 @@
  */
 package org.cleartk.clearnlp;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
-import java.util.Collection;
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
 
-public class Tokenizer extends Tokenizer_ImplBase<Sentence> {
+public class Tokenizer extends Tokenizer_ImplBase<Token> {
+  
+  
+  private CleartkTokenOps tokenOps;
+
+  @Override
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    super.initialize(context);
+    this.tokenOps = new CleartkTokenOps();
+  }
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(Tokenizer.class);
@@ -49,13 +54,8 @@ public class Tokenizer extends Tokenizer_ImplBase<Sentence> {
   }
 
   @Override
-  public Collection<Sentence> selectWindows(JCas jCas) {
-    return JCasUtil.select(jCas, Sentence.class);
-  }
-
-  @Override
-  public void createToken(JCas jCas, int begin, int end) throws InstantiationException, InvocationTargetException, IllegalAccessException {
-    (new Token(jCas, begin, end)).addToIndexes();
+  protected TokenOps<Token> getTokenOps() {
+    return this.tokenOps;
   }
 }
 
