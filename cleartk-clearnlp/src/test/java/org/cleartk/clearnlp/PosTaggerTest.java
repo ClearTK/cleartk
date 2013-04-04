@@ -38,7 +38,6 @@ import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
 import org.uimafit.testing.factory.TokenBuilder;
 import org.uimafit.util.JCasUtil;
@@ -48,9 +47,7 @@ public class PosTaggerTest extends CleartkTestBase {
 	protected AnalysisEngineDescription posTagger;
 
 	protected void initLowMemModel() throws ResourceInitializationException {
-			this.posTagger = AnalysisEngineFactory.createPrimitiveDescription(PosTagger.class,
-			    PosTagger.PARAM_MODEL_URI,
-			    new File("src/test/resources/models/sample-en-pos-1.3.0.tgz").toURI());
+	  this.posTagger = PosTagger.getDescription("en", new File("src/test/resources/models/sample-en-pos-1.3.0.tgz").toURI());
 	} 
 	
 	protected void initDefaultModel() throws ResourceInitializationException {

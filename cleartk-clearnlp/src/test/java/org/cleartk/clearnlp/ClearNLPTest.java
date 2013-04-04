@@ -44,7 +44,6 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
 import org.uimafit.testing.factory.TokenBuilder;
 import org.uimafit.util.JCasUtil;
@@ -68,16 +67,11 @@ public class ClearNLPTest extends CleartkTestBase {
 
 	private void initLowMemModels() throws ResourceInitializationException {
 	  this.lemmatizer = MPAnalyzer.getDescription();
-	  this.depparser = AnalysisEngineFactory.createPrimitiveDescription(DependencyParser.class, 
-	      DependencyParser.PARAM_PARSER_MODEL_URI,
-	      new File("src/test/resources/models/sample-en-dep-1.3.0.tgz").toURI());
-
-	  this.srlabeler = AnalysisEngineFactory.createPrimitiveDescription(SemanticRoleLabeler.class, 
-	      SemanticRoleLabeler.PARAM_PRED_ID_MODEL_URI,
+	  this.depparser = DependencyParser.getDescription("en", new File("src/test/resources/models/sample-en-dep-1.3.0.tgz").toURI());
+	  
+	  this.srlabeler = SemanticRoleLabeler.getDescription("en", 
 	      new File("src/test/resources/models/sample-en-pred-1.3.0.tgz").toURI(),
-	      SemanticRoleLabeler.PARAM_ROLESET_MODEL_URI,
 	      new File("src/test/resources/models/sample-en-role-1.3.0.tgz").toURI(),
-	      SemanticRoleLabeler.PARAM_SRL_MODEL_URI,
 	      new File("src/test/resources/models/sample-en-srl-1.3.0.tgz").toURI());
 	}
 

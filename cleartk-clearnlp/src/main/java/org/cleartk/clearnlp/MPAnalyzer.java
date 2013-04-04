@@ -24,30 +24,17 @@
 package org.cleartk.clearnlp;
 
 import java.net.URI;
-import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 
-import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
-
-import com.googlecode.clearnlp.component.AbstractComponent;
-import com.googlecode.clearnlp.dependency.DEPNode;
-import com.googlecode.clearnlp.dependency.DEPTree;
-import com.googlecode.clearnlp.engine.EngineGetter;
-import com.googlecode.clearnlp.nlp.NLPDecode;
-import com.googlecode.clearnlp.nlp.NLPLib;
-import com.googlecode.clearnlp.reader.AbstractReader;
 
 /**
  * <br>
@@ -68,27 +55,9 @@ import com.googlecode.clearnlp.reader.AbstractReader;
 @TypeCapability(
     inputs = { "org.cleartk.token.type.Token:pos" },
     outputs = {"org.cleartk.token.type.Token:lemma"})
-public class MPAnalyzer extends JCasAnnotator_ImplBase {
+public class MPAnalyzer extends MPAnalyzer_ImplBase<Sentence, Token> {
 	
 	public static final String DEFAULT_DICTIONARY_FILE_NAME= "dictionary-1.2.0.zip";
-	
-    public static final String PARAM_LANGUAGE_CODE = ConfigurationParameterFactory.createConfigurationParameterName(
-    		MPAnalyzer.class,
-    		"languageCode");
-    
-    @ConfigurationParameter(
-    		description = "Language code (default value=en).",
-    		defaultValue= AbstractReader.LANG_EN)
-    private String languageCode;
-	
-	
-	public static final String PARAM_DICTIONARY_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-			MPAnalyzer.class, 
-			"dictionaryUri");
-	
-	@ConfigurationParameter(
-			description = "This parameter provides the URI to the morphological analyzer dictionary used for lemmatizing.")
-	private URI dictionaryUri;
 	
 	/**
 	 * Convenience method to create Analysis Engine for ClearNLP's POSTagger + Lemmatizer using default English models and dictionaries.
@@ -99,58 +68,29 @@ public class MPAnalyzer extends JCasAnnotator_ImplBase {
 	
 	public static AnalysisEngineDescription getDescription(String langCode, URI dictionaryUri) throws ResourceInitializationException {
 	  return AnalysisEngineFactory.createPrimitiveDescription(MPAnalyzer.class, 
-	      MPAnalyzer.PARAM_LANGUAGE_CODE, langCode,
-	      MPAnalyzer.PARAM_DICTIONARY_URI, dictionaryUri);
-	  
+	      MPAnalyzer_ImplBase.PARAM_LANGUAGE_CODE, langCode,
+	      MPAnalyzer_ImplBase.PARAM_DICTIONARY_URI, dictionaryUri);
 	}
+
 	
-	@Override
-	public void initialize(UimaContext context)
-			throws ResourceInitializationException {
-		super.initialize(context);
-		
-		try {
-		  URL mpAnalyzerDictionaryURL = (this.dictionaryUri == null) 
-		      ? MPAnalyzer.class.getResource(DEFAULT_DICTIONARY_FILE_NAME).toURI().toURL()
-		      : dictionaryUri.toURL();
+  @Override
+  protected Collection<Sentence> selectWindows(JCas jCas) {
+    return JCasUtil.select(jCas, Sentence.class);
+  }
 
-		  // initialize ClearNLP components
-		  this.mpAnalyzer  = EngineGetter.getComponent(mpAnalyzerDictionaryURL.openStream(), languageCode, NLPLib.MODE_MORPH);
-		  this.clearNlpDecoder = new NLPDecode();
+  @Override
+  protected List<Token> selectTokens(JCas jCas, Sentence sentence) {
+    return JCasUtil.selectCovered(jCas, Token.class, sentence);
+  }
 
-		} catch (Exception e) {
-			throw new ResourceInitializationException(e);
-		}
-		
-	}
+  @Override
+  protected void setLemma(JCas jCas, Token token, String lemma) {
+    token.setLemma(lemma);
+  }
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
-		  List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);
-		  List<String> tokenStrings = JCasUtil.toText(tokens);
-		  
-		  // All processing in ClearNLP goes through the DEPTree structures,
-		  // so populate it with token and POS tag info
-		  DEPTree depTree = this.clearNlpDecoder.toDEPTree(tokenStrings);
-		  for (int i = 1; i < depTree.size(); i++) {
-		    Token token = tokens.get(i-1);
-		    DEPNode node = depTree.get(i);
-		    node.pos = token.getPos();
-		  }
-		  // Run the morphological analyzer
-		  this.mpAnalyzer.process(depTree);
-		  
-		  // Pull out lemmas and stuff them back into the CAS tokens
-		  for (int i = 1; i < depTree.size(); i++) {
-		    Token token = tokens.get(i-1);
-		    DEPNode node = depTree.get(i);
-		    token.setLemma(node.lemma);
-		  }
-		}
-	}
-	
-	private AbstractComponent mpAnalyzer;
-	private NLPDecode clearNlpDecoder;
+  @Override
+  protected String getPos(JCas jCas, Token token) {
+    return token.getPos();
+  }
 
 }
