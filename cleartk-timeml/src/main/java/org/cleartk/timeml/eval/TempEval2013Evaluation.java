@@ -45,9 +45,6 @@ import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.CasCopier;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
-import org.cleartk.classifier.mallet.MalletCRFStringOutcomeDataWriter;
-import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter;
-import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
@@ -346,26 +343,26 @@ public class TempEval2013Evaluation
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "1", "-s", "1"),
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "5", "-s", "1"),
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "10", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "50", "-s", "1"),
-      // default is --iterations 500 --gaussian-variance 10
-      new Model.Params(MalletCRFStringOutcomeDataWriter.class),
-      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--forbidden", "O,I"),
-      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--iterations", "100"),
-      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--iterations", "1000"),
-      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--gaussian-variance", "1"),
-      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--gaussian-variance", "100"));
+      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "50", "-s", "1"));
+//      // default is --iterations 500 --gaussian-variance 10
+//      new Model.Params(MalletCRFStringOutcomeDataWriter.class),
+//      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--forbidden", "O,I"),
+//      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--iterations", "100"),
+//      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--iterations", "1000"),
+//      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--gaussian-variance", "1"),
+//      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--gaussian-variance", "100"));
 
-  private static final String priorFlag = "--gaussianPriorVariance";
+//  private static final String priorFlag = "--gaussianPriorVariance";
 
   private static List<Model.Params> CLASSIFIER_PARAM_SEARCH_SPACE = Lists.newArrayList(
-  // default is --gaussianPriorVariance 1
-      new Model.Params(MalletStringOutcomeDataWriter.class, "MaxEnt"),
-      new Model.Params(MalletStringOutcomeDataWriter.class, "MaxEnt", priorFlag, "0.1"),
-      new Model.Params(MalletStringOutcomeDataWriter.class, "MaxEnt", priorFlag, "10"),
-      // default is [iterations cutoff] 100 5
-      new Model.Params(MaxentStringOutcomeDataWriter.class),
-      new Model.Params(MaxentStringOutcomeDataWriter.class, "100", "10"),
-      new Model.Params(MaxentStringOutcomeDataWriter.class, "500", "5"),
+//      // default is --gaussianPriorVariance 1
+//      new Model.Params(MalletStringOutcomeDataWriter.class, "MaxEnt"),
+//      new Model.Params(MalletStringOutcomeDataWriter.class, "MaxEnt", priorFlag, "0.1"),
+//      new Model.Params(MalletStringOutcomeDataWriter.class, "MaxEnt", priorFlag, "10"),
+//      // default is [iterations cutoff] 100 5
+//      new Model.Params(MaxentStringOutcomeDataWriter.class),
+//      new Model.Params(MaxentStringOutcomeDataWriter.class, "100", "10"),
+//      new Model.Params(MaxentStringOutcomeDataWriter.class, "500", "5"),
       // L2-regularized logistic regression (primal)
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "0"),
       new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.5", "-s", "0"),

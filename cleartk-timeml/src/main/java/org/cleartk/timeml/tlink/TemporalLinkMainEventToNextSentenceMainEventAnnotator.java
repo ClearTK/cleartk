@@ -36,7 +36,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
+import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.timeml.type.Event;
@@ -65,7 +65,7 @@ public class TemporalLinkMainEventToNextSentenceMainEventAnnotator extends
 
     @Override
     public Class<?> getDataWriterClass() {
-      return MaxentStringOutcomeDataWriter.class;
+      return LIBLINEARStringOutcomeDataWriter.class;
     }
 
     @Override
