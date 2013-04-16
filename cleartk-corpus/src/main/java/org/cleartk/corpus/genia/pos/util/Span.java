@@ -1,5 +1,5 @@
-/* 
- * Copyright (c) 2010, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,24 +21,34 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-
-package org.cleartk.token.pos.genia;
+package org.cleartk.corpus.genia.pos.util;
 
 /**
  * <br>
- * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
- * 
- * @author Philip Ogren
- * @deprecated please use org.cleartk.corpus.genia.pos.GeniaPosViewName in cleartk-corpus
  */
-@Deprecated
 
-public interface GeniaPosViewName {
-  /**
-   * The view containing Genia part of speech formatted text.
-   */
-  public static final String GENIA_POS = "GeniaPOSView";
+public class Span {
 
+  int begin;
+
+  int end;
+
+  public Span(int begin, int end) {
+    this.begin = begin;
+    this.end = end;
+  }
+
+  public int getBegin() {
+    return begin;
+  }
+
+  public int getEnd() {
+    return end;
+  }
+
+  public String toString() {
+    return "" + begin + "|" + end;
+  }
 }

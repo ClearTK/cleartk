@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,24 +21,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
+package org.cleartk.corpus;
 
-package org.cleartk.token.pos.genia;
+import org.cleartk.test.util.ParametersTestUtil;
+import org.junit.Test;
 
 /**
  * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
  * 
  * @author Philip Ogren
- * @deprecated please use org.cleartk.corpus.genia.pos.GeniaPosViewName in cleartk-corpus
  */
-@Deprecated
+public class ParametersTest {
 
-public interface GeniaPosViewName {
-  /**
-   * The view containing Genia part of speech formatted text.
-   */
-  public static final String GENIA_POS = "GeniaPOSView";
-
+  @Test
+  public void testParameterNames() throws ClassNotFoundException {
+    ParametersTestUtil.testParameterDefinitions("src/main/java");
+  }
 }

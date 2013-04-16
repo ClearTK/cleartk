@@ -60,8 +60,9 @@ import org.cleartk.token.tokenizer.Tokenizer;
  * in SimpleTermFinderTests.testTime()
  * 
  * @author Philip Ogren
- * 
+ * @deprecated to be removed in 2.0
  */
+@Deprecated
 public class SimpleTermFinder implements TermFinder {
 
   Tokenizer tokenizer;

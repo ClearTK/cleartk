@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.token.pos.genia;
+package org.cleartk.corpus.genia.pos;
 
 /**
  * <br>
@@ -31,9 +31,7 @@ package org.cleartk.token.pos.genia;
  * <p>
  * 
  * @author Philip Ogren
- * @deprecated please use org.cleartk.corpus.genia.pos.GeniaPosViewName in cleartk-corpus
  */
-@Deprecated
 
 public interface GeniaPosViewName {
   /**

@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.token.pos.genia.util;
+package org.cleartk.corpus.genia.pos.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -34,15 +34,13 @@ import org.junit.Test;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
- * @deprecated please see org.cleartk.corpus.genia.pos.GeniaPOSParserTest in cleartk-corpus
  */
-@Deprecated
 
 public class GeniaPOSParserTest {
 
   @Test
   public void testArticleA() throws Exception {
-    File xmlFile = new File("src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml");
+    File xmlFile = new File("src/test/resources/org/cleartk/corpus/genia/pos/GENIAcorpus3.02.articleA.pos.xml");
     GeniaPOSParser gp = new GeniaPOSParser(xmlFile);
     GeniaParse parse = gp.next();
 

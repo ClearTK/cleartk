@@ -55,9 +55,9 @@ import org.uimafit.util.JCasUtil;
  * 
  * 
  * @author Philip Ogren
- * 
+ * @deprecated please use org.cleartk.corpus.ace2005.Ace2005Writer in cleartk-corpus
  */
-
+@Deprecated
 public class Ace2005Writer extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(

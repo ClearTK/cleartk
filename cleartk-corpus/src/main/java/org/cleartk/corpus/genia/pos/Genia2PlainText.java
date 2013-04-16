@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2010, Regents of the University of Colorado 
+ * Copyright (c) 2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -22,28 +22,38 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.token;
+package org.cleartk.corpus.genia.pos;
 
-import org.cleartk.test.CleartkTestBase;
-import org.cleartk.token.type.Sentence;
-import org.cleartk.token.type.Token;
-import org.junit.Before;
-import org.uimafit.testing.factory.TokenBuilder;
+import java.io.IOException;
+
+import org.apache.uima.UIMAException;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.collection.CollectionReader;
+import org.cleartk.util.ae.PlainTextWriter;
+import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.pipeline.SimplePipeline;
 
 /**
  * <br>
- * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * <p>
  * 
  * @author Philip Ogren
+ * 
+ *         This class provides a way to recover the original text of the GENIA corpus
+ *         "GENIAcorpus3.02.pos.xml".
+ * 
  */
-public class TokenTestBase extends CleartkTestBase {
+public class Genia2PlainText {
 
-  protected TokenBuilder<Token, Sentence> tokenBuilder;
+  public static void main(String[] args) throws UIMAException, IOException {
+    CollectionReader geniaReader = GeniaPosGoldReader.getDescription(args[0]);
+    AnalysisEngineDescription plainTextWriter = AnalysisEngineFactory.createPrimitiveDescription(
+        PlainTextWriter.class,
+        PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+        args[1]);
+    SimplePipeline.runPipeline(geniaReader, plainTextWriter);
 
-  @Before
-  public void setUp() throws Exception {
-    super.setUp();
-    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
   }
 }

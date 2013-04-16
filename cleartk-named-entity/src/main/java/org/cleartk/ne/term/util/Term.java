@@ -31,9 +31,9 @@ package org.cleartk.ne.term.util;
  * <p>
  * 
  * @author Philip Ogren
- * 
+  * @deprecated to be removed in 2.0
  */
-
+@Deprecated
 public class Term {
   private String id;
 

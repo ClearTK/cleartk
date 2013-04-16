@@ -31,8 +31,9 @@ import org.junit.Test;
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+ * @deprecated to be removed for 2.0
  */
-
+@Deprecated
 public class LicenseTest {
 
   @Test

@@ -2,8 +2,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-corpus</artifactId>
 	<packaging>jar</packaging>
-	<name>ClearTK Named Entity</name>
-	<description>ClearTK annotators for named entity recognition</description>
+	<name>ClearTK Corpus</name>
+	<description>ClearTK annotators and readers for various corpora</description>
 	<url>http://cleartk.googlecode.com/</url>
 	<licenses>
 		<license>
@@ -51,16 +51,6 @@
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-type-system</artifactId>
 			<version>1.2.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-ml</artifactId>
-			<version>1.2.2-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-token</artifactId>
-			<version>0.8.7-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jdom</groupId>

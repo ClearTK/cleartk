@@ -38,8 +38,9 @@ import org.cleartk.token.tokenizer.Token;
  * lists in text.
  * 
  * @author Philip
- * 
+ * @deprecated to be removed in 2.0
  */
+@Deprecated
 public interface TermFinder {
   /**
    * 

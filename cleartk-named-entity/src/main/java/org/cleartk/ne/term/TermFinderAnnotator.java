@@ -59,8 +59,9 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * @author Philip Ogren
  * 
  *         This annotator provides a UIMA wrapper around the SimpleTermFinder class.
+ * @deprecated to be removed in 2.0
  */
-
+@Deprecated
 public class TermFinderAnnotator extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_TERM_LIST_FILE_NAMES_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(

@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.token.pos.genia;
+package org.cleartk.corpus.genia.pos;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -52,9 +52,8 @@ import org.uimafit.util.JCasUtil;
  * All rights reserved.
  * 
  * <p>
- * @deprecated please see org.cleartk.corpus.genia.pos.GeniaPosGoldReaderTest in cleartk-corpus
  */
-@Deprecated
+
 public class GeniaPosGoldReaderTest extends DefaultTestBase {
 
   @Test
@@ -62,7 +61,7 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         GeniaPosGoldReader.class,
         GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-        "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
+        "src/test/resources/org/cleartk/corpus/genia/pos/GENIAcorpus3.02.articleA.pos.xml",
         GeniaPosGoldReader.PARAM_LOAD_TOKENS,
         true,
         GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
@@ -87,7 +86,7 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
     reader = CollectionReaderFactory.createCollectionReader(
         GeniaPosGoldReader.class,
         GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-        "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
+        "src/test/resources/org/cleartk/corpus/genia/pos/GENIAcorpus3.02.articleA.pos.xml",
         GeniaPosGoldReader.PARAM_LOAD_TOKENS,
         false,
         GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
@@ -112,7 +111,7 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
       reader = CollectionReaderFactory.createCollectionReader(
           GeniaPosGoldReader.class,
           GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-          "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
+          "src/test/resources/org/cleartk/corpus/genia/pos/GENIAcorpus3.02.articleA.pos.xml",
           GeniaPosGoldReader.PARAM_LOAD_TOKENS,
           false,
           GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
@@ -131,7 +130,7 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
       reader = CollectionReaderFactory.createCollectionReader(
           GeniaPosGoldReader.class,
           GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-          "src/test/resources/token/genia/article_ids.txt");
+          "src/test/resources/org/cleartk/corpus/genia/pos/article_ids.txt");
     } catch (ResourceInitializationException rie) {
       jde = (JDOMException) rie.getCause();
     }
@@ -140,7 +139,7 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
     reader = CollectionReaderFactory.createCollectionReader(
         GeniaPosGoldReader.class,
         GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-        "src/test/resources/token/genia/GENIAcorpus3.02.articleA.pos.xml",
+        "src/test/resources/org/cleartk/corpus/genia/pos/GENIAcorpus3.02.articleA.pos.xml",
         GeniaPosGoldReader.PARAM_LOAD_TOKENS,
         false,
         GeniaPosGoldReader.PARAM_LOAD_SENTENCES,
@@ -148,7 +147,7 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
         GeniaPosGoldReader.PARAM_LOAD_POS_TAGS,
         false,
         GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST_FILE,
-        "src/test/resources/token/genia/article_ids.txt");
+        "src/test/resources/org/cleartk/corpus/genia/pos/article_ids.txt");
     jcas = new JCasIterable(reader).next();
     assertEquals(1, reader.getProgress()[0].getCompleted());
     assertFalse(reader.hasNext());

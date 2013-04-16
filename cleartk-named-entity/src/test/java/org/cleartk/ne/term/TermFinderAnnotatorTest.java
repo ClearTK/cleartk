@@ -42,7 +42,9 @@ import org.uimafit.util.JCasUtil;
  * 
  * 
  * @author Steven Bethard
- */
+  * @deprecated to be removed for 2.0
+*/
+@Deprecated
 public class TermFinderAnnotatorTest extends NeTestBase {
 
   @Test
