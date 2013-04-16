@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.constituent;
+package org.cleartk.corpus.penntreebank;
 
 import static org.junit.Assert.assertEquals;
 
@@ -33,8 +33,8 @@ import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.syntax.SyntaxTestBase;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
+import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.junit.Assert;
 import org.junit.Test;
@@ -51,8 +51,7 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  * 
  */
-@Deprecated
-public class TreebankGoldAnnotatorTest extends SyntaxTestBase {
+public class TreebankGoldAnnotatorTest extends CleartkTestBase {
 
   @Test
   public void craftTest1() throws Exception {
@@ -61,7 +60,7 @@ public class TreebankGoldAnnotatorTest extends SyntaxTestBase {
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
 
-    JCas tbView = jCas.createView(TreebankConstants.TREEBANK_VIEW);
+    JCas tbView = jCas.createView(PennTreebankReader.TREEBANK_VIEW);
     tbView.setDocumentText(treebankParse);
 
     engine.process(jCas);
@@ -102,7 +101,7 @@ public class TreebankGoldAnnotatorTest extends SyntaxTestBase {
         TreebankGoldAnnotator.PARAM_POST_TREES);
     Assert.assertTrue(postTrees.booleanValue());
     String[] inputSofas = description.getAnalysisEngineMetaData().getCapabilities()[0].getInputSofas();
-    assertEquals(TreebankConstants.TREEBANK_VIEW, inputSofas[0]);
+    assertEquals(PennTreebankReader.TREEBANK_VIEW, inputSofas[0]);
     assertEquals(CAS.NAME_DEFAULT_SOFA, inputSofas[1]);
   }
 
@@ -130,7 +129,7 @@ public class TreebankGoldAnnotatorTest extends SyntaxTestBase {
 
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
 
-    JCas tbView = jCas.createView(TreebankConstants.TREEBANK_VIEW);
+    JCas tbView = jCas.createView(PennTreebankReader.TREEBANK_VIEW);
     tbView.setDocumentText(treebankParse);
 
     engine.process(jCas);

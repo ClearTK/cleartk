@@ -56,8 +56,9 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * </p>
  * 
  * @author Philipp Wetzler
+ * @deprecated Use the one in cleartk-corpus
  */
-
+@Deprecated
 @SofaCapability(
     inputSofas = { TreebankConstants.TREEBANK_VIEW, CAS.NAME_DEFAULT_SOFA },
     outputSofas = {})
