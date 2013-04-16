@@ -42,7 +42,9 @@ import org.uimafit.pipeline.SimplePipeline;
  * All rights reserved.
  * 
  * @author Steven Bethard, Philipp Wetzler
+ * @deprecated This code is no longer maintained
  */
+@Deprecated
 public class TrainConll2005Models {
 
   private static final File conll2005File = new File(

@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.srl.conll2005;
+package org.cleartk.corpus.conll2005;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,9 +49,7 @@ import org.uimafit.util.JCasUtil;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
- * @deprecated Use the one in cleartk-corpus instead
  */
-@Deprecated
 public class Conll2005Writer extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(

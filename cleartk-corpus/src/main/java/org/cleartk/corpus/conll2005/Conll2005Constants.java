@@ -22,16 +22,15 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.srl.conll2005;
+package org.cleartk.corpus.conll2005;
 
 /**
  * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
- * @deprecated Use the one in cleartk-corpus instead
  */
-@Deprecated
+
 public interface Conll2005Constants {
 
   /**
