@@ -23,7 +23,7 @@
  */
 package org.cleartk.classifier.feature.extractor.simple;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
@@ -59,7 +59,14 @@ public class CharacterCategoryPatternExtractor implements SimpleNamedFeatureExtr
      * added to the feature value only once. For example "XX00" would get the pattern "LuNd" since
      * there are two uppercase letters followed by two digits.
      */
-    REPEATS_MERGED
+    REPEATS_MERGED,
+    /**
+     * Similar to REPEATS_MERGED, but distinguishes between the same category appearing once and
+     * more than once in a row. If the same category appears twice or more in a row, then we will
+     * mark that category with a Kleene plus '+'. For example "X000" would get the pattern "LuNd+"
+     * since there is a single uppercase letter followed by more than one digit.
+     */
+    REPEATS_AS_KLEENE_PLUS
   }
 
   private PatternType patternType;
@@ -90,6 +97,9 @@ public class CharacterCategoryPatternExtractor implements SimpleNamedFeatureExtr
       case REPEATS_MERGED:
         this.name = "CharPatternRepeatsMerged";
         break;
+      case REPEATS_AS_KLEENE_PLUS:
+        this.name = "CharPatternRepeatsAsKleenePlus";
+        break;
     }
   }
 
@@ -104,103 +114,10 @@ public class CharacterCategoryPatternExtractor implements SimpleNamedFeatureExtr
     StringBuilder builder = new StringBuilder();
     String text = focusAnnotation.getCoveredText();
     String lastType = null;
+    boolean multipleRepeats = false;
     for (int i = 0; i < text.length(); i += 1) {
-      String type;
-      int typeInt = Character.getType(text.charAt(i));
-      switch (typeInt) {
-        case Character.CONTROL:
-          type = "CC";
-          break;
-        case Character.FORMAT:
-          type = "Cf";
-          break;
-        case Character.UNASSIGNED:
-          type = "Cn";
-          break;
-        case Character.PRIVATE_USE:
-          type = "Co";
-          break;
-        case Character.SURROGATE:
-          type = "Cs";
-          break;
-        case Character.LOWERCASE_LETTER:
-          type = "Ll";
-          break;
-        case Character.MODIFIER_LETTER:
-          type = "Lm";
-          break;
-        case Character.OTHER_LETTER:
-          type = "Lo";
-          break;
-        case Character.TITLECASE_LETTER:
-          type = "Lt";
-          break;
-        case Character.UPPERCASE_LETTER:
-          type = "Lu";
-          break;
-        case Character.COMBINING_SPACING_MARK:
-          type = "Mc";
-          break;
-        case Character.ENCLOSING_MARK:
-          type = "Me";
-          break;
-        case Character.NON_SPACING_MARK:
-          type = "Mn";
-          break;
-        case Character.DECIMAL_DIGIT_NUMBER:
-          type = "Nd";
-          break;
-        case Character.LETTER_NUMBER:
-          type = "Nl";
-          break;
-        case Character.OTHER_NUMBER:
-          type = "No";
-          break;
-        case Character.CONNECTOR_PUNCTUATION:
-          type = "Pc";
-          break;
-        case Character.DASH_PUNCTUATION:
-          type = "Pd";
-          break;
-        case Character.END_PUNCTUATION:
-          type = "Pe";
-          break;
-        case Character.FINAL_QUOTE_PUNCTUATION:
-          type = "Pf";
-          break;
-        case Character.INITIAL_QUOTE_PUNCTUATION:
-          type = "Pi";
-          break;
-        case Character.OTHER_PUNCTUATION:
-          type = "Po";
-          break;
-        case Character.START_PUNCTUATION:
-          type = "Ps";
-          break;
-        case Character.CURRENCY_SYMBOL:
-          type = "Sc";
-          break;
-        case Character.MODIFIER_SYMBOL:
-          type = "Sk";
-          break;
-        case Character.MATH_SYMBOL:
-          type = "Sm";
-          break;
-        case Character.OTHER_SYMBOL:
-          type = "So";
-          break;
-        case Character.LINE_SEPARATOR:
-          type = "Zl";
-          break;
-        case Character.PARAGRAPH_SEPARATOR:
-          type = "Zp";
-          break;
-        case Character.SPACE_SEPARATOR:
-          type = "Zs";
-          break;
-        default:
-          throw new RuntimeException("Unknown character type: " + typeInt);
-      }
+      char c = text.charAt(i);
+      String type = classifyChar(c);
       switch (this.patternType) {
         case ONE_PER_CHAR:
           builder.append(type);
@@ -210,9 +127,85 @@ public class CharacterCategoryPatternExtractor implements SimpleNamedFeatureExtr
             builder.append(type);
           }
           break;
+        case REPEATS_AS_KLEENE_PLUS:
+          if (!type.equals(lastType)) {
+            builder.append(type);
+            multipleRepeats = false;
+          } else if (!multipleRepeats) {
+            builder.append('+');
+            multipleRepeats = true;
+          }
       }
       lastType = type;
     }
-    return Arrays.asList(new Feature(this.name, builder.toString()));
+    return Collections.singletonList(new Feature(this.name, builder.toString()));
+  }
+
+  protected String classifyChar(char c) {
+    int typeInt = Character.getType(c);
+    switch (typeInt) {
+      case Character.CONTROL:
+        return "CC";
+      case Character.FORMAT:
+        return "Cf";
+      case Character.UNASSIGNED:
+        return "Cn";
+      case Character.PRIVATE_USE:
+        return "Co";
+      case Character.SURROGATE:
+        return "Cs";
+      case Character.LOWERCASE_LETTER:
+        return "Ll";
+      case Character.MODIFIER_LETTER:
+        return "Lm";
+      case Character.OTHER_LETTER:
+        return "Lo";
+      case Character.TITLECASE_LETTER:
+        return "Lt";
+      case Character.UPPERCASE_LETTER:
+        return "Lu";
+      case Character.COMBINING_SPACING_MARK:
+        return "Mc";
+      case Character.ENCLOSING_MARK:
+        return "Me";
+      case Character.NON_SPACING_MARK:
+        return "Mn";
+      case Character.DECIMAL_DIGIT_NUMBER:
+        return "Nd";
+      case Character.LETTER_NUMBER:
+        return "Nl";
+      case Character.OTHER_NUMBER:
+        return "No";
+      case Character.CONNECTOR_PUNCTUATION:
+        return "Pc";
+      case Character.DASH_PUNCTUATION:
+        return "Pd";
+      case Character.END_PUNCTUATION:
+        return "Pe";
+      case Character.FINAL_QUOTE_PUNCTUATION:
+        return "Pf";
+      case Character.INITIAL_QUOTE_PUNCTUATION:
+        return "Pi";
+      case Character.OTHER_PUNCTUATION:
+        return "Po";
+      case Character.START_PUNCTUATION:
+        return "Ps";
+      case Character.CURRENCY_SYMBOL:
+        return "Sc";
+      case Character.MODIFIER_SYMBOL:
+        return "Sk";
+      case Character.MATH_SYMBOL:
+        return "Sm";
+      case Character.OTHER_SYMBOL:
+        return "So";
+      case Character.LINE_SEPARATOR:
+        return "Zl";
+      case Character.PARAGRAPH_SEPARATOR:
+        return "Zp";
+      case Character.SPACE_SEPARATOR:
+        return "Zs";
+      default:
+        throw new RuntimeException("Unknown character type: " + typeInt);
+    }
   }
 }

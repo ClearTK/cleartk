@@ -85,6 +85,53 @@ public class CharacterCategoryPatternExtractorTest extends DefaultTestBase {
     this.assertFeature("CharPatternRepeatsMerged", "LuNdPdLlNdPo", extractor, ac1b43);
   }
 
+  @Test
+  public void testRepeatsAsKleenePlus() throws Exception {
+    CharacterCategoryPatternExtractor extractor = new CharacterCategoryPatternExtractor(
+        PatternType.REPEATS_AS_KLEENE_PLUS);
+    this.tokenBuilder.buildTokens(this.jCas, "spam 42 XXXyy C3p0 AC1-b432. A0BC12");
+    Iterator<Token> tokensIter = JCasUtil.select(this.jCas, Token.class).iterator();
+    Token spam = tokensIter.next();
+    Token fortyTwo = tokensIter.next();
+    Token xxyy = tokensIter.next();
+    Token c3p0 = tokensIter.next();
+    Token ac1b432 = tokensIter.next();
+    Token a0bc12 = tokensIter.next();
+    Assert.assertFalse(tokensIter.hasNext());
+
+    this.assertFeature("CharPatternRepeatsAsKleenePlus", "Ll+", extractor, spam);
+    this.assertFeature("CharPatternRepeatsAsKleenePlus", "Nd+", extractor, fortyTwo);
+    this.assertFeature("CharPatternRepeatsAsKleenePlus", "Lu+Ll+", extractor, xxyy);
+    this.assertFeature("CharPatternRepeatsAsKleenePlus", "LuNdLlNd", extractor, c3p0);
+    this.assertFeature("CharPatternRepeatsAsKleenePlus", "Lu+NdPdLlNd+Po", extractor, ac1b432);
+    this.assertFeature("CharPatternRepeatsAsKleenePlus", "LuNdLu+Nd+", extractor, a0bc12);
+  }
+
+  @Test
+  public void testOverriddenClassifier() throws Exception {
+    CharacterCategoryPatternExtractor extractor = new CharacterCategoryPatternExtractor(
+        PatternType.REPEATS_MERGED) {
+      @Override
+      protected String classifyChar(char c) {
+        return Character.isLetter(c) ? "X" : ".";
+      }
+    };
+    this.tokenBuilder.buildTokens(this.jCas, "spam 42 XXyy C3p0 AC1-b43.!");
+    Iterator<Token> tokensIter = JCasUtil.select(this.jCas, Token.class).iterator();
+    Token spam = tokensIter.next();
+    Token fortyTwo = tokensIter.next();
+    Token xxyy = tokensIter.next();
+    Token c3p0 = tokensIter.next();
+    Token ac1b43 = tokensIter.next();
+    Assert.assertFalse(tokensIter.hasNext());
+
+    this.assertFeature("CharPatternRepeatsMerged", "X", extractor, spam);
+    this.assertFeature("CharPatternRepeatsMerged", ".", extractor, fortyTwo);
+    this.assertFeature("CharPatternRepeatsMerged", "X", extractor, xxyy);
+    this.assertFeature("CharPatternRepeatsMerged", "X.X.", extractor, c3p0);
+    this.assertFeature("CharPatternRepeatsMerged", "X.X.", extractor, ac1b43);
+  }
+
   private void assertFeature(
       String name,
       Object value,
