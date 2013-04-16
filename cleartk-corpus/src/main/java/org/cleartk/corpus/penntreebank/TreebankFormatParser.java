@@ -21,13 +21,16 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.constituent.util;
+package org.cleartk.corpus.penntreebank;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.cleartk.syntax.constituent.util.TopTreebankNode;
+import org.cleartk.syntax.constituent.util.TreebankNode;
 
 /**
  * This class was written to be a stand alone parser for the Penn Treebank data. Basically, I need a
@@ -48,9 +51,7 @@ import java.util.regex.Pattern;
  * 
  * 
  * @author Philip Ogren
- * @deprecated Use the one in cleartk-corpus instead
  */
-@Deprecated
 public class TreebankFormatParser {
   /**
    * used to identify tokens in Penn Treebank labeled constituents. It will match strings such as:

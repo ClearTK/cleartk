@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.constituent.util;
+package org.cleartk.corpus.penntreebank;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.uima.util.FileUtils;
+import org.cleartk.syntax.constituent.util.TopTreebankNode;
+import org.cleartk.syntax.constituent.util.TreebankNode;
 import org.junit.Test;
 
 /**
@@ -44,8 +46,7 @@ import org.junit.Test;
  * @author Philip Ogren
  * 
  */
-@Deprecated
-public class TreebankParserTest {
+public class TreebankFormatParserTest {
 
   @Test
   public void testGetLeafNode() {
