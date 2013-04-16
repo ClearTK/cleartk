@@ -44,7 +44,9 @@ import org.uimafit.factory.CollectionReaderFactory;
  * 
  * @author Philip
  * 
+ * @deprecated moved to cleartk-corpus
  */
+@Deprecated
 public class PennTreebankReaderTest extends SyntaxTestBase {
 
   private final String inputDir = "data/treebank/wsj";
