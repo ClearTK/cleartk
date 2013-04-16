@@ -28,8 +28,10 @@ package org.cleartk.ne.ace2005;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * @deprecated please use org.cleartk.corpus.ace2005.Ace2005Constants in cleartk-corpus
  */
 
+@Deprecated
 public interface Ace2005Constants {
 
   /**

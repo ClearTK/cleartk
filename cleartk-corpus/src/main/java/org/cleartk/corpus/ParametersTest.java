@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,43 +21,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.ne.term.util;
+package org.cleartk.corpus;
+
+import org.cleartk.test.util.ParametersTestUtil;
+import org.junit.Test;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * <p>
- * 
  * @author Philip Ogren
-  * @deprecated to be removed in 2.0
  */
-@Deprecated
-public class Term {
-  private String id;
+public class ParametersTest {
 
-  private String termText;
-
-  private TermList termList;
-
-  public Term(String id, String termText, TermList termList) {
-    super();
-    this.id = id;
-    this.termText = termText;
-    this.termList = termList;
+  @Test
+  public void testParameterNames() throws ClassNotFoundException {
+    ParametersTestUtil.testParameterDefinitions("src/main/java");
   }
-
-  public String getId() {
-    return id;
-  }
-
-  public String getTermText() {
-    return termText;
-  }
-
-  public TermList getTermList() {
-    return termList;
-  }
-
 }

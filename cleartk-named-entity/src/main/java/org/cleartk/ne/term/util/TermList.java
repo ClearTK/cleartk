@@ -46,7 +46,10 @@ import java.util.regex.Pattern;
  *         expectation that a TermFinder implementation will make any meaningful use of this class
  *         other than to obtain the terms as a collection. A term finder should determine how to
  *         optimally access the contents of a list with its own data structures.
+ *         
+ * @deprecated to be removed in 2.0
  */
+@Deprecated
 public class TermList {
   private String name;
 

@@ -59,9 +59,10 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  * 
  * @author Philip Ogren
- * 
- */
+ * @deprecated please use org.cleartk.corpus.ace2005.Ace2005GoldReader in cleartk-corpus
 
+ */
+@Deprecated
 @SofaCapability(outputSofas = { Ace2005Constants.ACE_2005_APF_URI_VIEW, ViewURIUtil.URI })
 public class Ace2005GoldReader extends JCasCollectionReader_ImplBase {
   public static final String PARAM_ACE_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(

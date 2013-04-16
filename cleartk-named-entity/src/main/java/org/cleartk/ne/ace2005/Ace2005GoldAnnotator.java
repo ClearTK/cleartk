@@ -60,8 +60,10 @@ import org.uimafit.descriptor.SofaCapability;
  * NamedEntity and NamedEntityMention objects to the JCas.
  * 
  * @author Philip Ogren
- * 
+ * @deprecated please use org.cleartk.corpus.ace2005.Ace2005GoldAnnotator in cleartk-corpus
+
  */
+@Deprecated
 @SofaCapability(
     inputSofas = { Ace2005Constants.ACE_2005_APF_URI_VIEW, CAS.NAME_DEFAULT_SOFA },
     outputSofas = {})

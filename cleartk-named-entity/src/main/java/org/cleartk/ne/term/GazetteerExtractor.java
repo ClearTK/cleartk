@@ -42,9 +42,9 @@ import org.uimafit.util.JCasUtil;
  * 
  * 
  * @author Philip Ogren
- * 
+ * @deprecated to be removed in 2.0
  */
-
+@Deprecated
 public class GazetteerExtractor {
   private Set<String> gazetteerNames;
 

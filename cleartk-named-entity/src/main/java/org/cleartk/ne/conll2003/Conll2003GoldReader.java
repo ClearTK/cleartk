@@ -62,8 +62,9 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  *         This collection reader reads in the CoNLL 2003 named entity data. The data can be
  *         retrieved from http://www.cnts.ua.ac.be/conll2003/ner/
- * 
+ * @deprecated please use org.cleartk.corpus.conll2003.Conll2003GoldReader in cleartk-corpus
  */
+@Deprecated
 @SofaCapability(outputSofas = ViewURIUtil.URI)
 public class Conll2003GoldReader extends JCasCollectionReader_ImplBase {
   public static final String PARAM_DATA_FILE_NAME = ConfigurationParameterFactory

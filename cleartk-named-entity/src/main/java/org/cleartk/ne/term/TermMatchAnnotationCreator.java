@@ -34,8 +34,9 @@ import org.uimafit.factory.initializable.Initializable;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * @deprecated to be removed in 2.0
  */
-
+@Deprecated
 public interface TermMatchAnnotationCreator extends Initializable {
 
   public Annotation createTermMatchAnnotation(JCas jCas, TermMatch termMatch);
