@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+/**
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,35 +21,20 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.srl.propbank.util;
+package org.cleartk.corpus.propbank;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
  * <p>
- * @deprecated Use the one in cleartk-corpus instead
  */
-@Deprecated
-public class PropbankFormatException extends IllegalArgumentException {
 
-  private static final long serialVersionUID = 3194744657398295811L;
+public interface PropbankConstants {
 
-  public PropbankFormatException() {
-    super();
-  }
-
-  public PropbankFormatException(String arg0) {
-    super(arg0);
-  }
-
-  public PropbankFormatException(Throwable arg0) {
-    super(arg0);
-  }
-
-  public PropbankFormatException(String arg0, Throwable arg1) {
-    super(arg0, arg1);
-  }
+  /**
+   * The view containing the text of a PropBank "prop.txt" file.
+   */
+  public static final String PROPBANK_VIEW = "PROPBANK_VIEW";
 
 }

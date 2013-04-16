@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.srl.propbank;
+package org.cleartk.corpus.propbank;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -29,7 +29,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.srl.SrlTestBase;
+import org.cleartk.test.CleartkTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -40,8 +40,7 @@ import org.uimafit.factory.CollectionReaderFactory;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-@Deprecated
-public class PropbankGoldReaderAndAnnotatorTest extends SrlTestBase {
+public class PropbankGoldReaderAndAnnotatorTest extends CleartkTestBase {
 
   @Test
   public void testReaderDescriptor() throws UIMAException {

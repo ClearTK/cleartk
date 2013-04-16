@@ -39,7 +39,9 @@ import org.cleartk.syntax.constituent.type.TreebankNode;
  *         </p>
  * 
  * @author Philipp Wetzler
+ * @deprecated Use the one in cleartk-corpus instead
  */
+@Deprecated
 public class PropbankNodeRelation extends PropbankRelation {
 
   public static PropbankNodeRelation fromString(String s) {

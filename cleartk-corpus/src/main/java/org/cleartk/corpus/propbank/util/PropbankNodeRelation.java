@@ -21,35 +21,72 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.srl.propbank.util;
+package org.cleartk.corpus.propbank.util;
+
+import org.apache.uima.jcas.JCas;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNode;
 
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * <p>
- * @deprecated Use the one in cleartk-corpus instead
+ * 
+ * @author Philip Ogren
+ *         <p>
+ *         A <em>PropbankNodeRelation object</em> represents a reference to one node in Propbank.
+ *         </p>
+ * 
+ * @author Philipp Wetzler
  */
-@Deprecated
-public class PropbankFormatException extends IllegalArgumentException {
+public class PropbankNodeRelation extends PropbankRelation {
 
-  private static final long serialVersionUID = 3194744657398295811L;
+  public static PropbankNodeRelation fromString(String s) {
+    String[] fields = s.split(":");
 
-  public PropbankFormatException() {
-    super();
+    if (fields.length != 2)
+      throw new IllegalArgumentException();
+
+    return new PropbankNodeRelation(Integer.valueOf(fields[0]), Integer.valueOf(fields[1]));
   }
 
-  public PropbankFormatException(String arg0) {
-    super(arg0);
+  protected int terminalNumber;
+
+  protected int height;
+
+  public PropbankNodeRelation(int terminalNumber, int height) {
+    this.terminalNumber = terminalNumber;
+    this.height = height;
   }
 
-  public PropbankFormatException(Throwable arg0) {
-    super(arg0);
+  public int getHeight() {
+    return height;
   }
 
-  public PropbankFormatException(String arg0, Throwable arg1) {
-    super(arg0, arg1);
+  public void setHeight(int height) {
+    this.height = height;
   }
 
+  public int getTerminalNumber() {
+    return terminalNumber;
+  }
+
+  public void setTerminalNumber(int terminalNumber) {
+    this.terminalNumber = terminalNumber;
+  }
+
+  @Override
+  public TreebankNode convert(JCas jCas, TopTreebankNode topNode) {
+    TreebankNode node = topNode.getTerminals(this.terminalNumber);
+    for (int i = 0; i < this.height; i++)
+      node = node.getParent();
+
+    return node;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(getTerminalNumber()) + ":" + String.valueOf(getHeight());
+  }
 }

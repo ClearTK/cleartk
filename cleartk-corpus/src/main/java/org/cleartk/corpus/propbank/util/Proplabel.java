@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.srl.propbank.util;
+package org.cleartk.corpus.propbank.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,9 +47,7 @@ import org.cleartk.util.UIMAUtil;
  * </p>
  * 
  * @author Philipp Wetzler, Steven Bethard
- * @deprecated Use the one in cleartk-corpus instead
  */
-@Deprecated
 public class Proplabel {
   /**
    * Parses one label taken form a Propbank entry and returns its representation as a

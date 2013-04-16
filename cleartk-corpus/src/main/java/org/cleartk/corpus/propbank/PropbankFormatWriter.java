@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.srl.propbank;
+package org.cleartk.corpus.propbank;
 
 import java.io.File;
 import java.util.List;
@@ -45,7 +45,7 @@ import org.uimafit.util.JCasUtil;
  * All rights reserved.
  * <p>
  */
-@Deprecated
+
 public class PropbankFormatWriter implements AnnotationWriter<Predicate> {
 
   public void initialize(UimaContext context) throws ResourceInitializationException {

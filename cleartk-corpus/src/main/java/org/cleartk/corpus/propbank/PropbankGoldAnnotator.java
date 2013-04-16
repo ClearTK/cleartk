@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.srl.propbank;
+package org.cleartk.corpus.propbank;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,8 +31,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.srl.propbank.util.Propbank;
+import org.cleartk.corpus.propbank.util.Propbank;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.AnnotationUtil;
@@ -56,7 +55,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Philipp Wetzler, Philip Ogren
  */
-@Deprecated
+
 @SofaCapability(inputSofas = { PropbankConstants.PROPBANK_VIEW, CAS.NAME_DEFAULT_SOFA })
 public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
 
@@ -78,9 +77,8 @@ public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
             TopTreebankNode.class,
             sentence);
         if (top == null) {
-          throw CleartkExtractorException.noAnnotationMatchingWindow(
-              TopTreebankNode.class,
-              sentence);
+          throw new IllegalArgumentException(String.format(
+              "%s missing for %s", TopTreebankNode.class.getName(), sentence));
         }
         propbank.convert(docView, top, sentence);
       }

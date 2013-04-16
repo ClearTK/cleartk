@@ -40,7 +40,9 @@ import org.cleartk.syntax.constituent.type.TopTreebankNode;
  * </p>
  * 
  * @author Philipp Wetzler
+ * @deprecated Use the one in cleartk-corpus instead
  */
+@Deprecated
 public abstract class PropbankRelation {
   /**
    * Parses a relation taken form a Propbank entry and returns its representation as the appropriate

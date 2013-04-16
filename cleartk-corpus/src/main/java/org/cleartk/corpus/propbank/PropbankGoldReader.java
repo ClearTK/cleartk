@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.srl.propbank;
+package org.cleartk.corpus.propbank;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -39,10 +39,9 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.srl.propbank.util.Propbank;
-import org.cleartk.syntax.constituent.TreebankConstants;
-import org.cleartk.syntax.constituent.ptb.ListSpecification;
-import org.cleartk.syntax.constituent.ptb.PennTreebankReader;
+import org.cleartk.corpus.penntreebank.ListSpecification;
+import org.cleartk.corpus.penntreebank.PennTreebankReader;
+import org.cleartk.corpus.propbank.util.Propbank;
 import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
@@ -64,10 +63,10 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  * @author Philip Ogren, Philipp Wetzler
  */
-@Deprecated
+
 @SofaCapability(outputSofas = {
     PropbankConstants.PROPBANK_VIEW,
-    TreebankConstants.TREEBANK_VIEW,
+    PennTreebankReader.TREEBANK_VIEW,
     ViewURIUtil.URI })
 public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
 
@@ -158,7 +157,7 @@ public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
   public void getNext(JCas jCas) throws IOException, CollectionException {
     JCas tbView, pbView;
     try {
-      tbView = jCas.createView(TreebankConstants.TREEBANK_VIEW);
+      tbView = jCas.createView(PennTreebankReader.TREEBANK_VIEW);
       pbView = jCas.createView(PropbankConstants.PROPBANK_VIEW);
     } catch (CASException ce) {
       throw new CollectionException(ce);

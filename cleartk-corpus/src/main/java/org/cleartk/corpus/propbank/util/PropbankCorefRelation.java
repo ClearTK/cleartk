@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.srl.propbank.util;
+package org.cleartk.corpus.propbank.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,6 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
-import org.cleartk.util.AnnotationUtil;
 
 /**
  * <br>
@@ -38,54 +37,45 @@ import org.cleartk.util.AnnotationUtil;
  * 
  * 
  * <p>
- * A <em>PropbankSplitRelation object</em> represents a reference to multiple relations that are
- * part of a split argument in Propbank.
+ * A <em>PropbankCorefRelation object</em> represents a reference to multiple relations that are
+ * part of a coreferenced argument in Propbank.
  * </p>
  * 
  * @author Philipp Wetzler
- * @deprecated Use the one in cleartk-corpus instead
  */
-@Deprecated
-public class PropbankSplitRelation extends PropbankRelation {
+public class PropbankCorefRelation extends PropbankRelation {
 
-  public static PropbankSplitRelation fromString(String s) {
-    PropbankSplitRelation rel = new PropbankSplitRelation();
-    String[] fields = s.split(",");
+  public static PropbankCorefRelation fromString(String s) {
+    PropbankCorefRelation rel = new PropbankCorefRelation();
+    String[] fields = s.split("\\*");
     for (String field : fields) {
-      rel.addRelation(PropbankRelation.fromString(field));
+      rel.addCorefRelation(PropbankRelation.fromString(field));
     }
     return rel;
   }
 
-  protected List<PropbankRelation> relations;
+  protected List<PropbankRelation> corefRelations;
 
-  public PropbankSplitRelation() {
-    this.relations = new ArrayList<PropbankRelation>();
+  public PropbankCorefRelation() {
+    this.corefRelations = new ArrayList<PropbankRelation>();
   }
 
-  public List<PropbankRelation> getRelations() {
-    return this.relations;
+  public List<PropbankRelation> getCorefRelations() {
+    return this.corefRelations;
   }
 
-  public void addRelation(PropbankRelation rel) {
-    this.relations.add(rel);
+  public void addCorefRelation(PropbankRelation rel) {
+    this.corefRelations.add(rel);
   }
 
+  /**
+   * This is not implemented for PropbankCorefRelation and will always throw
+   * {@link UnsupportedOperationException}. Instead, the conversion of a PropbankCorefRelation
+   * happens during Predicate conversion.
+   */
   @Override
-  public Annotation convert(JCas view, TopTreebankNode topNode) {
-    Annotation annotation = new Annotation(view);
-
-    List<Annotation> subAnnotations = new ArrayList<Annotation>();
-    for (PropbankRelation rel : this.relations) {
-      subAnnotations.add(rel.convert(view, topNode));
-    }
-    // annotation.setAnnotations(UIMAUtil.toFSArray(view, subAnnotations));
-    int[] span = AnnotationUtil.getAnnotationsExtent(subAnnotations);
-    annotation.setBegin(span[0]);
-    annotation.setEnd(span[1]);
-    annotation.addToIndexes();
-
-    return annotation;
+  public Annotation convert(JCas jCas, TopTreebankNode topNode) {
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -93,13 +83,14 @@ public class PropbankSplitRelation extends PropbankRelation {
     StringBuffer buffer = new StringBuffer();
 
     boolean first = true;
-    for (PropbankRelation rel : getRelations()) {
+    for (PropbankRelation rel : getCorefRelations()) {
       if (!first)
-        buffer.append(",");
+        buffer.append("*");
       buffer.append(rel.toString());
       first = false;
     }
 
     return buffer.toString();
   }
+
 }

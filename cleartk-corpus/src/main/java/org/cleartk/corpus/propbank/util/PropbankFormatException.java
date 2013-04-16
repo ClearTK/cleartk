@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.srl.propbank.util;
+package org.cleartk.corpus.propbank.util;
 
 /**
  * <br>
@@ -29,9 +29,7 @@ package org.cleartk.srl.propbank.util;
  * All rights reserved.
  * 
  * <p>
- * @deprecated Use the one in cleartk-corpus instead
  */
-@Deprecated
 public class PropbankFormatException extends IllegalArgumentException {
 
   private static final long serialVersionUID = 3194744657398295811L;

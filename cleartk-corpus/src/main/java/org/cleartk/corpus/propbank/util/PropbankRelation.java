@@ -21,35 +21,62 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.srl.propbank.util;
+package org.cleartk.corpus.propbank.util;
+
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
 
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
+ * 
+ * 
  * <p>
- * @deprecated Use the one in cleartk-corpus instead
+ * A <em>PropbankRelation object</em> represents the relation (or a sub-relation) of one label of an
+ * entry in Propbank.
+ * </p>
+ * 
+ * @author Philipp Wetzler
  */
-@Deprecated
-public class PropbankFormatException extends IllegalArgumentException {
-
-  private static final long serialVersionUID = 3194744657398295811L;
-
-  public PropbankFormatException() {
-    super();
+public abstract class PropbankRelation {
+  /**
+   * Parses a relation taken form a Propbank entry and returns its representation as the appropriate
+   * <em>PropbankRelation</em> object.
+   * 
+   * @param s
+   *          the textual representation of a relation taken from <tt>prop.txt</tt>
+   * 
+   * @return a <em>PropbankRelation</em> object representing <b>s</b>
+   */
+  public static PropbankRelation fromString(String s) {
+    if (s.contains("*")) {
+      return PropbankCorefRelation.fromString(s);
+    } else if (s.contains(",")) {
+      return PropbankSplitRelation.fromString(s);
+    } else if (s.contains(":")) {
+      return PropbankNodeRelation.fromString(s);
+    } else {
+      return PropbankTerminalRelation.fromString(s);
+    }
   }
 
-  public PropbankFormatException(String arg0) {
-    super(arg0);
-  }
+  /**
+   * Convert to an appropriate ClearTK annotation and add it to <b>jCas</b> if necessary.
+   * 
+   * @param jCas
+   *          the view where the annotation will be added
+   * @param topNode
+   *          the top node annotation of the corresponding Treebank parse
+   * @return the corresponding annotation
+   */
+  public abstract Annotation convert(JCas jCas, TopTreebankNode topNode);
 
-  public PropbankFormatException(Throwable arg0) {
-    super(arg0);
-  }
-
-  public PropbankFormatException(String arg0, Throwable arg1) {
-    super(arg0, arg1);
-  }
-
+  /**
+   * Re-generate the text that this object was parsed from.
+   */
+  @Override
+  public abstract String toString();
 }

@@ -39,8 +39,9 @@ import org.uimafit.pipeline.SimplePipeline;
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * @deprecated This class is no longer maintained
  */
-
+@Deprecated
 public class ParseProbankExample {
 
   public static void main(String[] args) throws UIMAException, IOException {

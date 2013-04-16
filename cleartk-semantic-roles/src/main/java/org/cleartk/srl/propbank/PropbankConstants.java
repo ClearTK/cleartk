@@ -29,7 +29,7 @@ package org.cleartk.srl.propbank;
  * All rights reserved.
  * <p>
  */
-
+@Deprecated
 public interface PropbankConstants {
 
   /**
