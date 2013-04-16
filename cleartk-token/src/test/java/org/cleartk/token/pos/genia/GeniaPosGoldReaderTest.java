@@ -37,7 +37,7 @@ import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.TokenTestBase;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.jdom2.JDOMException;
@@ -55,7 +55,7 @@ import org.uimafit.util.JCasUtil;
  * @deprecated please see org.cleartk.corpus.genia.pos.GeniaPosGoldReaderTest in cleartk-corpus
  */
 @Deprecated
-public class GeniaPosGoldReaderTest extends TokenTestBase {
+public class GeniaPosGoldReaderTest extends DefaultTestBase {
 
   @Test
   public void testReader() throws CASException, UIMAException, IOException {

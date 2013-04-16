@@ -37,8 +37,8 @@ import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.token.TokenComponents;
-import org.cleartk.token.TokenTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Subtoken;
 import org.cleartk.token.type.Token;
@@ -62,7 +62,7 @@ import org.uimafit.util.JCasUtil;
  *         Bethard gave me called test_tokenizer.py.
  */
 
-public class TokenizerAndTokenAnnotatorTest extends TokenTestBase {
+public class TokenizerAndTokenAnnotatorTest extends DefaultTestBase {
 
   private static AnalysisEngineDescription tokenizer;
 

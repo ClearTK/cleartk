@@ -34,7 +34,7 @@ import java.util.Locale;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.token.TokenTestBase;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.junit.Test;
@@ -50,7 +50,7 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  */
 
-public class BreakIteratorAnnotatorTest extends TokenTestBase {
+public class BreakIteratorAnnotatorTest extends DefaultTestBase {
 
   @Test
   public void testTokenAnnotator() throws Exception {

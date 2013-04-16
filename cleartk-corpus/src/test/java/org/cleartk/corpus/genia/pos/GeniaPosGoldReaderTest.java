@@ -37,7 +37,7 @@ import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.TokenTestBase;
+import org.cleartk.test.DefaultTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.jdom2.JDOMException;
@@ -54,7 +54,7 @@ import org.uimafit.util.JCasUtil;
  * <p>
  */
 
-public class GeniaPosGoldReaderTest extends TokenTestBase {
+public class GeniaPosGoldReaderTest extends DefaultTestBase {
 
   @Test
   public void testReader() throws CASException, UIMAException, IOException {
@@ -130,7 +130,7 @@ public class GeniaPosGoldReaderTest extends TokenTestBase {
       reader = CollectionReaderFactory.createCollectionReader(
           GeniaPosGoldReader.class,
           GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
-          "src/test/resources/token/genia/article_ids.txt");
+          "src/test/resources/org/cleartk/corpus/genia/pos/article_ids.txt");
     } catch (ResourceInitializationException rie) {
       jde = (JDOMException) rie.getCause();
     }
