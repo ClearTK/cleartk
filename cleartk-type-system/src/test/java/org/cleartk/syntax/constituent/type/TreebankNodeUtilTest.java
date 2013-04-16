@@ -25,16 +25,13 @@ package org.cleartk.syntax.constituent.type;
 
 import java.util.Arrays;
 
-import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.syntax.SyntaxTestBase;
-import org.cleartk.syntax.constituent.TreebankConstants;
-import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil.TreebankNodePath;
+import org.cleartk.test.CleartkTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -44,18 +41,22 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Steven Bethard
  */
-@Deprecated
-public class TreebankNodeUtilTest extends SyntaxTestBase {
+public class TreebankNodeUtilTest extends CleartkTestBase {
 
   @Test
   public void testSelectMatchingLeaf() throws Exception {
-    this.jCas.setDocumentText("The cat chased the mouse.");
+    this.jCas.setDocumentText("The cat chased the mouse .");
 
-    JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
-    tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (DT the) (NN mouse))) (. .))");
-
-    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
-    treeAnnotator.process(this.jCas);
+    top(
+        "S",
+        jCas,
+        node("NP", jCas, leaf("DT", "The", jCas), leaf("NN", "cat", jCas)),
+        node(
+            "VP",
+            jCas,
+            leaf("VBD", "chased", jCas),
+            node("NP", jCas, leaf("DT", "the", jCas), leaf("NN", "mouse", jCas))),
+        leaf(".", ".", jCas));
 
     TreebankNode node;
     node = TreebankNodeUtil.selectMatchingLeaf(this.jCas, this.newSpan(0, 3));
@@ -78,13 +79,14 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
 
   @Test
   public void testSelectHighestMatchingTreebankNode() throws Exception {
-    this.jCas.setDocumentText("The cat chased mice.");
+    this.jCas.setDocumentText("The cat chased mice .");
 
-    JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
-    tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))");
-
-    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
-    treeAnnotator.process(this.jCas);
+    top(
+        "S",
+        jCas,
+        node("NP", jCas, leaf("DT", "The", jCas), leaf("NN", "cat", jCas)),
+        node("VP", jCas, leaf("VBD", "chased", jCas), node("NP", jCas, leaf("NNS", "mice", jCas))),
+        leaf(".", ".", jCas));
 
     TreebankNode node;
     node = TreebankNodeUtil.selectHighestMatchingTreebankNode(this.jCas, this.newSpan(0, 3));
@@ -104,7 +106,7 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
 
     int end = this.jCas.getDocumentText().length();
     node = TreebankNodeUtil.selectHighestMatchingTreebankNode(this.jCas, this.newSpan(0, end));
-    Assert.assertEquals("The cat chased mice.", node.getCoveredText());
+    Assert.assertEquals("The cat chased mice .", node.getCoveredText());
     Assert.assertEquals("S", node.getNodeType());
     Assert.assertFalse(node.getLeaf());
 
@@ -117,13 +119,14 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
 
   @Test
   public void testSelectHighestCoveredTreebankNode() throws Exception {
-    this.jCas.setDocumentText("The cat chased mice.");
+    this.jCas.setDocumentText("The cat chased mice .");
 
-    JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
-    tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))");
-
-    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
-    treeAnnotator.process(this.jCas);
+    top(
+        "S",
+        jCas,
+        node("NP", jCas, leaf("DT", "The", jCas), leaf("NN", "cat", jCas)),
+        node("VP", jCas, leaf("VBD", "chased", jCas), node("NP", jCas, leaf("NNS", "mice", jCas))),
+        leaf(".", ".", jCas));
 
     TreebankNode node;
     node = TreebankNodeUtil.selectHighestCoveredTreebankNode(this.jCas, this.newSpan(0, 3));
@@ -143,7 +146,7 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
 
     int end = this.jCas.getDocumentText().length();
     node = TreebankNodeUtil.selectHighestCoveredTreebankNode(this.jCas, this.newSpan(0, end));
-    Assert.assertEquals("The cat chased mice.", node.getCoveredText());
+    Assert.assertEquals("The cat chased mice .", node.getCoveredText());
     Assert.assertEquals("S", node.getNodeType());
     Assert.assertFalse(node.getLeaf());
 
@@ -160,13 +163,14 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
 
   @Test
   public void testGetDepth() throws Exception {
-    this.jCas.setDocumentText("The cat chased mice.");
+    this.jCas.setDocumentText("The cat chased mice .");
 
-    JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
-    tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))");
-
-    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
-    treeAnnotator.process(this.jCas);
+    top(
+        "S",
+        jCas,
+        node("NP", jCas, leaf("DT", "The", jCas), leaf("NN", "cat", jCas)),
+        node("VP", jCas, leaf("VBD", "chased", jCas), node("NP", jCas, leaf("NNS", "mice", jCas))),
+        leaf(".", ".", jCas));
 
     for (TreebankNode node : JCasUtil.select(this.jCas, TreebankNode.class)) {
       String text = node.getCoveredText();
@@ -189,7 +193,7 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
         Assert.assertEquals(1, depth);
       } else if (text.equals(".")) {
         Assert.assertEquals(1, depth);
-      } else if (text.equals("The cat chased mice.")) {
+      } else if (text.equals("The cat chased mice .")) {
         Assert.assertEquals(0, depth);
       } else {
         Assert.fail("Unexpected node: " + node);
@@ -199,13 +203,14 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
 
   @Test
   public void testGetPathToRoot() throws Exception {
-    this.jCas.setDocumentText("The cat chased mice.");
+    this.jCas.setDocumentText("The cat chased mice .");
 
-    JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
-    tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))");
-
-    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
-    treeAnnotator.process(this.jCas);
+    top(
+        "S",
+        jCas,
+        node("NP", jCas, leaf("DT", "The", jCas), leaf("NN", "cat", jCas)),
+        node("VP", jCas, leaf("VBD", "chased", jCas), node("NP", jCas, leaf("NNS", "mice", jCas))),
+        leaf(".", ".", jCas));
 
     TopTreebankNode root = JCasUtil.selectSingle(this.jCas, TopTreebankNode.class);
     Assert.assertEquals(Arrays.asList(root), TreebankNodeUtil.getPathToRoot(root));
@@ -233,13 +238,14 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
 
   @Test
   public void testGetPath() throws Exception {
-    this.jCas.setDocumentText("The cat chased mice.");
+    this.jCas.setDocumentText("The cat chased mice .");
 
-    JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
-    tbView.setDocumentText("(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))");
-
-    AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
-    treeAnnotator.process(this.jCas);
+    top(
+        "S",
+        jCas,
+        node("NP", jCas, leaf("DT", "The", jCas), leaf("NN", "cat", jCas)),
+        node("VP", jCas, leaf("VBD", "chased", jCas), node("NP", jCas, leaf("NNS", "mice", jCas))),
+        leaf(".", ".", jCas));
 
     TopTreebankNode root = JCasUtil.selectSingle(this.jCas, TopTreebankNode.class);
     TreebankNode np = root.getChildren(0);
@@ -274,22 +280,90 @@ public class TreebankNodeUtilTest extends SyntaxTestBase {
 
   @Test
   public void testToTreebankString() throws Exception {
-    for (String parseText : Arrays.asList(
-        "(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))",
-        "(S (NP (DT The) (NN skunk)) (VP (VBD thought) (S (NP (DT the) (NN stump)) (VP (VBD stunk)))) (. .))")) {
-      this.jCas.reset();
-      JCas tbView = this.jCas.createView(TreebankConstants.TREEBANK_VIEW);
-      tbView.setDocumentText(parseText);
+    this.jCas.setDocumentText("The cat chased mice .");
+    String expected1 = "(S (NP (DT The) (NN cat)) (VP (VBD chased) (NP (NNS mice))) (. .))";
+    top(
+        "S",
+        jCas,
+        node("NP", jCas, leaf("DT", "The", jCas), leaf("NN", "cat", jCas)),
+        node("VP", jCas, leaf("VBD", "chased", jCas), node("NP", jCas, leaf("NNS", "mice", jCas))),
+        leaf(".", ".", jCas));
+    TopTreebankNode root1 = JCasUtil.selectSingle(this.jCas, TopTreebankNode.class);
+    Assert.assertEquals(expected1, TreebankNodeUtil.toTreebankString(root1));
 
-      AnalysisEngine treeAnnotator = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
-      treeAnnotator.process(this.jCas);
-
-      TopTreebankNode root = JCasUtil.selectSingle(this.jCas, TopTreebankNode.class);
-      Assert.assertEquals(parseText, TreebankNodeUtil.toTreebankString(root));
-    }
+    this.jCas.reset();
+    this.jCas.setDocumentText("The skunk thought the stump stunk .");
+    String expected2 = "(S (NP (DT The) (NN skunk)) (VP (VBD thought) (S (NP (DT the) (NN stump)) (VP (VBD stunk)))) (. .))";
+    top(
+        "S",
+        jCas,
+        node("NP", jCas, leaf("DT", "The", jCas), leaf("NN", "skunk", jCas)),
+        node(
+            "VP",
+            jCas,
+            leaf("VBD", "thought", jCas),
+            node(
+                "S",
+                jCas,
+                node("NP", jCas, leaf("DT", "the", jCas), leaf("NN", "stump", jCas)),
+                node("VP", jCas, leaf("VBD", "stunk", jCas)))),
+        leaf(".", ".", jCas));
+    TopTreebankNode root2 = JCasUtil.selectSingle(this.jCas, TopTreebankNode.class);
+    Assert.assertEquals(expected2, TreebankNodeUtil.toTreebankString(root2));
   }
 
   private Annotation newSpan(int begin, int end) {
     return new Annotation(this.jCas, begin, end);
+  }
+
+  private static TopTreebankNode top(String type, JCas jCas, TreebankNode... children) {
+    TopTreebankNode top = new TopTreebankNode(jCas);
+    top.setNodeType(type);
+    top.setLeaf(false);
+    top.setChildren(new FSArray(jCas, children.length));
+    for (int i = 0; i < children.length; ++i) {
+      top.setChildren(i, children[i]);
+      children[i].setParent(top);
+    }
+    setOffsetsAndAddToIndexes(top, 0);
+    return top;
+  }
+
+  private static TreebankNode node(String type, JCas jCas, TreebankNode... children) {
+    TreebankNode node = new TreebankNode(jCas);
+    node.setNodeType(type);
+    node.setLeaf(false);
+    node.setChildren(new FSArray(jCas, children.length));
+    for (int i = 0; i < children.length; ++i) {
+      node.setChildren(i, children[i]);
+      children[i].setParent(node);
+    }
+    return node;
+  }
+
+  private static TerminalTreebankNode leaf(String type, String value, JCas jCas) {
+    TerminalTreebankNode leaf = new TerminalTreebankNode(jCas);
+    leaf.setNodeType(type);
+    leaf.setNodeValue(value);
+    leaf.setLeaf(true);
+    leaf.setChildren(new FSArray(jCas, 0));
+    return leaf;
+  }
+
+  private static void setOffsetsAndAddToIndexes(TreebankNode node, int begin) {
+    if (node.getLeaf()) {
+      node.setBegin(begin);
+      node.setEnd(begin + node.getNodeValue().length());
+    } else {
+      int offset = begin;
+      for (int i = 0; i < node.getChildren().size(); ++i) {
+        TreebankNode child = node.getChildren(i);
+        setOffsetsAndAddToIndexes(child, offset);
+        offset = child.getEnd() + 1;
+      }
+      node.setBegin(begin);
+      node.setEnd(offset - 1);
+    }
+    node.addToIndexes();
   }
 }

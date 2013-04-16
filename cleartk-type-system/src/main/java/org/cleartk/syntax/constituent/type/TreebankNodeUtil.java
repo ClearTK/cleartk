@@ -29,7 +29,6 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -38,9 +37,7 @@ import org.uimafit.util.JCasUtil;
  * All rights reserved.
  * 
  * @author Steven Bethard
- * @deprecated Use the one in cleartk-type-system instead
  */
-@Deprecated
 public class TreebankNodeUtil {
 
   /**
@@ -229,7 +226,7 @@ public class TreebankNodeUtil {
     if (node.getLeaf()) {
       builder.append(' ').append(node.getCoveredText());
     } else {
-      for (TreebankNode child : UIMAUtil.toList(node.getChildren(), TreebankNode.class)) {
+      for (TreebankNode child : JCasUtil.select(node.getChildren(), TreebankNode.class)) {
         builder.append(' ').append(toTreebankString(child));
       }
     }
