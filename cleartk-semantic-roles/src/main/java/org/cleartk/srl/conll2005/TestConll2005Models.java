@@ -39,7 +39,9 @@ import org.uimafit.pipeline.SimplePipeline;
  * All rights reserved.
  * 
  * @author Philipp Wetzler
+ * @deprecated This code is no longer maintained
  */
+@Deprecated
 public class TestConll2005Models {
 
   private static final File conll2005File = new File("../../ClearTK-data/data/conll2005/devset");
