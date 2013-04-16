@@ -31,6 +31,7 @@ import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.uimafit.util.JCasUtil;
 
@@ -75,6 +76,42 @@ public class ChunkingTest extends DefaultTestBase {
     chunking = new IOChunking<Token, Chunk>(Token.class, Chunk.class, null);
     expected = Arrays.asList("O", "I", "I", "I", "O", "O", "O", "I", "I");
     actual = chunking.createOutcomes(this.jCas, tokens, chunks);
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Ignore
+  @Test
+  public void testIssue358() throws Exception {
+    this.tokenBuilder.buildTokens(this.jCas, "The quick brown fox jumped over the lazy dog");
+    List<Token> tokens = new ArrayList<Token>(JCasUtil.select(this.jCas, Token.class));
+    // "quick brown"
+    Chunk foo1 = new Chunk(this.jCas, tokens.get(1).getBegin(), tokens.get(2).getEnd());
+    foo1.setChunkType("foo");
+    foo1.addToIndexes();
+    // fox
+    Chunk bar = new Chunk(this.jCas, tokens.get(3).getBegin(), tokens.get(3).getEnd());
+    bar.setChunkType("bar");
+    bar.addToIndexes();
+    // " lazy dog" - note the space before lazy and the -1 in the start expression below
+    Chunk foo2 = new Chunk(this.jCas, tokens.get(7).getBegin() - 1, tokens.get(8).getEnd());
+    foo2.setChunkType("foo");
+    foo2.addToIndexes();
+
+    BIOChunking<Token, Chunk> chunking = new BIOChunking<Token, Chunk>(
+        Token.class,
+        Chunk.class,
+        "chunkType");
+    List<String> expected = Arrays.asList(
+        "O",
+        "B-foo",
+        "I-foo",
+        "B-bar",
+        "O",
+        "O",
+        "O",
+        "B-foo",
+        "I-foo");
+    List<String> actual = chunking.createOutcomes(this.jCas, tokens, Arrays.asList(foo1, bar, foo2));
     Assert.assertEquals(expected, actual);
   }
 
