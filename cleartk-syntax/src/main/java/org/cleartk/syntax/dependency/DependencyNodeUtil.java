@@ -37,8 +37,9 @@ import org.cleartk.util.UIMAUtil;
  * All rights reserved.
  * <p>
  * @author Philip Ogren
+ * @deprecated This class is no longer maintained
  */
-
+@Deprecated
 public class DependencyNodeUtil {
 
   public static void print(PrintStream out, DependencyNode topNode) {
