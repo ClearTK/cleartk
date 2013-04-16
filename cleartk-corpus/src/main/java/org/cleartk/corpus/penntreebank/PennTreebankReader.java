@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.constituent.ptb;
+package org.cleartk.corpus.penntreebank;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,8 +38,6 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.syntax.constituent.TreebankConstants;
-import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;
@@ -48,12 +46,6 @@ import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
- * /** <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
- * All rights reserved.
- * 
- * 
- * 
  * <p>
  * PennTreebankReader reads in the PennTreebank (PTB) data distributed by the LDC. It simply reads
  * the raw treebank data into a view called "TreebankView". To actually parse the treebank data and
@@ -68,19 +60,22 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * <p>
  * The acronym WSJ stands for Wall Street Journal which is the source of the articles treebanked by
  * PTB.
- * <p>
- * If you are concerned that your copy of PTB is not working correctly with this collection reader
- * (or TreebankGoldAnnotator) then please see the corresponding unit tests.
+ * </p>
  * 
- * @see TreebankGoldAnnotator
+ * <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * All rights reserved.
  * 
  * @author Philip Ogren, Philipp Wetzler
- * @deprecated Use the one in cleartk-corpus instead
  */
 
-@Deprecated
-@SofaCapability(outputSofas = { TreebankConstants.TREEBANK_VIEW, ViewURIUtil.URI })
+@SofaCapability(outputSofas = { PennTreebankReader.TREEBANK_VIEW, ViewURIUtil.URI })
 public class PennTreebankReader extends JCasCollectionReader_ImplBase {
+  /**
+   * The view containing the parenthesized text of a TreeBank .mrg file.
+   */
+  public static final String TREEBANK_VIEW = "TREEBANK_VIEW";
+
   public static final String PARAM_CORPUS_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
       PennTreebankReader.class,
       "corpusDirectoryName");
@@ -181,7 +176,7 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
     try {
       JCas treebankView = ViewCreatorAnnotator.createViewSafely(
           jCas,
-          TreebankConstants.TREEBANK_VIEW);
+          TREEBANK_VIEW);
       treebankView.setSofaDataString(FileUtils.file2String(treebankFile), "text/plain");
     } catch (AnalysisEngineProcessException aepe) {
       throw new CollectionException(aepe);

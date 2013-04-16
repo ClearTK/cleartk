@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.constituent.ptb;
+package org.cleartk.corpus.penntreebank;
 
 import java.util.Iterator;
 import java.util.SortedSet;
@@ -34,10 +34,9 @@ import java.util.TreeSet;
  * 
  * 
  * @author Philipp Wetzler
- * @deprecated Use the one in cleartk-corpus instead
+ * 
  */
 
-@Deprecated
 public class RangeSpecification implements Iterable<Integer> {
 
   private int start;

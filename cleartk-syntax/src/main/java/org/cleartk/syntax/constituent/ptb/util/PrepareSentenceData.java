@@ -53,8 +53,11 @@ import org.uimafit.util.JCasUtil;
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+ * 
+ * @deprecated No longer supported
  */
 
+@Deprecated
 public class PrepareSentenceData {
 
   public static class Options extends Options_ImplBase {

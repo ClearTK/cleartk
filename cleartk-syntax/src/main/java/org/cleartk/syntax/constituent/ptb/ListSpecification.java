@@ -36,9 +36,10 @@ import java.util.TreeSet;
  * 
  * 
  * @author Philipp Wetzler
- * 
+ * @deprecated Use the one in cleartk-corpus instead
  */
 
+@Deprecated
 public class ListSpecification implements Iterable<Integer> {
 
   private List<RangeSpecification> ranges;

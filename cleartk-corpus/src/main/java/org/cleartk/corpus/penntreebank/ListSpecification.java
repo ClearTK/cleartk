@@ -21,9 +21,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.constituent.ptb;
+package org.cleartk.corpus.penntreebank;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -34,32 +36,27 @@ import java.util.TreeSet;
  * 
  * 
  * @author Philipp Wetzler
- * @deprecated Use the one in cleartk-corpus instead
+ * 
  */
 
-@Deprecated
-public class RangeSpecification implements Iterable<Integer> {
+public class ListSpecification implements Iterable<Integer> {
 
-  private int start;
-
-  private int end;
+  private List<RangeSpecification> ranges;
 
   private SortedSet<Integer> numbers = new TreeSet<Integer>();
 
-  public RangeSpecification(String spec) {
-    String[] parts = spec.trim().split("-");
+  public ListSpecification(String s) {
+    this.ranges = new ArrayList<RangeSpecification>();
 
-    if (parts.length == 2) {
-      this.start = Integer.valueOf(parts[0]);
-      this.end = Integer.valueOf(parts[1]);
-    } else if (parts.length == 1) {
-      this.start = this.end = Integer.valueOf(parts[0]);
-    } else {
-      throw new IllegalArgumentException();
+    for (String rangeSpec : s.trim().split(",")) {
+      if (rangeSpec.length() > 0)
+        this.ranges.add(new RangeSpecification(rangeSpec));
     }
 
-    for (int i = start; i <= end; i++)
-      numbers.add(i);
+    for (RangeSpecification r : ranges)
+      for (Integer i : r)
+        numbers.add(i);
+
   }
 
   public boolean contains(int i) {
@@ -68,10 +65,18 @@ public class RangeSpecification implements Iterable<Integer> {
 
   @Override
   public String toString() {
-    if (this.start == this.end)
-      return String.valueOf(this.start);
-    else
-      return String.valueOf(this.start) + "-" + String.valueOf(this.end);
+    StringBuffer buffer = new StringBuffer();
+    boolean first = true;
+
+    for (RangeSpecification range : this.ranges) {
+      if (!first)
+        buffer.append(",");
+
+      buffer.append(range);
+      first = false;
+    }
+
+    return buffer.toString();
   }
 
   public Iterator<Integer> iterator() {
