@@ -38,6 +38,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
+@Deprecated
 public class CoNLL2005WriterTest extends SrlTestBase {
 
   @Test

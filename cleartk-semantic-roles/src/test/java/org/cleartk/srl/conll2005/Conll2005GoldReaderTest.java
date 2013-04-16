@@ -36,6 +36,7 @@ import org.uimafit.factory.CollectionReaderFactory;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
+@Deprecated
 public class Conll2005GoldReaderTest extends SrlTestBase {
 
   // pointer to random data file. not an actual conll2005 file.
