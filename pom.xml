@@ -29,6 +29,7 @@
 		<!-- type system -->
 		<module>cleartk-type-system</module>
 		<module>cleartk-corpus</module>
+		<module>cleartk-feature</module>
 		<!-- wrappers for external components -->
 		<module>cleartk-snowball</module>
 		<module>cleartk-opennlp-tools</module>
