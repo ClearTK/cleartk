@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.token.pos.genia;
+package org.cleartk.corpus.genia.pos;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,11 +39,11 @@ import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.token.pos.genia.util.GeniaPOSParser;
-import org.cleartk.token.pos.genia.util.GeniaParse;
-import org.cleartk.token.pos.genia.util.GeniaSentence;
-import org.cleartk.token.pos.genia.util.GeniaTag;
-import org.cleartk.token.pos.genia.util.Span;
+import org.cleartk.corpus.genia.pos.util.GeniaPOSParser;
+import org.cleartk.corpus.genia.pos.util.GeniaParse;
+import org.cleartk.corpus.genia.pos.util.GeniaSentence;
+import org.cleartk.corpus.genia.pos.util.GeniaTag;
+import org.cleartk.corpus.genia.pos.util.Span;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.ViewURIUtil;
@@ -63,11 +63,11 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  * @author Philip V. Ogren
  * @see GeniaPOSParser
- * @deprecated please use org.cleartk.corpus.genia.pos.GeniaPosGoldReader in cleartk-corpus
  */
-@Deprecated
 @SofaCapability(outputSofas = { ViewURIUtil.URI, GeniaPosViewName.GENIA_POS })
 public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
+
+  public static final String GENIA_POS_VIEW = "GeniaPOSView";
 
   public static final String PARAM_GENIA_CORPUS_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
       GeniaPosGoldReader.class,

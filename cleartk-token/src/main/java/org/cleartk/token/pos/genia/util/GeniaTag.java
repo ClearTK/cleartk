@@ -31,7 +31,9 @@ import java.util.List;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * @deprecated please use org.cleartk.corpus.genia.pos.util.GeniaTag in cleartk-corpus
  */
+@Deprecated
 
 public class GeniaTag {
   String label;

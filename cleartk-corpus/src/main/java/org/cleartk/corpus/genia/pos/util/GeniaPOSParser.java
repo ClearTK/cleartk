@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.token.pos.genia.util;
+package org.cleartk.corpus.genia.pos.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,10 +77,7 @@ import org.jdom2.output.XMLOutputter;
  * The above tags are parsed as a single token Ras/protein with the tag "NN".
  * 
  * @author Philip V. Ogren
- * @deprecated please use org.cleartk.corpus.genia.pos.util.GeniaPOSParser in cleartk-corpus
  */
-@Deprecated
-
 
 public class GeniaPOSParser implements Iterator<GeniaParse> {
 

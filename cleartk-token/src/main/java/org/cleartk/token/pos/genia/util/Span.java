@@ -27,7 +27,9 @@ package org.cleartk.token.pos.genia.util;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * @deprecated please use org.cleartk.corpus.genia.pos.util.Span in cleartk-corpus
  */
+@Deprecated
 
 public class Span {
 

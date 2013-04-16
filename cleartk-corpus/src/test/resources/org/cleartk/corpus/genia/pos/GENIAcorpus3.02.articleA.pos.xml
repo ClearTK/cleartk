@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<set>
+
+<article>
+<articleinfo>
+<bibliomisc>MEDLINE:95369245</bibliomisc>
+</articleinfo>
+<title>
+<sentence><w c="NN">IL-2</w> <w c="NN">gene</w> <w c="NN">expression</w> <w c="CC">and</w> <w c="NN">NF-kappa</w> <w c="NN">B</w> <w c="NN">activation</w> <w c="IN">through</w> <w c="NN">CD28</w> <w c="VBZ">requires</w> <w c="JJ">reactive</w> <w c="NN">oxygen</w> <w c="NN">production</w> <w c="IN">by</w> <w c="NN">5-lipoxygenase</w><w c=".">.</w></sentence>
+</title>
+<abstract>
+<sentence><w c="NN">Activation</w> <w c="IN">of</w> <w c="DT">the</w> <w c="NN">CD28</w> <w c="NN">surface</w> <w c="NN">receptor</w> <w c="VBZ">provides</w> <w c="DT">a</w> <w c="JJ">major</w> <w c="JJ">costimulatory</w> <w c="NN">signal</w> <w c="IN">for</w> <w c="NN">T</w> <w c="NN">cell</w> <w c="NN">activation</w> <w c="VBG">resulting</w> <w c="IN">in</w> <w c="VBN">enhanced</w> <w c="NN">production</w> <w c="IN">of</w> <w c="NN">interleukin-2</w> <w c="(">(</w><w c="NN">IL-2</w><w c=")">)</w> <w c="CC">and</w> <w c="NN">cell</w> <w c="NN">proliferation</w><w c=".">.</w></sentence>
+<sentence><w c="IN">In</w> <w c="JJ">primary</w> <w c="NN">T</w> <w c="NNS">lymphocytes</w> <w c="PRP">we</w> <w c="VBP">show</w> <w c="IN">that</w> <w c="NN">CD28</w> <w c="NN">ligation</w> <w c="VBZ">leads</w> <w c="TO">to</w> <w c="DT">the</w> <w c="JJ">rapid</w> <w c="JJ">intracellular</w> <w c="NN">formation</w> <w c="IN">of</w> <w c="JJ">reactive</w> <w c="NN">oxygen</w> <w c="NNS">intermediates</w> <w c="(">(</w><w c="NNS">ROIs</w><w c=")">)</w> <w c="WDT">which</w> <w c="VBP">are</w> <w c="VBN">required</w> <w c="IN">for</w> <w c="*">CD28</w><w c="JJ">-mediated</w> <w c="NN">activation</w> <w c="IN">of</w> <w c="DT">the</w> <w c="NN">NF-kappa</w> <w c="*">B</w><w c="*">/</w><w c="*">CD28</w><w c="JJ">-responsive</w> <w c="NN">complex</w> <w c="CC">and</w> <w c="NN">IL-2</w> <w c="NN">expression</w><w c=".">.</w></sentence>
+<sentence><w c="NN">Delineation</w> <w c="IN">of</w> <w c="DT">the</w> <w c="NN">CD28</w> <w c="NN">signaling</w> <w c="NN">cascade</w> <w c="VBD">was</w> <w c="VBN">found</w> <w c="TO">to</w> <w c="VB">involve</w> <w c="NN">protein</w> <w c="NN">tyrosine</w> <w c="NN">kinase</w> <w c="NN">activity</w><w c=",">,</w> <w c="VBN">followed</w> <w c="IN">by</w> <w c="DT">the</w> <w c="NN">activation</w> <w c="IN">of</w> <w c="NN">phospholipase</w> <w c="NN">A2</w> <w c="CC">and</w> <w c="NN">5-lipoxygenase</w><w c=".">.</w></sentence>
+<sentence><w c="PRP$">Our</w> <w c="NNS">data</w> <w c="VBP">suggest</w> <w c="IN">that</w> <w c="NN">lipoxygenase</w> <w c="NNS">metabolites</w> <w c="VBP">activate</w> <w c="NN">ROI</w> <w c="NN">formation</w> <w c="WDT">which</w> <w c="RB">then</w> <w c="VBP">induce</w> <w c="NN">IL-2</w> <w c="NN">expression</w> <w c="IN">via</w> <w c="NN">NF-kappa</w> <w c="NN">B</w> <w c="NN">activation</w><w c=".">.</w></sentence>
+<sentence><w c="DT">These</w> <w c="NNS">findings</w> <w c="MD">should</w> <w c="VB">be</w> <w c="JJ">useful</w> <w c="IN">for</w> <w c="JJ">therapeutic</w> <w c="NNS">strategies</w> <w c="CC">and</w> <w c="DT">the</w> <w c="NN">development</w> <w c="IN">of</w> <w c="NNS">immunosuppressants</w> <w c="VBG">targeting</w> <w c="DT">the</w> <w c="NN">CD28</w> <w c="NN">costimulatory</w> <w c="NN">pathway</w><w c=".">.</w></sentence>
+</abstract>
+</article>
+</set>

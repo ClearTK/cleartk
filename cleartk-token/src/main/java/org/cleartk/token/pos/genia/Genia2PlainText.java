@@ -44,7 +44,9 @@ import org.uimafit.pipeline.SimplePipeline;
  *         This class provides a way to recover the original text of the GENIA corpus
  *         "GENIAcorpus3.02.pos.xml".
  * 
+* @deprecated please use org.cleartk.corpus.genia.pos.Genia2PlainText in cleartk-corpus
  */
+@Deprecated
 public class Genia2PlainText {
 
   public static void main(String[] args) throws UIMAException, IOException {

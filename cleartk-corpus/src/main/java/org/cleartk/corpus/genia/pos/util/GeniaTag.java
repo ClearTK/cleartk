@@ -1,5 +1,5 @@
-/* 
- * Copyright (c) 2010, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,24 +21,64 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
+package org.cleartk.corpus.genia.pos.util;
 
-package org.cleartk.token.pos.genia;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * <br>
- * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
- * 
- * @author Philip Ogren
- * @deprecated please use org.cleartk.corpus.genia.pos.GeniaPosViewName in cleartk-corpus
  */
-@Deprecated
 
-public interface GeniaPosViewName {
-  /**
-   * The view containing Genia part of speech formatted text.
-   */
-  public static final String GENIA_POS = "GeniaPOSView";
+public class GeniaTag {
+  String label;
+
+  List<Span> spans;
+
+  public GeniaTag(String label, List<Span> spans) {
+    this.label = label;
+    this.spans = new ArrayList<Span>();
+    this.setSpans(spans);
+  }
+
+  public GeniaTag(String label, Span span) {
+    this.label = label;
+    this.spans = new ArrayList<Span>();
+    this.setSpans(Collections.singletonList(span));
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
+  }
+
+  public List<Span> getSpans() {
+    return Collections.unmodifiableList(spans);
+  }
+
+  public void setSpans(List<Span> spans) {
+    this.spans.clear();
+
+    if (spans.size() <= 1)
+      this.spans.addAll(spans);
+    else {
+      this.spans.add(spans.get(0));
+      for (int i = 1; i < spans.size(); i++) {
+        Span span = spans.get(i);
+        Span previousSpan = this.spans.get(this.spans.size() - 1);
+        if (previousSpan.getEnd() + 1 == span.getBegin()) {
+          this.spans.remove(this.spans.size() - 1);
+          this.spans.add(new Span(previousSpan.getBegin(), span.getEnd()));
+        } else
+          this.spans.add(span);
+      }
+    }
+  }
 
 }
