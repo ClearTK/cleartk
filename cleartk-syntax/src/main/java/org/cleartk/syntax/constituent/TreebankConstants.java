@@ -28,8 +28,9 @@ package org.cleartk.syntax.constituent;
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+ * @deprecated Use cleartk-corpus instead
  */
-
+@Deprecated
 public interface TreebankConstants {
 
   /**

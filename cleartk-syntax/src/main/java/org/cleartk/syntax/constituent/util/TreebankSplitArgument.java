@@ -34,8 +34,9 @@ import java.util.List;
  * 
  * 
  * @author Philip Ogren
- * 
+ * @deprecated This class is no longer maintained
  */
+@Deprecated
 public class TreebankSplitArgument implements TreebankObject {
   List<TreebankNode> chainedNodes;
 
