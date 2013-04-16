@@ -38,8 +38,9 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
+ * @deprecated This class is no longer maintained
  */
-
+@Deprecated
 public abstract class ParserWrapper_ImplBase<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, PARSE_TYPE, TOP_NODE_TYPE extends Annotation> extends JCasAnnotator_ImplBase{
 
   public static final String PARAM_INPUT_TYPES_HELPER_CLASS_NAME = ConfigurationParameterFactory

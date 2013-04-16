@@ -39,8 +39,9 @@ import org.apache.uima.jcas.tcas.Annotation;
  * by extending this class you could specify your own input types from your type system.
  * 
  * @author Philip Ogren
+ * @deprecated This class is no longer maintained
  */
-
+@Deprecated
 public abstract class InputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> {
   public abstract List<TOKEN_TYPE> getTokens(JCas jCas, SENTENCE_TYPE sentence);
 
