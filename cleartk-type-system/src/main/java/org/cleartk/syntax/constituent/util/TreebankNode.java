@@ -213,7 +213,7 @@ public class TreebankNode implements TreebankObject {
    * textOffset passed into the parse method. For example, if the entire sentence parse was
    * "(NP-LOC (NNP Calif.) )" and this node corresponded to only "(NNP Calif.)", then
    * {@link #getText()} would return "Calif." and this method would return 0 plus the textOffset
-   * given by {@link TreebankFormatParser#parse(String, String, int)}.
+   * given by TreebankFormatParser.parse(String, String, int).
    */
   public void setTextBegin(int textBegin) {
     this.textBegin = textBegin;

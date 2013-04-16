@@ -26,13 +26,16 @@ package org.cleartk.syntax.constituent.util;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
+import org.apache.uima.jcas.cas.StringArray;
 import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.FSCollectionFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -100,7 +103,10 @@ public class TreebankNodeUtility {
       org.cleartk.syntax.constituent.type.TreebankNode parentNode,
       boolean addToIndexes) {
     uimaNode.setNodeType(pojoNode.getType());
-    uimaNode.setNodeTags(UIMAUtil.toStringArray(jCas, pojoNode.getTags()));
+    StringArray nodeTags = (StringArray) (FSCollectionFactory.fillArrayFS(new StringArray(
+        jCas,
+        pojoNode.getTags().length), pojoNode.getTags()));
+    uimaNode.setNodeTags(nodeTags);
     uimaNode.setNodeValue(pojoNode.getValue());
     uimaNode.setLeaf(pojoNode.isLeaf());
     uimaNode.setParent(parentNode);
@@ -162,7 +168,7 @@ public class TreebankNodeUtility {
       returnValue.append(":" + node.getCoveredText() + "\n");
     }
     if (node.getChildren().size() > 0) {
-      List<org.cleartk.syntax.constituent.type.TreebankNode> children = UIMAUtil.toList(
+      Collection<org.cleartk.syntax.constituent.type.TreebankNode> children = JCasUtil.select(
           node.getChildren(),
           org.cleartk.syntax.constituent.type.TreebankNode.class);
       for (org.cleartk.syntax.constituent.type.TreebankNode child : children) {
