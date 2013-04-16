@@ -33,8 +33,9 @@ import org.apache.uima.jcas.tcas.Annotation;
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
  * All rights reserved.
+ * @deprecated This class is no longer maintained
  */
-
+@Deprecated
 public interface OutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, PARSE_TYPE, TOP_NODE_TYPE extends Annotation> {
 
   public TOP_NODE_TYPE addParse(JCas jCas, PARSE_TYPE parse, SENTENCE_TYPE sentence, List<TOKEN_TYPE> tokens);

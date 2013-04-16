@@ -38,8 +38,9 @@ import org.uimafit.util.JCasUtil;
  * <p>
  * 
  * @author Philip Ogren
+ * @deprecated This class is no longer maintained
  */
-
+@Deprecated
 public class DefaultInputTypesHelper extends InputTypesHelper<Token, Sentence> {
 
   public List<Token> getTokens(JCas jCas, Sentence sentence) {
