@@ -42,7 +42,9 @@ import org.cleartk.util.UIMAUtil;
  * 
  * 
  * @author Philipp Wetzler
+ * @deprecated please use org.cleartk.feature.syntax.SiblineExtractor in cleartk-feature
  */
+@Deprecated
 public class SiblingExtractor implements SimpleFeatureExtractor {
 
   public SiblingExtractor(int offset, SimpleFeatureExtractor subExtractor) {

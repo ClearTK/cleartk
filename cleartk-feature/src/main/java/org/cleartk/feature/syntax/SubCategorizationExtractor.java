@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.feature;
+package org.cleartk.feature.syntax;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,9 +41,7 @@ import org.cleartk.util.UIMAUtil;
  * 
  * 
  * @author Philipp Wetzler
-  * @deprecated please use org.cleartk.feature.syntax.SubCategorizationExtractor in cleartk-feature
  */
-@Deprecated
 
 public class SubCategorizationExtractor implements SimpleNamedFeatureExtractor {
   private String featureName;

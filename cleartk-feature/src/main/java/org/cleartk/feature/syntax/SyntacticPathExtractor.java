@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.feature;
+package org.cleartk.feature.syntax;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +44,7 @@ import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
  * 
  * @author Philipp Wetzler
  * 
- * @deprecated please use org.cleartk.feature.syntax.SyntacticPathExtractor in cleartk-feature
  */
-@Deprecated
 public class SyntacticPathExtractor implements AnnotationPairFeatureExtractor {
   protected final String UP_SEPARATOR = "::";
 

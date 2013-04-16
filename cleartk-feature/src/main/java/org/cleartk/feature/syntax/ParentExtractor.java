@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.feature;
+package org.cleartk.feature.syntax;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,10 +40,7 @@ import org.cleartk.syntax.constituent.type.TreebankNode;
  * 
  * 
  * @author Philipp Wetzler
- * 
- * @deprecated please use org.cleartk.feature.syntax.ParentExtractor in cleartk-feature
  */
-@Deprecated
 public class ParentExtractor implements SimpleFeatureExtractor {
 
   public ParentExtractor(SimpleFeatureExtractor subExtractor) {

@@ -21,22 +21,29 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.ne;
+package org.cleartk.feature;
 
-import org.cleartk.test.util.ParametersTestUtil;
+import org.cleartk.test.util.LicenseTestUtil;
 import org.junit.Test;
 
 /**
  * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * @author Philip Ogren
+ * <p>
  */
-public class ParametersTest {
+
+public class LicenseTest {
 
   @Test
-  public void testParameterNames() throws ClassNotFoundException {
-    ParametersTestUtil.testParameterDefinitions("src/main/java");
+  public void testLicenseStatedInSource() throws Exception {
+    LicenseTestUtil.testJavaFiles("src/main/java");
   }
+
+  @Test
+  public void testLicenseStatedInTestSource() throws Exception {
+    LicenseTestUtil.testJavaFiles("src/test/java");
+
+  }
+
 }

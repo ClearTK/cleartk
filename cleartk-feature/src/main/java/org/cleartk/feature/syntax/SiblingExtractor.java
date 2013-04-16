@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.feature;
+package org.cleartk.feature.syntax;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,8 +30,10 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
+import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
+import org.cleartk.util.UIMAUtil;
 
 /**
  * <br>
@@ -40,14 +42,30 @@ import org.cleartk.syntax.constituent.type.TreebankNode;
  * 
  * 
  * @author Philipp Wetzler
- * 
- * @deprecated please use org.cleartk.feature.syntax.ParentExtractor in cleartk-feature
  */
-@Deprecated
-public class ParentExtractor implements SimpleFeatureExtractor {
+public class SiblingExtractor implements SimpleFeatureExtractor {
 
-  public ParentExtractor(SimpleFeatureExtractor subExtractor) {
+  public SiblingExtractor(int offset, SimpleFeatureExtractor subExtractor) {
+    this.offset = offset;
     this.subExtractor = subExtractor;
+
+    if (offset < 0) {
+      if (Math.abs(offset) > 1)
+        this.name = String.format("%dLeftSibling");
+      else
+        this.name = "LeftSibling";
+    } else if (offset > 0) {
+      if (Math.abs(offset) > 1)
+        this.name = String.format("%dRightSibling");
+      else
+        this.name = "RightSibling";
+    } else {
+      this.name = "";
+    }
+  }
+
+  public SiblingExtractor(int offset, SimpleFeatureExtractor... subExtractors) {
+    this(offset, new CombinedExtractor(subExtractors));
   }
 
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
@@ -58,13 +76,26 @@ public class ParentExtractor implements SimpleFeatureExtractor {
     if (parent == null)
       return Collections.emptyList();
 
-    List<Feature> features = subExtractor.extract(jCas, parent);
+    List<TreebankNode> children = UIMAUtil.toList(parent.getChildren(), TreebankNode.class);
+    int index = children.indexOf(node);
+    int siblingIndex = index + offset;
+
+    if (siblingIndex < 0 || siblingIndex >= children.size())
+      return Collections.emptyList();
+
+    TreebankNode sibling = children.get(siblingIndex);
+
+    List<Feature> features = subExtractor.extract(jCas, sibling);
     for (Feature feature : features) {
-      feature.setName(Feature.createName("Parent", feature.getName()));
+      feature.setName(Feature.createName(name, feature.getName()));
     }
 
     return features;
   }
+
+  private int offset;
+
+  private String name;
 
   private SimpleFeatureExtractor subExtractor;
 
