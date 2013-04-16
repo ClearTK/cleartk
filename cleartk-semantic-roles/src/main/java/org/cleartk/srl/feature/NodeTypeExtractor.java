@@ -40,7 +40,9 @@ import org.cleartk.syntax.constituent.type.TreebankNode;
  * 
  * 
  * @author Philipp Wetzler
+  * @deprecated the SRL code is going away due to neglect and incompleteness
  */
+@Deprecated
 public class NodeTypeExtractor implements SimpleNamedFeatureExtractor {
   
   private String featureName = "NodeType";

@@ -37,7 +37,9 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+  * @deprecated the SRL code is going away due to neglect and incompleteness
  */
+@Deprecated
 public class SRLWriterTest extends SrlTestBase {
 
   private File outputFile;

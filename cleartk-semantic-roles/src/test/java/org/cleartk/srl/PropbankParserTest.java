@@ -48,7 +48,9 @@ import org.junit.Test;
  * 
  *         The numbers of the tests refer to line numbers in prop.txt
  * 
+  * @deprecated the SRL code is going away due to neglect and incompleteness
  */
+@Deprecated
 public class PropbankParserTest {
 
   @Test

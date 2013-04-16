@@ -90,7 +90,9 @@ import org.uimafit.util.JCasUtil;
  * </p>
  * 
  * @author Philipp Wetzler, Philip Ogren
+  * @deprecated the SRL code is going away due to neglect and incompleteness
  */
+@Deprecated
 public class ArgumentIdentifier extends CleartkAnnotator<Boolean> {
 
   public static AnalysisEngineDescription getWriterDescription(

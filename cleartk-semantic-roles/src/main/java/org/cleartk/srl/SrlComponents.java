@@ -32,9 +32,10 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+  * @deprecated the SRL code is going away due to neglect and incompleteness
  */
-
 @Deprecated
+
 public class SrlComponents {
 
   public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.srl.TypeSystem");

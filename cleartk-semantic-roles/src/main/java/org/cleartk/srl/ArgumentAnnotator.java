@@ -72,7 +72,9 @@ import org.uimafit.util.JCasUtil;
  * 
  * 
  * @author Philipp Wetzler
+ * @deprecated the SRL code is going away due to neglect and incompleteness
  */
+@Deprecated
 
 public class ArgumentAnnotator extends CleartkAnnotator<String> {
 

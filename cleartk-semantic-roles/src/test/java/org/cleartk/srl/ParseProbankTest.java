@@ -43,7 +43,9 @@ import org.junit.Test;
  * 
  *         To run this test copy prop.txt to data/propbank-1.0 and read the file
  *         data/propbank-1.0/README.cleartk
+  * @deprecated the SRL code is going away due to neglect and incompleteness
  */
+@Deprecated
 public class ParseProbankTest {
 
   @Test

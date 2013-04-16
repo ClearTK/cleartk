@@ -55,7 +55,9 @@ import org.uimafit.util.JCasUtil;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+  * @deprecated the SRL code is going away due to neglect and incompleteness
  */
+@Deprecated
 public class PredicateArgumentHandlerTest extends SrlTestBase {
 
   @Test

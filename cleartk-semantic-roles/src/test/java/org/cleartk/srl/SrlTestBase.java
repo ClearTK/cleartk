@@ -36,7 +36,9 @@ import org.uimafit.testing.factory.TokenBuilder;
  * All rights reserved.
  * 
  * @author Philip Ogren
+ * @deprecated the SRL code is going away due to neglect and incompleteness
  */
+@Deprecated
 public class SrlTestBase extends CleartkTestBase {
 
   protected TokenBuilder<Token, Sentence> tokenBuilder;

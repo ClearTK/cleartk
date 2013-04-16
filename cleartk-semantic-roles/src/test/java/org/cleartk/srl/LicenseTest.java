@@ -31,7 +31,9 @@ import org.junit.Test;
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
+ * @deprecated the SRL code is going away due to neglect and incompleteness
  */
+@Deprecated
 
 public class LicenseTest {
 

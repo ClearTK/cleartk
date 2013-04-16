@@ -39,7 +39,9 @@ import org.cleartk.token.type.Token;
  * 
  * 
  * @author Philipp Wetzler
+  * @deprecated the SRL code is going away due to neglect and incompleteness
  */
+@Deprecated
 public class StemExtractor implements SimpleNamedFeatureExtractor {
   
   private String featureName = "Stem";
