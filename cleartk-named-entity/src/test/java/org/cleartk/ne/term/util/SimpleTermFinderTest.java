@@ -45,7 +45,9 @@ import org.junit.Test;
  * 
  * 
  * @author Philip Ogren
+ * @deprecated to be removed for 2.0
  */
+@Deprecated
 public class SimpleTermFinderTest {
 
   @Test

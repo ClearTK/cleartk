@@ -32,7 +32,9 @@ import org.junit.Test;
  * All rights reserved.
  * 
  * @author Philip Ogren
+ * @deprecated to be removed for 2.0
  */
+@Deprecated
 public class ParametersTest {
 
   @Test

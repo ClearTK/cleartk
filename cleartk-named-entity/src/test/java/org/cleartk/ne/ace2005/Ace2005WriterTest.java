@@ -45,8 +45,9 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * @deprecated to be removed for 2.0
  */
-
+@Deprecated
 public class Ace2005WriterTest extends NeTestBase {
 
   @Test

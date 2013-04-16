@@ -36,7 +36,9 @@ import org.uimafit.testing.factory.TokenBuilder;
  * All rights reserved.
  * 
  * @author Philip Ogren
+ * @deprecated to be removed for 2.0
  */
+@Deprecated
 public class NeTestBase extends CleartkTestBase {
 
   protected TokenBuilder<Token, Sentence> tokenBuilder;

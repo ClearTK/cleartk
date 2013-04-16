@@ -50,8 +50,9 @@ import org.uimafit.util.JCasUtil;
  * 
  * 
  * @author Philip Ogren
- * 
+ * @deprecated to be removed for 2.0
  */
+@Deprecated
 public class Conll2003GoldReaderTest extends NeTestBase {
 
   @Test

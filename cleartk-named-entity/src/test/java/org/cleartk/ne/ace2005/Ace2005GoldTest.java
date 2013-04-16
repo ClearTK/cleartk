@@ -36,9 +36,9 @@ import org.uimafit.factory.CollectionReaderFactory;
  * All rights reserved.
  * 
  * @author Philip Ogren
- * 
+ * @deprecated to be removed for 2.0
  */
-
+@Deprecated
 public class Ace2005GoldTest extends NeTestBase {
 
   @Test
