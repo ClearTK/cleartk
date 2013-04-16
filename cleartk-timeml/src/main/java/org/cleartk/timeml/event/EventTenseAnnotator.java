@@ -31,7 +31,7 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
-import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
+import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.timeml.util.TextSliceExtractor;
@@ -58,7 +58,7 @@ public class EventTenseAnnotator extends EventAttributeAnnotator<String> {
 
     @Override
     public Class<?> getDataWriterClass() {
-      return MaxentStringOutcomeDataWriter.class;
+      return LIBLINEARStringOutcomeDataWriter.class;
     }
 
     @Override

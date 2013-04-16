@@ -44,7 +44,7 @@ import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternE
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
-import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
+import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.timeml.util.TimeWordsExtractor;
@@ -69,7 +69,7 @@ public class TimeTypeAnnotator extends CleartkAnnotator<String> {
 
     @Override
     public Class<?> getDataWriterClass() {
-      return MaxentStringOutcomeDataWriter.class;
+      return LIBLINEARStringOutcomeDataWriter.class;
     }
 
     @Override
