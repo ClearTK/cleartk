@@ -41,7 +41,9 @@ import org.junit.Test;
  * 
  * 
  * @author Steven Bethard
+  * @deprecated moved to cleartk-feature 
  */
+@Deprecated
 
 public class SyntacticPathExtractorTest extends SyntaxTestBase {
 
