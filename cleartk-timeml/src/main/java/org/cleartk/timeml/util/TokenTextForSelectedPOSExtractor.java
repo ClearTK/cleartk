@@ -44,7 +44,9 @@ import org.cleartk.token.type.Token;
  * All rights reserved.
  * 
  * @author Steven Bethard
+ * @deprecated Use the one in cleartk-feature instead.
  */
+@Deprecated
 public class TokenTextForSelectedPOSExtractor implements SimpleNamedFeatureExtractor {
 
   private Set<String> acceptablePOSTags;

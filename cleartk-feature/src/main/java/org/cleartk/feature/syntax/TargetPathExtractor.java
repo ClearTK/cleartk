@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2011, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,56 +21,56 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.util;
+package org.cleartk.feature.syntax;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.BetweenAnnotationsFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
-import org.cleartk.syntax.constituent.type.TreebankNodeUtil.TreebankNodePath;
-
-import com.google.common.base.Joiner;
 
 /**
  * <br>
- * Copyright (c) 2011, Regents of the University of Colorado <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Steven Bethard
- * @deprecated Use the one in cleartk-feature instead.
  */
-@Deprecated
-public class SyntacticLeafToLeafPathPartsExtractor implements BetweenAnnotationsFeatureExtractor {
-
-  public List<Feature> extractBetween(JCas jCas, Annotation source, Annotation target) {
-    List<Feature> features = new ArrayList<Feature>();
-    TreebankNode sourceNode = TreebankNodeUtil.selectMatchingLeaf(jCas, source);
-    TreebankNode targetNode = TreebankNodeUtil.selectMatchingLeaf(jCas, target);
-    if (sourceNode != null && targetNode != null) {
-      TreebankNodePath path = TreebankNodeUtil.getPath(sourceNode, targetNode);
-      TreebankNode ancestor = path.getCommonAncestor();
-      features.add(new Feature("CommonAncestor", ancestor == null ? null : ancestor.getNodeType()));
-      features.add(new Feature("SourceToAncestor", pathString(path.getSourceToAncestorPath())));
-      features.add(new Feature("TargetToAncestor", pathString(path.getTargetToAncestorPath())));
+public class TargetPathExtractor {
+  public List<Feature> extract(JCas jCas, TreebankNode source, TreebankNode target) {
+    List<TreebankNode> sourceToRoot = this.pathToRoot(source);
+    List<TreebankNode> targetToRoot = this.pathToRoot(target);
+    // TreebankNode commonParent = null;
+    while (!sourceToRoot.isEmpty() && !targetToRoot.isEmpty()
+        && sourceToRoot.get(sourceToRoot.size() - 1) == targetToRoot.get(targetToRoot.size() - 1)) {
+      // commonParent = sourceToRoot.get(sourceToRoot.size() - 1);
+      sourceToRoot.remove(sourceToRoot.size() - 1);
+      targetToRoot.remove(targetToRoot.size() - 1);
     }
-    return features;
+    String value = this.toTagString(targetToRoot, ">");
+    return Collections.singletonList(new Feature("TargetPath", value));
   }
 
-  private static String pathString(List<TreebankNode> nodes) {
-    // strip the first node from the list
-    nodes = nodes.subList(Math.min(1, nodes.size()), nodes.size());
+  private List<TreebankNode> pathToRoot(TreebankNode leaf) {
+    List<TreebankNode> result = new ArrayList<TreebankNode>();
+    TreebankNode curr = leaf;
+    while (curr != null) {
+      result.add(curr);
+      curr = curr.getParent();
+    }
+    return result;
+  }
 
-    // join the types with underscores
-    List<String> types = new ArrayList<String>();
+  private String toTagString(List<TreebankNode> nodes, String join) {
+    StringBuilder builder = new StringBuilder();
     for (TreebankNode node : nodes) {
-      types.add(node.getNodeType());
+      if (builder.length() > 0) {
+        builder.append(join);
+      }
+      builder.append(node.getNodeType());
     }
-    return Joiner.on('_').join(types);
+    return builder.toString();
   }
-
 }

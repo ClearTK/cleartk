@@ -37,7 +37,9 @@ import org.cleartk.syntax.constituent.type.TreebankNode;
  * All rights reserved.
  * 
  * @author Steven Bethard
+ * @deprecated Use the one in cleartk-feature instead.
  */
+@Deprecated
 public class TargetPathExtractor {
   public List<Feature> extract(JCas jCas, TreebankNode source, TreebankNode target) {
     List<TreebankNode> sourceToRoot = this.pathToRoot(source);

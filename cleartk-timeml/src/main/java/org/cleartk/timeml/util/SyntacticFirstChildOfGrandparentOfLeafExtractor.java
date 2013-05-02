@@ -39,7 +39,9 @@ import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
  * All rights reserved.
  * 
  * @author Steven Bethard
+ * @deprecated Use the one in cleartk-feature instead.
  */
+@Deprecated
 public class SyntacticFirstChildOfGrandparentOfLeafExtractor implements SimpleNamedFeatureExtractor {
   
   private String featureName = "FirstChildOfGrandparent";

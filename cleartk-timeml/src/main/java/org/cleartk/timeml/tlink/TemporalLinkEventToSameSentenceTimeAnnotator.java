@@ -51,7 +51,7 @@ import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
-import org.cleartk.timeml.util.FilteringExtractor;
+import org.cleartk.feature.FilteringExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;

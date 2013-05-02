@@ -34,7 +34,7 @@ import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
-import org.cleartk.timeml.util.TokenTextForSelectedPOSExtractor;
+import org.cleartk.feature.token.TokenTextForSelectedPOSExtractor;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
 

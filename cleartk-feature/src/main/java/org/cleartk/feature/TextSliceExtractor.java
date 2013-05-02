@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.util;
+package org.cleartk.feature;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,9 +40,7 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtract
  * easy to slice from the end of the string.
  * 
  * @author Steven Bethard
- * @deprecated Use the one in cleartk-feature instead.
  */
-@Deprecated
 public class TextSliceExtractor implements SimpleNamedFeatureExtractor {
 
   private int start;

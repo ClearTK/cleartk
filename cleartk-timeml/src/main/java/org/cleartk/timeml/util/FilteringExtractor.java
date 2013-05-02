@@ -39,7 +39,9 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
  * All rights reserved.
  * 
  * @author Steven Bethard
+ * @deprecated Use the one in cleartk-feature instead.
  */
+@Deprecated
 public abstract class FilteringExtractor<T extends Annotation> implements SimpleFeatureExtractor {
 
   private Class<T> annotationClass;

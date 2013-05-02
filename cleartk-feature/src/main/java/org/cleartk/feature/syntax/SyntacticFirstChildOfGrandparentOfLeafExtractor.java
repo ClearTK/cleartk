@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.util;
+package org.cleartk.feature.syntax;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +29,9 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.BetweenAnnotationsFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
-import org.cleartk.syntax.constituent.type.TreebankNodeUtil.TreebankNodePath;
-
-import com.google.common.base.Joiner;
 
 /**
  * <br>
@@ -42,35 +39,32 @@ import com.google.common.base.Joiner;
  * All rights reserved.
  * 
  * @author Steven Bethard
- * @deprecated Use the one in cleartk-feature instead.
  */
-@Deprecated
-public class SyntacticLeafToLeafPathPartsExtractor implements BetweenAnnotationsFeatureExtractor {
+public class SyntacticFirstChildOfGrandparentOfLeafExtractor implements SimpleNamedFeatureExtractor {
+  
+  private String featureName = "FirstChildOfGrandparent";
+  
+  @Override
+  public String getFeatureName() {
+    return this.featureName;
+  }
 
-  public List<Feature> extractBetween(JCas jCas, Annotation source, Annotation target) {
+  @Override
+  public List<Feature> extract(JCas view, Annotation focusAnnotation) {
     List<Feature> features = new ArrayList<Feature>();
-    TreebankNode sourceNode = TreebankNodeUtil.selectMatchingLeaf(jCas, source);
-    TreebankNode targetNode = TreebankNodeUtil.selectMatchingLeaf(jCas, target);
-    if (sourceNode != null && targetNode != null) {
-      TreebankNodePath path = TreebankNodeUtil.getPath(sourceNode, targetNode);
-      TreebankNode ancestor = path.getCommonAncestor();
-      features.add(new Feature("CommonAncestor", ancestor == null ? null : ancestor.getNodeType()));
-      features.add(new Feature("SourceToAncestor", pathString(path.getSourceToAncestorPath())));
-      features.add(new Feature("TargetToAncestor", pathString(path.getTargetToAncestorPath())));
+    TreebankNode node = TreebankNodeUtil.selectMatchingLeaf(view, focusAnnotation);
+    if (node != null) {
+      node = node.getParent();
+    }
+    if (node != null) {
+      node = node.getParent();
+    }
+    if (node != null) {
+      node = node.getChildren(0);
+    }
+    if (node != null && node.getLeaf()) {
+      features.add(new Feature(this.featureName, node.getCoveredText()));
     }
     return features;
   }
-
-  private static String pathString(List<TreebankNode> nodes) {
-    // strip the first node from the list
-    nodes = nodes.subList(Math.min(1, nodes.size()), nodes.size());
-
-    // join the types with underscores
-    List<String> types = new ArrayList<String>();
-    for (TreebankNode node : nodes) {
-      types.add(node.getNodeType());
-    }
-    return Joiner.on('_').join(types);
-  }
-
 }

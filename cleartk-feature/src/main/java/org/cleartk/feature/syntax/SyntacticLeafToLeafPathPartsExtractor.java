@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.util;
+package org.cleartk.feature.syntax;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +42,7 @@ import com.google.common.base.Joiner;
  * All rights reserved.
  * 
  * @author Steven Bethard
- * @deprecated Use the one in cleartk-feature instead.
  */
-@Deprecated
 public class SyntacticLeafToLeafPathPartsExtractor implements BetweenAnnotationsFeatureExtractor {
 
   public List<Feature> extractBetween(JCas jCas, Annotation source, Annotation target) {
