@@ -34,8 +34,8 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.syntax.constituent.TreebankConstants;
-import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
+import org.cleartk.corpus.penntreebank.PennTreebankReader;
+import org.cleartk.corpus.penntreebank.TreebankGoldAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
 import org.uimafit.component.ViewCreatorAnnotator;
@@ -74,13 +74,13 @@ public class BuildTestExamplePosModel {
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
-        TreebankConstants.TREEBANK_VIEW));
+        PennTreebankReader.TREEBANK_VIEW));
 
     // An annotator that reads the treebank-formatted text into the treebank view
     builder.add(
         UriToDocumentTextAnnotator.getDescription(),
         CAS.NAME_DEFAULT_SOFA,
-        TreebankConstants.TREEBANK_VIEW);
+        PennTreebankReader.TREEBANK_VIEW);
 
     // An annotator that uses the treebank text to add tokens and POS tags to the CAS
     builder.add(TreebankGoldAnnotator.getDescriptionPOSTagsOnly());

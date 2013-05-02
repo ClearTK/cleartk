@@ -41,9 +41,9 @@ import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.libsvm.LIBSVMStringOutcomeDataWriter;
 import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
 import org.cleartk.classifier.svmlight.SVMlightStringOutcomeDataWriter;
+import org.cleartk.corpus.penntreebank.PennTreebankReader;
+import org.cleartk.corpus.penntreebank.TreebankGoldAnnotator;
 import org.cleartk.examples.ExamplesTestBase;
-import org.cleartk.syntax.constituent.TreebankConstants;
-import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.token.breakit.BreakIteratorAnnotatorFactory;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
@@ -147,7 +147,7 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     SimplePipeline.runPipeline(
         FilesCollectionReader.getCollectionReaderWithView(
             "src/test/resources/data/treebank/11597317.tree",
-            TreebankConstants.TREEBANK_VIEW),
+            PennTreebankReader.TREEBANK_VIEW),
         TreebankGoldAnnotator.getDescriptionPOSTagsOnly(),
         DefaultSnowballStemmer.getDescription("English"),
         dataWriter);

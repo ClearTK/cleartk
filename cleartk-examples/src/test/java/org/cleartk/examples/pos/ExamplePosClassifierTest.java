@@ -46,9 +46,9 @@ import org.cleartk.classifier.svmlight.SVMlightStringOutcomeDataWriter;
 import org.cleartk.classifier.viterbi.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
+import org.cleartk.corpus.penntreebank.PennTreebankReader;
+import org.cleartk.corpus.penntreebank.TreebankGoldAnnotator;
 import org.cleartk.examples.ExamplesTestBase;
-import org.cleartk.syntax.constituent.TreebankConstants;
-import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
@@ -270,7 +270,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     SimplePipeline.runPipeline(
         UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(new File(
             "src/test/resources/data/treebank/11597317.tree"))),
-        UriToDocumentTextAnnotator.getDescriptionForView(TreebankConstants.TREEBANK_VIEW),
+        UriToDocumentTextAnnotator.getDescriptionForView(PennTreebankReader.TREEBANK_VIEW),
         TreebankGoldAnnotator.getDescriptionPOSTagsOnly(),
         DefaultSnowballStemmer.getDescription("English"),
         dataWriter);

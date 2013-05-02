@@ -35,9 +35,9 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionReader;
+import org.cleartk.corpus.penntreebank.PennTreebankReader;
+import org.cleartk.corpus.penntreebank.TreebankGoldAnnotator;
 import org.cleartk.eval.EvaluationConstants;
-import org.cleartk.syntax.constituent.TreebankConstants;
-import org.cleartk.syntax.constituent.TreebankGoldAnnotator;
 import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.ViewURIFileNamer;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
@@ -114,7 +114,7 @@ public class TreebankParsingExample {
     AggregateBuilder builder = new AggregateBuilder();
 
     // Reads text into TREEBANK_VIEW
-    builder.add(UriToDocumentTextAnnotator.getDescriptionForView(TreebankConstants.TREEBANK_VIEW));
+    builder.add(UriToDocumentTextAnnotator.getDescriptionForView(PennTreebankReader.TREEBANK_VIEW));
 
     // Ensures GOLD_VIEW is present
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(
