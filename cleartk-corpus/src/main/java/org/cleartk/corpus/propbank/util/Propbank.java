@@ -28,11 +28,12 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.token.type.Sentence;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.FSCollectionFactory;
 
 /**
  * <br>
@@ -238,7 +239,8 @@ public class Propbank {
     for (Proplabel proplabel : this.proplabels) {
       aList.add(proplabel.convert(view, topNode));
     }
-    p.setArguments(UIMAUtil.toFSArray(view, aList));
+    p.setArguments(new FSArray(view, aList.size()));
+    FSCollectionFactory.fillArrayFS(p.getArguments(), aList);
     p.addToIndexes();
 
     return p;

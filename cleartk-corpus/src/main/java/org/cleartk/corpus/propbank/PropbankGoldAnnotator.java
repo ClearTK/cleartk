@@ -23,7 +23,6 @@
  */
 package org.cleartk.corpus.propbank;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +34,6 @@ import org.cleartk.corpus.propbank.util.Propbank;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.AnnotationUtil;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.util.JCasUtil;
@@ -67,7 +65,7 @@ public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
       List<Sentence> sentenceList = new ArrayList<Sentence>(
           JCasUtil.select(docView, Sentence.class));
 
-      for (String propbankDatum : UIMAUtil.readSofa(pbView).trim().split("\n")) {
+      for (String propbankDatum : pbView.getDocumentText().split("\n")) {
         if (propbankDatum.length() == 0)
           continue;
         Propbank propbank = Propbank.fromString(propbankDatum);
@@ -83,8 +81,6 @@ public class PropbankGoldAnnotator extends JCasAnnotator_ImplBase {
         propbank.convert(docView, top, sentence);
       }
     } catch (CASException e) {
-      throw new AnalysisEngineProcessException(e);
-    } catch (IOException e) {
       throw new AnalysisEngineProcessException(e);
     }
   }

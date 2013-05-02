@@ -34,6 +34,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.syntax.dependency.type.DependencyNode;
@@ -41,7 +42,6 @@ import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.UIMAUtil;
 import org.maltparser.MaltParserService;
 import org.maltparser.core.exception.MaltChainedException;
 import org.maltparser.core.options.OptionManager;
@@ -52,6 +52,7 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.TypeSystemDescriptionFactory;
+import org.uimafit.util.FSCollectionFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -189,8 +190,16 @@ public class MaltParser extends JCasAnnotator_ImplBase {
 
         // finalize nodes: add links between nodes and relations
         for (DependencyNode node : nodes.values()) {
-          node.setHeadRelations(UIMAUtil.toFSArray(jCas, headRelations.get(node)));
-          node.setChildRelations(UIMAUtil.toFSArray(jCas, childRelations.get(node)));
+          List<DependencyRelation> heads = headRelations.get(node);
+          node.setHeadRelations(new FSArray(jCas, heads == null ? 0 : heads.size()));
+          if (heads != null) {
+            FSCollectionFactory.fillArrayFS(node.getHeadRelations(), heads);
+          }
+          List<DependencyRelation> children = childRelations.get(node);
+          node.setChildRelations(new FSArray(jCas, children == null ? 0 : children.size()));
+          if (children != null) {
+            FSCollectionFactory.fillArrayFS(node.getChildRelations(), children);
+          }
           node.addToIndexes();
         }
 

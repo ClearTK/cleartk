@@ -27,7 +27,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Stack;
@@ -37,6 +36,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ne.type.NamedEntityMention;
@@ -49,11 +49,11 @@ import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationUtil;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.FSCollectionFactory;
 
 /**
  * <br>
@@ -133,7 +133,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
         TreebankNode terminal = new TreebankNode(initView, startIndex, endIndex);
         terminal.setNodeType(line.pos);
         terminal.setNodeValue(line.word);
-        terminal.setChildren(UIMAUtil.toFSArray(jCas, Collections.<TreebankNode> emptyList()));
+        terminal.setChildren(new FSArray(jCas, 0));
         terminal.setLeaf(true);
         terminal.addToIndexes();
         terminals.add(terminal);
@@ -237,7 +237,8 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
         int[] span = AnnotationUtil.getAnnotationsExtent(this.children);
         TreebankNode node = new TreebankNode(jCas, span[0], span[1]);
         node.setNodeType(this.type);
-        node.setChildren(UIMAUtil.toFSArray(jCas, this.children));
+        node.setChildren(new FSArray(jCas, this.children.size()));
+        FSCollectionFactory.fillArrayFS(node.getChildren(), this.children);
         for (TreebankNode child : this.children)
           child.setParent(node);
         node.addToIndexes();
@@ -289,10 +290,13 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
       int[] span = AnnotationUtil.getAnnotationsExtent(this.terminals);
       TopTreebankNode node = new TopTreebankNode(jCas, span[0], span[1]);
       node.setNodeType("TOP");
-      node.setChildren(UIMAUtil.toFSArray(jCas, parseStack.peek().children));
+      List<TreebankNode> children = parseStack.peek().children;
+      node.setChildren(new FSArray(jCas, children.size()));
+      FSCollectionFactory.fillArrayFS(node.getChildren(), children);
       for (TreebankNode child : parseStack.peek().children)
         child.setParent(node);
-      node.setTerminals(UIMAUtil.toFSArray(jCas, this.terminals));
+      node.setTerminals(new FSArray(jCas, this.terminals.size()));
+      FSCollectionFactory.fillArrayFS(node.getTerminals(), this.terminals);
       node.addToIndexes();
       parseStack.pop();
       return node;
@@ -393,7 +397,8 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
           this.predicateToken.getBegin(),
           this.predicateToken.getEnd());
       predicate.setAnnotation(this.predicateToken);
-      predicate.setArguments(UIMAUtil.toFSArray(jCas, this.arguments));
+      predicate.setArguments(new FSArray(jCas, this.arguments.size()));
+      FSCollectionFactory.fillArrayFS(predicate.getArguments(), this.arguments);
       predicate.setBaseForm(this.baseForm);
       predicate.addToIndexes();
 

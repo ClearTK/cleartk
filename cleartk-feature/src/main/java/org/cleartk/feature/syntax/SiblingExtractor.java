@@ -33,7 +33,9 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.JCasUtil;
+
+import com.google.common.collect.Lists;
 
 /**
  * <br>
@@ -76,7 +78,9 @@ public class SiblingExtractor implements SimpleFeatureExtractor {
     if (parent == null)
       return Collections.emptyList();
 
-    List<TreebankNode> children = UIMAUtil.toList(parent.getChildren(), TreebankNode.class);
+    List<TreebankNode> children = Lists.newArrayList(JCasUtil.select(
+        parent.getChildren(),
+        TreebankNode.class));
     int index = children.indexOf(node);
     int siblingIndex = index + offset;
 

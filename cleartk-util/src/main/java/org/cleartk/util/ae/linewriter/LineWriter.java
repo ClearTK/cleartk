@@ -37,12 +37,12 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
-import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -79,8 +79,9 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "\t/mydata/uima-output/\n"
       + "\tC:/Documents and Settings/User/My Documents/workspace/My Project/data/experiment/output\n";
 
-  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(LineWriter.class, "outputDirectoryName");
+  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      LineWriter.class,
+      "outputDirectoryName");
 
   @ConfigurationParameter(description = OUTPUT_DIRECTORY_NAME_DESCRIPTION)
   private String outputDirectoryName;
@@ -93,8 +94,9 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "parameter is given, then the files will be named the same as the document id. Example values "
       + "that could be provided might include: \n\n" + ".txt\n" + ".tokens\n" + ".annotations.txt";
 
-  public static final String PARAM_FILE_SUFFIX = ConfigurationParameterFactory
-      .createConfigurationParameterName(LineWriter.class, "fileSuffix");
+  public static final String PARAM_FILE_SUFFIX = ConfigurationParameterFactory.createConfigurationParameterName(
+      LineWriter.class,
+      "fileSuffix");
 
   @ConfigurationParameter(description = FILE_SUFFIX_DESCRIPTION)
   private String fileSuffix;
@@ -109,8 +111,9 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "/mydata/uima-output/annotations.txt\n"
       + "C:\\Documents and Settings\\User\\My Documents\\workspace\\My Project\\data\\experiment\\output\\output.annotations\n";
 
-  public static final String PARAM_OUTPUT_FILE_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(LineWriter.class, "outputFileName");
+  public static final String PARAM_OUTPUT_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      LineWriter.class,
+      "outputFileName");
 
   @ConfigurationParameter(description = OUTPUT_FILE_NAME_DESCRIPTION)
   private String outputFileName;
@@ -125,10 +128,14 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "org.cleartk.type.Token\n"
       + "org.cleartk.type.Sentence\n" + "com.yourcompany.yourpackage.YourType";
 
-  public static final String PARAM_OUTPUT_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(LineWriter.class, "outputAnnotationClassName");
+  public static final String PARAM_OUTPUT_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      LineWriter.class,
+      "outputAnnotationClassName");
 
-  @ConfigurationParameter(mandatory = true, description = OUTPUT_ANNOTATION_CLASS_NAME_DESCRIPTION, defaultValue = "org.apache.uima.jcas.tcas.Annotation")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = OUTPUT_ANNOTATION_CLASS_NAME_DESCRIPTION,
+      defaultValue = "org.apache.uima.jcas.tcas.Annotation")
   private static String outputAnnotationClassName;
 
   private static final String ANNOTATION_WRITER_CLASS_NAME_DESCRIPTION = "provides the class name of a class that extends org.cleartk.util.linewriter.AnnotationWriter. "
@@ -138,10 +145,14 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter (default)\n"
       + "org.cleartk.util.linewriter.annotation.TokenPOSWriter\n";
 
-  public static final String PARAM_ANNOTATION_WRITER_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(LineWriter.class, "annotationWriterClassName");
+  public static final String PARAM_ANNOTATION_WRITER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      LineWriter.class,
+      "annotationWriterClassName");
 
-  @ConfigurationParameter(mandatory = true, description = ANNOTATION_WRITER_CLASS_NAME_DESCRIPTION, defaultValue = "org.cleartk.util.ae.linewriter.annotation.CoveredTextAnnotationWriter")
+  @ConfigurationParameter(
+      mandatory = true,
+      description = ANNOTATION_WRITER_CLASS_NAME_DESCRIPTION,
+      defaultValue = "org.cleartk.util.ae.linewriter.annotation.CoveredTextAnnotationWriter")
   private String annotationWriterClassName;
 
   private static final String BLOCK_ANNOTATION_CLASS_NAME_DESCRIPTION = "Takes the name of an annotation class that determines a 'block' of lines in the "
@@ -161,8 +172,9 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "org.cleartk.type.Sentence\n"
       + "org.apache.uima.jcas.tcas.DocumentAnnotation\n" + "com.yourcompany.yourpackage.YourType\n";
 
-  public static final String PARAM_BLOCK_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(LineWriter.class, "blockAnnotationClassName");
+  public static final String PARAM_BLOCK_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      LineWriter.class,
+      "blockAnnotationClassName");
 
   @ConfigurationParameter(description = BLOCK_ANNOTATION_CLASS_NAME_DESCRIPTION)
   private String blockAnnotationClassName;
@@ -174,10 +186,13 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "org.cleartk.util.linewriter.block.BlankLineBlockWriter\n"
       + "org.cleartk.util.linewriter.block.DocumentIdBlockWriter\n";
 
-  public static final String PARAM_BLOCK_WRITER_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(LineWriter.class, "blockWriterClassName");
+  public static final String PARAM_BLOCK_WRITER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
+      LineWriter.class,
+      "blockWriterClassName");
 
-  @ConfigurationParameter(description = BLOCK_WRITER_CLASS_NAME_DESCRIPTION, defaultValue = "org.cleartk.util.ae.linewriter.block.BlankLineBlockWriter")
+  @ConfigurationParameter(
+      description = BLOCK_WRITER_CLASS_NAME_DESCRIPTION,
+      defaultValue = "org.cleartk.util.ae.linewriter.block.BlankLineBlockWriter")
   private String blockWriterClassName;
 
   private File outputDirectory;
@@ -235,10 +250,8 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
           outputAnnotationClassName,
           Annotation.class);
 
-      Class<? extends AnnotationWriter<ANNOTATION_TYPE>> annotationWriterClass = ReflectionUtil
-          .uncheckedCast(Class
-              .forName(annotationWriterClassName)
-              .asSubclass(AnnotationWriter.class));
+      Class<? extends AnnotationWriter<ANNOTATION_TYPE>> annotationWriterClass = ReflectionUtil.uncheckedCast(Class.forName(
+          annotationWriterClassName).asSubclass(AnnotationWriter.class));
       annotationWriter = InitializableFactory.create(
           context,
           annotationWriterClassName,
@@ -259,8 +272,8 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 
       if (blockAnnotationClassName != null) {
 
-        Class<? extends BlockWriter<BLOCK_TYPE>> blockWriterClass = ReflectionUtil
-            .uncheckedCast(Class.forName(blockWriterClassName).asSubclass(BlockWriter.class));
+        Class<? extends BlockWriter<BLOCK_TYPE>> blockWriterClass = ReflectionUtil.uncheckedCast(Class.forName(
+            blockWriterClassName).asSubclass(BlockWriter.class));
         this.blockWriter = InitializableFactory.create(
             context,
             blockWriterClassName,
@@ -300,9 +313,9 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 
   private void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
     try {
-      outputAnnotationType = UIMAUtil.getCasType(jCas, outputAnnotationClass);
+      outputAnnotationType = JCasUtil.getType(jCas, outputAnnotationClass);
       if (blockAnnotationClass != null) {
-        blockAnnotationType = UIMAUtil.getCasType(jCas, blockAnnotationClass);
+        blockAnnotationType = JCasUtil.getType(jCas, blockAnnotationClass);
       }
     } catch (Exception e) {
       throw new AnalysisEngineProcessException(e);
@@ -328,9 +341,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       if (blockOnDocument) {
         BLOCK_TYPE documentAnnotation = (BLOCK_TYPE) jCas.getDocumentAnnotationFs();
         out.print(blockWriter.writeBlock(jCas, documentAnnotation));
-        FSIterator<Annotation> outputAnnotations = jCas
-            .getAnnotationIndex(outputAnnotationType)
-            .iterator();
+        FSIterator<Annotation> outputAnnotations = jCas.getAnnotationIndex(outputAnnotationType).iterator();
         while (outputAnnotations.hasNext()) {
           ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) outputAnnotations.next();
           out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));
@@ -340,9 +351,8 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
         while (blocks.hasNext()) {
           BLOCK_TYPE blockAnnotation = (BLOCK_TYPE) blocks.next();
           out.print(blockWriter.writeBlock(jCas, blockAnnotation));
-          FSIterator<Annotation> outputAnnotations = jCas
-              .getAnnotationIndex(outputAnnotationType)
-              .subiterator(blockAnnotation);
+          FSIterator<Annotation> outputAnnotations = jCas.getAnnotationIndex(outputAnnotationType).subiterator(
+              blockAnnotation);
           while (outputAnnotations.hasNext()) {
             ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) outputAnnotations.next();
             out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));
@@ -351,9 +361,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       }
 
       else {
-        FSIterator<Annotation> outputAnnotations = jCas
-            .getAnnotationIndex(outputAnnotationType)
-            .iterator();
+        FSIterator<Annotation> outputAnnotations = jCas.getAnnotationIndex(outputAnnotationType).iterator();
         while (outputAnnotations.hasNext()) {
           ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) outputAnnotations.next();
           out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));

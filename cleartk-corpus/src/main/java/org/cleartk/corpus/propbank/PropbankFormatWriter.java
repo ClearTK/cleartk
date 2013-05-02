@@ -24,7 +24,7 @@
 package org.cleartk.corpus.propbank;
 
 import java.io.File;
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -34,7 +34,6 @@ import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.token.type.Sentence;
-import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ae.linewriter.AnnotationWriter;
 import org.uimafit.util.JCasUtil;
@@ -78,7 +77,7 @@ public class PropbankFormatWriter implements AnnotationWriter<Predicate> {
     // in the cas and then compare it to the explicitly stored version and throw an exception if
     // there is a difference. That way,
     // we know the data is consistent.
-    List<Argument> arguments = UIMAUtil.toList(predicate.getArguments(), Argument.class);
+    Collection<Argument> arguments = JCasUtil.select(predicate.getArguments(), Argument.class);
     for (Argument argument : arguments) {
       if (argument instanceof SemanticArgument)
         sb.append(((SemanticArgument) argument).getPropTxt() + "\t");

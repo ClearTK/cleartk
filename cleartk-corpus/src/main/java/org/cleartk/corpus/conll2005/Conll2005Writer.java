@@ -39,7 +39,6 @@ import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
@@ -206,7 +205,7 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
       this.baseform = predicate.getBaseForm();
       this.frameset = 1;
 
-      List<Argument> allArgs = UIMAUtil.toList(predicate.getArguments(), Argument.class);
+      Collection<Argument> allArgs = JCasUtil.select(predicate.getArguments(), Argument.class);
       this.argumentWriters = new ArrayList<ArgumentWriter>();
       for (Argument arg : allArgs) {
         if (arg instanceof SemanticArgument) {

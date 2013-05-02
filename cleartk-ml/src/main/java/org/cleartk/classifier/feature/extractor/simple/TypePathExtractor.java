@@ -50,7 +50,7 @@ import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.feature.TypePathFeature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -184,7 +184,7 @@ public class TypePathExtractor implements SimpleNamedFeatureExtractor {
   public List<org.cleartk.classifier.Feature> extract(JCas view, Annotation focusAnnotation)
       throws CleartkExtractorException {
     if (this.type == null)
-      this.type = UIMAUtil.getCasType(view, this.focusClass);
+      this.type = JCasUtil.getType(view, this.focusClass);
 
     this.typeSystem = view.getTypeSystem();
 

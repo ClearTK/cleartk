@@ -44,8 +44,9 @@ import org.apache.uima.jcas.cas.TOP;
  * @author Philip Ogren
  * @author Philipp Wetzler
  * @author Steven Bethard
- * 
+ * @deprecated Use uimaFIT's JCasUtil and/or FSCollectionFactory instead
  */
+@Deprecated
 public class UIMAUtil {
   public static FSArray toFSArray(JCas jCas, List<? extends FeatureStructure> fsList) {
     if (fsList == null) {

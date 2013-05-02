@@ -29,12 +29,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
@@ -44,7 +44,6 @@ import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.UIMAUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -265,7 +264,8 @@ public class Conll2003GoldReader extends JCasCollectionReader_ImplBase {
       nem.setMentionedEntity(ne);
       nem.addToIndexes();
 
-      ne.setMentions(UIMAUtil.toFSArray(jCas, Collections.singletonList(nem)));
+      ne.setMentions(new FSArray(jCas, 1));
+      ne.setMentions(0, nem);
     }
   }
 

@@ -37,17 +37,18 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ne.type.Chunk;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.util.UIMAUtil;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.SofaCapability;
+import org.uimafit.util.FSCollectionFactory;
 
 /**
  * <br>
@@ -140,7 +141,8 @@ public class Ace2005GoldAnnotator extends JCasAnnotator_ImplBase {
           // System.out.println(documentText);
           // }
         }
-        namedEntity.setMentions(UIMAUtil.toFSArray(jCas, mentions));
+        namedEntity.setMentions(new FSArray(jCas, mentions.size()));
+        FSCollectionFactory.fillArrayFS(namedEntity.getMentions(), mentions);
       }
 
     } catch (CASException ce) {

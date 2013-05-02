@@ -42,9 +42,9 @@ import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.factory.AnalysisEngineFactory;
+import org.uimafit.util.FSCollectionFactory;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -211,8 +211,16 @@ public class StanfordCoreNLPAnnotator extends JCasAnnotator_ImplBase {
 
       // set the relations for each node annotation
       for (DependencyNode node : stanfordToUima.values()) {
-        node.setHeadRelations(UIMAUtil.toFSArray(jCas, headRelations.get(node)));
-        node.setChildRelations(UIMAUtil.toFSArray(jCas, childRelations.get(node)));
+        List<DependencyRelation> heads = headRelations.get(node);
+        node.setHeadRelations(new FSArray(jCas, heads == null ? 0 : heads.size()));
+        if (heads != null) {
+          FSCollectionFactory.fillArrayFS(node.getHeadRelations(), heads);
+        }
+        List<DependencyRelation> children = childRelations.get(node);
+        node.setChildRelations(new FSArray(jCas, children == null ? 0 : children.size()));
+        if (children != null) {
+          FSCollectionFactory.fillArrayFS(node.getChildRelations(), children);
+        }
         node.addToIndexes();
       }
     }

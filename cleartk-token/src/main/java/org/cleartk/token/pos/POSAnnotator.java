@@ -38,10 +38,10 @@ import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.util.ReflectionUtil;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -111,8 +111,8 @@ public abstract class POSAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE 
 
   protected void initializeTypes(JCas jCas) throws AnalysisEngineProcessException {
     try {
-      tokenType = UIMAUtil.getCasType(jCas, this.tokenClass);
-      sentenceType = UIMAUtil.getCasType(jCas, this.sentenceClass);
+      tokenType = JCasUtil.getType(jCas, this.tokenClass);
+      sentenceType = JCasUtil.getType(jCas, this.sentenceClass);
     } catch (Exception e) {
       throw new AnalysisEngineProcessException(e);
     }

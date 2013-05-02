@@ -32,12 +32,12 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ReflectionUtil;
-import org.cleartk.util.UIMAUtil;
 import org.tartarus.snowball.SnowballProgram;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * This class borrows from {@link SnowballFilter}
@@ -83,7 +83,7 @@ public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCa
 
   private void initializeTypes(JCas jCas) {
     if (tokenClass != null) {
-      tokenType = UIMAUtil.getCasType(jCas, tokenClass);
+      tokenType = JCasUtil.getType(jCas, tokenClass);
     }
     typesInitialized = true;
   }

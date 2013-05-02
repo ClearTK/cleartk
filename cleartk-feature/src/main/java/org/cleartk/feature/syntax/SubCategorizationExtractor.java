@@ -32,7 +32,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -71,7 +71,7 @@ public class SubCategorizationExtractor implements SimpleNamedFeatureExtractor {
     StringBuffer buffer = new StringBuffer();
     buffer.append(parent.getNodeType() + "->");
     boolean first = true;
-    for (TreebankNode child : UIMAUtil.toList(parent.getChildren(), TreebankNode.class)) {
+    for (TreebankNode child : JCasUtil.select(parent.getChildren(), TreebankNode.class)) {
       if (!first)
         buffer.append("-");
       buffer.append(child.getNodeType());

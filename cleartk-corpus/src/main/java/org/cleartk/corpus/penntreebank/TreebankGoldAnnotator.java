@@ -36,12 +36,12 @@ import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.UIMAUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -122,7 +122,7 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
       uimaSentence.addToIndexes();
 
       int tokenIndex = 0;
-      for (TerminalTreebankNode terminal : UIMAUtil.toList(
+      for (TerminalTreebankNode terminal : JCasUtil.select(
           uimaNode.getTerminals(),
           TerminalTreebankNode.class)) {
         if (terminal.getBegin() != terminal.getEnd()) {

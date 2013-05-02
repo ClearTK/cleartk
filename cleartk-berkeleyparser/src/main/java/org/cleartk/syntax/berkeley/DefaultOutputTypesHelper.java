@@ -22,11 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.FSCollectionFactory;
 
 import edu.berkeley.nlp.syntax.Tree;
 
@@ -56,7 +57,8 @@ public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TY
         new TokenIndex(),
         leafNodes,
         true);
-    topNode.setTerminals(UIMAUtil.toFSArray(jCas, leafNodes));
+    topNode.setTerminals(new FSArray(jCas, leafNodes.size()));
+    FSCollectionFactory.fillArrayFS(topNode.getTerminals(), leafNodes);
     topNode.addToIndexes();
     return topNode;
   }
@@ -138,7 +140,8 @@ public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TY
     }
 
     uimaNode.setNodeType(berkeleyNode.getLabel());
-    uimaNode.setChildren(UIMAUtil.toFSArray(jCas, uimaChildren));
+    uimaNode.setChildren(new FSArray(jCas, uimaChildren.size()));
+    FSCollectionFactory.fillArrayFS(uimaNode.getChildren(), uimaChildren);
     uimaNode.addToIndexes();
     for (TreebankNode child : uimaChildren) {
       child.setParent(uimaNode);

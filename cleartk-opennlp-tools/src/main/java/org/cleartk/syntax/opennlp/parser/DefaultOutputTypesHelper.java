@@ -36,7 +36,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.FSCollectionFactory;
 
 /**
  * <br>
@@ -64,7 +64,9 @@ public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TY
     StringBuffer sb = new StringBuffer();
     parse.show(sb);
     node.setTreebankParse(sb.toString());
-    node.setTerminals(UIMAUtil.toFSArray(jCas, getTerminals(node)));
+    List<TreebankNode> terminals = getTerminals(node);
+    node.setTerminals(new FSArray(jCas, terminals.size()));
+    FSCollectionFactory.fillArrayFS(node.getTerminals(), terminals);
     return node;
   }
 
@@ -94,7 +96,8 @@ public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TY
         childNode.addToIndexes();
         childNodes.add(childNode);
       }
-      node.setChildren(UIMAUtil.toFSArray(jCas, childNodes));
+      node.setChildren(new FSArray(jCas, childNodes.size()));
+      FSCollectionFactory.fillArrayFS(node.getChildren(), childNodes);
     }
   }
 

@@ -37,7 +37,9 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.JCasUtil;
+
+import com.google.common.collect.Lists;
 
 /**
  * <br>
@@ -286,7 +288,9 @@ public class HeadWordExtractor implements SimpleFeatureExtractor {
   }
 
   TreebankNode findHead2(TreebankNode parentNode) {
-    List<TreebankNode> childNodes = UIMAUtil.toList(parentNode.getChildren(), TreebankNode.class);
+    List<TreebankNode> childNodes = Lists.newArrayList(JCasUtil.select(
+        parentNode.getChildren(),
+        TreebankNode.class));
     List<String> childTypes = new ArrayList<String>(childNodes.size());
 
     String parentType = parentNode.getNodeType();

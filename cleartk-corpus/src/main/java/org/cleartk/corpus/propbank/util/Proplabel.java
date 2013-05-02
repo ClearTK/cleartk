@@ -30,11 +30,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.util.AnnotationUtil;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.FSCollectionFactory;
 
 /**
  * <br>
@@ -207,7 +208,8 @@ public class Proplabel {
         if (a.getBegin() != a.getEnd())
           substantiveAnnotations.add(a);
       }
-      argument.setCoreferenceAnnotations(UIMAUtil.toFSArray(view, annotations));
+      argument.setCoreferenceAnnotations(new FSArray(view, annotations.size()));
+      FSCollectionFactory.fillArrayFS(argument.getCoreferenceAnnotations(), annotations);
 
       int[] extent = AnnotationUtil.getAnnotationsExtent(substantiveAnnotations);
       argument.setBegin(extent[0]);
