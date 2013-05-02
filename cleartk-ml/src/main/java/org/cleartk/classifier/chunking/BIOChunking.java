@@ -66,9 +66,11 @@ public class BIOChunking<SUB_CHUNK_TYPE extends Annotation, CHUNK_TYPE extends A
     Map<SUB_CHUNK_TYPE, String> subChunkToOutcome = new HashMap<SUB_CHUNK_TYPE, String>();
     for (CHUNK_TYPE chunk : chunks) {
       String suffix = this.getOutcomeSuffix(chunk, feature);
+      boolean isBegin = true;
       for (SUB_CHUNK_TYPE chunkComponent : JCasUtil.selectCovered(this.subChunkClass, chunk)) {
-        if (chunkComponent.getBegin() == chunk.getBegin()) {
+        if (isBegin) {
           subChunkToOutcome.put(chunkComponent, "B" + suffix);
+          isBegin = false;
         } else {
           subChunkToOutcome.put(chunkComponent, "I" + suffix);
         }
