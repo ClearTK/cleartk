@@ -38,7 +38,7 @@ import org.apache.uima.util.Level;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.syntax.constituent.util.TreebankFormatParser;
+import org.cleartk.corpus.penntreebank.TreebankFormatParser;
 import org.cleartk.syntax.constituent.util.TreebankNodeUtility;
 import org.cleartk.timeml.type.Text;
 import org.cleartk.token.type.Sentence;
