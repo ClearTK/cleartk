@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang.NotImplementedException;
 import org.cleartk.classifier.tksvmlight.TreeFeatureVector;
 import org.cleartk.syntax.constituent.util.TopTreebankNode;
-import org.cleartk.syntax.constituent.util.TreebankFormatParser;
+import org.cleartk.corpus.penntreebank.TreebankFormatParser;
 import org.cleartk.syntax.constituent.util.TreebankNode;
 
 /**
