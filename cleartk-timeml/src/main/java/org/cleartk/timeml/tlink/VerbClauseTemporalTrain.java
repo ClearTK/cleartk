@@ -30,10 +30,9 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
-import org.cleartk.timeml.TimeMLViewName;
-import org.cleartk.timeml.corpus.PlainTextTLINKGoldAnnotator;
-import org.cleartk.timeml.corpus.TimeMLGoldAnnotator;
-import org.cleartk.timeml.corpus.TreebankAligningAnnotator;
+import org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator;
+import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
+import org.cleartk.corpus.timeml.TreebankAligningAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.uimafit.factory.UimaContextFactory;
@@ -75,7 +74,7 @@ public class VerbClauseTemporalTrain {
     SimplePipeline.runPipeline(
         FilesCollectionReader.getCollectionReaderWithPatterns(
             timeBankDir,
-            TimeMLViewName.TIMEML,
+            TimeMLGoldAnnotator.TIMEML_VIEW_NAME,
             "wsj_.*[.]tml"),
         TimeMLGoldAnnotator.getDescriptionNoTLINKs(),
         PlainTextTLINKGoldAnnotator.getDescription(),

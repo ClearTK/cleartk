@@ -50,10 +50,9 @@ import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
-import org.cleartk.timeml.TimeMLViewName;
-import org.cleartk.timeml.corpus.PlainTextTLINKGoldAnnotator;
-import org.cleartk.timeml.corpus.TempEval2013Writer;
-import org.cleartk.timeml.corpus.TimeMLGoldAnnotator;
+import org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator;
+import org.cleartk.corpus.timeml.TempEval2013Writer;
+import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
 import org.cleartk.timeml.event.EventAnnotator;
 import org.cleartk.timeml.event.EventAspectAnnotator;
 import org.cleartk.timeml.event.EventClassAnnotator;
@@ -575,11 +574,11 @@ public class TempEval2013Evaluation
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
-        TimeMLViewName.TIMEML));
+        TimeMLGoldAnnotator.TIMEML_VIEW_NAME));
     builder.add(
         UriToDocumentTextAnnotator.getDescription(),
         CAS.NAME_DEFAULT_SOFA,
-        TimeMLViewName.TIMEML);
+        TimeMLGoldAnnotator.TIMEML_VIEW_NAME);
     builder.add(TimeMLGoldAnnotator.getDescription());
     if (this.inferredTLinksDirectories != null) {
       builder.add(AnalysisEngineFactory.createPrimitiveDescription(
@@ -634,11 +633,11 @@ public class TempEval2013Evaluation
     preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
-        TimeMLViewName.TIMEML));
+        TimeMLGoldAnnotator.TIMEML_VIEW_NAME));
     preprocess.add(
         UriToDocumentTextAnnotator.getDescription(),
         CAS.NAME_DEFAULT_SOFA,
-        TimeMLViewName.TIMEML);
+        TimeMLGoldAnnotator.TIMEML_VIEW_NAME);
     preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,

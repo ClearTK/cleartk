@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.corpus;
+package org.cleartk.corpus.timeml;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +35,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.corpus.penntreebank.TreebankFormatParser;
@@ -55,10 +54,10 @@ import org.uimafit.util.JCasUtil;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
+ * 
+ * 
  * @author Steven Bethard
- * @deprecated Use the one in cleartk-corpus instead.
  */
-@Deprecated
 public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_TREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
@@ -112,7 +111,7 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
     // we need a TEXT element to know where to start
     Collection<Text> texts = JCasUtil.select(jCas, Text.class);
     if (texts.size() != 1) {
-      throw CleartkExtractorException.wrongNumberOfAnnotations(Text.class, 1, texts.size());
+      throw new IllegalArgumentException("expected 1 Text annotation, found " + texts.size());
     }
 
     // parse the trees, skipping the document if there are alignment

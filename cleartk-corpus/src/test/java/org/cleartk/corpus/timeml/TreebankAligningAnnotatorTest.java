@@ -21,12 +21,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.corpus;
+package org.cleartk.corpus.timeml;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.timeml.TimeMLTestBase;
+import org.cleartk.test.CleartkTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -36,10 +36,10 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
+ * 
  * @author Steven Bethard
  */
-@Deprecated
-public class TreebankAligningAnnotatorTest extends TimeMLTestBase {
+public class TreebankAligningAnnotatorTest extends CleartkTestBase {
 
   @Test
   public void testDescriptor() throws UIMAException {

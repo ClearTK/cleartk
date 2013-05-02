@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.corpus;
+package org.cleartk.corpus.timeml;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,7 +44,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -62,10 +61,28 @@ import com.google.common.io.Files;
  * All rights reserved.
  * 
  * @author Steven Bethard
- * @deprecated Use the one in cleartk-corpus instead.
  */
-@Deprecated
 public class TempEval2010CollectionReader extends JCasCollectionReader_ImplBase {
+
+  public static final String BASE_SEGMENTATION_VIEW_NAME = "base-segmentation.tab";
+
+  public static final String DCT_VIEW_NAME = "dct.txt";
+
+  public static final String EVENT_EXTENTS_VIEW_NAME = "event-extents.tab";
+
+  public static final String EVENT_ATTRIBUTES_VIEW_NAME = "event-attributes.tab";
+
+  public static final String TIMEX_EXTENTS_VIEW_NAME = "timex-extents.tab";
+
+  public static final String TIMEX_ATTRIBUTES_VIEW_NAME = "timex-attributes.tab";
+
+  public static final String TLINK_DCT_EVENT_VIEW_NAME = "tlinks-dct-event.tab";
+
+  public static final String TLINK_MAIN_EVENTS_VIEW_NAME = "tlinks-main-events.tab";
+
+  public static final String TLINK_SUBORDINATED_EVENTS_VIEW_NAME = "tlinks-subordinated-events.tab";
+
+  public static final String TLINK_TIMEX_EVENT_VIEW_NAME = "tlinks-timex-event.tab";
 
   public static CollectionReader getCollectionReader(String... dataPaths)
       throws ResourceInitializationException {
@@ -145,16 +162,16 @@ public class TempEval2010CollectionReader extends JCasCollectionReader_ImplBase 
       // group lines by filename
       this.viewFileTexts = new HashMap<String, Map<String, String>>();
       for (String viewName : Arrays.asList(
-          TimeMLViewName.TEMPEVAL_BASE_SEGMENTATION,
-          TimeMLViewName.TEMPEVAL_DCT,
-          TimeMLViewName.TEMPEVAL_EVENT_EXTENTS,
-          TimeMLViewName.TEMPEVAL_EVENT_ATTRIBUTES,
-          TimeMLViewName.TEMPEVAL_TIMEX_EXTENTS,
-          TimeMLViewName.TEMPEVAL_TIMEX_ATTRIBUTES,
-          TimeMLViewName.TEMPEVAL_TLINK_DCT_EVENT,
-          TimeMLViewName.TEMPEVAL_TLINK_MAIN_EVENTS,
-          TimeMLViewName.TEMPEVAL_TLINK_SUBORDINATED_EVENTS,
-          TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT)) {
+          BASE_SEGMENTATION_VIEW_NAME,
+          DCT_VIEW_NAME,
+          EVENT_EXTENTS_VIEW_NAME,
+          EVENT_ATTRIBUTES_VIEW_NAME,
+          TIMEX_EXTENTS_VIEW_NAME,
+          TIMEX_ATTRIBUTES_VIEW_NAME,
+          TLINK_DCT_EVENT_VIEW_NAME,
+          TLINK_MAIN_EVENTS_VIEW_NAME,
+          TLINK_SUBORDINATED_EVENTS_VIEW_NAME,
+          TLINK_TIMEX_EVENT_VIEW_NAME)) {
         // assumes view names are the same as the .tab file names
         this.viewFileTexts.put(viewName, this.textByFileName(viewName));
       }

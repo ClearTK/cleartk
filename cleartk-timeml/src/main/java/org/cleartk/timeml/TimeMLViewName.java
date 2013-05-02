@@ -27,7 +27,9 @@ package org.cleartk.timeml;
  * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
+ * @deprecated Use the classes in cleartk-corpus instead.
  */
+@Deprecated
 public interface TimeMLViewName {
 
   /**

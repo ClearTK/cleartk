@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.corpus;
+package org.cleartk.corpus.timeml;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -30,8 +30,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.timeml.TimeMLTestBase;
-import org.cleartk.timeml.TimeMLViewName;
+import org.cleartk.test.CleartkTestBase;
 import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
@@ -51,15 +50,15 @@ import org.uimafit.util.JCasUtil;
  * 
  * 
  * @author Steven Bethard
+ * 
  */
-@Deprecated
-public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
+public class TimeMLGoldAnnotatorTest extends CleartkTestBase {
 
   @Test
   public void testTimeBank() throws UIMAException, IOException {
     CollectionReader reader = FilesCollectionReader.getCollectionReaderWithView(
         "src/test/resources/data/timeml/wsj_0106.tml",
-        TimeMLViewName.TIMEML);
+        TimeMLGoldAnnotator.TIMEML_VIEW_NAME);
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.getDescription());
     reader.getNext(this.jCas.getCas());
     engine.process(this.jCas);
@@ -117,7 +116,7 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         FilesCollectionReader.class,
         FilesCollectionReader.PARAM_VIEW_NAME,
-        TimeMLViewName.TIMEML,
+        TimeMLGoldAnnotator.TIMEML_VIEW_NAME,
         FilesCollectionReader.PARAM_ROOT_FILE,
         "src/test/resources/data/timeml/AP900815-0044.tml");
     AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.class);
@@ -163,7 +162,7 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
     CollectionReader reader = CollectionReaderFactory.createCollectionReader(
         FilesCollectionReader.class,
         FilesCollectionReader.PARAM_VIEW_NAME,
-        TimeMLViewName.TIMEML,
+        TimeMLGoldAnnotator.TIMEML_VIEW_NAME,
         FilesCollectionReader.PARAM_ROOT_FILE,
         "src/test/resources/data/timeml",
         FilesCollectionReader.PARAM_SUFFIXES,
@@ -181,7 +180,7 @@ public class TimeMLGoldAnnotatorTest extends TimeMLTestBase {
 
   @Test
   public void testAnchorTime() throws Exception {
-    JCas view = this.jCas.createView(TimeMLViewName.TIMEML);
+    JCas view = this.jCas.createView(TimeMLGoldAnnotator.TIMEML_VIEW_NAME);
     view.setDocumentText("<TimeML>\n"
         + "<TIMEX3 tid='t1' anchorTimeID='t0' value='2010-05-27'>One year ago</TIMEX3>...\n"
         + "<TIMEX3 tid='t0' value='2011-05-27'>May 27, 2011</TIMEX3>\n</TimeML>");

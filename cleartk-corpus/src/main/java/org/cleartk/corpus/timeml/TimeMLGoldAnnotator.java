@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.corpus;
+package org.cleartk.corpus.timeml;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -41,14 +41,12 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
-import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Text;
 import org.cleartk.timeml.type.Time;
-import org.cleartk.timeml.util.TimeMLUtil;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.ViewURIUtil;
 import org.jdom2.output.XMLOutputter;
@@ -70,11 +68,12 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  * 
  * 
  * @author Steven Bethard
- * @deprecated Use the one in cleartk-corpus instead.
+ * 
  */
-@Deprecated
-@SofaCapability(inputSofas = { TimeMLViewName.TIMEML, CAS.NAME_DEFAULT_SOFA })
+@SofaCapability(inputSofas = { TimeMLGoldAnnotator.TIMEML_VIEW_NAME, CAS.NAME_DEFAULT_SOFA })
 public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
+
+  public static final String TIMEML_VIEW_NAME = "TimeMLView";
 
   public static final String PARAM_LOAD_TLINKS = ConfigurationParameterFactory.createConfigurationParameterName(
       TimeMLGoldAnnotator.class,
@@ -107,7 +106,7 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
     JCas timemlView;
     JCas initialView;
     try {
-      timemlView = jCas.getView(TimeMLViewName.TIMEML);
+      timemlView = jCas.getView(TIMEML_VIEW_NAME);
       initialView = jCas.getView(CAS.NAME_DEFAULT_SOFA);
     } catch (CASException e) {
       throw new AnalysisEngineProcessException(e);

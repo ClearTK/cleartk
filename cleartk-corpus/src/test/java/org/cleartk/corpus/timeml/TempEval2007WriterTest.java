@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.corpus;
+package org.cleartk.corpus.timeml;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,8 +35,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.timeml.TimeMLTestBase;
-import org.cleartk.timeml.TimeMLViewName;
+import org.cleartk.test.CleartkTestBase;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Time;
@@ -58,9 +57,9 @@ import org.uimafit.factory.AnalysisEngineFactory;
  * 
  * 
  * @author Steven Bethard
+ * 
  */
-@Deprecated
-public class TempEval2007WriterTest extends TimeMLTestBase {
+public class TempEval2007WriterTest extends CleartkTestBase {
 
   private File inputFile;
 
@@ -77,7 +76,7 @@ public class TempEval2007WriterTest extends TimeMLTestBase {
   public void test() throws UIMAException, IOException, JDOMException {
     CollectionReader reader = FilesCollectionReader.getCollectionReaderWithView(
         this.inputFile.getPath(),
-        TimeMLViewName.TIMEML);
+        TimeMLGoldAnnotator.TIMEML_VIEW_NAME);
     AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.getDescription());
     AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(TempEval2007Writer.getDescription(this.outputDirectory.getPath()));
 

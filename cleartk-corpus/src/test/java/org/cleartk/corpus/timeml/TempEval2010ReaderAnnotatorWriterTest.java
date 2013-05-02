@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.corpus;
+package org.cleartk.corpus.timeml;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,8 +37,7 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.timeml.TimeMLTestBase;
-import org.cleartk.timeml.TimeMLViewName;
+import org.cleartk.test.CleartkTestBase;
 import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
@@ -50,6 +49,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
+import org.uimafit.testing.factory.TokenBuilder;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Charsets;
@@ -62,8 +62,7 @@ import com.google.common.io.Files;
  * 
  * @author Steven Bethard
  */
-@Deprecated
-public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
+public class TempEval2010ReaderAnnotatorWriterTest extends CleartkTestBase {
 
   // @formatter:off
   public static final String WSJ_0032_BASE_SEGMENTATION =
@@ -293,9 +292,12 @@ public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
   
   // @formatter:on
 
+  private TokenBuilder<Token, Sentence> tokenBuilder;
+
   @Before
   public void setUp() throws Exception {
     super.setUp();
+    this.tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
     this.write("data/base-segmentation.tab", BASE_SEGMENTATION);
     this.write("key/event-attributes.tab", EVENT_ATTRIBUTES);
     this.write("key/event-extents.tab", EVENT_EXTENTS);
@@ -317,30 +319,30 @@ public class TempEval2010ReaderAnnotatorWriterTest extends TimeMLTestBase {
     CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(this.outputDirectory.getPath());
     Assert.assertTrue(reader.hasNext());
     reader.getNext(this.jCas.getCas());
-    assertViewText(WSJ_0032_BASE_SEGMENTATION, TimeMLViewName.TEMPEVAL_BASE_SEGMENTATION);
-    assertViewText(EVENT_ATTRIBUTES, TimeMLViewName.TEMPEVAL_EVENT_ATTRIBUTES);
-    assertViewText(EVENT_EXTENTS, TimeMLViewName.TEMPEVAL_EVENT_EXTENTS);
-    assertViewText(TIMEX_ATTRIBUTES, TimeMLViewName.TEMPEVAL_TIMEX_ATTRIBUTES);
-    assertViewText(TIMEX_EXTENTS, TimeMLViewName.TEMPEVAL_TIMEX_EXTENTS);
-    assertViewText(TLINKS_DCT_EVENT, TimeMLViewName.TEMPEVAL_TLINK_DCT_EVENT);
-    assertViewText(TLINKS_MAIN_EVENTS, TimeMLViewName.TEMPEVAL_TLINK_MAIN_EVENTS);
-    assertViewText(TLINKS_SUBORDINATED_EVENTS, TimeMLViewName.TEMPEVAL_TLINK_SUBORDINATED_EVENTS);
-    assertViewText(TLINKS_TIMEX_EVENT, TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT);
-    assertViewText(DCT, TimeMLViewName.TEMPEVAL_DCT);
+    assertViewText(WSJ_0032_BASE_SEGMENTATION, TempEval2010CollectionReader.BASE_SEGMENTATION_VIEW_NAME);
+    assertViewText(EVENT_ATTRIBUTES, TempEval2010CollectionReader.EVENT_ATTRIBUTES_VIEW_NAME);
+    assertViewText(EVENT_EXTENTS, TempEval2010CollectionReader.EVENT_EXTENTS_VIEW_NAME);
+    assertViewText(TIMEX_ATTRIBUTES, TempEval2010CollectionReader.TIMEX_ATTRIBUTES_VIEW_NAME);
+    assertViewText(TIMEX_EXTENTS, TempEval2010CollectionReader.TIMEX_EXTENTS_VIEW_NAME);
+    assertViewText(TLINKS_DCT_EVENT, TempEval2010CollectionReader.TLINK_DCT_EVENT_VIEW_NAME);
+    assertViewText(TLINKS_MAIN_EVENTS, TempEval2010CollectionReader.TLINK_MAIN_EVENTS_VIEW_NAME);
+    assertViewText(TLINKS_SUBORDINATED_EVENTS, TempEval2010CollectionReader.TLINK_SUBORDINATED_EVENTS_VIEW_NAME);
+    assertViewText(TLINKS_TIMEX_EVENT, TempEval2010CollectionReader.TLINK_TIMEX_EVENT_VIEW_NAME);
+    assertViewText(DCT, TempEval2010CollectionReader.DCT_VIEW_NAME);
 
     Assert.assertTrue(reader.hasNext());
     this.jCas.reset();
     reader.getNext(this.jCas.getCas());
-    assertViewText(SJMN91_BASE_SEGMENTATION, TimeMLViewName.TEMPEVAL_BASE_SEGMENTATION);
-    assertViewText("", TimeMLViewName.TEMPEVAL_EVENT_ATTRIBUTES);
-    assertViewText("", TimeMLViewName.TEMPEVAL_EVENT_EXTENTS);
-    assertViewText("", TimeMLViewName.TEMPEVAL_TIMEX_ATTRIBUTES);
-    assertViewText("", TimeMLViewName.TEMPEVAL_TIMEX_EXTENTS);
-    assertViewText("", TimeMLViewName.TEMPEVAL_TLINK_DCT_EVENT);
-    assertViewText("", TimeMLViewName.TEMPEVAL_TLINK_MAIN_EVENTS);
-    assertViewText("", TimeMLViewName.TEMPEVAL_TLINK_SUBORDINATED_EVENTS);
-    assertViewText("", TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT);
-    assertViewText("", TimeMLViewName.TEMPEVAL_DCT);
+    assertViewText(SJMN91_BASE_SEGMENTATION, TempEval2010CollectionReader.BASE_SEGMENTATION_VIEW_NAME);
+    assertViewText("", TempEval2010CollectionReader.EVENT_ATTRIBUTES_VIEW_NAME);
+    assertViewText("", TempEval2010CollectionReader.EVENT_EXTENTS_VIEW_NAME);
+    assertViewText("", TempEval2010CollectionReader.TIMEX_ATTRIBUTES_VIEW_NAME);
+    assertViewText("", TempEval2010CollectionReader.TIMEX_EXTENTS_VIEW_NAME);
+    assertViewText("", TempEval2010CollectionReader.TLINK_DCT_EVENT_VIEW_NAME);
+    assertViewText("", TempEval2010CollectionReader.TLINK_MAIN_EVENTS_VIEW_NAME);
+    assertViewText("", TempEval2010CollectionReader.TLINK_SUBORDINATED_EVENTS_VIEW_NAME);
+    assertViewText("", TempEval2010CollectionReader.TLINK_TIMEX_EVENT_VIEW_NAME);
+    assertViewText("", TempEval2010CollectionReader.DCT_VIEW_NAME);
   }
 
   private void assertViewText(String expected, String viewName) throws CASException {

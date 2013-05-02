@@ -1,0 +1,488 @@
+<?xml version="1.0" ?>
+
+
+
+<TempEval>
+
+
+
+ AP900815-0044 
+AP-NR-<TIMEX3 tid="t3" type="TIME" value="1990-08-15T13:37" temporalFunction="false" functionInDocument="CREATION_TIME">08-15-90 1337EDT</TIMEX3>
+u i PM-GulfRdp 8thLd-Writethru   08-15 1334
+PM-Gulf Rdp, 8th Ld-Writethru,a0605,1368
+Saddam Seeks End To War With Iran; Bush To Urge Jordan To Close
+Port
+Eds: SUBS 28th graf pvs, Crown Prince... to CORRECT spelling of
+Hassan; pick up 29th graf pvs, `A CBS...'
+LaserPhotos WX6,7,XSAV1,NY5,10,TOK1,XAAFB1,AMM1, LaserColor XAAFB1
+By CHRISTOPHER BURNS
+Associated Press Writer
+
+   <s>Iraq's Saddam Hussein, <EVENT eid="e5" class="STATE" stem="face" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">facing</EVENT> U.S. and Arab troops at the Saudi
+border, <TIMEX3 tid="t4" type="DATE" value="1990-08-15" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">today</TIMEX3> <EVENT eid="e6" class="I_ACTION" stem="seek" aspect="PERFECTIVE" tense="PAST" polarity="POS" pos="VERB">sought</EVENT> <EVENT eid="e7" class="STATE" stem="peace" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">peace</EVENT> on another front by <EVENT eid="e8" class="I_ACTION" stem="promise" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">promising</EVENT> to
+<EVENT eid="e9" class="OCCURRENCE" stem="withdraw" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">withdraw</EVENT> from Iranian territory and <EVENT eid="e10" class="OCCURRENCE" stem="release" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">release</EVENT> soldiers <EVENT eid="e11" class="OCCURRENCE" stem="capture" aspect="NONE" tense="PASTPART" polarity="POS" pos="VERB">captured</EVENT>
+during the Iran-Iraq <EVENT eid="e13" class="OCCURRENCE" stem="war" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">war</EVENT>.</s>
+   <s>Also <TIMEX3 tid="t14" type="DATE" value="1990-08-15" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">today</TIMEX3>, King Hussein of Jordan <EVENT eid="e15" class="OCCURRENCE" stem="arrive" aspect="PERFECTIVE" tense="PAST" polarity="POS" pos="VERB">arrived</EVENT> in Washington <EVENT eid="e16" class="I_ACTION" stem="seek" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">seeking</EVENT>
+to <EVENT eid="e17" class="OCCURRENCE" stem="mediate" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">mediate</EVENT> the Persian Gulf <EVENT eid="e18" class="OCCURRENCE" stem="crisis" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">crisis</EVENT>.</s> <s>President Bush on <TIMEX3 tid="t22" type="DATE" value="1990-08-14" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">Tuesday</TIMEX3> <EVENT eid="e19" class="REPORTING" stem="said" aspect="NONE" tense="PAST" polarity="POS" pos="ADJECTIVE">said</EVENT>
+the United States may <EVENT eid="e23" class="OCCURRENCE" stem="extend" aspect="NONE" tense="NONE" polarity="POS" pos="VERB">extend</EVENT> its naval <EVENT eid="e26" class="OCCURRENCE" stem="quarantine" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">quarantine</EVENT> to Jordan's Red
+Sea port of Aqaba to <EVENT eid="e27" class="OCCURRENCE" stem="shut" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">shut</EVENT> off Iraq's last unhindered trade route.</s>
+   <s>In another mediation effort, the Soviet Union <EVENT eid="e28" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> <TIMEX3 tid="t380" type="DATE" value="1990-08-15" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">today</TIMEX3> it had
+<EVENT eid="e29" class="OCCURRENCE" stem="send" aspect="PERFECTIVE" tense="PAST" polarity="POS" pos="VERB">sent</EVENT> an envoy to the Middle East on a series of <EVENT eid="e387" class="OCCURRENCE" stem="stop" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">stops</EVENT> to include
+Baghdad.</s> <s>Soviet officials also <EVENT eid="e30" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> Soviet women, children and
+invalids would be <EVENT eid="e33" class="I_ACTION" stem="allowed" aspect="NONE" tense="NONE" polarity="POS" pos="ADJECTIVE">allowed</EVENT> to <EVENT eid="e34" class="OCCURRENCE" stem="leave" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">leave</EVENT> Iraq.</s>
+   <s>President Bush <TIMEX3 tid="t37" type="DATE" value="1990-08-15" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">today</TIMEX3> <EVENT eid="e35" class="OCCURRENCE" stem="denounce" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">denounced</EVENT> Saddam's ``ruinous policies of
+war,'' and <EVENT eid="e38" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> the United States is ``<EVENT eid="e39" class="OCCURRENCE" stem="striking" aspect="PROGRESSIVE" tense="PRESENT" polarity="POS" pos="ADJECTIVE">striking</EVENT> a blow for the
+principle that might does not make right.''</s>
+   <s>In a <EVENT eid="e40" class="OCCURRENCE" stem="speech" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">speech</EVENT> <EVENT eid="e41" class="OCCURRENCE" stem="deliver" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">delivered</EVENT> at the Pentagon, Bush <EVENT eid="e42" class="I_STATE" stem="seem" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">seemed</EVENT> to <EVENT eid="e43" class="I_ACTION" stem="suggest" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">suggest</EVENT>
+that American forces could be <EVENT eid="e1515" class="STATE" stem="in" aspect="NONE" tense="NONE" polarity="POS" pos="OTHER">in</EVENT> the gulf region for <TIMEX3 tid="t47" type="DURATION" value="PXM" temporalFunction="false" functionInDocument="NONE">some time</TIMEX3>.</s>
+<s>``No one should <EVENT eid="e50" class="I_ACTION" stem="doubt" aspect="NONE" tense="NONE" polarity="POS" pos="VERB">doubt</EVENT> our staying power or determination,'' he <EVENT eid="e52" class="REPORTING" stem="say" aspect="PERFECTIVE" tense="PAST" polarity="POS" pos="VERB">said</EVENT>.</s>
+   <s>The U.S. military <EVENT eid="e53" class="OCCURRENCE" stem="buildup" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">buildup</EVENT> in Saudi Arabia <EVENT eid="e54" class="ASPECTUAL" stem="continue" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">continued</EVENT> at fever
+pace, with Syrian troops <TIMEX3 tid="t56" type="DATE" value="PRESENT_REF" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">now</TIMEX3> <EVENT eid="e57" class="STATE" stem="part" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">part</EVENT> of a multinational force <EVENT eid="e58" class="OCCURRENCE" stem="camp" aspect="NONE" tense="PASTPART" polarity="POS" pos="VERB">camped</EVENT>
+out in the desert to <EVENT eid="e59" class="I_ACTION" stem="guard" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">guard</EVENT> the Saudi kingdom from any new <EVENT eid="e60" class="OCCURRENCE" stem="thrust" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">thrust</EVENT> by
+Iraq.</s>
+   <s>In a letter to President Hashemi Rafsanjani of Iran, <EVENT eid="e61" class="OCCURRENCE" stem="read" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">read</EVENT> by a
+broadcaster over Baghdad radio, Saddam <EVENT eid="e62" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> he will <EVENT eid="e63" class="ASPECTUAL" stem="begin" aspect="NONE" tense="FUTURE" polarity="POS" pos="VERB">begin</EVENT>
+<EVENT eid="e64" class="OCCURRENCE" stem="withdraw" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">withdrawing</EVENT> troops from Iranian territory on <TIMEX3 tid="t65" type="DATE" value="1990-08-10" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">Friday</TIMEX3> and <EVENT eid="e66" class="OCCURRENCE" stem="release" aspect="NONE" tense="FUTURE" polarity="POS" pos="VERB">release</EVENT>
+Iranian prisoners of war.</s>
+   <s>Iran <EVENT eid="e67" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> an Iraqi diplomatic delegation was en <EVENT eid="e68" class="STATE" stem="route" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">route</EVENT> to Tehran
+to <EVENT eid="e69" class="OCCURRENCE" stem="deliver" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">deliver</EVENT> Saddam's message, which it <EVENT eid="e70" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> it would <EVENT eid="e73" class="OCCURRENCE" stem="review" aspect="NONE" tense="NONE" polarity="POS" pos="VERB">review</EVENT> ``with
+optimism.''</s>
+   <s>Saddam <EVENT eid="e74" class="I_STATE" stem="appear" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">appeared</EVENT> to <EVENT eid="e75" class="I_ACTION" stem="accept" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">accept</EVENT> a border demarcation <EVENT eid="e76" class="OCCURRENCE" stem="treaty" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">treaty</EVENT> he had
+<EVENT eid="e77" class="OCCURRENCE" stem="reject" aspect="PERFECTIVE" tense="PAST" polarity="POS" pos="VERB">rejected</EVENT> in peace <EVENT eid="e78" class="OCCURRENCE" stem="talk" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">talks</EVENT> <EVENT eid="e1509" class="OCCURRENCE" stem="follow" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">following</EVENT> the <TIMEX3 tid="t79" type="DATE" value="1988-08" temporalFunction="false" functionInDocument="NONE">August 1988</TIMEX3> <EVENT eid="e80" class="OCCURRENCE" stem="cease-fire" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">cease-fire</EVENT> of the
+<TIMEX3 tid="t82" type="DURATION" value="P8Y" temporalFunction="false" functionInDocument="NONE">eight-year</TIMEX3> <EVENT eid="e81" class="OCCURRENCE" stem="war" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">war</EVENT> with Iran.</s>
+   <s>The move <EVENT eid="e83" class="I_STATE" stem="seem" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">seemed</EVENT> <EVENT eid="e84" class="I_ACTION" stem="aim" aspect="NONE" tense="PASTPART" polarity="POS" pos="VERB">aimed</EVENT> at <EVENT eid="e85" class="I_ACTION" stem="heading" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">heading</EVENT> off more <EVENT eid="e86" class="OCCURRENCE" stem="trouble" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">trouble</EVENT> with Iran,
+which had <EVENT eid="e87" class="OCCURRENCE" stem="condemn" aspect="PERFECTIVE" tense="PAST" polarity="POS" pos="VERB">condemned</EVENT> Iraq's <EVENT eid="e88" class="OCCURRENCE" stem="invasion" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">invasion</EVENT> of Kuwait on <TIMEX3 tid="t89" type="DATE" value="1990-08-02" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">Aug. 2</TIMEX3> but also
+<EVENT eid="e90" class="OCCURRENCE" stem="criticize" aspect="PERFECTIVE" tense="PAST" polarity="POS" pos="VERB">criticized</EVENT> the multinational force <EVENT eid="e91" class="OCCURRENCE" stem="dispatch" aspect="NONE" tense="PASTPART" polarity="POS" pos="VERB">dispatched</EVENT> to Saudi Arabia.</s>
+   <s>Saddam <EVENT eid="e92" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> he <EVENT eid="e93" class="I_ACTION" stem="seek" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">sought</EVENT> to ``<EVENT eid="e94" class="OCCURRENCE" stem="turn" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">turn</EVENT> the gulf into a lake of <EVENT eid="e95" class="STATE" stem="peace" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">peace</EVENT>
+<EVENT eid="e96" class="STATE" stem="free" aspect="NONE" tense="NONE" polarity="POS" pos="ADJECTIVE">free</EVENT> of foreign fleets and forces that <EVENT eid="e97" class="OCCURRENCE" stem="harbor" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">harbor</EVENT> ill intentions
+against us.''</s>
+   <s>In other developments:
+   _The Pentagon <EVENT eid="e98" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> that Defense Secretary Dick Cheney is
+<EVENT eid="e99" class="I_STATE" stem="consider" aspect="PROGRESSIVE" tense="PRESENT" polarity="POS" pos="VERB">considering</EVENT> <EVENT eid="e100" class="I_ACTION" stem="urge" aspect="PROGRESSIVE" tense="PRESENT" polarity="POS" pos="VERB">urging</EVENT> Bush to <EVENT eid="e101" class="I_ACTION" stem="order" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">order</EVENT> a national <EVENT eid="e102" class="OCCURRENCE" stem="callup" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">callup</EVENT> of armed forces
+reserves for active <EVENT eid="e103" class="OCCURRENCE" stem="duty" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">duty</EVENT> because of the <EVENT eid="e104" class="OCCURRENCE" stem="drain" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">drain</EVENT> on units <EVENT eid="e106" class="OCCURRENCE" stem="send" aspect="PROGRESSIVE" tense="PRESENT" polarity="POS" pos="VERB">sending</EVENT>
+soldiers abroad.</s> <s>Bush can <EVENT eid="e107" class="OCCURRENCE" stem="call" aspect="NONE" tense="NONE" polarity="POS" pos="VERB">call</EVENT> up to 200,000 reservists for <TIMEX3 tid="t719" type="DURATION" value="P180D" mod="EQUAL_OR_LESS" temporalFunction="false" functionInDocument="NONE">up to
+180 days</TIMEX3> without <EVENT eid="e110" class="I_ACTION" stem="seek" aspect="NONE" tense="PRESPART" polarity="NEG" pos="VERB">seeking</EVENT> congressional <EVENT eid="e722" class="OCCURRENCE" stem="approval" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">approval</EVENT>.</s>
+   <s>_Soviet Foreign Ministry spokesman Yuri Gremitskikh <EVENT eid="e112" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> special
+ambassador Mikhail Sytenko <EVENT eid="e113" class="OCCURRENCE" stem="leave" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">left</EVENT> <TIMEX3 tid="t114" type="DATE" value="1990-08-14" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">Tuesday</TIMEX3> for <EVENT eid="e116" class="OCCURRENCE" stem="consultation" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">consultations</EVENT> with the
+governments of Syria, Jordan, Egypt and other Arab countries.</s>
+<s>Sytenko, a former deputy secretary-general of the United Nations,
+is also <EVENT eid="e117" class="OCCURRENCE" stem="expect" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">expected</EVENT> to <EVENT eid="e767" class="OCCURRENCE" stem="visit" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">visit</EVENT> Baghdad, Gremitskikh <EVENT eid="e118" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> at a regular
+news <EVENT eid="e119" class="OCCURRENCE" stem="briefing" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">briefing</EVENT> <TIMEX3 tid="t120" type="DATE" value="1990-08-15" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">today</TIMEX3>.</s>
+   <s>_The outlook <EVENT eid="e121" class="OCCURRENCE" stem="darken" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">darkened</EVENT> for about 3,000 Americans <EVENT eid="e122" class="OCCURRENCE" stem="catch" aspect="NONE" tense="PASTPART" polarity="POS" pos="VERB">caught</EVENT> in Iraq
+and Kuwait when Saddam <EVENT eid="e123" class="OCCURRENCE" stem="send" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">sent</EVENT> his forces into the small, oil-rich
+sultanate.</s>
+   <s>The Iraqi ambassador to Greece <EVENT eid="e124" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> in Athens the Americans and
+other <EVENT eid="e1514" class="STATE" stem="stranded" aspect="NONE" tense="NONE" polarity="POS" pos="ADJECTIVE">stranded</EVENT> foreigners could <EVENT eid="e126" class="OCCURRENCE" stem="leave" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">leave</EVENT> ``as soon as the <EVENT eid="e127" class="OCCURRENCE" stem="threat" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">threats</EVENT> from
+the United States and its allies are <EVENT eid="e128" class="OCCURRENCE" stem="eliminate" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">eliminated</EVENT>.''</s> <s>ABC <EVENT eid="e129" class="REPORTING" stem="quote" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">quoted</EVENT> an
+Iraqi Foreign Ministry official in Baghdad as <EVENT eid="e130" class="REPORTING" stem="say" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">saying</EVENT> Americans in
+Iraq are ``restrictees'' who will <EVENT eid="e131" class="STATE" stem="stay" aspect="NONE" tense="FUTURE" polarity="POS" pos="VERB">stay</EVENT> there until the <EVENT eid="e132" class="OCCURRENCE" stem="crisis" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">crisis</EVENT> <EVENT eid="e133" class="ASPECTUAL" stem="end" aspect="NONE" tense="FUTURE" polarity="POS" pos="VERB">ends</EVENT>.</s>
+   <s>_The Soviet Foreign Ministry <EVENT eid="e134" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> Soviet women, children and
+invalids would be <EVENT eid="e136" class="I_ACTION" stem="permit" aspect="NONE" tense="NONE" polarity="POS" pos="VERB">permitted</EVENT> to <EVENT eid="e137" class="OCCURRENCE" stem="leave" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">leave</EVENT> Iraq.</s> <s>Spokesman Yuri
+Gremitskikh <EVENT eid="e138" class="REPORTING" stem="say" aspect="PERFECTIVE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> the first group of 230 evacuees was <EVENT eid="e139" class="OCCURRENCE" stem="assemble" aspect="PROGRESSIVE" tense="PAST" polarity="POS" pos="VERB">assembling</EVENT> in
+Baghdad <TIMEX3 tid="t140" type="DATE" value="1990-08-15" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">today</TIMEX3>, but <EVENT eid="e145" class="OCCURRENCE" stem="evacuation" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">evacuation</EVENT> <EVENT eid="e143" class="I_STATE" stem="plan" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">plans</EVENT> were <EVENT eid="e144" class="OCCURRENCE" stem="hamper" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">hampered</EVENT> by desert heat
+and lack of transportation.</s>
+   <s>Nearly 9,000 Soviets were among the hundreds of thousands of
+foreigners <EVENT eid="e146" class="STATE" stem="trap" aspect="NONE" tense="PASTPART" polarity="POS" pos="VERB">trapped</EVENT> in Iraq and Kuwait.</s> <s>Iraq has <EVENT eid="e147" class="I_ACTION" stem="agree" aspect="PERFECTIVE" tense="PRESENT" polarity="POS" pos="VERB">agreed</EVENT> to <EVENT eid="e148" class="I_ACTION" stem="allow" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">allow</EVENT> all
+880 Soviets in Kuwait to <EVENT eid="e149" class="OCCURRENCE" stem="leave" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">leave</EVENT>, but only by a 1,200-mile road route
+through Iraq and to the Iraq-Jordan border.</s>
+   <s>_The British Foreign Office <EVENT eid="e150" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> <TIMEX3 tid="t151" type="DATE" value="1990-08-15" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">today</TIMEX3> conditions in Kuwait
+<EVENT eid="e152" class="I_STATE" stem="appear" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">appear</EVENT> to be <EVENT eid="e153" class="OCCURRENCE" stem="deteriorate" aspect="PROGRESSIVE" tense="PRESENT" polarity="POS" pos="VERB">deteriorating</EVENT>.</s> <s>There have been <EVENT eid="e154" class="OCCURRENCE" stem="report" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">reports</EVENT> of wholesale
+looting but food and gasoline were still <EVENT eid="e155" class="STATE" stem="available" aspect="NONE" tense="PAST" polarity="POS" pos="ADJECTIVE">available</EVENT>, <EVENT eid="e156" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> a
+spokesman, who by custom was not <EVENT eid="e158" class="OCCURRENCE" stem="identify" aspect="NONE" tense="PAST" polarity="NEG" pos="VERB">identified</EVENT>.</s> <s>Banks <EVENT eid="e159" class="ASPECTUAL" stem="remain" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">remained</EVENT> <EVENT eid="e941" class="STATE" stem="close" aspect="NONE" tense="PASTPART" polarity="POS" pos="VERB">closed</EVENT>.</s>
+   <s>_The Iraqi ambassador to Venezuela <EVENT eid="e160" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> on <TIMEX3 tid="t162" type="DATE" value="1990-08-14" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">Tuesday</TIMEX3> that Iraq
+would <EVENT eid="e165" class="OCCURRENCE" stem="retaliate" aspect="NONE" tense="NONE" polarity="POS" pos="VERB">retaliate</EVENT> against Venezuela and other OPEC oil cartel members
+if they <EVENT eid="e166" class="OCCURRENCE" stem="boost" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">boost</EVENT> oil production to <EVENT eid="e167" class="OCCURRENCE" stem="fill" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">fill</EVENT> the gap <EVENT eid="e168" class="OCCURRENCE" stem="create" aspect="PERFECTIVE" tense="PAST" polarity="POS" pos="VERB">created</EVENT> by <EVENT eid="e169" class="OCCURRENCE" stem="blocked" aspect="NONE" tense="NONE" polarity="POS" pos="ADJECTIVE">blocked</EVENT>
+supplies from Iraq and Kuwait.</s> <s>With Kuwait <TIMEX3 tid="t170" type="DATE" value="1990-08-15T13:37" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">now</TIMEX3> ``<EVENT eid="e171" class="STATE" stem="annexed" aspect="NONE" tense="NONE" polarity="POS" pos="ADJECTIVE">annexed</EVENT>,'' Iraq
+has <EVENT eid="e172" class="STATE" stem="control" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">control</EVENT> of 20 percent of the world's oil reserves.</s> <s>A steep <EVENT eid="e173" class="OCCURRENCE" stem="rise" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">rise</EVENT>
+in world oil prices followed the Kuwait <EVENT eid="e175" class="OCCURRENCE" stem="invasion" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">invasion</EVENT>.</s>
+   <s>The U.N. Security Council on <TIMEX3 tid="t176" type="DATE" value="1990-08-06" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">Aug. 6</TIMEX3> <EVENT eid="e177" class="I_ACTION" stem="order" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">ordered</EVENT> a global <EVENT eid="e178" class="OCCURRENCE" stem="embargo" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">embargo</EVENT> on
+trade with Iraq as <EVENT eid="e179" class="OCCURRENCE" stem="punishment" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">punishment</EVENT> for <EVENT eid="e180" class="OCCURRENCE" stem="seizing" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">seizing</EVENT> Kuwait.</s> <s>Bush then <EVENT eid="e181" class="OCCURRENCE" stem="send" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">sent</EVENT>
+U.S. troops and planes to Saudi Arabia, <EVENT eid="e182" class="REPORTING" stem="say" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">saying</EVENT> Iraqi troops <EVENT eid="e183" class="OCCURRENCE" stem="mass" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">massed</EVENT>
+nearby in Kuwait <EVENT eid="e184" class="OCCURRENCE" stem="threaten" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">threatened</EVENT> Saudi Arabia and its vast oil reserves.</s>
+   <s>Twelve Arab League nations <EVENT eid="e185" class="OCCURRENCE" stem="vote" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">voted</EVENT> for an Arab force to <EVENT eid="e186" class="OCCURRENCE" stem="protect" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">protect</EVENT>
+Saudi Arabia, with the vanguard of Syria's contingent <EVENT eid="e187" class="OCCURRENCE" stem="arrive" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">arriving</EVENT>
+<TIMEX3 tid="t188" type="DATE" value="1990-08-07" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">Tuesday</TIMEX3>, <EVENT eid="e190" class="REPORTING" stem="accord" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">according</EVENT> to diplomatic sources in Riyadh, the Saudi
+capital.</s>
+   <s>Egyptian and Moroccan troops are already <EVENT eid="e1078" class="STATE" stem="there" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">there</EVENT>.</s>
+   <s>The predominantly Moslem nation of Bangladesh <EVENT eid="e193" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> <TIMEX3 tid="t194" type="DATE" value="1990-08-15" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">today</TIMEX3> its
+troops would <EVENT eid="e196" class="OCCURRENCE" stem="join" aspect="PERFECTIVE" tense="NONE" polarity="POS" pos="VERB">join</EVENT> multinational forces in Saudi Arabia.</s> <s>The size of
+the contingent was not <EVENT eid="e198" class="REPORTING" stem="disclose" aspect="NONE" tense="PAST" polarity="NEG" pos="VERB">disclosed</EVENT>.</s>
+   <s>Turkey and Saudi Arabia in effect <EVENT eid="e199" class="OCCURRENCE" stem="shut" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">shut</EVENT> down Iraq's major oil
+outlets through those countries, but <EVENT eid="e200" class="REPORTING" stem="accord" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">according</EVENT> to Jordanian
+officials, a smaller line into Jordan <EVENT eid="e201" class="I_STATE" stem="remain" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">remained</EVENT> <EVENT eid="e202" class="OCCURRENCE" stem="operate" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">operating</EVENT>.</s>
+   <s>Truckloads of goods <EVENT eid="e203" class="OCCURRENCE" stem="roll" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">rolled</EVENT> into Iraq from Jordan on <TIMEX3 tid="t204" type="DATE" value="1990-08-07" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">Tuesday</TIMEX3> and
+Iraqi-bound cargo was <EVENT eid="e206" class="OCCURRENCE" stem="unload" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">unloaded</EVENT> from ships at the Red Sea port
+ofAqaba despite the U.N.-ordered <EVENT eid="e207" class="OCCURRENCE" stem="sanction" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">sanctions</EVENT>.</s>
+   <s>King Hussein was reportedly <EVENT eid="e208" class="OCCURRENCE" stem="carry" aspect="PROGRESSIVE" tense="PAST" polarity="POS" pos="VERB">carrying</EVENT> a message to Bush from
+Iraq's Saddam, with whom the king <EVENT eid="e209" class="OCCURRENCE" stem="meet" aspect="PERFECTIVE" tense="PAST" polarity="POS" pos="VERB">met</EVENT> <TIMEX3 tid="t210" type="DATE" value="1990-08-06" temporalFunction="true" functionInDocument="NONE">Monday</TIMEX3>.</s> <s>The monarch will <EVENT eid="e211" class="OCCURRENCE" stem="meet" aspect="PERFECTIVE" tense="FUTURE" polarity="POS" pos="VERB">meet</EVENT>
+Bush on <TIMEX3 tid="t213" type="DATE" value="1990-08-09" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">Thursday</TIMEX3> in Kennebunkport, Maine.</s>
+   <s>Crown Prince Hassan, King Hussein's brother and political
+adviser, was <EVENT eid="e214" class="OCCURRENCE" stem="ask" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">asked</EVENT> <TIMEX3 tid="t215" type="DATE" value="1990-08-15" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">today</TIMEX3> about the message the king was <EVENT eid="e216" class="REPORTING" stem="say" aspect="PERFECTIVE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> to be
+<EVENT eid="e217" class="OCCURRENCE" stem="carry" aspect="PROGRESSIVE" tense="PRESENT" polarity="POS" pos="VERB">carrying</EVENT>.</s> <s>In an <EVENT eid="e218" class="OCCURRENCE" stem="interview" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">interview</EVENT> from Jordan on ABC, he <EVENT eid="e219" class="I_ACTION" stem="decline" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">declined</EVENT> to
+<EVENT eid="e220" class="OCCURRENCE" stem="discuss" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">discuss</EVENT> details, but <EVENT eid="e221" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT>: ``I don't <EVENT eid="e223" class="I_STATE" stem="think" aspect="NONE" tense="PRESENT" polarity="NEG" pos="VERB">think</EVENT> that his majesty would
+be <EVENT eid="e225" class="OCCURRENCE" stem="travel" aspect="PROGRESSIVE" tense="NONE" polarity="POS" pos="VERB">traveling</EVENT> at <TIMEX3 tid="t1192" type="DATE" value="PRESENT_REF" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t215">this crucial moment</TIMEX3> if the Iraqi leadership did not
+have a rational approach to the future.''</s>
+   <s>A CBS News <EVENT eid="e229" class="OCCURRENCE" stem="report" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">report</EVENT> <EVENT eid="e230" class="REPORTING" stem="cite" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">citing</EVENT> unidentified Jordanian sources <EVENT eid="e231" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT>
+that Saddam's message <EVENT eid="e232" class="OCCURRENCE" stem="call" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">called</EVENT> for an international <EVENT eid="e233" class="OCCURRENCE" stem="conference" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">conference</EVENT> to be
+<EVENT eid="e234" class="OCCURRENCE" stem="convene" aspect="NONE" tense="FUTURE" polarity="POS" pos="VERB">convened</EVENT> to <EVENT eid="e235" class="OCCURRENCE" stem="discuss" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">discuss</EVENT> an Iraqi <EVENT eid="e236" class="OCCURRENCE" stem="withdrawal" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">withdrawal</EVENT> from Kuwait.</s> <s>In <EVENT eid="e237" class="OCCURRENCE" stem="exchange" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">exchange</EVENT>,
+the <EVENT eid="e238" class="OCCURRENCE" stem="buildup" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">buildup</EVENT> of U.S. forces in the region would <EVENT eid="e240" class="OCCURRENCE" stem="halt" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">halt</EVENT>.</s> <s>Bush, however,
+<EVENT eid="e241" class="REPORTING" stem="say" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">says</EVENT> he <EVENT eid="e242" class="PERCEPTION" stem="see" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">sees</EVENT> no short-term hope for a diplomatic <EVENT eid="e243" class="OCCURRENCE" stem="solution" aspect="NONE" tense="NONE" polarity="NEG" pos="NOUN">solution</EVENT> to the
+gulf <EVENT eid="e244" class="OCCURRENCE" stem="crisis" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">crisis</EVENT> _ at least until economic sanctions <EVENT eid="e245" class="OCCURRENCE" stem="force" aspect="NONE" tense="NONE" polarity="POS" pos="VERB">force</EVENT> Saddam to
+<EVENT eid="e246" class="OCCURRENCE" stem="withdraw" aspect="NONE" tense="NONE" polarity="POS" pos="VERB">withdraw</EVENT> his army.</s>
+   <s>Bush <EVENT eid="e247" class="OCCURRENCE" stem="hold" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">held</EVENT> out the prospect of more <EVENT eid="e248" class="OCCURRENCE" stem="aid" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">aid</EVENT> to Jordan if it
+<EVENT eid="e249" class="OCCURRENCE" stem="cooperates" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">cooperates</EVENT> with the trade <EVENT eid="e250" class="OCCURRENCE" stem="embargo" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">embargo</EVENT>.</s>
+   <s>On <TIMEX3 tid="t252" type="DATE" value="1990-08-07" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">Tuesday</TIMEX3>, the United States and Soviet Union <EVENT eid="e253" class="OCCURRENCE" stem="confer" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">conferred</EVENT> in
+Washington on <EVENT eid="e254" class="OCCURRENCE" stem="putting" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">putting</EVENT> an anti-Iraq naval <EVENT eid="e255" class="OCCURRENCE" stem="blockade" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">blockade</EVENT> under a United
+Nations umbrella.</s>
+   <s>The United States has <EVENT eid="e256" class="OCCURRENCE" stem="provide" aspect="PERFECTIVE" tense="PRESENT" polarity="POS" pos="VERB">provided</EVENT> most of the naval vessels so far
+to block Iraqi trade, with Britain, West Germany and Australia
+among the other nations <EVENT eid="e257" class="OCCURRENCE" stem="lend" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">lending</EVENT> support at sea.</s>
+   <s>The <EVENT eid="e258" class="OCCURRENCE" stem="embargo" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">embargo</EVENT> is <EVENT eid="e259" class="I_STATE" stem="mean" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">meant</EVENT> to <EVENT eid="e260" class="OCCURRENCE" stem="cripple" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">cripple</EVENT> Iraq by <EVENT eid="e261" class="OCCURRENCE" stem="cut" aspect="PROGRESSIVE" tense="PRESENT" polarity="POS" pos="VERB">cutting</EVENT> off its exports
+of oil and imports of food and military supplies.</s> <s>Iraq <EVENT eid="e262" class="OCCURRENCE" stem="import" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">imports</EVENT>
+about three-quarters of its foodstuffs.</s>
+   <s>U.S. allies and other U.N. members have <EVENT eid="e263" class="OCCURRENCE" stem="object" aspect="PERFECTIVE" tense="PRESENT" polarity="POS" pos="VERB">objected</EVENT> that the
+Security Council embargo <EVENT eid="e1362" class="OCCURRENCE" stem="resolution" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">resolution</EVENT> did not specifically <EVENT eid="e266" class="OCCURRENCE" stem="authorize" aspect="PERFECTIVE" tense="PAST" polarity="NEG" pos="VERB">authorize</EVENT>
+such a naval <EVENT eid="e267" class="OCCURRENCE" stem="operation" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">operation</EVENT>.</s>
+   <s>Bush <EVENT eid="e268" class="REPORTING" stem="tell" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">told</EVENT> a news conference on <TIMEX3 tid="t269" type="DATE" value="1990-08-07" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">Tuesday</TIMEX3> that the naval <EVENT eid="e270" class="OCCURRENCE" stem="barricade" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">barricade</EVENT>
+<TIMEX3 tid="t271" type="DATE" value="PRESENT_REF" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">now</TIMEX3> in force might be <EVENT eid="e273" class="OCCURRENCE" stem="extend" aspect="NONE" tense="NONE" polarity="POS" pos="VERB">extended</EVENT> to Jordan's Aqaba ``if it is a hole
+through which commerce <EVENT eid="e274" class="OCCURRENCE" stem="flow" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">flows</EVENT>'' in and out of Iraq.</s>
+   <s>In Saudi Arabia, <TIMEX3 tid="t275" type="DATE" value="1990-08-15" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">today</TIMEX3> is the <TIMEX3 tid="t276" type="DATE" value="1990-08-15" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t275">eighth day</TIMEX3> of ``Desert Shield,''
+the <EVENT eid="e279" class="OCCURRENCE" stem="operation" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">operation</EVENT> <EVENT eid="e280" class="I_ACTION" stem="design" aspect="NONE" tense="PASTPART" polarity="POS" pos="VERB">designed</EVENT> to <EVENT eid="e281" class="OCCURRENCE" stem="confront" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="VERB">confront</EVENT> an estimated 200,000 Iraqi
+soldiers <TIMEX3 tid="t282" type="TIME" value="PRESENT_REF" temporalFunction="true" functionInDocument="NONE" anchorTimeID="t3">now</TIMEX3> <EVENT eid="e1426" class="STATE" stem="in" aspect="NONE" tense="PRESENT" polarity="POS" pos="PREPOSITION">in</EVENT> Kuwait.</s> <s>Iraq <EVENT eid="e283" class="OCCURRENCE" stem="boast" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">boasts</EVENT> an army of 1 million members.</s>
+<s>At least 50,000 U.S. troops are <EVENT eid="e284" class="I_STATE" stem="expect" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">expected</EVENT> to be <EVENT eid="e285" class="I_STATE" stem="commit" aspect="NONE" tense="FUTURE" polarity="POS" pos="VERB">committed</EVENT> to <EVENT eid="e286" class="OCCURRENCE" stem="desert shield" aspect="NONE" tense="INFINITIVE" polarity="POS" pos="NOUN">Desert
+Shield</EVENT> within <TIMEX3 tid="t1460" type="DURATION" value="PXW" temporalFunction="false" functionInDocument="NONE">weeks</TIMEX3>, including Marines, Army air assault forces,
+paratroopers and infantry.</s>
+   <s>Iraq <EVENT eid="e290" class="REPORTING" stem="say" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">said</EVENT> it <EVENT eid="e291" class="OCCURRENCE" stem="invade" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">invaded</EVENT> Kuwait because of <EVENT eid="e292" class="OCCURRENCE" stem="dispute" aspect="NONE" tense="NONE" polarity="POS" pos="NOUN">disputes</EVENT> over oil and
+money.</s> <s>It <EVENT eid="e293" class="I_ACTION" stem="accuse" aspect="NONE" tense="PAST" polarity="POS" pos="VERB">accused</EVENT> Kuwait of deliberately <EVENT eid="e294" class="OCCURRENCE" stem="slash" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">slashing</EVENT> Iraqi oil
+revenues by <EVENT eid="e295" class="OCCURRENCE" stem="overproducing" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">overproducing</EVENT> oil and <EVENT eid="e296" class="OCCURRENCE" stem="drive" aspect="NONE" tense="PRESPART" polarity="POS" pos="VERB">driving</EVENT> down prices, among other
+charges.</s>
+   <s>Iraq <EVENT eid="e297" class="STATE" stem="have" aspect="NONE" tense="PRESENT" polarity="POS" pos="VERB">has</EVENT> 17 million residents, and Kuwait about 1.9 million.</s>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<TLINK lid="l1" relType="OVERLAP" eventID="e6" relatedToTime="t4" task="A"/>
+<TLINK lid="l2" relType="OVERLAP" eventID="e13" relatedToTime="t4" task="A"/>
+<TLINK lid="l3" relType="OVERLAP" eventID="e16" relatedToTime="t14" task="A"/>
+<TLINK lid="l4" relType="OVERLAP" eventID="e28" relatedToTime="t380" task="A"/>
+<TLINK lid="l5" relType="OVERLAP" eventID="e38" relatedToTime="t37" task="A"/>
+<TLINK lid="l6" relType="OVERLAP" eventID="e54" relatedToTime="t56" task="A"/>
+<TLINK lid="l7" relType="BEFORE" eventID="e62" relatedToTime="t65" task="A"/>
+<TLINK lid="l8" relType="OVERLAP" eventID="e63" relatedToTime="t65" task="A"/>
+<TLINK lid="l9" relType="AFTER" eventID="e78" relatedToTime="t82" task="A"/>
+<TLINK lid="l10" relType="AFTER" eventID="e78" relatedToTime="t79" task="A"/>
+<TLINK lid="l11" relType="OVERLAP" eventID="e81" relatedToTime="t82" task="A"/>
+<TLINK lid="l12" relType="BEFORE" eventID="e81" relatedToTime="t79" task="A"/>
+<TLINK lid="l13" relType="OVERLAP" eventID="e107" relatedToTime="t719" task="A"/>
+<TLINK lid="l14" relType="OVERLAP" eventID="e110" relatedToTime="t719" task="A"/>
+<TLINK lid="l15" relType="AFTER" eventID="e112" relatedToTime="t114" task="A"/>
+<TLINK lid="l16" relType="OVERLAP" eventID="e113" relatedToTime="t114" task="A"/>
+<TLINK lid="l17" relType="OVERLAP" eventID="e118" relatedToTime="t120" task="A"/>
+<TLINK lid="l18" relType="OVERLAP-OR-AFTER" eventID="e117" relatedToTime="t120" task="A"/>
+<TLINK lid="l19" relType="OVERLAP" eventID="e138" relatedToTime="t140" task="A"/>
+<TLINK lid="l20" relType="OVERLAP" eventID="e143" relatedToTime="t140" task="A"/>
+<TLINK lid="l21" relType="OVERLAP" eventID="e150" relatedToTime="t151" task="A"/>
+<TLINK lid="l22" relType="AFTER" eventID="e166" relatedToTime="t162" task="A"/>
+<TLINK lid="l23" relType="OVERLAP" eventID="e160" relatedToTime="t162" task="A"/>
+<TLINK lid="l24" relType="BEFORE" eventID="e190" relatedToTime="t188" task="A"/>
+<TLINK lid="l25" relType="OVERLAP" eventID="e193" relatedToTime="t194" task="A"/>
+<TLINK lid="l26" relType="BEFORE-OR-OVERLAP" eventID="e216" relatedToTime="t215" task="A"/>
+<TLINK lid="l27" relType="OVERLAP" eventID="e219" relatedToTime="t1192" task="A"/>
+<TLINK lid="l28" relType="OVERLAP" eventID="e223" relatedToTime="t1192" task="A"/>
+<TLINK lid="l29" relType="OVERLAP" eventID="e221" relatedToTime="t1192" task="A"/>
+<TLINK lid="l30" relType="OVERLAP" eventID="e268" relatedToTime="t269" task="A"/>
+<TLINK lid="l31" relType="OVERLAP" eventID="e268" relatedToTime="t271" task="A"/>
+<TLINK lid="l32" relType="BEFORE" eventID="e284" relatedToTime="t1460" task="A"/>
+<TLINK lid="l33" relType="OVERLAP" eventID="e6" relatedToTime="t3" task="B"/>
+<TLINK lid="l34" relType="BEFORE" eventID="e13" relatedToTime="t3" task="B"/>
+<TLINK lid="l35" relType="OVERLAP" eventID="e16" relatedToTime="t3" task="B"/>
+<TLINK lid="l36" relType="OVERLAP" eventID="e28" relatedToTime="t3" task="B"/>
+<TLINK lid="l37" relType="AFTER" eventID="e34" relatedToTime="t3" task="B"/>
+<TLINK lid="l38" relType="BEFORE" eventID="e30" relatedToTime="t3" task="B"/>
+<TLINK lid="l39" relType="BEFORE" eventID="e38" relatedToTime="t3" task="B"/>
+<TLINK lid="l40" relType="BEFORE" eventID="e52" relatedToTime="t3" task="B"/>
+<TLINK lid="l41" relType="OVERLAP" eventID="e54" relatedToTime="t3" task="B"/>
+<TLINK lid="l42" relType="BEFORE" eventID="e62" relatedToTime="t3" task="B"/>
+<TLINK lid="l43" relType="AFTER" eventID="e63" relatedToTime="t3" task="B"/>
+<TLINK lid="l44" relType="BEFORE" eventID="e67" relatedToTime="t3" task="B"/>
+<TLINK lid="l45" relType="BEFORE" eventID="e70" relatedToTime="t3" task="B"/>
+<TLINK lid="l46" relType="BEFORE" eventID="e78" relatedToTime="t3" task="B"/>
+<TLINK lid="l47" relType="BEFORE" eventID="e81" relatedToTime="t3" task="B"/>
+<TLINK lid="l48" relType="BEFORE-OR-OVERLAP" eventID="e93" relatedToTime="t3" task="B"/>
+<TLINK lid="l49" relType="BEFORE" eventID="e92" relatedToTime="t3" task="B"/>
+<TLINK lid="l50" relType="BEFORE" eventID="e98" relatedToTime="t3" task="B"/>
+<TLINK lid="l51" relType="OVERLAP-OR-AFTER" eventID="e107" relatedToTime="t3" task="B"/>
+<TLINK lid="l52" relType="OVERLAP-OR-AFTER" eventID="e110" relatedToTime="t3" task="B"/>
+<TLINK lid="l53" relType="BEFORE" eventID="e112" relatedToTime="t3" task="B"/>
+<TLINK lid="l54" relType="BEFORE" eventID="e113" relatedToTime="t3" task="B"/>
+<TLINK lid="l55" relType="OVERLAP" eventID="e118" relatedToTime="t3" task="B"/>
+<TLINK lid="l56" relType="OVERLAP-OR-AFTER" eventID="e117" relatedToTime="t3" task="B"/>
+<TLINK lid="l57" relType="AFTER" eventID="e126" relatedToTime="t3" task="B"/>
+<TLINK lid="l58" relType="BEFORE" eventID="e124" relatedToTime="t3" task="B"/>
+<TLINK lid="l59" relType="BEFORE" eventID="e130" relatedToTime="t3" task="B"/>
+<TLINK lid="l60" relType="BEFORE" eventID="e134" relatedToTime="t3" task="B"/>
+<TLINK lid="l61" relType="AFTER" eventID="e137" relatedToTime="t3" task="B"/>
+<TLINK lid="l62" relType="BEFORE" eventID="e138" relatedToTime="t3" task="B"/>
+<TLINK lid="l63" relType="OVERLAP" eventID="e143" relatedToTime="t3" task="B"/>
+<TLINK lid="l64" relType="BEFORE" eventID="e147" relatedToTime="t3" task="B"/>
+<TLINK lid="l65" relType="AFTER" eventID="e149" relatedToTime="t3" task="B"/>
+<TLINK lid="l66" relType="OVERLAP" eventID="e150" relatedToTime="t3" task="B"/>
+<TLINK lid="l67" relType="BEFORE" eventID="e156" relatedToTime="t3" task="B"/>
+<TLINK lid="l68" relType="BEFORE" eventID="e154" relatedToTime="t3" task="B"/>
+<TLINK lid="l69" relType="OVERLAP" eventID="e159" relatedToTime="t3" task="B"/>
+<TLINK lid="l70" relType="OVERLAP" eventID="e941" relatedToTime="t3" task="B"/>
+<TLINK lid="l71" relType="AFTER" eventID="e166" relatedToTime="t3" task="B"/>
+<TLINK lid="l72" relType="BEFORE" eventID="e160" relatedToTime="t3" task="B"/>
+<TLINK lid="l73" relType="BEFORE" eventID="e173" relatedToTime="t3" task="B"/>
+<TLINK lid="l74" relType="BEFORE" eventID="e182" relatedToTime="t3" task="B"/>
+<TLINK lid="l75" relType="BEFORE" eventID="e190" relatedToTime="t3" task="B"/>
+<TLINK lid="l76" relType="OVERLAP" eventID="e193" relatedToTime="t3" task="B"/>
+<TLINK lid="l77" relType="BEFORE" eventID="e200" relatedToTime="t3" task="B"/>
+<TLINK lid="l78" relType="OVERLAP" eventID="e201" relatedToTime="t3" task="B"/>
+<TLINK lid="l79" relType="BEFORE-OR-OVERLAP" eventID="e216" relatedToTime="t3" task="B"/>
+<TLINK lid="l80" relType="BEFORE" eventID="e219" relatedToTime="t3" task="B"/>
+<TLINK lid="l81" relType="BEFORE-OR-OVERLAP" eventID="e223" relatedToTime="t3" task="B"/>
+<TLINK lid="l82" relType="BEFORE" eventID="e221" relatedToTime="t3" task="B"/>
+<TLINK lid="l83" relType="BEFORE" eventID="e229" relatedToTime="t3" task="B"/>
+<TLINK lid="l84" relType="BEFORE" eventID="e232" relatedToTime="t3" task="B"/>
+<TLINK lid="l85" relType="BEFORE" eventID="e231" relatedToTime="t3" task="B"/>
+<TLINK lid="l86" relType="OVERLAP" eventID="e242" relatedToTime="t3" task="B"/>
+<TLINK lid="l87" relType="OVERLAP" eventID="e241" relatedToTime="t3" task="B"/>
+<TLINK lid="l88" relType="BEFORE" eventID="e247" relatedToTime="t3" task="B"/>
+<TLINK lid="l89" relType="BEFORE" eventID="e268" relatedToTime="t3" task="B"/>
+<TLINK lid="l90" relType="OVERLAP" eventID="e284" relatedToTime="t3" task="B"/>
+<TLINK lid="l91" relType="BEFORE" eventID="e290" relatedToTime="t3" task="B"/>
+<TLINK lid="l92" relType="OVERLAP" eventID="e297" relatedToTime="t3" task="B"/>
+</TempEval>

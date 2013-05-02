@@ -29,8 +29,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
-import org.cleartk.timeml.corpus.TempEval2010GoldAnnotator;
-import org.cleartk.timeml.corpus.TempEval2010Writer;
+import org.cleartk.corpus.timeml.TempEval2010GoldAnnotator;
+import org.cleartk.corpus.timeml.TempEval2010Writer;
 import org.cleartk.timeml.time.TimeAnnotator;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;

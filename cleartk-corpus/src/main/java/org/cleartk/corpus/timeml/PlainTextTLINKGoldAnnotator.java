@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.corpus;
+package org.cleartk.corpus.timeml;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -57,9 +57,8 @@ import org.uimafit.util.JCasUtil;
  * 
  * 
  * @author Steven Bethard
- * @deprecated Use the one in cleartk-corpus instead.
+ * 
  */
-@Deprecated
 public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_TLINK_FILE_URL = ConfigurationParameterFactory.createConfigurationParameterName(

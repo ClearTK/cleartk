@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.corpus;
+package org.cleartk.corpus.timeml;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -40,7 +40,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
@@ -63,9 +62,7 @@ import com.google.common.base.Joiner;
  * All rights reserved.
  * 
  * @author Steven Bethard
- * @deprecated Use the one in cleartk-corpus instead.
  */
-@Deprecated
 public class TempEval2010Writer extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
@@ -192,31 +189,31 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
       this.outputDirectory.mkdirs();
     }
     this.writers = new ArrayList<PrintWriter>();
-    this.baseWriter = this.createWriter(TimeMLViewName.TEMPEVAL_BASE_SEGMENTATION, this.textView);
-    this.dctWriter = this.createWriter(TimeMLViewName.TEMPEVAL_DCT, this.documentCreationTimeView);
+    this.baseWriter = this.createWriter(TempEval2010CollectionReader.BASE_SEGMENTATION_VIEW_NAME, this.textView);
+    this.dctWriter = this.createWriter(TempEval2010CollectionReader.DCT_VIEW_NAME, this.documentCreationTimeView);
     this.timexExtentWriter = this.createWriter(
-        TimeMLViewName.TEMPEVAL_TIMEX_EXTENTS,
+        TempEval2010CollectionReader.TIMEX_EXTENTS_VIEW_NAME,
         this.timeExtentView);
     this.timexAttributeWriter = this.createWriter(
-        TimeMLViewName.TEMPEVAL_TIMEX_ATTRIBUTES,
+        TempEval2010CollectionReader.TIMEX_ATTRIBUTES_VIEW_NAME,
         this.timeAttributeView);
     this.eventExtentWriter = this.createWriter(
-        TimeMLViewName.TEMPEVAL_EVENT_EXTENTS,
+        TempEval2010CollectionReader.EVENT_EXTENTS_VIEW_NAME,
         this.eventExtentView);
     this.eventAttributeWriter = this.createWriter(
-        TimeMLViewName.TEMPEVAL_EVENT_ATTRIBUTES,
+        TempEval2010CollectionReader.EVENT_ATTRIBUTES_VIEW_NAME,
         this.eventAttributeView);
     this.tlinkDCTEventWriter = this.createWriter(
-        TimeMLViewName.TEMPEVAL_TLINK_DCT_EVENT,
+        TempEval2010CollectionReader.TLINK_DCT_EVENT_VIEW_NAME,
         this.temporalLinkEventToDocumentCreationTimeView);
     this.tlinkTimexEventWriter = this.createWriter(
-        TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT,
+        TempEval2010CollectionReader.TLINK_TIMEX_EVENT_VIEW_NAME,
         this.temporalLinkEventToSameSentenceTimeView);
     this.tlinkSubordinatedEventsWriter = this.createWriter(
-        TimeMLViewName.TEMPEVAL_TLINK_SUBORDINATED_EVENTS,
+        TempEval2010CollectionReader.TLINK_SUBORDINATED_EVENTS_VIEW_NAME,
         this.temporalLinkEventToSubordinatedEventView);
     this.tlinkMainEventsWriter = this.createWriter(
-        TimeMLViewName.TEMPEVAL_TLINK_MAIN_EVENTS,
+        TempEval2010CollectionReader.TLINK_MAIN_EVENTS_VIEW_NAME,
         this.temporalLinkMainEventToNextSentenceMainEventView);
   }
 

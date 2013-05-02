@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.corpus;
+package org.cleartk.corpus.timeml;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +35,6 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.timeml.TimeMLViewName;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
@@ -59,9 +58,7 @@ import com.google.common.collect.ListMultimap;
  * All rights reserved.
  * 
  * @author Steven Bethard
- * @deprecated Use the one in cleartk-corpus instead.
  */
-@Deprecated
 public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
@@ -163,7 +160,7 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
 
     // load the sentences and tokens from the view
     ListMultimap<Integer, String> sentTokens = ArrayListMultimap.create();
-    for (String line : lines(jCas, TimeMLViewName.TEMPEVAL_BASE_SEGMENTATION)) {
+    for (String line : lines(jCas, TempEval2010CollectionReader.BASE_SEGMENTATION_VIEW_NAME)) {
       String[] columns = split(line, "<filename>", "<sent_no>", "<token_no>", "<text>");
       int sentIndex = new Integer(columns[1]);
       String text = columns[3];
@@ -196,7 +193,7 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
     }
 
     // add the document creation time
-    for (String line : lines(jCas, TimeMLViewName.TEMPEVAL_DCT)) {
+    for (String line : lines(jCas, TempEval2010CollectionReader.DCT_VIEW_NAME)) {
       String[] dctColumns = split(line, "<filename>", "<dct>");
       String dctValue = dctColumns[1].replaceAll("(\\d{4})(\\d{2})(\\d{2})", "$1-$2-$3");
       for (String viewName : this.documentCreationTimeViews) {
@@ -213,7 +210,7 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
     // add Time annotations
     addSpans(
         jCas,
-        TimeMLViewName.TEMPEVAL_TIMEX_EXTENTS,
+        TempEval2010CollectionReader.TIMEX_EXTENTS_VIEW_NAME,
         "timex3",
         this.timeExtentViews,
         new AnnotationConstructor<Time>() {
@@ -226,7 +223,7 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
     // add Time attributes
     addAttributes(
         jCas,
-        TimeMLViewName.TEMPEVAL_TIMEX_ATTRIBUTES,
+        TempEval2010CollectionReader.TIMEX_ATTRIBUTES_VIEW_NAME,
         Time.class,
         this.timeAttributeViews,
         new AttributeSetter<Time>() {
@@ -246,7 +243,7 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
     // add Event annotations
     addSpans(
         jCas,
-        TimeMLViewName.TEMPEVAL_EVENT_EXTENTS,
+        TempEval2010CollectionReader.EVENT_EXTENTS_VIEW_NAME,
         "event",
         this.eventExtentViews,
         new AnnotationConstructor<Event>() {
@@ -259,7 +256,7 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
     // add Event attributes
     addAttributes(
         jCas,
-        TimeMLViewName.TEMPEVAL_EVENT_ATTRIBUTES,
+        TempEval2010CollectionReader.EVENT_ATTRIBUTES_VIEW_NAME,
         Event.class,
         this.eventAttributeViews,
         new AttributeSetter<Event>() {
@@ -287,22 +284,22 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
     // add TemporalLink annotations
     addTemporalLinks(
         jCas,
-        TimeMLViewName.TEMPEVAL_TLINK_DCT_EVENT,
+        TempEval2010CollectionReader.TLINK_DCT_EVENT_VIEW_NAME,
         textBuilders,
         this.temporalLinkEventToDocumentCreationTimeViews);
     addTemporalLinks(
         jCas,
-        TimeMLViewName.TEMPEVAL_TLINK_TIMEX_EVENT,
+        TempEval2010CollectionReader.TLINK_TIMEX_EVENT_VIEW_NAME,
         textBuilders,
         this.temporalLinkEventToSameSentenceTimeViews);
     addTemporalLinks(
         jCas,
-        TimeMLViewName.TEMPEVAL_TLINK_SUBORDINATED_EVENTS,
+        TempEval2010CollectionReader.TLINK_SUBORDINATED_EVENTS_VIEW_NAME,
         textBuilders,
         this.temporalLinkEventToSubordinatedEventViews);
     addTemporalLinks(
         jCas,
-        TimeMLViewName.TEMPEVAL_TLINK_MAIN_EVENTS,
+        TempEval2010CollectionReader.TLINK_MAIN_EVENTS_VIEW_NAME,
         textBuilders,
         this.temporalLinkMainEventToNextSentenceMainEventViews);
 

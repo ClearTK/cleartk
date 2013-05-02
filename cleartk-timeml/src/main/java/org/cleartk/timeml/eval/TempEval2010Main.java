@@ -32,7 +32,7 @@ import java.util.Map;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 import org.cleartk.eval.AnnotationStatistics;
-import org.cleartk.timeml.corpus.TempEval2010CollectionReader;
+import org.cleartk.corpus.timeml.TempEval2010CollectionReader;
 
 /**
  * <br>

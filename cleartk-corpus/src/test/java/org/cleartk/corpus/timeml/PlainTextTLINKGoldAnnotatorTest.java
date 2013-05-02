@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.corpus;
+package org.cleartk.corpus.timeml;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,8 +34,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.timeml.TimeMLTestBase;
-import org.cleartk.timeml.TimeMLViewName;
+import org.cleartk.test.CleartkTestBase;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
@@ -56,8 +55,7 @@ import org.uimafit.util.JCasUtil;
  * @author Steven Bethard
  * 
  */
-@Deprecated
-public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
+public class PlainTextTLINKGoldAnnotatorTest extends CleartkTestBase {
 
   private final String webUrl = "http://verbs.colorado.edu/~bethard/data/timebank-verb-clause.txt";
 
@@ -69,7 +67,7 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
   public void test_wsj_0106() throws UIMAException, IOException {
     CollectionReader reader = UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(new File("src/test/resources/data/timeml/wsj_0106.tml")));
     
-    AnalysisEngine uriToText = AnalysisEngineFactory.createPrimitive(UriToDocumentTextAnnotator.getDescriptionForView(TimeMLViewName.TIMEML));
+    AnalysisEngine uriToText = AnalysisEngineFactory.createPrimitive(UriToDocumentTextAnnotator.getDescriptionForView(TimeMLGoldAnnotator.TIMEML_VIEW_NAME));
     AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
         TimeMLGoldAnnotator.class,
         TimeMLGoldAnnotator.PARAM_LOAD_TLINKS,
@@ -110,7 +108,7 @@ public class PlainTextTLINKGoldAnnotatorTest extends TimeMLTestBase {
   public void test_wsj_0106_alternate() throws UIMAException, IOException {
     CollectionReader reader = UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(new File("src/test/resources/data/timeml/wsj_0106.tml")));
     
-    AnalysisEngine uriToText = AnalysisEngineFactory.createPrimitive(UriToDocumentTextAnnotator.getDescriptionForView(TimeMLViewName.TIMEML));
+    AnalysisEngine uriToText = AnalysisEngineFactory.createPrimitive(UriToDocumentTextAnnotator.getDescriptionForView(TimeMLGoldAnnotator.TIMEML_VIEW_NAME));
     AnalysisEngine timemlEngine = AnalysisEngineFactory.createPrimitive(
         TimeMLGoldAnnotator.class,
         TimeMLGoldAnnotator.PARAM_LOAD_TLINKS,

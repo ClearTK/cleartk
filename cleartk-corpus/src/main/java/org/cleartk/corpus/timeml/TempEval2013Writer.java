@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.corpus;
+package org.cleartk.corpus.timeml;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -73,9 +73,7 @@ import com.google.common.primitives.Ints;
  * All rights reserved.
  * 
  * @author Steven Bethard
- * @deprecated Use the one in cleartk-corpus instead.
  */
-@Deprecated
 public class TempEval2013Writer extends JCasAnnotator_ImplBase {
   
   public static AnalysisEngineDescription getDescription(File outputDir)

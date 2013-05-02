@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.corpus;
+package org.cleartk.corpus.timeml;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,7 +39,6 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.XMLSerializer;
-import org.cleartk.timeml.util.TimeMLUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -56,9 +55,8 @@ import org.xml.sax.helpers.AttributesImpl;
  * 
  * 
  * @author Steven Bethard
- * @deprecated Use the one in cleartk-corpus instead.
+ * 
  */
-@Deprecated
 public class TempEval2007Writer extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
