@@ -1,0 +1,5 @@
+This module provides examples of ClearTK code: a part-of-speech tagger, a BIO-chunker, a
+bag-of-words document classifier, etc.
+
+The module is intended only to be viewed as source code. The code may change at any time.
+You should NEVER add cleartk-examples as a dependency.

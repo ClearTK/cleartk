@@ -443,10 +443,7 @@
 					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-timeml</artifactId>
 				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-examples</artifactId>
-				</dependency>
+				<!-- Skip cleartk-examples; its javadoc should never be released -->
 			</dependencies>
 		</profile>
 		<profile>
