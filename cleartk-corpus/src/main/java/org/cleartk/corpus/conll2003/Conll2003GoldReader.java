@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -212,8 +214,16 @@ public class Conll2003GoldReader extends JCasCollectionReader_ImplBase {
 
     jCas.setDocumentText(documentText.toString());
 
-    String identifier = String.format("%s#%s", dataFileName, documentIndex);
-    ViewURIUtil.setURI(jCas, new File(identifier).toURI());
+    URI fileURI = new File(dataFileName).toURI();
+    String fragment = String.valueOf(documentIndex);
+    URI uri;
+    try {
+      uri = new URI(fileURI.getScheme(), fileURI.getHost(), fileURI.getPath(), fragment);
+    } catch (URISyntaxException e) {
+      // should never reach this; fragment should always be valid since it's just a number
+      throw new RuntimeException(e);
+    }
+    ViewURIUtil.setURI(jCas, uri);
     ++documentIndex;
 
   }

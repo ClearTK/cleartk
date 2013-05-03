@@ -29,6 +29,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.uima.UimaContext;
@@ -145,7 +147,16 @@ public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
       }
 
       conllView.setSofaDataString(docBuffer.toString(), "text/plain");
-      ViewURIUtil.setURI(jCas, new File(String.valueOf(documentNumber)).toURI());
+      URI fileURI = this.conll2005DataFile.toURI();
+      String fragment = String.valueOf(this.documentNumber);
+      URI uri;
+      try {
+        uri = new URI(fileURI.getScheme(), fileURI.getHost(), fileURI.getPath(), fragment);
+      } catch (URISyntaxException e) {
+        // should never reach this; fragment should always be valid since it's just a number
+        throw new RuntimeException(e);
+      }
+      ViewURIUtil.setURI(jCas, uri);
     } catch (CASException e) {
       throw new CollectionException(e);
     }

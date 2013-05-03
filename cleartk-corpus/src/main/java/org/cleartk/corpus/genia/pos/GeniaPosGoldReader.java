@@ -25,6 +25,8 @@ package org.cleartk.corpus.genia.pos;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -181,7 +183,16 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
         }
       }
 
-      ViewURIUtil.setURI(jCas, new File(parse.getMedline()).toURI());
+      URI fileURI = this.geniaCorpusFile.toURI();
+      String fragment = this.parse.getMedline();
+      URI uri;
+      try {
+        uri = new URI(fileURI.getScheme(), fileURI.getHost(), fileURI.getPath(), fragment);
+      } catch (URISyntaxException e) {
+        // should never reach this; fragment should always be valid since it's just a number
+        throw new RuntimeException(e);
+      }
+      ViewURIUtil.setURI(jCas, uri);
 
       JCas geniaView = jCas.createView(GeniaPosViewName.GENIA_POS);
       geniaView.setDocumentText(parse.getXml());
