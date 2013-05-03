@@ -18,8 +18,10 @@
  */
 package org.cleartk.classifier.weka;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -30,8 +32,12 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.test.DefaultTestBase;
+import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -78,7 +84,7 @@ public class WekaDataWriterTest extends DefaultTestBase {
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         WekaStringOutcomeDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        "target/weka-temp");
+        this.outputDirectory);
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
   }
@@ -113,8 +119,39 @@ public class WekaDataWriterTest extends DefaultTestBase {
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         WekaStringOutcomeDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        "target/weka-temp");
+        this.outputDirectory);
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
+  }
+
+  public static class TestIssue339Annotator extends CleartkAnnotator<String> {
+
+    public void process(JCas cas) throws AnalysisEngineProcessException {
+      List<Feature> features = Arrays.asList(new Feature("pos", "NN"));
+      Instance<String> instance = new Instance<String>("A", features);
+      this.dataWriter.write(instance);
+    }
+  }
+
+  @Test
+  public void testIssue339() throws Exception {
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+        TestIssue339Annotator.class,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        WekaStringOutcomeDataWriter.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        this.outputDirectory);
+    dataWriterAnnotator.process(jCas);
+    dataWriterAnnotator.collectionProcessComplete();
+    File outputFile = new File(this.outputDirectory, "training-data.arff");
+    String output = Files.toString(outputFile, Charsets.US_ASCII);
+    
+    // make sure that at least one instance was written
+    Pattern emptyData = Pattern.compile("@data\\s*\\{\\}");
+    boolean hasEmptyData = emptyData.matcher(output).find();
+    Assert.assertFalse(hasEmptyData);
+    
+    // make sure that the "NN" value shows up
+    Assert.assertTrue(output.contains("0 NN"));
   }
 }

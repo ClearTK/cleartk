@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
@@ -81,6 +82,20 @@ public class WekaStringOutcomeDataWriter extends
   public void finish() throws CleartkProcessingException {
     ArrayList<Attribute> attributes = ((WekaFeaturesEncoder) this.classifierBuilder.getFeaturesEncoder()).getWekaAttributes();
     Map<String, Attribute> attributeMap = ((WekaFeaturesEncoder) this.classifierBuilder.getFeaturesEncoder()).getWekaAttributeMap();
+    
+    // There is a known problem writing Weka SparseInstance objects from datasets that have string
+    // attributes. Need to add a (hopefully unique for this dataset!) dummy string value at index 0
+    // so that all the real values will have value > 0 and the SparseInstance will write them out.
+    // (Note that a SparseInstance writes out the actual string values, not the indexes of those
+    // values, so it shouldn't change the data if there's an extra dummy value in the Attribute.)
+    // Read more:
+    // http://weka.wikispaces.com/Why+am+I+missing+certain+nominal+or+string+values+from+sparse+instances%3F
+    // http://weka.wikispaces.com/ARFF+%28stable+version%29#Sparse%20ARFF%20files
+    for (Attribute attribute : attributeMap.values()) {
+      if (attribute.isString() && attribute.numValues() == 0) {
+        attribute.addStringValue(UUID.randomUUID().toString());
+      }
+    }
 
     Attribute outcomeAttribute = createOutcomeAttribute(attributes.size());
     attributes.add(outcomeAttribute);
