@@ -117,9 +117,9 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
   public static final String CENTROID_TFIDF_SIM_EXTRACTOR_KEY = "CentroidTfIdfSimilarity";
 
-  public static final String ZMUS_EXTRACTOR_KEY = "LengthFeatures";
+  public static final String ZMUS_EXTRACTOR_KEY = "ZMUSFeatures";
 
-  public static final String MINMAX_EXTRACTOR_KEY = "LengthFeatures";
+  public static final String MINMAX_EXTRACTOR_KEY = "MINMAXFeatures";
 
   private CombinedExtractor extractor;
 
