@@ -3,13 +3,14 @@ package org.cleartk.clearnlp;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.dependency.type.DependencyNode;
 import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.UIMAUtil;
+import org.uimafit.util.FSCollectionFactory;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.collect.Lists;
@@ -83,7 +84,8 @@ public class CleartkDependencyOps implements DependencyOps<DependencyNode, Token
       JCas jCas,
       DependencyNode node,
       List<DependencyRelation> headRelations) {
-    node.setHeadRelations(UIMAUtil.toFSArray(jCas, headRelations));
+    node.setHeadRelations(new FSArray(jCas, headRelations.size()));
+    FSCollectionFactory.fillArrayFS(node.getHeadRelations(), headRelations);
   }
 
   @Override
@@ -91,7 +93,8 @@ public class CleartkDependencyOps implements DependencyOps<DependencyNode, Token
       JCas jCas,
       DependencyNode node,
       List<DependencyRelation> childRelations) {
-    node.setChildRelations(UIMAUtil.toFSArray(jCas, childRelations));
+    node.setChildRelations(new FSArray(jCas, childRelations.size()));
+    FSCollectionFactory.fillArrayFS(node.getChildRelations(), childRelations);
   }
 
 }

@@ -27,7 +27,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -40,7 +39,9 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import com.googlecode.clearnlp.component.AbstractComponent;
 import com.googlecode.clearnlp.dependency.DEPFeat;
 import com.googlecode.clearnlp.dependency.DEPNode;
@@ -178,8 +179,8 @@ public abstract class DependencyParser_ImplBase<
 	        nodes.add(this.dependencyOps.createNode(jCas, token));
 	    }
 	    
-	    Map<DEPENDENCY_NODE_TYPE, List<DEPENDENCY_RELATION_TYPE>> headRelations = Maps.newHashMap();
-	    Map<DEPENDENCY_NODE_TYPE, List<DEPENDENCY_RELATION_TYPE>> childRelations = Maps.newHashMap();
+	    Multimap<DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE> headRelations = HashMultimap.create();
+	    Multimap<DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE> childRelations = HashMultimap.create();
 	    // extract relation arcs from ClearNLP parse tree
 	    for (int i = 0; i < tree.size(); i++) {
 	      DEPNode parserNode = tree.get(i);
@@ -189,21 +190,15 @@ public abstract class DependencyParser_ImplBase<
 	        DEPENDENCY_NODE_TYPE headNode = nodes.get(headIndex);
 	        DEPENDENCY_RELATION_TYPE rel = this.dependencyOps.createRelation(jCas, headNode, node, parserNode.getLabel());
 	    
-	        if (!headRelations.containsKey(node)) {
-	          headRelations.put(node, new ArrayList<DEPENDENCY_RELATION_TYPE>());
-	        }
-	        headRelations.get(node).add(rel);
-	        if (!childRelations.containsKey(headNode)) {
-	          childRelations.put(headNode, new ArrayList<DEPENDENCY_RELATION_TYPE>());
-	        }
-	        childRelations.get(headNode).add(rel);
+	        headRelations.put(node, rel);
+	        childRelations.put(headNode, rel);
 	      }
 	    } 
 	    
 	    // finalize nodes: add links between nodes and relations 
 	    for (DEPENDENCY_NODE_TYPE node : nodes) {
-	      this.dependencyOps.setHeadRelations(jCas, node, headRelations.get(node));
-	      this.dependencyOps.setChildRelations(jCas, node, childRelations.get(node));
+	      this.dependencyOps.setHeadRelations(jCas, node, Lists.newArrayList(headRelations.get(node)));
+	      this.dependencyOps.setChildRelations(jCas, node, Lists.newArrayList(childRelations.get(node)));
 	      node.addToIndexes();
 	    }
 	}
