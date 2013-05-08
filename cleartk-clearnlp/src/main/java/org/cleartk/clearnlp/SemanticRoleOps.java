@@ -14,7 +14,7 @@ import com.googlecode.clearnlp.dependency.DEPArc;
  * @author Lee Becker
  *
  */
-public interface SrlOps<SEMANTIC_ARGUMENT_TYPE extends Annotation, PREDICATE_TYPE extends Annotation, TOKEN_TYPE extends Annotation> {
+public interface SemanticRoleOps<SEMANTIC_ARGUMENT_TYPE extends Annotation, PREDICATE_TYPE extends Annotation, TOKEN_TYPE extends Annotation> {
   
   SEMANTIC_ARGUMENT_TYPE createArgument(JCas jCas, DEPArc head, TOKEN_TYPE token);
 

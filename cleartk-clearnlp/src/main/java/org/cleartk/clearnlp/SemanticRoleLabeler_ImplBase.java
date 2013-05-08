@@ -132,12 +132,12 @@ public abstract class SemanticRoleLabeler_ImplBase<
 
   private TokenOps<TOKEN_TYPE> tokenOps;
   private DependencyOps<DEPENDENCY_NODE_TYPE, TOP_DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE, TOKEN_TYPE> dependencyOps;
-  private SrlOps<SEMANTIC_ARGUMENT_TYPE, PREDICATE_TYPE, TOKEN_TYPE> srlOps;
+  private SemanticRoleOps<SEMANTIC_ARGUMENT_TYPE, PREDICATE_TYPE, TOKEN_TYPE> srlOps;
 
   public SemanticRoleLabeler_ImplBase(
       TokenOps<TOKEN_TYPE> tokenOps,
       DependencyOps<DEPENDENCY_NODE_TYPE, TOP_DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE, TOKEN_TYPE> dependencyOps,
-      SrlOps<SEMANTIC_ARGUMENT_TYPE, PREDICATE_TYPE, TOKEN_TYPE> srlOps) {
+      SemanticRoleOps<SEMANTIC_ARGUMENT_TYPE, PREDICATE_TYPE, TOKEN_TYPE> srlOps) {
     this.tokenOps = tokenOps;
     this.dependencyOps = dependencyOps;
     this.srlOps = srlOps;

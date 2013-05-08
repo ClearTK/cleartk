@@ -85,6 +85,6 @@ public class SemanticRoleLabeler extends SemanticRoleLabeler_ImplBase<Token, Dep
   }
 
   public SemanticRoleLabeler() {
-    super(new CleartkTokenOps(), new CleartkDependencyOps(), new CleartkSrlOps());
+    super(new CleartkTokenOps(), new CleartkDependencyOps(), new CleartkSemanticRoleOps());
   }
 }

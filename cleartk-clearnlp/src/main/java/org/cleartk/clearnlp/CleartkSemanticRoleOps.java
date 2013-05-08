@@ -17,7 +17,7 @@ import com.googlecode.clearnlp.dependency.DEPArc;
  * @author Lee Becker
  *
  */
-public class CleartkSrlOps implements SrlOps<SemanticArgument, Predicate, Token>{
+public class CleartkSemanticRoleOps implements SemanticRoleOps<SemanticArgument, Predicate, Token>{
 
   @Override
   public SemanticArgument createArgument(JCas jCas, DEPArc head, Token token) {
