@@ -25,7 +25,7 @@ package org.cleartk.clearnlp;
 
 import java.io.File;
 import java.net.URI;
-import org.apache.uima.UimaContext;
+
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.srl.type.Predicate;
@@ -84,31 +84,7 @@ public class SemanticRoleLabeler extends SemanticRoleLabeler_ImplBase<Token, Dep
       new File("src/test/resources/models/sample-en-srl-1.3.0.tgz").toURI());
   }
 
-  private CleartkTokenOps tokenOps;
-  private CleartkDependencyOps dependencyOps;
-  private CleartkSrlOps srlOps;
-  
-  @Override
-  public void initialize(UimaContext context) throws ResourceInitializationException {
-    super.initialize(context);
-    this.tokenOps = new CleartkTokenOps();
-    this.dependencyOps = new CleartkDependencyOps();
-    this.srlOps = new CleartkSrlOps();
-    
-  }
-
-  @Override
-  protected TokenOps<Token> getTokenOps() {
-    return this.tokenOps;
-  }
-
-  @Override
-  protected DependencyOps<DependencyNode, TopDependencyNode, DependencyRelation, Token> getDependencyOps() {
-    return this.dependencyOps;
-  }
-
-  @Override
-  protected SrlOps<SemanticArgument, Predicate, Token> getSrlOps() {
-    return this.srlOps;
+  public SemanticRoleLabeler() {
+    super(new CleartkTokenOps(), new CleartkDependencyOps(), new CleartkSrlOps());
   }
 }

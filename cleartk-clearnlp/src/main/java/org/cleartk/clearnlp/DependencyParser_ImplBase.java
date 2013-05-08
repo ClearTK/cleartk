@@ -106,10 +106,17 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation,
       defaultValue = "org.cleartk.token.type.Sentence")
   private Class<? extends Annotation> windowClass;
 
-  protected abstract TokenOps<TOKEN_TYPE> getTokenOps();
+  private TokenOps<TOKEN_TYPE> tokenOps;
+
+  private DependencyOps<DEPENDENCY_NODE_TYPE, TOP_DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE, TOKEN_TYPE> dependencyOps;
   
-  protected abstract DependencyOps<DEPENDENCY_NODE_TYPE, TOP_DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE, TOKEN_TYPE> getDependencyOps();
-  
+  public DependencyParser_ImplBase(
+      TokenOps<TOKEN_TYPE> tokenOps,
+      DependencyOps<DEPENDENCY_NODE_TYPE, TOP_DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE, TOKEN_TYPE> dependencyOps) {
+    this.tokenOps = tokenOps;
+    this.dependencyOps = dependencyOps;
+  }
+
 	@Override
 	public void initialize(UimaContext aContext)
 			throws ResourceInitializationException {
@@ -132,14 +139,14 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation,
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		
 		for (Annotation window : JCasUtil.select(jCas, this.windowClass )) {
-			List<TOKEN_TYPE> tokens = this.getTokenOps().selectTokens(jCas, window);
+			List<TOKEN_TYPE> tokens = this.tokenOps.selectTokens(jCas, window);
 			
 			// Extract data from CAS and stuff it into ClearNLP data structures
 			DEPTree tree = new DEPTree();
 			for (int i = 0; i < tokens.size(); i++) {
 			  TOKEN_TYPE token = tokens.get(i);
-			  String lemma = this.getTokenOps().getLemma(jCas, token);
-			  String pos = this.getTokenOps().getPos(jCas, token);
+			  String lemma = this.tokenOps.getLemma(jCas, token);
+			  String pos = this.tokenOps.getPos(jCas, token);
 				DEPNode node = new DEPNode(i+1, token.getCoveredText(), lemma, pos, new DEPFeat());
 				tree.add(node);
 			}
@@ -162,13 +169,13 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation,
 	private void addTreeToCas(JCas jCas, DEPTree tree, Annotation window, List<TOKEN_TYPE> tokens) {
 	  
 	    ArrayList<DEPENDENCY_NODE_TYPE> nodes = new ArrayList<DEPENDENCY_NODE_TYPE>(tree.size());
-	    TOP_DEPENDENCY_NODE_TYPE rootNode = this.getDependencyOps().createTopDependencyNode(jCas, window.getBegin(), window.getEnd());
+	    TOP_DEPENDENCY_NODE_TYPE rootNode = this.dependencyOps.createTopDependencyNode(jCas, window.getBegin(), window.getEnd());
 	    rootNode.addToIndexes();
 	    nodes.add(rootNode); 
 	    
 	    for (int i = 0; i < tokens.size(); i++) {
 	        TOKEN_TYPE token = tokens.get(i);
-	        nodes.add(this.getDependencyOps().createDependencyNode(jCas, token.getBegin(), token.getEnd()));
+	        nodes.add(this.dependencyOps.createDependencyNode(jCas, token.getBegin(), token.getEnd()));
 	    }
 	    
 	    Map<DEPENDENCY_NODE_TYPE, List<DEPENDENCY_RELATION_TYPE>> headRelations = Maps.newHashMap();
@@ -180,7 +187,7 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation,
 	        int headIndex = parserNode.getHead().id;
 	        DEPENDENCY_NODE_TYPE node = nodes.get(i);
 	        DEPENDENCY_NODE_TYPE headNode = nodes.get(headIndex);
-	        DEPENDENCY_RELATION_TYPE rel = this.getDependencyOps().createRelation(jCas, headNode, node, parserNode.getLabel());
+	        DEPENDENCY_RELATION_TYPE rel = this.dependencyOps.createRelation(jCas, headNode, node, parserNode.getLabel());
 	    
 	        if (!headRelations.containsKey(node)) {
 	          headRelations.put(node, new ArrayList<DEPENDENCY_RELATION_TYPE>());
@@ -195,8 +202,8 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation,
 	    
 	    // finalize nodes: add links between nodes and relations 
 	    for (DEPENDENCY_NODE_TYPE node : nodes) {
-	      this.getDependencyOps().setHeadRelations(jCas, node, headRelations.get(node));
-	      this.getDependencyOps().setChildRelations(jCas, node, childRelations.get(node));
+	      this.dependencyOps.setHeadRelations(jCas, node, headRelations.get(node));
+	      this.dependencyOps.setChildRelations(jCas, node, childRelations.get(node));
 	      node.addToIndexes();
 	    }
 	}

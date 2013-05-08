@@ -25,7 +25,6 @@ package org.cleartk.clearnlp;
 
 import java.net.URI;
 
-import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.type.Token;
@@ -53,9 +52,6 @@ import org.uimafit.factory.AnalysisEngineFactory;
     outputs = {"org.cleartk.token.type.Token:pos"})
 public class PosTagger extends PosTagger_ImplBase<Token> {
 		
-  private CleartkTokenOps tokenOps;
-  
-  
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(PosTagger.class);
   }
@@ -68,15 +64,8 @@ public class PosTagger extends PosTagger_ImplBase<Token> {
         modelUri);
   }
 
-  @Override
-  public void initialize(UimaContext context) throws ResourceInitializationException {
-    super.initialize(context);
-    this.tokenOps = new CleartkTokenOps();
-  }
-  
-  @Override
-  protected TokenOps<Token> getTokenOps() {
-    return this.tokenOps;
+  public PosTagger() {
+    super(new CleartkTokenOps());
   }
 }
 	

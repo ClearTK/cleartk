@@ -94,10 +94,13 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends 
   @ConfigurationParameter(
       description = WINDOW_TYPE_DESCRIPTION,
       defaultValue = "org.cleartk.token.type.Sentence")
-  private Class<? extends Annotation> windowClass; 
-	
+  private Class<? extends Annotation> windowClass;
+
+  private TokenOps<TOKEN_TYPE> tokenOps; 
   
-  protected abstract TokenOps<TOKEN_TYPE> getTokenOps();
+  public PosTagger_ImplBase(TokenOps<TOKEN_TYPE> tokenOps) {
+    this.tokenOps = tokenOps;
+  }
 	
 	@Override
 	public void initialize(UimaContext context)
@@ -124,7 +127,7 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends 
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 	  
 		for (Annotation window : JCasUtil.select(jCas, this.windowClass)) {
-			List<TOKEN_TYPE> tokens = this.getTokenOps().selectTokens(jCas, window);
+			List<TOKEN_TYPE> tokens = this.tokenOps.selectTokens(jCas, window);
 			if (tokens.size() <= 0) { return; }
 			
 			List<String> tokenStrings = JCasUtil.toText(tokens);
@@ -138,7 +141,7 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends 
 			// are shifted by one from the token indices
 			for (int i = 0; i < tokens.size(); i++) {
 				TOKEN_TYPE token = tokens.get(i);
-				this.getTokenOps().setPos(jCas, token, posTags[i+1]);
+				this.tokenOps.setPos(jCas, token, posTags[i+1]);
 			}
 		}
 	}

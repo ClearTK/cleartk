@@ -24,7 +24,7 @@
 package org.cleartk.clearnlp;
 
 import java.net.URI;
-import org.apache.uima.UimaContext;
+
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.type.Token;
@@ -67,17 +67,7 @@ public class MPAnalyzer extends MPAnalyzer_ImplBase<Token> {
 	      MPAnalyzer_ImplBase.PARAM_DICTIONARY_URI, dictionaryUri);
 	}
 
-  private CleartkTokenOps tokenOps;
-	
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-	  super.initialize(context);
-	  this.tokenOps = new CleartkTokenOps();
-	}
-
-	@Override
-  protected TokenOps<Token> getTokenOps() {
-    return this.tokenOps;
+  public MPAnalyzer() {
+    super(new CleartkTokenOps());
   }
-
 }

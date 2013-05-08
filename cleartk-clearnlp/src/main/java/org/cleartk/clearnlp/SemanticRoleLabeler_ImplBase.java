@@ -130,6 +130,18 @@ public abstract class SemanticRoleLabeler_ImplBase<
       defaultValue = "org.cleartk.token.type.Sentence")
   private Class<? extends Annotation> windowClass;
 
+  private TokenOps<TOKEN_TYPE> tokenOps;
+  private DependencyOps<DEPENDENCY_NODE_TYPE, TOP_DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE, TOKEN_TYPE> dependencyOps;
+  private SrlOps<SEMANTIC_ARGUMENT_TYPE, PREDICATE_TYPE, TOKEN_TYPE> srlOps;
+
+  public SemanticRoleLabeler_ImplBase(
+      TokenOps<TOKEN_TYPE> tokenOps,
+      DependencyOps<DEPENDENCY_NODE_TYPE, TOP_DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE, TOKEN_TYPE> dependencyOps,
+      SrlOps<SEMANTIC_ARGUMENT_TYPE, PREDICATE_TYPE, TOKEN_TYPE> srlOps) {
+    this.tokenOps = tokenOps;
+    this.dependencyOps = dependencyOps;
+    this.srlOps = srlOps;
+  }
 
   @Override
   public void initialize(UimaContext aContext)
@@ -169,19 +181,12 @@ public abstract class SemanticRoleLabeler_ImplBase<
 
   }
 
-  
-  protected abstract TokenOps<TOKEN_TYPE> getTokenOps();
-  
-  protected abstract DependencyOps<DEPENDENCY_NODE_TYPE, TOP_DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE, TOKEN_TYPE> getDependencyOps();
-  
-  protected abstract SrlOps<SEMANTIC_ARGUMENT_TYPE, PREDICATE_TYPE, TOKEN_TYPE> getSrlOps();
-
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     
     for (Annotation window : JCasUtil.select(jCas, this.windowClass)) {
       boolean skipSentence = false;
-      List<TOKEN_TYPE> tokens = this.getTokenOps().selectTokens(jCas, window);
+      List<TOKEN_TYPE> tokens = this.tokenOps.selectTokens(jCas, window);
       List<String> tokenStrings = JCasUtil.toText(tokens);
 
       // Build dependency tree from token information
@@ -190,16 +195,16 @@ public abstract class SemanticRoleLabeler_ImplBase<
       for (int i = 1; i < tree.size(); i++) {
         TOKEN_TYPE token = tokens.get(i-1);
         DEPNode node = tree.get(i);
-        node.pos = this.getTokenOps().getPos(jCas, token);
-        node.lemma = this.getTokenOps().getLemma(jCas, token);
+        node.pos = this.tokenOps.getPos(jCas, token);
+        node.lemma = this.tokenOps.getLemma(jCas, token);
       }
 
       // Build map between CAS dependency node and id for later creation of
       // ClearParser dependency node/tree
       Map<DEPENDENCY_NODE_TYPE, Integer> depNodeToID = Maps.newHashMap();
       int nodeId = 1;
-      for (DEPENDENCY_NODE_TYPE depNode : this.getDependencyOps().selectDependencyNodes(jCas, window)) {
-        if (this.getDependencyOps().isTopNode(jCas, depNode)) {
+      for (DEPENDENCY_NODE_TYPE depNode : this.dependencyOps.selectDependencyNodes(jCas, window)) {
+        if (this.dependencyOps.isTopNode(jCas, depNode)) {
           depNodeToID.put(depNode, 0);
         } else {
           depNodeToID.put(depNode, nodeId);
@@ -212,16 +217,16 @@ public abstract class SemanticRoleLabeler_ImplBase<
         TOKEN_TYPE token = tokens.get(i);
 
         // Determine node and head
-        DEPENDENCY_NODE_TYPE casDepNode = this.getDependencyOps().getDependencyNode(jCas, token);
-        if (this.getDependencyOps().hasHeadRelation(jCas, casDepNode)) {
-          DEPENDENCY_NODE_TYPE head = this.getDependencyOps().getHead(jCas, casDepNode);
+        DEPENDENCY_NODE_TYPE casDepNode = this.dependencyOps.getDependencyNode(jCas, token);
+        if (this.dependencyOps.hasHeadRelation(jCas, casDepNode)) {
+          DEPENDENCY_NODE_TYPE head = this.dependencyOps.getHead(jCas, casDepNode);
 
           int id = i + 1;
           DEPNode node = tree.get(id);
 
           int headId = depNodeToID.get(head);
           DEPNode headNode = tree.get(headId);
-          node.setHead(headNode, this.getDependencyOps().getHeadRelation(jCas, casDepNode));
+          node.setHead(headNode, this.dependencyOps.getHeadRelation(jCas, casDepNode));
         } else {
           // In cases where the sentence is unparseable we are left with only a root node
           // Thus the Semantic Role Labeler should skip this sentence
@@ -273,7 +278,7 @@ public abstract class SemanticRoleLabeler_ImplBase<
         List<SEMANTIC_ARGUMENT_TYPE> args;
         if (!headIdToPredicate.containsKey(headId)) {
           String rolesetId = shead.getNode().getFeat(DEPLib.FEAT_PB);
-          pred = this.getSrlOps().createPredicate(jCas, rolesetId, headToken);
+          pred = this.srlOps.createPredicate(jCas, rolesetId, headToken);
           headIdToPredicate.put(headId, pred);
           args = Lists.newArrayList();
           predicateArguments.put(pred, args);
@@ -281,7 +286,7 @@ public abstract class SemanticRoleLabeler_ImplBase<
           pred = headIdToPredicate.get(headId);
           args = predicateArguments.get(pred);
         }
-        args.add(this.getSrlOps().createArgument(jCas, shead, token));
+        args.add(this.srlOps.createArgument(jCas, shead, token));
       }
     }    
     
@@ -289,7 +294,7 @@ public abstract class SemanticRoleLabeler_ImplBase<
     for (Map.Entry<PREDICATE_TYPE, List<SEMANTIC_ARGUMENT_TYPE>> entry : predicateArguments.entrySet()) {
       PREDICATE_TYPE predicate = entry.getKey();
       List<SEMANTIC_ARGUMENT_TYPE> arguments = entry.getValue();
-      this.getSrlOps().setPredicateArguments(jCas, predicate, arguments);
+      this.srlOps.setPredicateArguments(jCas, predicate, arguments);
     }
     
       

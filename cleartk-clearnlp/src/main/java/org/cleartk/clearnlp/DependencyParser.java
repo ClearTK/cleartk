@@ -24,7 +24,7 @@
 package org.cleartk.clearnlp;
 
 import java.net.URI;
-import org.apache.uima.UimaContext;
+
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.dependency.type.DependencyNode;
@@ -62,6 +62,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
         "org.cleartk.syntax.dependency.type.DependencyNode", 
         "org.cleartk.syntax.dependency.type.DependencyNode"})
 public class DependencyParser extends DependencyParser_ImplBase<Sentence, Token, DependencyNode, TopDependencyNode, DependencyRelation> {
+
   /**
    * Convenience method for creating Analysis Engine for ClearNLP's dependency parser using default English model files
    */
@@ -77,25 +78,7 @@ public class DependencyParser extends DependencyParser_ImplBase<Sentence, Token,
         modelUri);
   }
 
-  private CleartkTokenOps tokenOps;
-  private CleartkDependencyOps dependencyOps;
-  
-  @Override
-  public void initialize(UimaContext aContext) throws ResourceInitializationException {
-    super.initialize(aContext);
-    this.tokenOps = new CleartkTokenOps();
-    this.dependencyOps = new CleartkDependencyOps();
+  public DependencyParser() {
+    super(new CleartkTokenOps(), new CleartkDependencyOps());
   }
-
-  @Override
-  protected TokenOps<Token> getTokenOps() {
-    return this.tokenOps;
-  }
-
-  @Override
-  protected DependencyOps<DependencyNode, TopDependencyNode, DependencyRelation, Token> getDependencyOps() {
-    return this.dependencyOps;
-  }
-	
-
 }

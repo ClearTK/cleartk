@@ -98,8 +98,8 @@ public abstract class MPAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
   @ConfigurationParameter(
       description = WINDOW_TYPE_DESCRIPTION,
       defaultValue = "org.cleartk.token.type.Sentence")
-  private Class<? extends Annotation> windowClass; 
-	
+  private Class<? extends Annotation> windowClass;
+
 	/**
 	 * Convenience method to create Analysis Engine for ClearNLP's POSTagger + Lemmatizer using default English models and dictionaries.
 	 */
@@ -114,7 +114,11 @@ public abstract class MPAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
 	  
 	}
 	
-  protected abstract TokenOps<TOKEN_TYPE> getTokenOps();
+  private TokenOps<TOKEN_TYPE> tokenOps; 
+  
+  public MPAnalyzer_ImplBase(TokenOps<TOKEN_TYPE> tokenOps) {
+    this.tokenOps = tokenOps;
+  }
 	
 	@Override
 	public void initialize(UimaContext context)
@@ -139,7 +143,7 @@ public abstract class MPAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 	  for (Annotation window : JCasUtil.select(jCas, this.windowClass)) {
-		  List<TOKEN_TYPE> tokens = this.getTokenOps().selectTokens(jCas, window);
+		  List<TOKEN_TYPE> tokens = this.tokenOps.selectTokens(jCas, window);
 		  List<String> tokenStrings = JCasUtil.toText(tokens);
 		  
 		  // All processing in ClearNLP goes through the DEPTree structures,
@@ -148,7 +152,7 @@ public abstract class MPAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
 		  for (int i = 1; i < depTree.size(); i++) {
 		    TOKEN_TYPE token = tokens.get(i-1);
 		    DEPNode node = depTree.get(i);
-		    node.pos = this.getTokenOps().getPos(jCas, token);
+		    node.pos = this.tokenOps.getPos(jCas, token);
 		  }
 		  // Run the morphological analyzer
 		  this.mpAnalyzer.process(depTree);
@@ -157,7 +161,7 @@ public abstract class MPAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
 		  for (int i = 1; i < depTree.size(); i++) {
 		    TOKEN_TYPE token = tokens.get(i-1);
 		    DEPNode node = depTree.get(i);
-		    this.getTokenOps().setLemma(jCas, token, node.lemma);
+		    this.tokenOps.setLemma(jCas, token, node.lemma);
 		  }
 		}
 	}
