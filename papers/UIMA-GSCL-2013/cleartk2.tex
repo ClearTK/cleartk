@@ -1,0 +1,80 @@
+\documentclass{llncs}
+
+\begin{document}
+
+\title{ClearTK 2.0: Lessons learned developing a machine learning framework for UIMA}
+\titlerunning{ClearTK 2.0}
+
+\author{Steven Bethard\inst{1} \and Philip Ogren\inst{2} \and Lee Becker\inst{3}}
+\authorrunning{Steven Bethard et al.}
+
+\institute{%
+University of Colorado Boulder, Boulder, CO 80309, USA \\
+\email{steven.behard@colorado.edu}
+\and
+Oracle America, Broomfield, CO 80021, USA \\
+\email{philip@ogren.info}
+\and
+Avaya Labs, Superior, CO 80027, USA \\
+\email{lee.becker@gmail.com}}
+
+\maketitle
+
+\begin{abstract}
+TODO
+
+\keywords{UIMA, machine learning, natural language processing}
+\end{abstract}
+
+\section{Introduction}
+
+
+\section{Lesson: Annotators should look like annotators}
+
+CleartkAnnotator is just a JCasAnnotator
+
+Chunking is just a utility object for use in a JCasAnnotator
+
+Features like TF-IDF are in the Annotator, not in the encoder
+
+
+\section{Lesson: Pipelines should look like pipelines}
+
+New evaluation's train and test methods
+
+Trainable extractors for TF-IDF etc. (not encoders)
+
+
+\section{Lesson: CollectionReaders should do almost nothing}
+
+URICollectionReader
+
+
+\section{Lesson: Modules should group classes by function}
+not organized by type system
+
+cleartk-type-system
+
+cleartk-corpus
+
+cleartk-feature
+
+
+\section{Lesson: Type-system-agnostic code requires interfaces}
+
+Philip's blog post
+
+weaknesses of OpenNLP approach (e.g., assumes pos is an attribute of token)
+
+ClearNLP work
+
+
+\section{Lesson: Users need help to get past the UIMA overhead}
+
+Write the reader and eval, let the student feature-engineer
+
+
+\section{Discussion}
+
+
+\end{document}
