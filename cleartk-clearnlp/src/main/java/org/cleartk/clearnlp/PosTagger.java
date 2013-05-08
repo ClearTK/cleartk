@@ -24,29 +24,12 @@
 package org.cleartk.clearnlp;
 
 import java.net.URI;
-import java.net.URL;
-import java.util.List;
 
-import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.JCasUtil;
-
-import com.googlecode.clearnlp.component.AbstractComponent;
-import com.googlecode.clearnlp.dependency.DEPTree;
-import com.googlecode.clearnlp.engine.EngineGetter;
-import com.googlecode.clearnlp.nlp.NLPDecode;
-import com.googlecode.clearnlp.nlp.NLPLib;
-import com.googlecode.clearnlp.reader.AbstractReader;
 
 /**
  * <br>
@@ -67,80 +50,22 @@ import com.googlecode.clearnlp.reader.AbstractReader;
 @TypeCapability(
     inputs = { "org.cleartk.token.type.Token" },
     outputs = {"org.cleartk.token.type.Token:pos"})
-public class PosTagger extends JCasAnnotator_ImplBase {
-	
-	public static final String DEFAULT_MODEL_FILE_NAME = "ontonotes-en-pos-1.3.0.tgz";
-	
-	public static final String PARAM_MODEL_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-			PosTagger.class,
-			"modelUri");
-	
-	@ConfigurationParameter(
-			description = "This parameter provides the URI to the pos tagger model.")
-	private URI modelUri;
-
-	public static final String PARAM_LANGUAGE_CODE = ConfigurationParameterFactory.createConfigurationParameterName(
-	    PosTagger.class, 
-	    "languageCode");
-	
-  @ConfigurationParameter(
-      description = "Language code for the pos tagger (default value=en).",
-      defaultValue = AbstractReader.LANG_EN)
-  private String languageCode;
-	
-	
-	/**
-	 * Convenience method to create Analysis Engine for ClearNLP's POSTagger + Lemmatizer using default English models and dictionaries.
-	 */
-	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(PosTagger.class);
-	}
-	
-	@Override
-	public void initialize(UimaContext context)
-			throws ResourceInitializationException {
-		super.initialize(context);
-		try {
-		  URL modelURL = (this.modelUri == null) 
-		      ? PosTagger.class.getResource(DEFAULT_MODEL_FILE_NAME).toURI().toURL()
-		      : this.modelUri.toURL();
-		      
-		  // Load POS tagger model
-		  this.tagger = EngineGetter.getComponent(modelURL.openStream(), languageCode, NLPLib.MODE_POS);
-		  
-		  // Load decoder
-		  this.clearNlpDecoder = new NLPDecode();
-			
-		} catch (Exception e) {
-			throw new ResourceInitializationException(e);
-		}
+public class PosTagger extends PosTagger_ImplBase<Token> {
 		
-	}
+  public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(PosTagger.class);
+  }
+  
+  public static AnalysisEngineDescription getDescription(String languageCode, URI modelUri) throws ResourceInitializationException {
+    return AnalysisEngineFactory.createPrimitiveDescription(PosTagger.class,
+        PosTagger_ImplBase.PARAM_LANGUAGE_CODE,
+        languageCode,
+        PosTagger_ImplBase.PARAM_MODEL_URI,
+        modelUri);
+  }
 
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-	  
-		for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
-			List<Token> tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);	
-			if (tokens.size() <= 0) { return; }
-			
-			List<String> tokenStrings = JCasUtil.toText(tokens);
-			
-			// As of version 1.3.0, ClearNLP does all processing to go through its own dependency tree structure
-			DEPTree clearNlpDepTree = this.clearNlpDecoder.toDEPTree(tokenStrings);
-			this.tagger.process(clearNlpDepTree);
-			String[] posTags = clearNlpDepTree.getPOSTags();
-			
-			// Note the ClearNLP counts index 0 as the sentence dependency node, so the POS tag indices 
-			// are shifted by one from the token indices
-			for (int i = 0; i < tokens.size(); i++) {
-				Token token = tokens.get(i);
-				token.setPos(posTags[i+1]);
-			}
-		}
-	}
-	
-  private AbstractComponent tagger;
-  private NLPDecode clearNlpDecoder;
-
+  public PosTagger() {
+    super(new CleartkTokenOps());
+  }
 }
+	
