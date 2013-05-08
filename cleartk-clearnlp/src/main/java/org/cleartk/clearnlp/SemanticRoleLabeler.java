@@ -33,6 +33,7 @@ import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.dependency.type.DependencyNode;
 import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
+import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -66,7 +67,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
         "org.cleartk.srl.type.Predicate",
         "org.cleartk.srl.type.SemanticArgument"} )
   
-public class SemanticRoleLabeler extends SemanticRoleLabeler_ImplBase<Token, DependencyNode, TopDependencyNode, DependencyRelation, SemanticArgument, Predicate> {
+public class SemanticRoleLabeler extends SemanticRoleLabeler_ImplBase<Sentence, Token, DependencyNode, TopDependencyNode, DependencyRelation, SemanticArgument, Predicate> {
   
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createPrimitiveDescription(SemanticRoleLabeler.class);

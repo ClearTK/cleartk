@@ -2,8 +2,8 @@ package org.cleartk.clearnlp;
 
 import java.util.List;
 
-import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 
 /**
@@ -13,47 +13,50 @@ import org.apache.uima.jcas.tcas.Annotation;
  * @author Lee Becker
  *
  */
-public interface DependencyOps<DEPENDENCY_NODE_TYPE extends Annotation, 
-    TOP_DEPENDENCY_NODE_TYPE extends DEPENDENCY_NODE_TYPE, 
-    DEPENDENCY_RELATION_TYPE extends 
-    FeatureStructure, 
-    TOKEN_TYPE extends Annotation> {
+public interface DependencyOps<
+    NODE_TYPE extends TOP,
+    NODE_SPAN_TYPE extends Annotation,
+    ROOT_NODE_TYPE extends NODE_TYPE,
+    ROOT_NODE_SPAN_TYPE extends Annotation,
+    RELATION_TYPE extends TOP> {
   
-  boolean isTopNode(JCas jCas, DEPENDENCY_NODE_TYPE depNode);
-  
-  
-  boolean hasHeadRelation(JCas jCas, DEPENDENCY_NODE_TYPE depNode);
-  
-  List<DEPENDENCY_NODE_TYPE> selectDependencyNodes(JCas jCas, Annotation coveringAnnotation);
+  /**
+   * Selects the single root node within the annotation. Should error on more than one root node.
+   */
+  ROOT_NODE_TYPE selectRootNode(JCas jCas, Annotation coveringAnnotation);
 
-  DEPENDENCY_NODE_TYPE getDependencyNode(JCas jCas, TOKEN_TYPE token);
-  
-  abstract String getHeadRelation(JCas jCas, DEPENDENCY_NODE_TYPE node);
-  
-  abstract DEPENDENCY_NODE_TYPE getHead(JCas jCas, DEPENDENCY_NODE_TYPE node); 
-  
-  TOP_DEPENDENCY_NODE_TYPE createTopDependencyNode(JCas jCas, int begin, int end);
+  /**
+   * Selects all dependency nodes within the annotation, excluding the root node.
+   * 
+   * Nodes should be ordered by their offsets. 
+   */
+  List<NODE_TYPE> selectNodes(JCas jCas, Annotation coveringAnnotation);
+
+  List<RELATION_TYPE> getHeadRelations(JCas jCas, NODE_TYPE node);
+  NODE_TYPE getHead(JCas jCas, RELATION_TYPE relation); 
+  String getLabel(JCas jCas, RELATION_TYPE relation); 
   
   /**
    * Creates a new dependency node for the specified span
    */
-  DEPENDENCY_NODE_TYPE createDependencyNode(JCas jCas, int begin, int end);
+  NODE_TYPE createNode(JCas jCas, NODE_SPAN_TYPE span);
+  ROOT_NODE_TYPE createRootNode(JCas jCas, ROOT_NODE_SPAN_TYPE span);
   
   /**
    * Creates a relation between the two nodes.  If dealing with a type system where the relation is a separate object,
    * this will likely create a new relation object.  For graphs that have the relation built into the node, this will likely
    * just set labels on head and child relation fields
    */
-  DEPENDENCY_RELATION_TYPE createRelation(JCas jCas, DEPENDENCY_NODE_TYPE head, DEPENDENCY_NODE_TYPE child, String relation);
+  RELATION_TYPE createRelation(JCas jCas, NODE_TYPE head, NODE_TYPE child, String relation);
   
   /**
    * Sets the head relations for a given node.  This is only important if the type system supports multi-head dependency parses
    */
-  void setHeadRelations(JCas jCas, DEPENDENCY_NODE_TYPE node, List<DEPENDENCY_RELATION_TYPE> headRelations);
+  void setHeadRelations(JCas jCas, NODE_TYPE node, List<RELATION_TYPE> headRelations);
   
   /**
    * Sets the head relations for a given node.  This is only important if the type system supports multi-child dependency parses
    */
-  void setChildRelations(JCas jCas, DEPENDENCY_NODE_TYPE node, List<DEPENDENCY_RELATION_TYPE> childRelations);
+  void setChildRelations(JCas jCas, NODE_TYPE node, List<RELATION_TYPE> childRelations);
 
 }

@@ -31,8 +31,8 @@ import java.util.Map;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.component.JCasAnnotator_ImplBase;
@@ -66,11 +66,12 @@ import com.googlecode.clearnlp.reader.AbstractReader;
  * @author Lee Becker
  * 
  */
-public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation, 
+public abstract class DependencyParser_ImplBase<
+   WINDOW_TYPE extends Annotation, 
    TOKEN_TYPE extends Annotation, 
-   DEPENDENCY_NODE_TYPE extends Annotation, 
-   TOP_DEPENDENCY_NODE_TYPE extends DEPENDENCY_NODE_TYPE,
-   DEPENDENCY_RELATION_TYPE extends FeatureStructure> extends JCasAnnotator_ImplBase {
+   DEPENDENCY_NODE_TYPE extends TOP,
+   DEPENDENCY_ROOT_NODE_TYPE extends DEPENDENCY_NODE_TYPE,
+   DEPENDENCY_RELATION_TYPE extends TOP> extends JCasAnnotator_ImplBase {
 
 	public static final String DEFAULT_MODEL_FILE_NAME = "ontonotes-en-dep-1.3.0.tgz";
 	
@@ -104,15 +105,15 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation,
   @ConfigurationParameter(
       description = WINDOW_TYPE_DESCRIPTION,
       defaultValue = "org.cleartk.token.type.Sentence")
-  private Class<? extends Annotation> windowClass;
+  private Class<WINDOW_TYPE> windowClass;
 
   private TokenOps<TOKEN_TYPE> tokenOps;
 
-  private DependencyOps<DEPENDENCY_NODE_TYPE, TOP_DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE, TOKEN_TYPE> dependencyOps;
+  private DependencyOps<DEPENDENCY_NODE_TYPE, TOKEN_TYPE, DEPENDENCY_ROOT_NODE_TYPE, WINDOW_TYPE, DEPENDENCY_RELATION_TYPE> dependencyOps;
   
   public DependencyParser_ImplBase(
       TokenOps<TOKEN_TYPE> tokenOps,
-      DependencyOps<DEPENDENCY_NODE_TYPE, TOP_DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE, TOKEN_TYPE> dependencyOps) {
+      DependencyOps<DEPENDENCY_NODE_TYPE, TOKEN_TYPE, DEPENDENCY_ROOT_NODE_TYPE, WINDOW_TYPE, DEPENDENCY_RELATION_TYPE> dependencyOps) {
     this.tokenOps = tokenOps;
     this.dependencyOps = dependencyOps;
   }
@@ -138,7 +139,7 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation,
 	@Override
 	public void process(JCas jCas) throws AnalysisEngineProcessException {
 		
-		for (Annotation window : JCasUtil.select(jCas, this.windowClass )) {
+		for (WINDOW_TYPE window : JCasUtil.select(jCas, this.windowClass)) {
 			List<TOKEN_TYPE> tokens = this.tokenOps.selectTokens(jCas, window);
 			
 			// Extract data from CAS and stuff it into ClearNLP data structures
@@ -166,16 +167,15 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation,
 	 * @param window
 	 * @param tokens
 	 */
-	private void addTreeToCas(JCas jCas, DEPTree tree, Annotation window, List<TOKEN_TYPE> tokens) {
+	private void addTreeToCas(JCas jCas, DEPTree tree, WINDOW_TYPE window, List<TOKEN_TYPE> tokens) {
 	  
 	    ArrayList<DEPENDENCY_NODE_TYPE> nodes = new ArrayList<DEPENDENCY_NODE_TYPE>(tree.size());
-	    TOP_DEPENDENCY_NODE_TYPE rootNode = this.dependencyOps.createTopDependencyNode(jCas, window.getBegin(), window.getEnd());
-	    rootNode.addToIndexes();
+	    DEPENDENCY_ROOT_NODE_TYPE rootNode = this.dependencyOps.createRootNode(jCas, window);
 	    nodes.add(rootNode); 
 	    
 	    for (int i = 0; i < tokens.size(); i++) {
 	        TOKEN_TYPE token = tokens.get(i);
-	        nodes.add(this.dependencyOps.createDependencyNode(jCas, token.getBegin(), token.getEnd()));
+	        nodes.add(this.dependencyOps.createNode(jCas, token));
 	    }
 	    
 	    Map<DEPENDENCY_NODE_TYPE, List<DEPENDENCY_RELATION_TYPE>> headRelations = Maps.newHashMap();
