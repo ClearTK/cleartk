@@ -29,6 +29,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.apache.uima.jcas.JCas;
@@ -36,6 +37,10 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.TreeFeature;
+import org.cleartk.classifier.encoder.features.BooleanEncoder;
+import org.cleartk.classifier.encoder.features.NumberEncoder;
+import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
@@ -125,6 +130,21 @@ public class RunTKSVMlightTest extends DefaultTestBase {
   }
   
   @Test
+  public void testTreeFeatures() throws Exception {
+    TreeFeatureVectorFeaturesEncoder encoder = new TreeFeatureVectorFeaturesEncoder();
+    encoder.addEncoder(new NumberEncoder());
+    encoder.addEncoder(new BooleanEncoder());
+    encoder.addEncoder(new StringEncoder());
+    
+    List<Instance<Boolean>> instances = generateTreeFeatureInstances(100);
+    for(Instance<Boolean> instance : instances){
+      TreeFeatureVector features = encoder.encodeAll(instance.getFeatures());
+      Map<String,String> treeFeatures = features.getTrees();
+      Assert.assertTrue(treeFeatures.size() > 0);
+    }
+  }
+  
+  @Test
   public void testTKSVMlight() throws Exception {
     this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, TK_SVMLIGHT_TESTS_PROPERTY_VALUE);
     this.logger.info(TK_SVMLIGHT_TESTS_ENABLED_MESSAGE);
@@ -166,6 +186,7 @@ public class RunTKSVMlightTest extends DefaultTestBase {
       Assert.assertEquals(outcome, classifier.classify(features));
       hider.restoreOutput();
     }
+    hider.close();
   }
 
   @Test
@@ -213,6 +234,7 @@ public class RunTKSVMlightTest extends DefaultTestBase {
       String outcome = instance.getOutcome();
       Assert.assertEquals("Assert error with instance: " + instance.toString(), outcome, classifier.classify(features));
     }
+    hider.close();
   }
 
   private static List<Instance<Boolean>> generateBooleanInstances(int n) {
@@ -236,6 +258,27 @@ public class RunTKSVMlightTest extends DefaultTestBase {
     return instances;
   }
 
+  private static List<Instance<Boolean>> generateTreeFeatureInstances(int n) {
+    Random random = new Random(42);
+    List<Instance<Boolean>> instances = new ArrayList<Instance<Boolean>>();
+    for (int i = 0; i < n; i++) {
+      Instance<Boolean> instance = new Instance<Boolean>();
+      if (random.nextInt(2) == 0) {
+        instance.setOutcome(true);
+        instance.add(new TreeFeature("Tree", "(S (NP I) (VB ran) (. .))"));
+        instance.add(new Feature("hello", random.nextInt(100) + 1000));
+        instance.add(new Feature("goodbye", 500));
+      } else {
+        instance.setOutcome(false);
+        instance.add(new TreeFeature("Tree", "(S (VB I) (NP ran) (. .))"));
+        instance.add(new Feature("hello", random.nextInt(100)));
+        instance.add(new Feature("goodbye", 500));
+      }
+      instances.add(instance);
+    }
+    return instances;
+  }
+
   private static List<Instance<String>> generateStringInstances(int n) {
     Random random = new Random(42);
     List<Instance<String>> instances = new ArrayList<Instance<String>>();
@@ -244,19 +287,19 @@ public class RunTKSVMlightTest extends DefaultTestBase {
       int c = random.nextInt(3);
       if (c == 0) {
         instance.setOutcome("A");
-        instance.add(new Feature("TK_tree", "(S (NP I) (VB ran) (. .))"));
+        instance.add(new TreeFeature("Tree", "(S (NP I) (VB ran) (. .))"));
         instance.add(new Feature("hello", random.nextInt(100) + 950));
         instance.add(new Feature("goodbye", random.nextInt(100)));
         instance.add(new Feature("farewell", random.nextInt(100)));
       } else if (c == 1) {
         instance.setOutcome("B");
-        instance.add(new Feature("TK_tree", "(S (TT going) (ZZ gone) (. .))"));
+        instance.add(new TreeFeature("Tree", "(S (TT going) (ZZ gone) (. .))"));
         instance.add(new Feature("hello", random.nextInt(100)));
         instance.add(new Feature("goodbye", random.nextInt(100) + 950));
         instance.add(new Feature("farewell", random.nextInt(100)));
       } else {
         instance.setOutcome("C");
-        instance.add(new Feature("TK_tree", "(S (DET The) (PP Fox) (. .))"));
+        instance.add(new TreeFeature("Tree", "(S (DET The) (PP Fox) (. .))"));
         instance.add(new Feature("hello", random.nextInt(100)));
         instance.add(new Feature("goodbye", random.nextInt(100)));
         instance.add(new Feature("farewell", random.nextInt(100) + 950));
