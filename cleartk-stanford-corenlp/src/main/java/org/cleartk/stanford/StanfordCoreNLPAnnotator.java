@@ -65,11 +65,11 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
+import edu.stanford.nlp.semgraph.SemanticGraphEdge;
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation;
-import edu.stanford.nlp.trees.semgraph.SemanticGraph;
-import edu.stanford.nlp.trees.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
-import edu.stanford.nlp.trees.semgraph.SemanticGraphEdge;
 import edu.stanford.nlp.util.CoreMap;
 
 /**
@@ -240,7 +240,7 @@ public class StanfordCoreNLPAnnotator extends JCasAnnotator_ImplBase {
     Map<Integer, CorefChain> corefChains = document.get(CorefChainAnnotation.class);
     for (CorefChain chain : corefChains.values()) {
       List<NamedEntityMention> mentions = new ArrayList<NamedEntityMention>();
-      for (CorefMention corefMention : chain.getCorefMentions()) {
+      for (CorefMention corefMention : chain.getMentionsInTextualOrder()) {
 
         // figure out the character span of the token
         List<Token> tokens = sentenceTokens.get(corefMention.sentNum - 1);
