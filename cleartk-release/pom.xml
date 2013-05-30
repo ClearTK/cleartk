@@ -152,7 +152,7 @@
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-semantic-roles</artifactId>
-				<version>0.6.4-SNAPSHOT</version>
+				<version>0.6.4</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
