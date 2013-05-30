@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/* First created by JCasGen Thu May 30 14:43:17 MDT 2013 */<a name="line.3"></a>
+<span class="sourceLineNo">004</span>package org.cleartk.type.test;<a name="line.4"></a>
+<span class="sourceLineNo">005</span><a name="line.5"></a>
+<span class="sourceLineNo">006</span>import org.apache.uima.jcas.JCas; <a name="line.6"></a>
+<span class="sourceLineNo">007</span>import org.apache.uima.jcas.JCasRegistry;<a name="line.7"></a>
+<span class="sourceLineNo">008</span>import org.apache.uima.jcas.cas.TOP_Type;<a name="line.8"></a>
+<span class="sourceLineNo">009</span><a name="line.9"></a>
+<span class="sourceLineNo">010</span>import org.apache.uima.jcas.cas.FSArray;<a name="line.10"></a>
+<span class="sourceLineNo">011</span>import org.apache.uima.jcas.tcas.Annotation;<a name="line.11"></a>
+<span class="sourceLineNo">012</span><a name="line.12"></a>
+<span class="sourceLineNo">013</span><a name="line.13"></a>
+<span class="sourceLineNo">014</span>/** <a name="line.14"></a>
+<span class="sourceLineNo">015</span> * Updated by JCasGen Thu May 30 14:43:17 MDT 2013<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * XML source: /Users/bethard/Code/cleartk/cleartk-test-util/src/main/resources/org/cleartk/type/test/TestTypeSystem.xml<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * @generated */<a name="line.17"></a>
+<span class="sourceLineNo">018</span>public class Token extends Annotation {<a name="line.18"></a>
+<span class="sourceLineNo">019</span>  /** @generated<a name="line.19"></a>
+<span class="sourceLineNo">020</span>   * @ordered <a name="line.20"></a>
+<span class="sourceLineNo">021</span>   */<a name="line.21"></a>
+<span class="sourceLineNo">022</span>  @SuppressWarnings ("hiding")<a name="line.22"></a>
+<span class="sourceLineNo">023</span>  public final static int typeIndexID = JCasRegistry.register(Token.class);<a name="line.23"></a>
+<span class="sourceLineNo">024</span>  /** @generated<a name="line.24"></a>
+<span class="sourceLineNo">025</span>   * @ordered <a name="line.25"></a>
+<span class="sourceLineNo">026</span>   */<a name="line.26"></a>
+<span class="sourceLineNo">027</span>  @SuppressWarnings ("hiding")<a name="line.27"></a>
+<span class="sourceLineNo">028</span>  public final static int type = typeIndexID;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>  /** @generated  */<a name="line.29"></a>
+<span class="sourceLineNo">030</span>  @Override<a name="line.30"></a>
+<span class="sourceLineNo">031</span>  public              int getTypeIndexID() {return typeIndexID;}<a name="line.31"></a>
+<span class="sourceLineNo">032</span> <a name="line.32"></a>
+<span class="sourceLineNo">033</span>  /** Never called.  Disable default constructor<a name="line.33"></a>
+<span class="sourceLineNo">034</span>   * @generated */<a name="line.34"></a>
+<span class="sourceLineNo">035</span>  protected Token() {/* intentionally empty block */}<a name="line.35"></a>
+<span class="sourceLineNo">036</span>    <a name="line.36"></a>
+<span class="sourceLineNo">037</span>  /** Internal - constructor used by generator <a name="line.37"></a>
+<span class="sourceLineNo">038</span>   * @generated */<a name="line.38"></a>
+<span class="sourceLineNo">039</span>  public Token(int addr, TOP_Type type) {<a name="line.39"></a>
+<span class="sourceLineNo">040</span>    super(addr, type);<a name="line.40"></a>
+<span class="sourceLineNo">041</span>    readObject();<a name="line.41"></a>
+<span class="sourceLineNo">042</span>  }<a name="line.42"></a>
+<span class="sourceLineNo">043</span>  <a name="line.43"></a>
+<span class="sourceLineNo">044</span>  /** @generated */<a name="line.44"></a>
+<span class="sourceLineNo">045</span>  public Token(JCas jcas) {<a name="line.45"></a>
+<span class="sourceLineNo">046</span>    super(jcas);<a name="line.46"></a>
+<span class="sourceLineNo">047</span>    readObject();   <a name="line.47"></a>
+<span class="sourceLineNo">048</span>  } <a name="line.48"></a>
+<span class="sourceLineNo">049</span><a name="line.49"></a>
+<span class="sourceLineNo">050</span>  /** @generated */  <a name="line.50"></a>
+<span class="sourceLineNo">051</span>  public Token(JCas jcas, int begin, int end) {<a name="line.51"></a>
+<span class="sourceLineNo">052</span>    super(jcas);<a name="line.52"></a>
+<span class="sourceLineNo">053</span>    setBegin(begin);<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    setEnd(end);<a name="line.54"></a>
+<span class="sourceLineNo">055</span>    readObject();<a name="line.55"></a>
+<span class="sourceLineNo">056</span>  }   <a name="line.56"></a>
+<span class="sourceLineNo">057</span><a name="line.57"></a>
+<span class="sourceLineNo">058</span>  /** &lt;!-- begin-user-doc --&gt;<a name="line.58"></a>
+<span class="sourceLineNo">059</span>    * Write your own initialization here<a name="line.59"></a>
+<span class="sourceLineNo">060</span>    * &lt;!-- end-user-doc --&gt;<a name="line.60"></a>
+<span class="sourceLineNo">061</span>  @generated modifiable */<a name="line.61"></a>
+<span class="sourceLineNo">062</span>  private void readObject() {/*default - does nothing empty block */}<a name="line.62"></a>
+<span class="sourceLineNo">063</span>     <a name="line.63"></a>
+<span class="sourceLineNo">064</span> <a name="line.64"></a>
+<span class="sourceLineNo">065</span>    <a name="line.65"></a>
+<span class="sourceLineNo">066</span>  //*--------------*<a name="line.66"></a>
+<span class="sourceLineNo">067</span>  //* Feature: pos<a name="line.67"></a>
+<span class="sourceLineNo">068</span><a name="line.68"></a>
+<span class="sourceLineNo">069</span>  /** getter for pos - gets <a name="line.69"></a>
+<span class="sourceLineNo">070</span>   * @generated */<a name="line.70"></a>
+<span class="sourceLineNo">071</span>  public String getPos() {<a name="line.71"></a>
+<span class="sourceLineNo">072</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_pos == null)<a name="line.72"></a>
+<span class="sourceLineNo">073</span>      jcasType.jcas.throwFeatMissing("pos", "org.cleartk.type.test.Token");<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    return jcasType.ll_cas.ll_getStringValue(addr, ((Token_Type)jcasType).casFeatCode_pos);}<a name="line.74"></a>
+<span class="sourceLineNo">075</span>    <a name="line.75"></a>
+<span class="sourceLineNo">076</span>  /** setter for pos - sets  <a name="line.76"></a>
+<span class="sourceLineNo">077</span>   * @generated */<a name="line.77"></a>
+<span class="sourceLineNo">078</span>  public void setPos(String v) {<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_pos == null)<a name="line.79"></a>
+<span class="sourceLineNo">080</span>      jcasType.jcas.throwFeatMissing("pos", "org.cleartk.type.test.Token");<a name="line.80"></a>
+<span class="sourceLineNo">081</span>    jcasType.ll_cas.ll_setStringValue(addr, ((Token_Type)jcasType).casFeatCode_pos, v);}    <a name="line.81"></a>
+<span class="sourceLineNo">082</span>   <a name="line.82"></a>
+<span class="sourceLineNo">083</span>    <a name="line.83"></a>
+<span class="sourceLineNo">084</span>  //*--------------*<a name="line.84"></a>
+<span class="sourceLineNo">085</span>  //* Feature: lemma<a name="line.85"></a>
+<span class="sourceLineNo">086</span><a name="line.86"></a>
+<span class="sourceLineNo">087</span>  /** getter for lemma - gets <a name="line.87"></a>
+<span class="sourceLineNo">088</span>   * @generated */<a name="line.88"></a>
+<span class="sourceLineNo">089</span>  public Lemma getLemma() {<a name="line.89"></a>
+<span class="sourceLineNo">090</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_lemma == null)<a name="line.90"></a>
+<span class="sourceLineNo">091</span>      jcasType.jcas.throwFeatMissing("lemma", "org.cleartk.type.test.Token");<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    return (Lemma)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_lemma)));}<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    <a name="line.93"></a>
+<span class="sourceLineNo">094</span>  /** setter for lemma - sets  <a name="line.94"></a>
+<span class="sourceLineNo">095</span>   * @generated */<a name="line.95"></a>
+<span class="sourceLineNo">096</span>  public void setLemma(Lemma v) {<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_lemma == null)<a name="line.97"></a>
+<span class="sourceLineNo">098</span>      jcasType.jcas.throwFeatMissing("lemma", "org.cleartk.type.test.Token");<a name="line.98"></a>
+<span class="sourceLineNo">099</span>    jcasType.ll_cas.ll_setRefValue(addr, ((Token_Type)jcasType).casFeatCode_lemma, jcasType.ll_cas.ll_getFSRef(v));}    <a name="line.99"></a>
+<span class="sourceLineNo">100</span>   <a name="line.100"></a>
+<span class="sourceLineNo">101</span>    <a name="line.101"></a>
+<span class="sourceLineNo">102</span>  //*--------------*<a name="line.102"></a>
+<span class="sourceLineNo">103</span>  //* Feature: posTag<a name="line.103"></a>
+<span class="sourceLineNo">104</span><a name="line.104"></a>
+<span class="sourceLineNo">105</span>  /** getter for posTag - gets <a name="line.105"></a>
+<span class="sourceLineNo">106</span>   * @generated */<a name="line.106"></a>
+<span class="sourceLineNo">107</span>  public FSArray getPosTag() {<a name="line.107"></a>
+<span class="sourceLineNo">108</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_posTag == null)<a name="line.108"></a>
+<span class="sourceLineNo">109</span>      jcasType.jcas.throwFeatMissing("posTag", "org.cleartk.type.test.Token");<a name="line.109"></a>
+<span class="sourceLineNo">110</span>    return (FSArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_posTag)));}<a name="line.110"></a>
+<span class="sourceLineNo">111</span>    <a name="line.111"></a>
+<span class="sourceLineNo">112</span>  /** setter for posTag - sets  <a name="line.112"></a>
+<span class="sourceLineNo">113</span>   * @generated */<a name="line.113"></a>
+<span class="sourceLineNo">114</span>  public void setPosTag(FSArray v) {<a name="line.114"></a>
+<span class="sourceLineNo">115</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_posTag == null)<a name="line.115"></a>
+<span class="sourceLineNo">116</span>      jcasType.jcas.throwFeatMissing("posTag", "org.cleartk.type.test.Token");<a name="line.116"></a>
+<span class="sourceLineNo">117</span>    jcasType.ll_cas.ll_setRefValue(addr, ((Token_Type)jcasType).casFeatCode_posTag, jcasType.ll_cas.ll_getFSRef(v));}    <a name="line.117"></a>
+<span class="sourceLineNo">118</span>    <a name="line.118"></a>
+<span class="sourceLineNo">119</span>  /** indexed getter for posTag - gets an indexed value - <a name="line.119"></a>
+<span class="sourceLineNo">120</span>   * @generated */<a name="line.120"></a>
+<span class="sourceLineNo">121</span>  public POSTag getPosTag(int i) {<a name="line.121"></a>
+<span class="sourceLineNo">122</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_posTag == null)<a name="line.122"></a>
+<span class="sourceLineNo">123</span>      jcasType.jcas.throwFeatMissing("posTag", "org.cleartk.type.test.Token");<a name="line.123"></a>
+<span class="sourceLineNo">124</span>    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_posTag), i);<a name="line.124"></a>
+<span class="sourceLineNo">125</span>    return (POSTag)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_posTag), i)));}<a name="line.125"></a>
+<span class="sourceLineNo">126</span><a name="line.126"></a>
+<span class="sourceLineNo">127</span>  /** indexed setter for posTag - sets an indexed value - <a name="line.127"></a>
+<span class="sourceLineNo">128</span>   * @generated */<a name="line.128"></a>
+<span class="sourceLineNo">129</span>  public void setPosTag(int i, POSTag v) { <a name="line.129"></a>
+<span class="sourceLineNo">130</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_posTag == null)<a name="line.130"></a>
+<span class="sourceLineNo">131</span>      jcasType.jcas.throwFeatMissing("posTag", "org.cleartk.type.test.Token");<a name="line.131"></a>
+<span class="sourceLineNo">132</span>    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_posTag), i);<a name="line.132"></a>
+<span class="sourceLineNo">133</span>    jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_posTag), i, jcasType.ll_cas.ll_getFSRef(v));}<a name="line.133"></a>
+<span class="sourceLineNo">134</span>   <a name="line.134"></a>
+<span class="sourceLineNo">135</span>    <a name="line.135"></a>
+<span class="sourceLineNo">136</span>  //*--------------*<a name="line.136"></a>
+<span class="sourceLineNo">137</span>  //* Feature: depRel<a name="line.137"></a>
+<span class="sourceLineNo">138</span><a name="line.138"></a>
+<span class="sourceLineNo">139</span>  /** getter for depRel - gets <a name="line.139"></a>
+<span class="sourceLineNo">140</span>   * @generated */<a name="line.140"></a>
+<span class="sourceLineNo">141</span>  public FSArray getDepRel() {<a name="line.141"></a>
+<span class="sourceLineNo">142</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_depRel == null)<a name="line.142"></a>
+<span class="sourceLineNo">143</span>      jcasType.jcas.throwFeatMissing("depRel", "org.cleartk.type.test.Token");<a name="line.143"></a>
+<span class="sourceLineNo">144</span>    return (FSArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_depRel)));}<a name="line.144"></a>
+<span class="sourceLineNo">145</span>    <a name="line.145"></a>
+<span class="sourceLineNo">146</span>  /** setter for depRel - sets  <a name="line.146"></a>
+<span class="sourceLineNo">147</span>   * @generated */<a name="line.147"></a>
+<span class="sourceLineNo">148</span>  public void setDepRel(FSArray v) {<a name="line.148"></a>
+<span class="sourceLineNo">149</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_depRel == null)<a name="line.149"></a>
+<span class="sourceLineNo">150</span>      jcasType.jcas.throwFeatMissing("depRel", "org.cleartk.type.test.Token");<a name="line.150"></a>
+<span class="sourceLineNo">151</span>    jcasType.ll_cas.ll_setRefValue(addr, ((Token_Type)jcasType).casFeatCode_depRel, jcasType.ll_cas.ll_getFSRef(v));}    <a name="line.151"></a>
+<span class="sourceLineNo">152</span>    <a name="line.152"></a>
+<span class="sourceLineNo">153</span>  /** indexed getter for depRel - gets an indexed value - <a name="line.153"></a>
+<span class="sourceLineNo">154</span>   * @generated */<a name="line.154"></a>
+<span class="sourceLineNo">155</span>  public DependencyRelation getDepRel(int i) {<a name="line.155"></a>
+<span class="sourceLineNo">156</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_depRel == null)<a name="line.156"></a>
+<span class="sourceLineNo">157</span>      jcasType.jcas.throwFeatMissing("depRel", "org.cleartk.type.test.Token");<a name="line.157"></a>
+<span class="sourceLineNo">158</span>    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_depRel), i);<a name="line.158"></a>
+<span class="sourceLineNo">159</span>    return (DependencyRelation)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_depRel), i)));}<a name="line.159"></a>
+<span class="sourceLineNo">160</span><a name="line.160"></a>
+<span class="sourceLineNo">161</span>  /** indexed setter for depRel - sets an indexed value - <a name="line.161"></a>
+<span class="sourceLineNo">162</span>   * @generated */<a name="line.162"></a>
+<span class="sourceLineNo">163</span>  public void setDepRel(int i, DependencyRelation v) { <a name="line.163"></a>
+<span class="sourceLineNo">164</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_depRel == null)<a name="line.164"></a>
+<span class="sourceLineNo">165</span>      jcasType.jcas.throwFeatMissing("depRel", "org.cleartk.type.test.Token");<a name="line.165"></a>
+<span class="sourceLineNo">166</span>    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_depRel), i);<a name="line.166"></a>
+<span class="sourceLineNo">167</span>    jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_depRel), i, jcasType.ll_cas.ll_getFSRef(v));}<a name="line.167"></a>
+<span class="sourceLineNo">168</span>   <a name="line.168"></a>
+<span class="sourceLineNo">169</span>    <a name="line.169"></a>
+<span class="sourceLineNo">170</span>  //*--------------*<a name="line.170"></a>
+<span class="sourceLineNo">171</span>  //* Feature: orthogr<a name="line.171"></a>
+<span class="sourceLineNo">172</span><a name="line.172"></a>
+<span class="sourceLineNo">173</span>  /** getter for orthogr - gets <a name="line.173"></a>
+<span class="sourceLineNo">174</span>   * @generated */<a name="line.174"></a>
+<span class="sourceLineNo">175</span>  public Orthography getOrthogr() {<a name="line.175"></a>
+<span class="sourceLineNo">176</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_orthogr == null)<a name="line.176"></a>
+<span class="sourceLineNo">177</span>      jcasType.jcas.throwFeatMissing("orthogr", "org.cleartk.type.test.Token");<a name="line.177"></a>
+<span class="sourceLineNo">178</span>    return (Orthography)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Token_Type)jcasType).casFeatCode_orthogr)));}<a name="line.178"></a>
+<span class="sourceLineNo">179</span>    <a name="line.179"></a>
+<span class="sourceLineNo">180</span>  /** setter for orthogr - sets  <a name="line.180"></a>
+<span class="sourceLineNo">181</span>   * @generated */<a name="line.181"></a>
+<span class="sourceLineNo">182</span>  public void setOrthogr(Orthography v) {<a name="line.182"></a>
+<span class="sourceLineNo">183</span>    if (Token_Type.featOkTst &amp;&amp; ((Token_Type)jcasType).casFeat_orthogr == null)<a name="line.183"></a>
+<span class="sourceLineNo">184</span>      jcasType.jcas.throwFeatMissing("orthogr", "org.cleartk.type.test.Token");<a name="line.184"></a>
+<span class="sourceLineNo">185</span>    jcasType.ll_cas.ll_setRefValue(addr, ((Token_Type)jcasType).casFeatCode_orthogr, jcasType.ll_cas.ll_getFSRef(v));}    <a name="line.185"></a>
+<span class="sourceLineNo">186</span>  }<a name="line.186"></a>
+<span class="sourceLineNo">187</span><a name="line.187"></a>
+<span class="sourceLineNo">188</span>    <a name="line.188"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

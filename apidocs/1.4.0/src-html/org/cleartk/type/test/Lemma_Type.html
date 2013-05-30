@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a name="line.1"></a>
+<span class="sourceLineNo">002</span>/* First created by JCasGen Thu May 30 14:43:17 MDT 2013 */<a name="line.2"></a>
+<span class="sourceLineNo">003</span>package org.cleartk.type.test;<a name="line.3"></a>
+<span class="sourceLineNo">004</span><a name="line.4"></a>
+<span class="sourceLineNo">005</span>import org.apache.uima.jcas.JCas;<a name="line.5"></a>
+<span class="sourceLineNo">006</span>import org.apache.uima.jcas.JCasRegistry;<a name="line.6"></a>
+<span class="sourceLineNo">007</span>import org.apache.uima.cas.impl.CASImpl;<a name="line.7"></a>
+<span class="sourceLineNo">008</span>import org.apache.uima.cas.impl.FSGenerator;<a name="line.8"></a>
+<span class="sourceLineNo">009</span>import org.apache.uima.cas.FeatureStructure;<a name="line.9"></a>
+<span class="sourceLineNo">010</span>import org.apache.uima.cas.impl.TypeImpl;<a name="line.10"></a>
+<span class="sourceLineNo">011</span>import org.apache.uima.cas.Type;<a name="line.11"></a>
+<span class="sourceLineNo">012</span>import org.apache.uima.cas.impl.FeatureImpl;<a name="line.12"></a>
+<span class="sourceLineNo">013</span>import org.apache.uima.cas.Feature;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import org.apache.uima.jcas.tcas.Annotation_Type;<a name="line.14"></a>
+<span class="sourceLineNo">015</span><a name="line.15"></a>
+<span class="sourceLineNo">016</span>/** <a name="line.16"></a>
+<span class="sourceLineNo">017</span> * Updated by JCasGen Thu May 30 14:43:17 MDT 2013<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * @generated */<a name="line.18"></a>
+<span class="sourceLineNo">019</span>public class Lemma_Type extends Annotation_Type {<a name="line.19"></a>
+<span class="sourceLineNo">020</span>  /** @generated */<a name="line.20"></a>
+<span class="sourceLineNo">021</span>  @Override<a name="line.21"></a>
+<span class="sourceLineNo">022</span>  protected FSGenerator getFSGenerator() {return fsGenerator;}<a name="line.22"></a>
+<span class="sourceLineNo">023</span>  /** @generated */<a name="line.23"></a>
+<span class="sourceLineNo">024</span>  private final FSGenerator fsGenerator = <a name="line.24"></a>
+<span class="sourceLineNo">025</span>    new FSGenerator() {<a name="line.25"></a>
+<span class="sourceLineNo">026</span>      public FeatureStructure createFS(int addr, CASImpl cas) {<a name="line.26"></a>
+<span class="sourceLineNo">027</span>                         if (Lemma_Type.this.useExistingInstance) {<a name="line.27"></a>
+<span class="sourceLineNo">028</span>                           // Return eq fs instance if already created<a name="line.28"></a>
+<span class="sourceLineNo">029</span>                     FeatureStructure fs = Lemma_Type.this.jcas.getJfsFromCaddr(addr);<a name="line.29"></a>
+<span class="sourceLineNo">030</span>                     if (null == fs) {<a name="line.30"></a>
+<span class="sourceLineNo">031</span>                       fs = new Lemma(addr, Lemma_Type.this);<a name="line.31"></a>
+<span class="sourceLineNo">032</span>                           Lemma_Type.this.jcas.putJfsFromCaddr(addr, fs);<a name="line.32"></a>
+<span class="sourceLineNo">033</span>                           return fs;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>                     }<a name="line.34"></a>
+<span class="sourceLineNo">035</span>                     return fs;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>        } else return new Lemma(addr, Lemma_Type.this);<a name="line.36"></a>
+<span class="sourceLineNo">037</span>          }<a name="line.37"></a>
+<span class="sourceLineNo">038</span>    };<a name="line.38"></a>
+<span class="sourceLineNo">039</span>  /** @generated */<a name="line.39"></a>
+<span class="sourceLineNo">040</span>  @SuppressWarnings ("hiding")<a name="line.40"></a>
+<span class="sourceLineNo">041</span>  public final static int typeIndexID = Lemma.typeIndexID;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>  /** @generated <a name="line.42"></a>
+<span class="sourceLineNo">043</span>     @modifiable */<a name="line.43"></a>
+<span class="sourceLineNo">044</span>  @SuppressWarnings ("hiding")<a name="line.44"></a>
+<span class="sourceLineNo">045</span>  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.cleartk.type.test.Lemma");<a name="line.45"></a>
+<span class="sourceLineNo">046</span> <a name="line.46"></a>
+<span class="sourceLineNo">047</span>  /** @generated */<a name="line.47"></a>
+<span class="sourceLineNo">048</span>  final Feature casFeat_value;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>  /** @generated */<a name="line.49"></a>
+<span class="sourceLineNo">050</span>  final int     casFeatCode_value;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>  /** @generated */ <a name="line.51"></a>
+<span class="sourceLineNo">052</span>  public String getValue(int addr) {<a name="line.52"></a>
+<span class="sourceLineNo">053</span>        if (featOkTst &amp;&amp; casFeat_value == null)<a name="line.53"></a>
+<span class="sourceLineNo">054</span>      jcas.throwFeatMissing("value", "org.cleartk.type.test.Lemma");<a name="line.54"></a>
+<span class="sourceLineNo">055</span>    return ll_cas.ll_getStringValue(addr, casFeatCode_value);<a name="line.55"></a>
+<span class="sourceLineNo">056</span>  }<a name="line.56"></a>
+<span class="sourceLineNo">057</span>  /** @generated */    <a name="line.57"></a>
+<span class="sourceLineNo">058</span>  public void setValue(int addr, String v) {<a name="line.58"></a>
+<span class="sourceLineNo">059</span>        if (featOkTst &amp;&amp; casFeat_value == null)<a name="line.59"></a>
+<span class="sourceLineNo">060</span>      jcas.throwFeatMissing("value", "org.cleartk.type.test.Lemma");<a name="line.60"></a>
+<span class="sourceLineNo">061</span>    ll_cas.ll_setStringValue(addr, casFeatCode_value, v);}<a name="line.61"></a>
+<span class="sourceLineNo">062</span>    <a name="line.62"></a>
+<span class="sourceLineNo">063</span>  <a name="line.63"></a>
+<span class="sourceLineNo">064</span> <a name="line.64"></a>
+<span class="sourceLineNo">065</span>  /** @generated */<a name="line.65"></a>
+<span class="sourceLineNo">066</span>  final Feature casFeat_testFS;<a name="line.66"></a>
+<span class="sourceLineNo">067</span>  /** @generated */<a name="line.67"></a>
+<span class="sourceLineNo">068</span>  final int     casFeatCode_testFS;<a name="line.68"></a>
+<span class="sourceLineNo">069</span>  /** @generated */ <a name="line.69"></a>
+<span class="sourceLineNo">070</span>  public int getTestFS(int addr) {<a name="line.70"></a>
+<span class="sourceLineNo">071</span>        if (featOkTst &amp;&amp; casFeat_testFS == null)<a name="line.71"></a>
+<span class="sourceLineNo">072</span>      jcas.throwFeatMissing("testFS", "org.cleartk.type.test.Lemma");<a name="line.72"></a>
+<span class="sourceLineNo">073</span>    return ll_cas.ll_getRefValue(addr, casFeatCode_testFS);<a name="line.73"></a>
+<span class="sourceLineNo">074</span>  }<a name="line.74"></a>
+<span class="sourceLineNo">075</span>  /** @generated */    <a name="line.75"></a>
+<span class="sourceLineNo">076</span>  public void setTestFS(int addr, int v) {<a name="line.76"></a>
+<span class="sourceLineNo">077</span>        if (featOkTst &amp;&amp; casFeat_testFS == null)<a name="line.77"></a>
+<span class="sourceLineNo">078</span>      jcas.throwFeatMissing("testFS", "org.cleartk.type.test.Lemma");<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    ll_cas.ll_setRefValue(addr, casFeatCode_testFS, v);}<a name="line.79"></a>
+<span class="sourceLineNo">080</span>    <a name="line.80"></a>
+<span class="sourceLineNo">081</span>   /** @generated */<a name="line.81"></a>
+<span class="sourceLineNo">082</span>  public String getTestFS(int addr, int i) {<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        if (featOkTst &amp;&amp; casFeat_testFS == null)<a name="line.83"></a>
+<span class="sourceLineNo">084</span>      jcas.throwFeatMissing("testFS", "org.cleartk.type.test.Lemma");<a name="line.84"></a>
+<span class="sourceLineNo">085</span>    if (lowLevelTypeChecks)<a name="line.85"></a>
+<span class="sourceLineNo">086</span>      return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_testFS), i, true);<a name="line.86"></a>
+<span class="sourceLineNo">087</span>    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_testFS), i);<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_testFS), i);<a name="line.88"></a>
+<span class="sourceLineNo">089</span>  }<a name="line.89"></a>
+<span class="sourceLineNo">090</span>   <a name="line.90"></a>
+<span class="sourceLineNo">091</span>  /** @generated */ <a name="line.91"></a>
+<span class="sourceLineNo">092</span>  public void setTestFS(int addr, int i, String v) {<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        if (featOkTst &amp;&amp; casFeat_testFS == null)<a name="line.93"></a>
+<span class="sourceLineNo">094</span>      jcas.throwFeatMissing("testFS", "org.cleartk.type.test.Lemma");<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    if (lowLevelTypeChecks)<a name="line.95"></a>
+<span class="sourceLineNo">096</span>      ll_cas.ll_setStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_testFS), i, v, true);<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_testFS), i);<a name="line.97"></a>
+<span class="sourceLineNo">098</span>    ll_cas.ll_setStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_testFS), i, v);<a name="line.98"></a>
+<span class="sourceLineNo">099</span>  }<a name="line.99"></a>
+<span class="sourceLineNo">100</span> <a name="line.100"></a>
+<span class="sourceLineNo">101</span><a name="line.101"></a>
+<span class="sourceLineNo">102</span><a name="line.102"></a>
+<span class="sourceLineNo">103</span><a name="line.103"></a>
+<span class="sourceLineNo">104</span>  /** initialize variables to correspond with Cas Type and Features<a name="line.104"></a>
+<span class="sourceLineNo">105</span>        * @generated */<a name="line.105"></a>
+<span class="sourceLineNo">106</span>  public Lemma_Type(JCas jcas, Type casType) {<a name="line.106"></a>
+<span class="sourceLineNo">107</span>    super(jcas, casType);<a name="line.107"></a>
+<span class="sourceLineNo">108</span>    casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());<a name="line.108"></a>
+<span class="sourceLineNo">109</span><a name="line.109"></a>
+<span class="sourceLineNo">110</span> <a name="line.110"></a>
+<span class="sourceLineNo">111</span>    casFeat_value = jcas.getRequiredFeatureDE(casType, "value", "uima.cas.String", featOkTst);<a name="line.111"></a>
+<span class="sourceLineNo">112</span>    casFeatCode_value  = (null == casFeat_value) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_value).getCode();<a name="line.112"></a>
+<span class="sourceLineNo">113</span><a name="line.113"></a>
+<span class="sourceLineNo">114</span> <a name="line.114"></a>
+<span class="sourceLineNo">115</span>    casFeat_testFS = jcas.getRequiredFeatureDE(casType, "testFS", "uima.cas.StringArray", featOkTst);<a name="line.115"></a>
+<span class="sourceLineNo">116</span>    casFeatCode_testFS  = (null == casFeat_testFS) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_testFS).getCode();<a name="line.116"></a>
+<span class="sourceLineNo">117</span><a name="line.117"></a>
+<span class="sourceLineNo">118</span>  }<a name="line.118"></a>
+<span class="sourceLineNo">119</span>}<a name="line.119"></a>
+<span class="sourceLineNo">120</span><a name="line.120"></a>
+<span class="sourceLineNo">121</span><a name="line.121"></a>
+<span class="sourceLineNo">122</span><a name="line.122"></a>
+<span class="sourceLineNo">123</span>    <a name="line.123"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

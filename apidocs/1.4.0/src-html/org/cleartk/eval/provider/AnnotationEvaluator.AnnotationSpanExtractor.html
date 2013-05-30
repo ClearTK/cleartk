@@ -1,0 +1,594 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (c) 2011, Regents of the University of Colorado <a name="line.2"></a>
+<span class="sourceLineNo">003</span> * All rights reserved.<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * <a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * <a name="line.7"></a>
+<span class="sourceLineNo">008</span> * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<span class="sourceLineNo">009</span> * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<span class="sourceLineNo">010</span> * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<span class="sourceLineNo">011</span> * <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<span class="sourceLineNo">023</span> */<a name="line.23"></a>
+<span class="sourceLineNo">024</span>package org.cleartk.eval.provider;<a name="line.24"></a>
+<span class="sourceLineNo">025</span><a name="line.25"></a>
+<span class="sourceLineNo">026</span>import java.util.ArrayList;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import java.util.Arrays;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import java.util.Collections;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import java.util.HashMap;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import java.util.HashSet;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import java.util.List;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import java.util.Map;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import java.util.Set;<a name="line.33"></a>
+<span class="sourceLineNo">034</span><a name="line.34"></a>
+<span class="sourceLineNo">035</span>import org.apache.uima.UimaContext;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import org.apache.uima.analysis_engine.AnalysisEngineDescription;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import org.apache.uima.analysis_engine.AnalysisEngineProcessException;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import org.apache.uima.cas.CASException;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import org.apache.uima.cas.Feature;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import org.apache.uima.jcas.JCas;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import org.apache.uima.jcas.tcas.Annotation;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>import org.apache.uima.resource.ResourceInitializationException;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>import org.apache.uima.util.Level;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>import org.apache.uima.util.Logger;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>import org.cleartk.eval.AnnotationStatistics;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import org.cleartk.eval.Evaluation_ImplBase;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import org.cleartk.util.ViewURIUtil;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>import org.uimafit.component.JCasAnnotator_ImplBase;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>import org.uimafit.descriptor.ConfigurationParameter;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>import org.uimafit.factory.AnalysisEngineFactory;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>import org.uimafit.factory.ConfigurationParameterFactory;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import org.uimafit.factory.initializable.InitializableFactory;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>import org.uimafit.util.JCasUtil;<a name="line.53"></a>
+<span class="sourceLineNo">054</span><a name="line.54"></a>
+<span class="sourceLineNo">055</span>/**<a name="line.55"></a>
+<span class="sourceLineNo">056</span> * An annotator that compares the annotations in a gold (human-annotated) view to the annotations in<a name="line.56"></a>
+<span class="sourceLineNo">057</span> * a system-annotated view. It can be used either to compare annotation spans (e.g. for a task like<a name="line.57"></a>
+<span class="sourceLineNo">058</span> * named entity recognition) or to compare annotation attributes (e.g. for a task like document<a name="line.58"></a>
+<span class="sourceLineNo">059</span> * classification).<a name="line.59"></a>
+<span class="sourceLineNo">060</span> * <a name="line.60"></a>
+<span class="sourceLineNo">061</span> * Evaluation statistics (e.g. precision, recall, F1) for each batch as defined by<a name="line.61"></a>
+<span class="sourceLineNo">062</span> * {@link #batchProcessComplete()} and for the overall collection as defined by<a name="line.62"></a>
+<span class="sourceLineNo">063</span> * {@link #collectionProcessComplete()} will be logged at {@link Level#WARNING}. Additionally,<a name="line.63"></a>
+<span class="sourceLineNo">064</span> * information about each system error will be logged at {@link Level#INFO}.<a name="line.64"></a>
+<span class="sourceLineNo">065</span> * <a name="line.65"></a>
+<span class="sourceLineNo">066</span> * (Though it might have been preferable to log the main evaluation statistics at {@link Level#INFO}<a name="line.66"></a>
+<span class="sourceLineNo">067</span> * and the fine-grained error information at {@link Level#FINE}, this is not practical because UIMA<a name="line.67"></a>
+<span class="sourceLineNo">068</span> * already logs lots of useless method begin/end messages at {@link Level#FINE}.)<a name="line.68"></a>
+<span class="sourceLineNo">069</span> * <a name="line.69"></a>
+<span class="sourceLineNo">070</span> * &lt;br&gt;<a name="line.70"></a>
+<span class="sourceLineNo">071</span> * Copyright (c) 2011, Regents of the University of Colorado &lt;br&gt;<a name="line.71"></a>
+<span class="sourceLineNo">072</span> * All rights reserved.<a name="line.72"></a>
+<span class="sourceLineNo">073</span> * <a name="line.73"></a>
+<span class="sourceLineNo">074</span> * @author Steven Bethard<a name="line.74"></a>
+<span class="sourceLineNo">075</span> * @deprecated Use {@link Evaluation_ImplBase} with {@link AnnotationStatistics}<a name="line.75"></a>
+<span class="sourceLineNo">076</span> */<a name="line.76"></a>
+<span class="sourceLineNo">077</span>@Deprecated<a name="line.77"></a>
+<span class="sourceLineNo">078</span>public class AnnotationEvaluator&lt;T extends Comparable&lt;? super T&gt;&gt; extends JCasAnnotator_ImplBase {<a name="line.78"></a>
+<span class="sourceLineNo">079</span><a name="line.79"></a>
+<span class="sourceLineNo">080</span>  public static interface SpanExtractor&lt;T extends Comparable&lt;? super T&gt;&gt; {<a name="line.80"></a>
+<span class="sourceLineNo">081</span>    public T getSpan(Annotation annotation);<a name="line.81"></a>
+<span class="sourceLineNo">082</span>  }<a name="line.82"></a>
+<span class="sourceLineNo">083</span><a name="line.83"></a>
+<span class="sourceLineNo">084</span>  public static class AnnotationSpanExtractor implements SpanExtractor&lt;AnnotationSpan&gt; {<a name="line.84"></a>
+<span class="sourceLineNo">085</span>    @Override<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    public AnnotationSpan getSpan(Annotation annotation) {<a name="line.86"></a>
+<span class="sourceLineNo">087</span>      return new AnnotationSpan(annotation);<a name="line.87"></a>
+<span class="sourceLineNo">088</span>    }<a name="line.88"></a>
+<span class="sourceLineNo">089</span>  }<a name="line.89"></a>
+<span class="sourceLineNo">090</span><a name="line.90"></a>
+<span class="sourceLineNo">091</span>  public static interface AnnotationGrouper {<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    public List&lt;String&gt; getGroups(Annotation annotation);<a name="line.92"></a>
+<span class="sourceLineNo">093</span>  }<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>  public static class SingleGroupAnnotationGrouper implements AnnotationGrouper {<a name="line.95"></a>
+<span class="sourceLineNo">096</span>    @Override<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    public List&lt;String&gt; getGroups(Annotation annotation) {<a name="line.97"></a>
+<span class="sourceLineNo">098</span>      return Arrays.asList("");<a name="line.98"></a>
+<span class="sourceLineNo">099</span>    }<a name="line.99"></a>
+<span class="sourceLineNo">100</span>  }<a name="line.100"></a>
+<span class="sourceLineNo">101</span><a name="line.101"></a>
+<span class="sourceLineNo">102</span>  public static AnalysisEngineDescription getSpanDescription(<a name="line.102"></a>
+<span class="sourceLineNo">103</span>      Class&lt;? extends Annotation&gt; annotationClass,<a name="line.103"></a>
+<span class="sourceLineNo">104</span>      String goldView,<a name="line.104"></a>
+<span class="sourceLineNo">105</span>      String systemView) throws ResourceInitializationException {<a name="line.105"></a>
+<span class="sourceLineNo">106</span>    return AnalysisEngineFactory.createPrimitiveDescription(<a name="line.106"></a>
+<span class="sourceLineNo">107</span>        AnnotationEvaluator.class,<a name="line.107"></a>
+<span class="sourceLineNo">108</span>        PARAM_ANNOTATION_CLASS_NAME,<a name="line.108"></a>
+<span class="sourceLineNo">109</span>        annotationClass.getName(),<a name="line.109"></a>
+<span class="sourceLineNo">110</span>        PARAM_GOLD_VIEW_NAME,<a name="line.110"></a>
+<span class="sourceLineNo">111</span>        goldView,<a name="line.111"></a>
+<span class="sourceLineNo">112</span>        PARAM_SYSTEM_VIEW_NAME,<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        systemView);<a name="line.113"></a>
+<span class="sourceLineNo">114</span>  }<a name="line.114"></a>
+<span class="sourceLineNo">115</span><a name="line.115"></a>
+<span class="sourceLineNo">116</span>  public static AnalysisEngineDescription getAttributeDescription(<a name="line.116"></a>
+<span class="sourceLineNo">117</span>      Class&lt;? extends Annotation&gt; annotationClass,<a name="line.117"></a>
+<span class="sourceLineNo">118</span>      String annotationAttributeName,<a name="line.118"></a>
+<span class="sourceLineNo">119</span>      String goldView,<a name="line.119"></a>
+<span class="sourceLineNo">120</span>      String systemView) throws ResourceInitializationException {<a name="line.120"></a>
+<span class="sourceLineNo">121</span>    return AnalysisEngineFactory.createPrimitiveDescription(<a name="line.121"></a>
+<span class="sourceLineNo">122</span>        AnnotationEvaluator.class,<a name="line.122"></a>
+<span class="sourceLineNo">123</span>        PARAM_ANNOTATION_CLASS_NAME,<a name="line.123"></a>
+<span class="sourceLineNo">124</span>        annotationClass.getName(),<a name="line.124"></a>
+<span class="sourceLineNo">125</span>        PARAM_ANNOTATION_ATTRIBUTE_NAME,<a name="line.125"></a>
+<span class="sourceLineNo">126</span>        annotationAttributeName,<a name="line.126"></a>
+<span class="sourceLineNo">127</span>        PARAM_GOLD_VIEW_NAME,<a name="line.127"></a>
+<span class="sourceLineNo">128</span>        goldView,<a name="line.128"></a>
+<span class="sourceLineNo">129</span>        PARAM_SYSTEM_VIEW_NAME,<a name="line.129"></a>
+<span class="sourceLineNo">130</span>        systemView);<a name="line.130"></a>
+<span class="sourceLineNo">131</span>  }<a name="line.131"></a>
+<span class="sourceLineNo">132</span><a name="line.132"></a>
+<span class="sourceLineNo">133</span>  @ConfigurationParameter(<a name="line.133"></a>
+<span class="sourceLineNo">134</span>      mandatory = true,<a name="line.134"></a>
+<span class="sourceLineNo">135</span>      description = "The annotation class whose gold and system spans should be compared")<a name="line.135"></a>
+<span class="sourceLineNo">136</span>  private String annotationClassName;<a name="line.136"></a>
+<span class="sourceLineNo">137</span><a name="line.137"></a>
+<span class="sourceLineNo">138</span>  @ConfigurationParameter(<a name="line.138"></a>
+<span class="sourceLineNo">139</span>      description = "The attribute whose gold and system values should be compared (if null, only "<a name="line.139"></a>
+<span class="sourceLineNo">140</span>          + "the annotation spans will be compared)")<a name="line.140"></a>
+<span class="sourceLineNo">141</span>  private String annotationAttributeName;<a name="line.141"></a>
+<span class="sourceLineNo">142</span><a name="line.142"></a>
+<span class="sourceLineNo">143</span>  @ConfigurationParameter(<a name="line.143"></a>
+<span class="sourceLineNo">144</span>      defaultValue = "org.cleartk.eval.provider.AnnotationEvaluator$AnnotationSpanExtractor",<a name="line.144"></a>
+<span class="sourceLineNo">145</span>      description = "The name of the class that extracts the span of an annotation. Defaults to "<a name="line.145"></a>
+<span class="sourceLineNo">146</span>          + "an extractor that looks at the annotation begin and end offsets.")<a name="line.146"></a>
+<span class="sourceLineNo">147</span>  private String spanExtractorClassName;<a name="line.147"></a>
+<span class="sourceLineNo">148</span><a name="line.148"></a>
+<span class="sourceLineNo">149</span>  @ConfigurationParameter(<a name="line.149"></a>
+<span class="sourceLineNo">150</span>      defaultValue = "org.cleartk.eval.provider.AnnotationEvaluator$SingleGroupAnnotationGrouper",<a name="line.150"></a>
+<span class="sourceLineNo">151</span>      description = "The name of a subclass of AnnotationGrouper that assigns a group to each "<a name="line.151"></a>
+<span class="sourceLineNo">152</span>          + "annotation. This is useful for, e.g. reporting results split by part of speech.")<a name="line.152"></a>
+<span class="sourceLineNo">153</span>  private String annotationGrouperClassName;<a name="line.153"></a>
+<span class="sourceLineNo">154</span><a name="line.154"></a>
+<span class="sourceLineNo">155</span>  @ConfigurationParameter(<a name="line.155"></a>
+<span class="sourceLineNo">156</span>      mandatory = true,<a name="line.156"></a>
+<span class="sourceLineNo">157</span>      description = "The name of the CAS view containing the gold (manual) annotations")<a name="line.157"></a>
+<span class="sourceLineNo">158</span>  private String goldViewName;<a name="line.158"></a>
+<span class="sourceLineNo">159</span><a name="line.159"></a>
+<span class="sourceLineNo">160</span>  @ConfigurationParameter(<a name="line.160"></a>
+<span class="sourceLineNo">161</span>      mandatory = true,<a name="line.161"></a>
+<span class="sourceLineNo">162</span>      description = "The name of the CAS view containing the system (automatic) annotations")<a name="line.162"></a>
+<span class="sourceLineNo">163</span>  private String systemViewName;<a name="line.163"></a>
+<span class="sourceLineNo">164</span><a name="line.164"></a>
+<span class="sourceLineNo">165</span>  @ConfigurationParameter(<a name="line.165"></a>
+<span class="sourceLineNo">166</span>      defaultValue = "false",<a name="line.166"></a>
+<span class="sourceLineNo">167</span>      description = "Ignore additional spans produced by the system that do not match any of the "<a name="line.167"></a>
+<span class="sourceLineNo">168</span>          + "gold spans. This can be useful when doing an attribute classification task where "<a name="line.168"></a>
+<span class="sourceLineNo">169</span>          + "gold standard data is only available for a subset of all possible classifications.")<a name="line.169"></a>
+<span class="sourceLineNo">170</span>  private boolean ignoreSystemSpansNotInGold;<a name="line.170"></a>
+<span class="sourceLineNo">171</span><a name="line.171"></a>
+<span class="sourceLineNo">172</span>  public static final String PARAM_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(<a name="line.172"></a>
+<span class="sourceLineNo">173</span>      AnnotationEvaluator.class,<a name="line.173"></a>
+<span class="sourceLineNo">174</span>      "annotationClassName");<a name="line.174"></a>
+<span class="sourceLineNo">175</span><a name="line.175"></a>
+<span class="sourceLineNo">176</span>  public static final String PARAM_ANNOTATION_ATTRIBUTE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(<a name="line.176"></a>
+<span class="sourceLineNo">177</span>      AnnotationEvaluator.class,<a name="line.177"></a>
+<span class="sourceLineNo">178</span>      "annotationAttributeName");<a name="line.178"></a>
+<span class="sourceLineNo">179</span><a name="line.179"></a>
+<span class="sourceLineNo">180</span>  public static final String PARAM_SPAN_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(<a name="line.180"></a>
+<span class="sourceLineNo">181</span>      AnnotationEvaluator.class,<a name="line.181"></a>
+<span class="sourceLineNo">182</span>      "spanExtractorClassName");<a name="line.182"></a>
+<span class="sourceLineNo">183</span><a name="line.183"></a>
+<span class="sourceLineNo">184</span>  public static final String PARAM_ANNOTATION_GROUPER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(<a name="line.184"></a>
+<span class="sourceLineNo">185</span>      AnnotationEvaluator.class,<a name="line.185"></a>
+<span class="sourceLineNo">186</span>      "annotationGrouperClassName");<a name="line.186"></a>
+<span class="sourceLineNo">187</span><a name="line.187"></a>
+<span class="sourceLineNo">188</span>  public static final String PARAM_GOLD_VIEW_NAME = ConfigurationParameterFactory.createConfigurationParameterName(<a name="line.188"></a>
+<span class="sourceLineNo">189</span>      AnnotationEvaluator.class,<a name="line.189"></a>
+<span class="sourceLineNo">190</span>      "goldViewName");<a name="line.190"></a>
+<span class="sourceLineNo">191</span><a name="line.191"></a>
+<span class="sourceLineNo">192</span>  public static final String PARAM_SYSTEM_VIEW_NAME = ConfigurationParameterFactory.createConfigurationParameterName(<a name="line.192"></a>
+<span class="sourceLineNo">193</span>      AnnotationEvaluator.class,<a name="line.193"></a>
+<span class="sourceLineNo">194</span>      "systemViewName");<a name="line.194"></a>
+<span class="sourceLineNo">195</span><a name="line.195"></a>
+<span class="sourceLineNo">196</span>  public static final String PARAM_IGNORE_SYSTEM_SPANS_NOT_IN_GOLD = ConfigurationParameterFactory.createConfigurationParameterName(<a name="line.196"></a>
+<span class="sourceLineNo">197</span>      AnnotationEvaluator.class,<a name="line.197"></a>
+<span class="sourceLineNo">198</span>      "ignoreSystemSpansNotInGold");<a name="line.198"></a>
+<span class="sourceLineNo">199</span><a name="line.199"></a>
+<span class="sourceLineNo">200</span>  private Class&lt;? extends Annotation&gt; annotationClass;<a name="line.200"></a>
+<span class="sourceLineNo">201</span><a name="line.201"></a>
+<span class="sourceLineNo">202</span>  private SpanExtractor&lt;T&gt; spanExtractor;<a name="line.202"></a>
+<span class="sourceLineNo">203</span><a name="line.203"></a>
+<span class="sourceLineNo">204</span>  private AnnotationGrouper grouper;<a name="line.204"></a>
+<span class="sourceLineNo">205</span><a name="line.205"></a>
+<span class="sourceLineNo">206</span>  private int batch;<a name="line.206"></a>
+<span class="sourceLineNo">207</span><a name="line.207"></a>
+<span class="sourceLineNo">208</span>  private Map&lt;String, Stats&gt; collectionGroupStats;<a name="line.208"></a>
+<span class="sourceLineNo">209</span><a name="line.209"></a>
+<span class="sourceLineNo">210</span>  private Map&lt;String, Stats&gt; batchGroupStats;<a name="line.210"></a>
+<span class="sourceLineNo">211</span><a name="line.211"></a>
+<span class="sourceLineNo">212</span>  private Logger logger;<a name="line.212"></a>
+<span class="sourceLineNo">213</span><a name="line.213"></a>
+<span class="sourceLineNo">214</span>  @Override<a name="line.214"></a>
+<span class="sourceLineNo">215</span>  @SuppressWarnings("unchecked")<a name="line.215"></a>
+<span class="sourceLineNo">216</span>  public void initialize(UimaContext context) throws ResourceInitializationException {<a name="line.216"></a>
+<span class="sourceLineNo">217</span>    super.initialize(context);<a name="line.217"></a>
+<span class="sourceLineNo">218</span>    this.logger = context.getLogger();<a name="line.218"></a>
+<span class="sourceLineNo">219</span>    this.annotationClass = InitializableFactory.getClass(this.annotationClassName, Annotation.class);<a name="line.219"></a>
+<span class="sourceLineNo">220</span>    this.spanExtractor = InitializableFactory.create(<a name="line.220"></a>
+<span class="sourceLineNo">221</span>        context,<a name="line.221"></a>
+<span class="sourceLineNo">222</span>        this.spanExtractorClassName,<a name="line.222"></a>
+<span class="sourceLineNo">223</span>        SpanExtractor.class);<a name="line.223"></a>
+<span class="sourceLineNo">224</span>    this.grouper = InitializableFactory.create(<a name="line.224"></a>
+<span class="sourceLineNo">225</span>        context,<a name="line.225"></a>
+<span class="sourceLineNo">226</span>        this.annotationGrouperClassName,<a name="line.226"></a>
+<span class="sourceLineNo">227</span>        AnnotationGrouper.class);<a name="line.227"></a>
+<span class="sourceLineNo">228</span>    this.collectionGroupStats = new HashMap&lt;String, Stats&gt;();<a name="line.228"></a>
+<span class="sourceLineNo">229</span>    this.batchGroupStats = new HashMap&lt;String, Stats&gt;();<a name="line.229"></a>
+<span class="sourceLineNo">230</span>    this.batch = 0;<a name="line.230"></a>
+<span class="sourceLineNo">231</span>  }<a name="line.231"></a>
+<span class="sourceLineNo">232</span><a name="line.232"></a>
+<span class="sourceLineNo">233</span>  @Override<a name="line.233"></a>
+<span class="sourceLineNo">234</span>  public void process(JCas jCas) throws AnalysisEngineProcessException {<a name="line.234"></a>
+<span class="sourceLineNo">235</span>    JCas goldView, systemView;<a name="line.235"></a>
+<span class="sourceLineNo">236</span>    try {<a name="line.236"></a>
+<span class="sourceLineNo">237</span>      goldView = jCas.getView(this.goldViewName);<a name="line.237"></a>
+<span class="sourceLineNo">238</span>      systemView = jCas.getView(this.systemViewName);<a name="line.238"></a>
+<span class="sourceLineNo">239</span>    } catch (CASException e) {<a name="line.239"></a>
+<span class="sourceLineNo">240</span>      throw new AnalysisEngineProcessException(e);<a name="line.240"></a>
+<span class="sourceLineNo">241</span>    }<a name="line.241"></a>
+<span class="sourceLineNo">242</span><a name="line.242"></a>
+<span class="sourceLineNo">243</span>    // convert the annotations in the CAS views to group-&gt;span-&gt;tag maps<a name="line.243"></a>
+<span class="sourceLineNo">244</span>    Map&lt;String, Map&lt;T, String&gt;&gt; goldGroupedSpanTags = this.getGroupedSpanTags(goldView);<a name="line.244"></a>
+<span class="sourceLineNo">245</span>    Map&lt;String, Map&lt;T, String&gt;&gt; systemGroupedSpanTags = this.getGroupedSpanTags(systemView);<a name="line.245"></a>
+<span class="sourceLineNo">246</span><a name="line.246"></a>
+<span class="sourceLineNo">247</span>    // determine the groups, and make sure gold and system have all the same groups<a name="line.247"></a>
+<span class="sourceLineNo">248</span>    Set&lt;String&gt; groups = new HashSet&lt;String&gt;();<a name="line.248"></a>
+<span class="sourceLineNo">249</span>    groups.addAll(goldGroupedSpanTags.keySet());<a name="line.249"></a>
+<span class="sourceLineNo">250</span>    groups.addAll(systemGroupedSpanTags.keySet());<a name="line.250"></a>
+<span class="sourceLineNo">251</span>    for (String group : groups) {<a name="line.251"></a>
+<span class="sourceLineNo">252</span>      if (!goldGroupedSpanTags.containsKey(group)) {<a name="line.252"></a>
+<span class="sourceLineNo">253</span>        goldGroupedSpanTags.put(group, new HashMap&lt;T, String&gt;());<a name="line.253"></a>
+<span class="sourceLineNo">254</span>      }<a name="line.254"></a>
+<span class="sourceLineNo">255</span>      if (!systemGroupedSpanTags.containsKey(group)) {<a name="line.255"></a>
+<span class="sourceLineNo">256</span>        systemGroupedSpanTags.put(group, new HashMap&lt;T, String&gt;());<a name="line.256"></a>
+<span class="sourceLineNo">257</span>      }<a name="line.257"></a>
+<span class="sourceLineNo">258</span>    }<a name="line.258"></a>
+<span class="sourceLineNo">259</span><a name="line.259"></a>
+<span class="sourceLineNo">260</span>    for (String group : groups) {<a name="line.260"></a>
+<span class="sourceLineNo">261</span>      Map&lt;T, String&gt; goldSpanTags = goldGroupedSpanTags.get(group);<a name="line.261"></a>
+<span class="sourceLineNo">262</span>      Map&lt;T, String&gt; systemSpanTags = systemGroupedSpanTags.get(group);<a name="line.262"></a>
+<span class="sourceLineNo">263</span><a name="line.263"></a>
+<span class="sourceLineNo">264</span>      // remove some system spans if requested<a name="line.264"></a>
+<span class="sourceLineNo">265</span>      if (this.ignoreSystemSpansNotInGold) {<a name="line.265"></a>
+<span class="sourceLineNo">266</span>        for (T span : new HashSet&lt;T&gt;(systemSpanTags.keySet())) {<a name="line.266"></a>
+<span class="sourceLineNo">267</span>          if (!goldSpanTags.containsKey(span)) {<a name="line.267"></a>
+<span class="sourceLineNo">268</span>            systemSpanTags.remove(span);<a name="line.268"></a>
+<span class="sourceLineNo">269</span>          }<a name="line.269"></a>
+<span class="sourceLineNo">270</span>        }<a name="line.270"></a>
+<span class="sourceLineNo">271</span>      }<a name="line.271"></a>
+<span class="sourceLineNo">272</span><a name="line.272"></a>
+<span class="sourceLineNo">273</span>      // find the span+tags that were labeled correctly<a name="line.273"></a>
+<span class="sourceLineNo">274</span>      Set&lt;T&gt; matchingSpans = new HashSet&lt;T&gt;();<a name="line.274"></a>
+<span class="sourceLineNo">275</span>      matchingSpans.addAll(goldSpanTags.keySet());<a name="line.275"></a>
+<span class="sourceLineNo">276</span>      matchingSpans.retainAll(systemSpanTags.keySet());<a name="line.276"></a>
+<span class="sourceLineNo">277</span>      Map&lt;T, String&gt; matchingSpanTags = new HashMap&lt;T, String&gt;();<a name="line.277"></a>
+<span class="sourceLineNo">278</span>      for (T span : matchingSpans) {<a name="line.278"></a>
+<span class="sourceLineNo">279</span>        if (this.annotationAttributeName == null) {<a name="line.279"></a>
+<span class="sourceLineNo">280</span>          matchingSpanTags.put(span, null);<a name="line.280"></a>
+<span class="sourceLineNo">281</span>        } else {<a name="line.281"></a>
+<span class="sourceLineNo">282</span>          String goldTag = goldSpanTags.get(span);<a name="line.282"></a>
+<span class="sourceLineNo">283</span>          String systemTag = systemSpanTags.get(span);<a name="line.283"></a>
+<span class="sourceLineNo">284</span>          if (goldTag.equals(systemTag)) {<a name="line.284"></a>
+<span class="sourceLineNo">285</span>            matchingSpanTags.put(span, goldTag);<a name="line.285"></a>
+<span class="sourceLineNo">286</span>          }<a name="line.286"></a>
+<span class="sourceLineNo">287</span>        }<a name="line.287"></a>
+<span class="sourceLineNo">288</span>      }<a name="line.288"></a>
+<span class="sourceLineNo">289</span><a name="line.289"></a>
+<span class="sourceLineNo">290</span>      // update collection-level counts<a name="line.290"></a>
+<span class="sourceLineNo">291</span>      int gold = goldSpanTags.size();<a name="line.291"></a>
+<span class="sourceLineNo">292</span>      int system = systemSpanTags.size();<a name="line.292"></a>
+<span class="sourceLineNo">293</span>      int matching = matchingSpanTags.size();<a name="line.293"></a>
+<span class="sourceLineNo">294</span>      if (!this.collectionGroupStats.containsKey(group)) {<a name="line.294"></a>
+<span class="sourceLineNo">295</span>        this.collectionGroupStats.put(group, new Stats());<a name="line.295"></a>
+<span class="sourceLineNo">296</span>      }<a name="line.296"></a>
+<span class="sourceLineNo">297</span>      Stats collectionStats = this.collectionGroupStats.get(group);<a name="line.297"></a>
+<span class="sourceLineNo">298</span>      collectionStats.gold += gold;<a name="line.298"></a>
+<span class="sourceLineNo">299</span>      collectionStats.system += system;<a name="line.299"></a>
+<span class="sourceLineNo">300</span>      collectionStats.matching += matching;<a name="line.300"></a>
+<span class="sourceLineNo">301</span><a name="line.301"></a>
+<span class="sourceLineNo">302</span>      // update batch-level counts<a name="line.302"></a>
+<span class="sourceLineNo">303</span>      if (!this.batchGroupStats.containsKey(group)) {<a name="line.303"></a>
+<span class="sourceLineNo">304</span>        this.batchGroupStats.put(group, new Stats());<a name="line.304"></a>
+<span class="sourceLineNo">305</span>      }<a name="line.305"></a>
+<span class="sourceLineNo">306</span>      Stats batchStats = this.batchGroupStats.get(group);<a name="line.306"></a>
+<span class="sourceLineNo">307</span>      batchStats.gold += gold;<a name="line.307"></a>
+<span class="sourceLineNo">308</span>      batchStats.system += system;<a name="line.308"></a>
+<span class="sourceLineNo">309</span>      batchStats.matching += matching;<a name="line.309"></a>
+<span class="sourceLineNo">310</span><a name="line.310"></a>
+<span class="sourceLineNo">311</span>      // print out the errors<a name="line.311"></a>
+<span class="sourceLineNo">312</span>      Set&lt;T&gt; spans = new HashSet&lt;T&gt;();<a name="line.312"></a>
+<span class="sourceLineNo">313</span>      spans.addAll(goldSpanTags.keySet());<a name="line.313"></a>
+<span class="sourceLineNo">314</span>      spans.addAll(systemSpanTags.keySet());<a name="line.314"></a>
+<span class="sourceLineNo">315</span>      if (!spans.equals(matchingSpanTags.keySet())) {<a name="line.315"></a>
+<span class="sourceLineNo">316</span>        StringBuilder message = new StringBuilder();<a name="line.316"></a>
+<span class="sourceLineNo">317</span>        message.append(ViewURIUtil.getURI(jCas)).append('\n');<a name="line.317"></a>
+<span class="sourceLineNo">318</span>        List&lt;T&gt; spansList = new ArrayList&lt;T&gt;(spans);<a name="line.318"></a>
+<span class="sourceLineNo">319</span>        Collections.sort(spansList);<a name="line.319"></a>
+<span class="sourceLineNo">320</span>        for (T span : spansList) {<a name="line.320"></a>
+<span class="sourceLineNo">321</span>          String goldTag = goldSpanTags.get(span);<a name="line.321"></a>
+<span class="sourceLineNo">322</span>          String systemTag = systemSpanTags.get(span);<a name="line.322"></a>
+<span class="sourceLineNo">323</span>          if (!matchingSpanTags.containsKey(span)) {<a name="line.323"></a>
+<span class="sourceLineNo">324</span>            boolean isGold = goldSpanTags.containsKey(span);<a name="line.324"></a>
+<span class="sourceLineNo">325</span>            boolean isSystem = systemSpanTags.containsKey(span);<a name="line.325"></a>
+<span class="sourceLineNo">326</span>            if (isGold &amp;&amp; isSystem) {<a name="line.326"></a>
+<span class="sourceLineNo">327</span>              message.append(String.format(<a name="line.327"></a>
+<span class="sourceLineNo">328</span>                  "WRONG: system=%s gold=%s %s\n",<a name="line.328"></a>
+<span class="sourceLineNo">329</span>                  systemTag,<a name="line.329"></a>
+<span class="sourceLineNo">330</span>                  goldTag,<a name="line.330"></a>
+<span class="sourceLineNo">331</span>                  span));<a name="line.331"></a>
+<span class="sourceLineNo">332</span>            } else if (isGold) {<a name="line.332"></a>
+<span class="sourceLineNo">333</span>              String attr = goldTag == null ? "" : String.format("gold=%s ", goldTag);<a name="line.333"></a>
+<span class="sourceLineNo">334</span>              message.append(String.format("DROPPED: %s%s\n", attr, span));<a name="line.334"></a>
+<span class="sourceLineNo">335</span>            } else if (isSystem) {<a name="line.335"></a>
+<span class="sourceLineNo">336</span>              if (!this.ignoreSystemSpansNotInGold) {<a name="line.336"></a>
+<span class="sourceLineNo">337</span>                String attr = systemTag == null ? "" : String.format("system=%s ", systemTag);<a name="line.337"></a>
+<span class="sourceLineNo">338</span>                message.append(String.format("ADDED: %s%s\n", attr, span));<a name="line.338"></a>
+<span class="sourceLineNo">339</span>              }<a name="line.339"></a>
+<span class="sourceLineNo">340</span>            }<a name="line.340"></a>
+<span class="sourceLineNo">341</span>          }<a name="line.341"></a>
+<span class="sourceLineNo">342</span>        }<a name="line.342"></a>
+<span class="sourceLineNo">343</span>        this.logger.log(Level.INFO, message.toString().trim());<a name="line.343"></a>
+<span class="sourceLineNo">344</span>      }<a name="line.344"></a>
+<span class="sourceLineNo">345</span>    }<a name="line.345"></a>
+<span class="sourceLineNo">346</span>  }<a name="line.346"></a>
+<span class="sourceLineNo">347</span><a name="line.347"></a>
+<span class="sourceLineNo">348</span>  @Override<a name="line.348"></a>
+<span class="sourceLineNo">349</span>  public void collectionProcessComplete() throws AnalysisEngineProcessException {<a name="line.349"></a>
+<span class="sourceLineNo">350</span>    super.collectionProcessComplete();<a name="line.350"></a>
+<span class="sourceLineNo">351</span>    for (String group : this.getGroups(this.collectionGroupStats)) {<a name="line.351"></a>
+<span class="sourceLineNo">352</span>      Stats collectionStats = this.collectionGroupStats.get(group);<a name="line.352"></a>
+<span class="sourceLineNo">353</span>      this.logStats("Collection " + group, collectionStats);<a name="line.353"></a>
+<span class="sourceLineNo">354</span>      this.collectionGroupStats.put(group, new Stats());<a name="line.354"></a>
+<span class="sourceLineNo">355</span>    }<a name="line.355"></a>
+<span class="sourceLineNo">356</span>  }<a name="line.356"></a>
+<span class="sourceLineNo">357</span><a name="line.357"></a>
+<span class="sourceLineNo">358</span>  @Override<a name="line.358"></a>
+<span class="sourceLineNo">359</span>  public void batchProcessComplete() throws AnalysisEngineProcessException {<a name="line.359"></a>
+<span class="sourceLineNo">360</span>    super.batchProcessComplete();<a name="line.360"></a>
+<span class="sourceLineNo">361</span>    for (String group : this.getGroups(this.batchGroupStats)) {<a name="line.361"></a>
+<span class="sourceLineNo">362</span>      Stats collectionStats = this.batchGroupStats.get(group);<a name="line.362"></a>
+<span class="sourceLineNo">363</span>      this.logStats("Batch " + this.batch + " " + group, collectionStats);<a name="line.363"></a>
+<span class="sourceLineNo">364</span>      this.batchGroupStats.put(group, new Stats());<a name="line.364"></a>
+<span class="sourceLineNo">365</span>    }<a name="line.365"></a>
+<span class="sourceLineNo">366</span>    this.batch += 1;<a name="line.366"></a>
+<span class="sourceLineNo">367</span>  }<a name="line.367"></a>
+<span class="sourceLineNo">368</span><a name="line.368"></a>
+<span class="sourceLineNo">369</span>  private List&lt;String&gt; getGroups(Map&lt;String, Stats&gt; groupStats) {<a name="line.369"></a>
+<span class="sourceLineNo">370</span>    List&lt;String&gt; groups = new ArrayList&lt;String&gt;(groupStats.keySet());<a name="line.370"></a>
+<span class="sourceLineNo">371</span>    Collections.sort(groups);<a name="line.371"></a>
+<span class="sourceLineNo">372</span>    return groups;<a name="line.372"></a>
+<span class="sourceLineNo">373</span>  }<a name="line.373"></a>
+<span class="sourceLineNo">374</span><a name="line.374"></a>
+<span class="sourceLineNo">375</span>  private void logStats(String heading, Stats stats) {<a name="line.375"></a>
+<span class="sourceLineNo">376</span>    String annotationName = this.annotationClass.getSimpleName();<a name="line.376"></a>
+<span class="sourceLineNo">377</span>    String name;<a name="line.377"></a>
+<span class="sourceLineNo">378</span>    if (this.annotationAttributeName != null) {<a name="line.378"></a>
+<span class="sourceLineNo">379</span>      name = String.format("%s:%s", annotationName, this.annotationAttributeName);<a name="line.379"></a>
+<span class="sourceLineNo">380</span>    } else {<a name="line.380"></a>
+<span class="sourceLineNo">381</span>      name = annotationName;<a name="line.381"></a>
+<span class="sourceLineNo">382</span>    }<a name="line.382"></a>
+<span class="sourceLineNo">383</span>    // @formatter:off<a name="line.383"></a>
+<span class="sourceLineNo">384</span>    String message = String.format(<a name="line.384"></a>
+<span class="sourceLineNo">385</span>        "%s %s\n" +<a name="line.385"></a>
+<span class="sourceLineNo">386</span>        "gold      = %d\n" +<a name="line.386"></a>
+<span class="sourceLineNo">387</span>        "system    = %d\n" +<a name="line.387"></a>
+<span class="sourceLineNo">388</span>        "matching  = %d\n" + <a name="line.388"></a>
+<span class="sourceLineNo">389</span>        "precision = %.3f\n" +<a name="line.389"></a>
+<span class="sourceLineNo">390</span>        "recall    = %.3f\n" +<a name="line.390"></a>
+<span class="sourceLineNo">391</span>        "f1        = %.3f",<a name="line.391"></a>
+<span class="sourceLineNo">392</span>        name, heading,<a name="line.392"></a>
+<span class="sourceLineNo">393</span>        stats.gold, stats.system, stats.matching,<a name="line.393"></a>
+<span class="sourceLineNo">394</span>        stats.precision(), stats.recall(), stats.f1());<a name="line.394"></a>
+<span class="sourceLineNo">395</span>    // @formatter:on<a name="line.395"></a>
+<span class="sourceLineNo">396</span>    this.logger.log(Level.WARNING, message);<a name="line.396"></a>
+<span class="sourceLineNo">397</span>  }<a name="line.397"></a>
+<span class="sourceLineNo">398</span><a name="line.398"></a>
+<span class="sourceLineNo">399</span>  private Map&lt;String, Map&lt;T, String&gt;&gt; getGroupedSpanTags(JCas view) {<a name="line.399"></a>
+<span class="sourceLineNo">400</span>    Map&lt;String, Map&lt;T, String&gt;&gt; groupedSpans = new HashMap&lt;String, Map&lt;T, String&gt;&gt;();<a name="line.400"></a>
+<span class="sourceLineNo">401</span>    for (Annotation ann : JCasUtil.select(view, this.annotationClass)) {<a name="line.401"></a>
+<span class="sourceLineNo">402</span>      List&lt;String&gt; groups = this.grouper.getGroups(ann);<a name="line.402"></a>
+<span class="sourceLineNo">403</span>      for (String group : groups) {<a name="line.403"></a>
+<span class="sourceLineNo">404</span>        if (!groupedSpans.containsKey(group)) {<a name="line.404"></a>
+<span class="sourceLineNo">405</span>          groupedSpans.put(group, new HashMap&lt;T, String&gt;());<a name="line.405"></a>
+<span class="sourceLineNo">406</span>        }<a name="line.406"></a>
+<span class="sourceLineNo">407</span>      }<a name="line.407"></a>
+<span class="sourceLineNo">408</span>      T span = this.spanExtractor.getSpan(ann);<a name="line.408"></a>
+<span class="sourceLineNo">409</span>      if (this.annotationAttributeName == null) {<a name="line.409"></a>
+<span class="sourceLineNo">410</span>        for (String group : groups) {<a name="line.410"></a>
+<span class="sourceLineNo">411</span>          groupedSpans.get(group).put(span, null);<a name="line.411"></a>
+<span class="sourceLineNo">412</span>        }<a name="line.412"></a>
+<span class="sourceLineNo">413</span>      } else {<a name="line.413"></a>
+<span class="sourceLineNo">414</span>        Feature feature = ann.getType().getFeatureByBaseName(this.annotationAttributeName);<a name="line.414"></a>
+<span class="sourceLineNo">415</span>        String featureValue = ann.getFeatureValueAsString(feature);<a name="line.415"></a>
+<span class="sourceLineNo">416</span>        if (featureValue != null) {<a name="line.416"></a>
+<span class="sourceLineNo">417</span>          for (String group : groups) {<a name="line.417"></a>
+<span class="sourceLineNo">418</span>            groupedSpans.get(group).put(span, featureValue);<a name="line.418"></a>
+<span class="sourceLineNo">419</span>          }<a name="line.419"></a>
+<span class="sourceLineNo">420</span>        }<a name="line.420"></a>
+<span class="sourceLineNo">421</span>      }<a name="line.421"></a>
+<span class="sourceLineNo">422</span>    }<a name="line.422"></a>
+<span class="sourceLineNo">423</span>    return groupedSpans;<a name="line.423"></a>
+<span class="sourceLineNo">424</span>  }<a name="line.424"></a>
+<span class="sourceLineNo">425</span><a name="line.425"></a>
+<span class="sourceLineNo">426</span>  private static class Stats {<a name="line.426"></a>
+<span class="sourceLineNo">427</span>    public int gold;<a name="line.427"></a>
+<span class="sourceLineNo">428</span><a name="line.428"></a>
+<span class="sourceLineNo">429</span>    public int system;<a name="line.429"></a>
+<span class="sourceLineNo">430</span><a name="line.430"></a>
+<span class="sourceLineNo">431</span>    public int matching;<a name="line.431"></a>
+<span class="sourceLineNo">432</span><a name="line.432"></a>
+<span class="sourceLineNo">433</span>    public Stats() {<a name="line.433"></a>
+<span class="sourceLineNo">434</span>      this.gold = 0;<a name="line.434"></a>
+<span class="sourceLineNo">435</span>      this.system = 0;<a name="line.435"></a>
+<span class="sourceLineNo">436</span>      this.matching = 0;<a name="line.436"></a>
+<span class="sourceLineNo">437</span><a name="line.437"></a>
+<span class="sourceLineNo">438</span>    }<a name="line.438"></a>
+<span class="sourceLineNo">439</span><a name="line.439"></a>
+<span class="sourceLineNo">440</span>    public double precision() {<a name="line.440"></a>
+<span class="sourceLineNo">441</span>      return this.system == 0 ? 1.0 : this.matching / (double) this.system;<a name="line.441"></a>
+<span class="sourceLineNo">442</span>    }<a name="line.442"></a>
+<span class="sourceLineNo">443</span><a name="line.443"></a>
+<span class="sourceLineNo">444</span>    public double recall() {<a name="line.444"></a>
+<span class="sourceLineNo">445</span>      return this.gold == 0 ? 1.0 : this.matching / (double) this.gold;<a name="line.445"></a>
+<span class="sourceLineNo">446</span>    }<a name="line.446"></a>
+<span class="sourceLineNo">447</span><a name="line.447"></a>
+<span class="sourceLineNo">448</span>    public double f1() {<a name="line.448"></a>
+<span class="sourceLineNo">449</span>      double p = this.precision();<a name="line.449"></a>
+<span class="sourceLineNo">450</span>      double r = this.recall();<a name="line.450"></a>
+<span class="sourceLineNo">451</span>      return 2 * p * r / (p + r);<a name="line.451"></a>
+<span class="sourceLineNo">452</span>    }<a name="line.452"></a>
+<span class="sourceLineNo">453</span>  }<a name="line.453"></a>
+<span class="sourceLineNo">454</span><a name="line.454"></a>
+<span class="sourceLineNo">455</span>  public static class Span&lt;T extends Comparable&lt;? super T&gt;&gt; implements Comparable&lt;Span&lt;T&gt;&gt; {<a name="line.455"></a>
+<span class="sourceLineNo">456</span><a name="line.456"></a>
+<span class="sourceLineNo">457</span>    protected T begin;<a name="line.457"></a>
+<span class="sourceLineNo">458</span><a name="line.458"></a>
+<span class="sourceLineNo">459</span>    protected T end;<a name="line.459"></a>
+<span class="sourceLineNo">460</span><a name="line.460"></a>
+<span class="sourceLineNo">461</span>    public Span(T begin, T end) {<a name="line.461"></a>
+<span class="sourceLineNo">462</span>      this.begin = begin;<a name="line.462"></a>
+<span class="sourceLineNo">463</span>      this.end = end;<a name="line.463"></a>
+<span class="sourceLineNo">464</span>    }<a name="line.464"></a>
+<span class="sourceLineNo">465</span><a name="line.465"></a>
+<span class="sourceLineNo">466</span>    @Override<a name="line.466"></a>
+<span class="sourceLineNo">467</span>    public String toString() {<a name="line.467"></a>
+<span class="sourceLineNo">468</span>      return String.format("%s(%s, %s)", this.getClass().getSimpleName(), this.begin, this.end);<a name="line.468"></a>
+<span class="sourceLineNo">469</span>    }<a name="line.469"></a>
+<span class="sourceLineNo">470</span><a name="line.470"></a>
+<span class="sourceLineNo">471</span>    @Override<a name="line.471"></a>
+<span class="sourceLineNo">472</span>    public int hashCode() {<a name="line.472"></a>
+<span class="sourceLineNo">473</span>      return Arrays.hashCode(new Object[] { this.begin, this.end });<a name="line.473"></a>
+<span class="sourceLineNo">474</span>    }<a name="line.474"></a>
+<span class="sourceLineNo">475</span><a name="line.475"></a>
+<span class="sourceLineNo">476</span>    @Override<a name="line.476"></a>
+<span class="sourceLineNo">477</span>    public boolean equals(Object obj) {<a name="line.477"></a>
+<span class="sourceLineNo">478</span>      boolean equals = false;<a name="line.478"></a>
+<span class="sourceLineNo">479</span>      if (obj instanceof Span) {<a name="line.479"></a>
+<span class="sourceLineNo">480</span>        Span&lt;?&gt; that = (Span&lt;?&gt;) obj;<a name="line.480"></a>
+<span class="sourceLineNo">481</span>        equals = this.begin.equals(that.begin) &amp;&amp; this.end.equals(that.end);<a name="line.481"></a>
+<span class="sourceLineNo">482</span>      }<a name="line.482"></a>
+<span class="sourceLineNo">483</span>      return equals;<a name="line.483"></a>
+<span class="sourceLineNo">484</span>    }<a name="line.484"></a>
+<span class="sourceLineNo">485</span><a name="line.485"></a>
+<span class="sourceLineNo">486</span>    @Override<a name="line.486"></a>
+<span class="sourceLineNo">487</span>    public int compareTo(Span&lt;T&gt; that) {<a name="line.487"></a>
+<span class="sourceLineNo">488</span>      int diff = this.begin.compareTo(that.begin);<a name="line.488"></a>
+<span class="sourceLineNo">489</span>      if (diff == 0) {<a name="line.489"></a>
+<span class="sourceLineNo">490</span>        diff = this.end.compareTo(that.end);<a name="line.490"></a>
+<span class="sourceLineNo">491</span>      }<a name="line.491"></a>
+<span class="sourceLineNo">492</span>      return diff;<a name="line.492"></a>
+<span class="sourceLineNo">493</span>    }<a name="line.493"></a>
+<span class="sourceLineNo">494</span><a name="line.494"></a>
+<span class="sourceLineNo">495</span>  }<a name="line.495"></a>
+<span class="sourceLineNo">496</span><a name="line.496"></a>
+<span class="sourceLineNo">497</span>  public static class AnnotationSpan extends Span&lt;Integer&gt; {<a name="line.497"></a>
+<span class="sourceLineNo">498</span><a name="line.498"></a>
+<span class="sourceLineNo">499</span>    protected String textWindow;<a name="line.499"></a>
+<span class="sourceLineNo">500</span><a name="line.500"></a>
+<span class="sourceLineNo">501</span>    public AnnotationSpan(Annotation annotation) {<a name="line.501"></a>
+<span class="sourceLineNo">502</span>      super(annotation.getBegin(), annotation.getEnd());<a name="line.502"></a>
+<span class="sourceLineNo">503</span>      int nChars = 20;<a name="line.503"></a>
+<span class="sourceLineNo">504</span>      String docText = annotation.getCAS().getDocumentText();<a name="line.504"></a>
+<span class="sourceLineNo">505</span>      int windowBegin = Math.max(this.begin - nChars, 0);<a name="line.505"></a>
+<span class="sourceLineNo">506</span>      int windowEnd = Math.min(this.end + nChars, docText.length());<a name="line.506"></a>
+<span class="sourceLineNo">507</span>      this.textWindow = String.format(<a name="line.507"></a>
+<span class="sourceLineNo">508</span>          "%s%s[%s]%s%s",<a name="line.508"></a>
+<span class="sourceLineNo">509</span>          windowBegin == 0 ? "" : "...",<a name="line.509"></a>
+<span class="sourceLineNo">510</span>          docText.substring(windowBegin, this.begin),<a name="line.510"></a>
+<span class="sourceLineNo">511</span>          annotation.getCoveredText(),<a name="line.511"></a>
+<span class="sourceLineNo">512</span>          docText.substring(this.end, windowEnd),<a name="line.512"></a>
+<span class="sourceLineNo">513</span>          windowEnd == docText.length() ? "" : "...").replace('\n', ' ');<a name="line.513"></a>
+<span class="sourceLineNo">514</span>    }<a name="line.514"></a>
+<span class="sourceLineNo">515</span><a name="line.515"></a>
+<span class="sourceLineNo">516</span>    @Override<a name="line.516"></a>
+<span class="sourceLineNo">517</span>    public String toString() {<a name="line.517"></a>
+<span class="sourceLineNo">518</span>      String name = this.getClass().getSimpleName();<a name="line.518"></a>
+<span class="sourceLineNo">519</span>      return String.format("%s(%s, %s, %s)", name, this.begin, this.end, this.textWindow);<a name="line.519"></a>
+<span class="sourceLineNo">520</span>    }<a name="line.520"></a>
+<span class="sourceLineNo">521</span>  }<a name="line.521"></a>
+<span class="sourceLineNo">522</span>}<a name="line.522"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
