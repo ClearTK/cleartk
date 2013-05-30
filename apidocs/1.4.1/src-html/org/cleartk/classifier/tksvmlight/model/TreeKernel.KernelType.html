@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (c) 2007-2013, Regents of the University of Colorado <a name="line.2"></a>
+<span class="sourceLineNo">003</span> * All rights reserved.<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * <a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * <a name="line.7"></a>
+<span class="sourceLineNo">008</span> * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<span class="sourceLineNo">009</span> * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<span class="sourceLineNo">010</span> * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<span class="sourceLineNo">011</span> * <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<span class="sourceLineNo">023</span> */<a name="line.23"></a>
+<span class="sourceLineNo">024</span>package org.cleartk.classifier.tksvmlight.model;<a name="line.24"></a>
+<span class="sourceLineNo">025</span><a name="line.25"></a>
+<span class="sourceLineNo">026</span>import java.util.ArrayList;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import java.util.HashMap;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import java.util.List;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import java.util.concurrent.ConcurrentHashMap;<a name="line.29"></a>
+<span class="sourceLineNo">030</span><a name="line.30"></a>
+<span class="sourceLineNo">031</span>import org.apache.commons.lang.NotImplementedException;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.cleartk.classifier.tksvmlight.TreeFeatureVector;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.cleartk.syntax.constituent.util.TopTreebankNode;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import org.cleartk.corpus.penntreebank.TreebankFormatParser;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import org.cleartk.syntax.constituent.util.TreebankNode;<a name="line.35"></a>
+<span class="sourceLineNo">036</span><a name="line.36"></a>
+<span class="sourceLineNo">037</span>/**<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * <a name="line.38"></a>
+<span class="sourceLineNo">039</span> * <a name="line.39"></a>
+<span class="sourceLineNo">040</span> * &lt;br&gt;<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * Copyright (c) 2013, Regents of the University of Colorado &lt;br&gt;<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * All rights reserved.<a name="line.42"></a>
+<span class="sourceLineNo">043</span> */<a name="line.43"></a>
+<span class="sourceLineNo">044</span>public class TreeKernel {<a name="line.44"></a>
+<span class="sourceLineNo">045</span>  public static final double LAMBDA_DEFAULT = 0.4;<a name="line.45"></a>
+<span class="sourceLineNo">046</span><a name="line.46"></a>
+<span class="sourceLineNo">047</span>  private double lambda = LAMBDA_DEFAULT;<a name="line.47"></a>
+<span class="sourceLineNo">048</span><a name="line.48"></a>
+<span class="sourceLineNo">049</span>  private boolean normalize = false;<a name="line.49"></a>
+<span class="sourceLineNo">050</span><a name="line.50"></a>
+<span class="sourceLineNo">051</span>  private ConcurrentHashMap&lt;String, Double&gt; normalizers = new ConcurrentHashMap&lt;String, Double&gt;();<a name="line.51"></a>
+<span class="sourceLineNo">052</span><a name="line.52"></a>
+<span class="sourceLineNo">053</span>  public static enum ForestSumMethod {<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    SEQUENTIAL, ALL_PAIRS<a name="line.54"></a>
+<span class="sourceLineNo">055</span>  }<a name="line.55"></a>
+<span class="sourceLineNo">056</span><a name="line.56"></a>
+<span class="sourceLineNo">057</span>  private ForestSumMethod sumMethod = ForestSumMethod.SEQUENTIAL;<a name="line.57"></a>
+<span class="sourceLineNo">058</span><a name="line.58"></a>
+<span class="sourceLineNo">059</span>  public static enum KernelType {<a name="line.59"></a>
+<span class="sourceLineNo">060</span>    SUBSET, SUBTREE, SUBSET_BOW, PARTIAL<a name="line.60"></a>
+<span class="sourceLineNo">061</span>  }<a name="line.61"></a>
+<span class="sourceLineNo">062</span><a name="line.62"></a>
+<span class="sourceLineNo">063</span>  private KernelType kernelType;<a name="line.63"></a>
+<span class="sourceLineNo">064</span><a name="line.64"></a>
+<span class="sourceLineNo">065</span>  HashMap&lt;String, TopTreebankNode&gt; trees = null;<a name="line.65"></a>
+<span class="sourceLineNo">066</span><a name="line.66"></a>
+<span class="sourceLineNo">067</span>  public TreeKernel(<a name="line.67"></a>
+<span class="sourceLineNo">068</span>      double lambda,<a name="line.68"></a>
+<span class="sourceLineNo">069</span>      ForestSumMethod sumMethod,<a name="line.69"></a>
+<span class="sourceLineNo">070</span>      KernelType kernelType,<a name="line.70"></a>
+<span class="sourceLineNo">071</span>      boolean normalize) {<a name="line.71"></a>
+<span class="sourceLineNo">072</span>    this.lambda = lambda;<a name="line.72"></a>
+<span class="sourceLineNo">073</span>    this.sumMethod = sumMethod;<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    this.kernelType = kernelType;<a name="line.74"></a>
+<span class="sourceLineNo">075</span>    this.normalize = normalize;<a name="line.75"></a>
+<span class="sourceLineNo">076</span>    trees = new HashMap&lt;String, TopTreebankNode&gt;();<a name="line.76"></a>
+<span class="sourceLineNo">077</span>  }<a name="line.77"></a>
+<span class="sourceLineNo">078</span><a name="line.78"></a>
+<span class="sourceLineNo">079</span>  public double evaluate(TreeFeatureVector fv1, TreeFeatureVector fv2) {<a name="line.79"></a>
+<span class="sourceLineNo">080</span>    double sim = 0.0;<a name="line.80"></a>
+<span class="sourceLineNo">081</span>    if (sumMethod == ForestSumMethod.SEQUENTIAL) {<a name="line.81"></a>
+<span class="sourceLineNo">082</span>      List&lt;String&gt; fv1Trees = new ArrayList&lt;String&gt;(fv1.getTrees().values());<a name="line.82"></a>
+<span class="sourceLineNo">083</span>      List&lt;String&gt; fv2Trees = new ArrayList&lt;String&gt;(fv2.getTrees().values());<a name="line.83"></a>
+<span class="sourceLineNo">084</span>      for (int i = 0; i &lt; fv1Trees.size(); i++) {<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        String tree1Str = fv1Trees.get(i);<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        String tree2Str = fv2Trees.get(i);<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        if (kernelType == KernelType.SUBSET) {<a name="line.87"></a>
+<span class="sourceLineNo">088</span>          sim += sst(tree1Str, tree2Str);<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        } else {<a name="line.89"></a>
+<span class="sourceLineNo">090</span>          throw new NotImplementedException("The only kernel type implemented is SUBSET!");<a name="line.90"></a>
+<span class="sourceLineNo">091</span>        }<a name="line.91"></a>
+<span class="sourceLineNo">092</span>      }<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    } else {<a name="line.93"></a>
+<span class="sourceLineNo">094</span>      throw new NotImplementedException("The only summation method implemented is Sequential!");<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    }<a name="line.95"></a>
+<span class="sourceLineNo">096</span>    return sim;<a name="line.96"></a>
+<span class="sourceLineNo">097</span>  }<a name="line.97"></a>
+<span class="sourceLineNo">098</span><a name="line.98"></a>
+<span class="sourceLineNo">099</span>  private double sst(String tree1Str, String tree2Str) {<a name="line.99"></a>
+<span class="sourceLineNo">100</span><a name="line.100"></a>
+<span class="sourceLineNo">101</span>    TopTreebankNode node1 = null;<a name="line.101"></a>
+<span class="sourceLineNo">102</span>    if (!trees.containsKey(tree1Str)) {<a name="line.102"></a>
+<span class="sourceLineNo">103</span>      node1 = TreebankFormatParser.parse(tree1Str);<a name="line.103"></a>
+<span class="sourceLineNo">104</span>      trees.put(tree1Str, node1);<a name="line.104"></a>
+<span class="sourceLineNo">105</span>    } else<a name="line.105"></a>
+<span class="sourceLineNo">106</span>      node1 = trees.get(tree1Str);<a name="line.106"></a>
+<span class="sourceLineNo">107</span><a name="line.107"></a>
+<span class="sourceLineNo">108</span>    TopTreebankNode node2 = null;<a name="line.108"></a>
+<span class="sourceLineNo">109</span>    if (!trees.containsKey(tree2Str)) {<a name="line.109"></a>
+<span class="sourceLineNo">110</span>      node2 = TreebankFormatParser.parse(tree2Str);<a name="line.110"></a>
+<span class="sourceLineNo">111</span>      trees.put(tree2Str, node2);<a name="line.111"></a>
+<span class="sourceLineNo">112</span>    } else<a name="line.112"></a>
+<span class="sourceLineNo">113</span>      node2 = trees.get(tree2Str);<a name="line.113"></a>
+<span class="sourceLineNo">114</span><a name="line.114"></a>
+<span class="sourceLineNo">115</span>    double norm1 = 0.0;<a name="line.115"></a>
+<span class="sourceLineNo">116</span>    double norm2 = 0.0;<a name="line.116"></a>
+<span class="sourceLineNo">117</span>    if (normalize) {<a name="line.117"></a>
+<span class="sourceLineNo">118</span>      if (!normalizers.containsKey(tree1Str)) {<a name="line.118"></a>
+<span class="sourceLineNo">119</span>        double norm = sim(node1, node1);<a name="line.119"></a>
+<span class="sourceLineNo">120</span>        normalizers.put(tree1Str, norm);<a name="line.120"></a>
+<span class="sourceLineNo">121</span>      }<a name="line.121"></a>
+<span class="sourceLineNo">122</span>      if (!normalizers.containsKey(tree2Str)) {<a name="line.122"></a>
+<span class="sourceLineNo">123</span>        double norm = sim(node2, node2);<a name="line.123"></a>
+<span class="sourceLineNo">124</span>        normalizers.put(tree2Str, norm);<a name="line.124"></a>
+<span class="sourceLineNo">125</span>      }<a name="line.125"></a>
+<span class="sourceLineNo">126</span><a name="line.126"></a>
+<span class="sourceLineNo">127</span>      norm1 = normalizers.get(tree1Str);<a name="line.127"></a>
+<span class="sourceLineNo">128</span>      norm2 = normalizers.get(tree2Str);<a name="line.128"></a>
+<span class="sourceLineNo">129</span>    }<a name="line.129"></a>
+<span class="sourceLineNo">130</span>    if (normalize) {<a name="line.130"></a>
+<span class="sourceLineNo">131</span>      return (sim(node1, node2) / Math.sqrt(norm1 * norm2));<a name="line.131"></a>
+<span class="sourceLineNo">132</span>    } else {<a name="line.132"></a>
+<span class="sourceLineNo">133</span>      return sim(node1, node2);<a name="line.133"></a>
+<span class="sourceLineNo">134</span>    }<a name="line.134"></a>
+<span class="sourceLineNo">135</span>  }<a name="line.135"></a>
+<span class="sourceLineNo">136</span><a name="line.136"></a>
+<span class="sourceLineNo">137</span>  private double sim(TreebankNode node1, TreebankNode node2) {<a name="line.137"></a>
+<span class="sourceLineNo">138</span>    double sim = 0.0;<a name="line.138"></a>
+<span class="sourceLineNo">139</span>    List&lt;TreebankNode&gt; N1 = getNodeList(node1);<a name="line.139"></a>
+<span class="sourceLineNo">140</span>    List&lt;TreebankNode&gt; N2 = getNodeList(node2);<a name="line.140"></a>
+<span class="sourceLineNo">141</span>    for (TreebankNode n1 : N1) {<a name="line.141"></a>
+<span class="sourceLineNo">142</span>      for (TreebankNode n2 : N2) {<a name="line.142"></a>
+<span class="sourceLineNo">143</span>        sim += numCommonSubtrees(n1, n2);<a name="line.143"></a>
+<span class="sourceLineNo">144</span>      }<a name="line.144"></a>
+<span class="sourceLineNo">145</span>    }<a name="line.145"></a>
+<span class="sourceLineNo">146</span>    return sim;<a name="line.146"></a>
+<span class="sourceLineNo">147</span>  }<a name="line.147"></a>
+<span class="sourceLineNo">148</span><a name="line.148"></a>
+<span class="sourceLineNo">149</span>  private double numCommonSubtrees(TreebankNode n1, TreebankNode n2) {<a name="line.149"></a>
+<span class="sourceLineNo">150</span>    double retVal = 1.0;<a name="line.150"></a>
+<span class="sourceLineNo">151</span>    List&lt;TreebankNode&gt; children1 = n1.getChildren();<a name="line.151"></a>
+<span class="sourceLineNo">152</span>    List&lt;TreebankNode&gt; children2 = n2.getChildren();<a name="line.152"></a>
+<span class="sourceLineNo">153</span>    int c1size = children1.size();<a name="line.153"></a>
+<span class="sourceLineNo">154</span>    int c2size = children2.size();<a name="line.154"></a>
+<span class="sourceLineNo">155</span>    if (c1size != c2size) {<a name="line.155"></a>
+<span class="sourceLineNo">156</span>      retVal = 0;<a name="line.156"></a>
+<span class="sourceLineNo">157</span>    } else if (!n1.getType().equals(n2.getType())) {<a name="line.157"></a>
+<span class="sourceLineNo">158</span>      retVal = 0;<a name="line.158"></a>
+<span class="sourceLineNo">159</span>    } else if (n1.isLeaf() &amp;&amp; n2.isLeaf()) {<a name="line.159"></a>
+<span class="sourceLineNo">160</span>      // both are preterminals, and we know they have the same type, need to check value (word)<a name="line.160"></a>
+<span class="sourceLineNo">161</span>      // Collins &amp; Duffy tech report says lambdaSquared, but Nips 02 paper uses lambda<a name="line.161"></a>
+<span class="sourceLineNo">162</span>      // Moschitti's papers also use lambda<a name="line.162"></a>
+<span class="sourceLineNo">163</span>      // retVal = lambdaSquared;<a name="line.163"></a>
+<span class="sourceLineNo">164</span>      if (n1.getValue().equals(n2.getValue())) {<a name="line.164"></a>
+<span class="sourceLineNo">165</span>        retVal = lambda;<a name="line.165"></a>
+<span class="sourceLineNo">166</span>      } else {<a name="line.166"></a>
+<span class="sourceLineNo">167</span>        retVal = 0;<a name="line.167"></a>
+<span class="sourceLineNo">168</span>      }<a name="line.168"></a>
+<span class="sourceLineNo">169</span>    } else {<a name="line.169"></a>
+<span class="sourceLineNo">170</span>      // At this point they have the same label and same # children. Check if children the same.<a name="line.170"></a>
+<span class="sourceLineNo">171</span>      boolean sameProd = true;<a name="line.171"></a>
+<span class="sourceLineNo">172</span>      for (int i = 0; i &lt; c1size; i++) {<a name="line.172"></a>
+<span class="sourceLineNo">173</span>        String l1 = children1.get(i).getType();<a name="line.173"></a>
+<span class="sourceLineNo">174</span>        String l2 = children2.get(i).getType();<a name="line.174"></a>
+<span class="sourceLineNo">175</span>        if (!l1.equals(l2)) {<a name="line.175"></a>
+<span class="sourceLineNo">176</span>          sameProd = false;<a name="line.176"></a>
+<span class="sourceLineNo">177</span>          break;<a name="line.177"></a>
+<span class="sourceLineNo">178</span>        }<a name="line.178"></a>
+<span class="sourceLineNo">179</span>      }<a name="line.179"></a>
+<span class="sourceLineNo">180</span>      if (sameProd == true) {<a name="line.180"></a>
+<span class="sourceLineNo">181</span>        for (int i = 0; i &lt; c1size; i++) {<a name="line.181"></a>
+<span class="sourceLineNo">182</span>          retVal *= (1 + numCommonSubtrees(children1.get(i), children2.get(i)));<a name="line.182"></a>
+<span class="sourceLineNo">183</span>        }<a name="line.183"></a>
+<span class="sourceLineNo">184</span>        // again, some disagreement in the literature, with Collins and Duffy saying<a name="line.184"></a>
+<span class="sourceLineNo">185</span>        // lambdaSquared here in tech report and lambda here in nips 02. We'll stick with<a name="line.185"></a>
+<span class="sourceLineNo">186</span>        // lambda b/c that's what moschitti's code (which was presumably used for model-building)<a name="line.186"></a>
+<span class="sourceLineNo">187</span>        // uses.<a name="line.187"></a>
+<span class="sourceLineNo">188</span>        retVal = lambda * retVal;<a name="line.188"></a>
+<span class="sourceLineNo">189</span>      } else {<a name="line.189"></a>
+<span class="sourceLineNo">190</span>        retVal = 0;<a name="line.190"></a>
+<span class="sourceLineNo">191</span>      }<a name="line.191"></a>
+<span class="sourceLineNo">192</span>    }<a name="line.192"></a>
+<span class="sourceLineNo">193</span>    return retVal;<a name="line.193"></a>
+<span class="sourceLineNo">194</span>  }<a name="line.194"></a>
+<span class="sourceLineNo">195</span><a name="line.195"></a>
+<span class="sourceLineNo">196</span>  private static final List&lt;TreebankNode&gt; getNodeList(TreebankNode tree) {<a name="line.196"></a>
+<span class="sourceLineNo">197</span>    ArrayList&lt;TreebankNode&gt; list = new ArrayList&lt;TreebankNode&gt;();<a name="line.197"></a>
+<span class="sourceLineNo">198</span>    list.add(tree);<a name="line.198"></a>
+<span class="sourceLineNo">199</span>    for (int i = 0; i &lt; list.size(); ++i) {<a name="line.199"></a>
+<span class="sourceLineNo">200</span>      list.addAll(list.get(i).getChildren());<a name="line.200"></a>
+<span class="sourceLineNo">201</span>    }<a name="line.201"></a>
+<span class="sourceLineNo">202</span>    return list;<a name="line.202"></a>
+<span class="sourceLineNo">203</span>  }<a name="line.203"></a>
+<span class="sourceLineNo">204</span>}<a name="line.204"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- NewPage -->
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<title>LIBSVMClassifier (ClearTK Release 1.4.1 API)</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<script type="text/javascript"><!--
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="LIBSVMClassifier (ClearTK Release 1.4.1 API)";
+    }
+//-->
+</script>
+<noscript>
+<div>JavaScript is disabled on your browser.</div>
+</noscript>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+<!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/LIBSVMClassifier.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../index-all.html">Index</a></li>
+<li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li><a href="../../../../org/cleartk/classifier/libsvm/LIBSVMBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.libsvm"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifierBuilder.html" title="class in org.cleartk.classifier.libsvm"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../index.html?org/cleartk/classifier/libsvm/LIBSVMClassifier.html" target="_top">Frames</a></li>
+<li><a href="LIBSVMClassifier.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_top">
+<li><a href="../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_top");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#field_summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li><a href="#field_detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_top">
+<!--   -->
+</a></div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+<!-- ======== START OF CLASS DATA ======== -->
+<div class="header">
+<div class="subTitle">org.cleartk.classifier.libsvm</div>
+<h2 title="Class LIBSVMClassifier" class="title">Class LIBSVMClassifier&lt;OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</h2>
+</div>
+<div class="contentContainer">
+<ul class="inheritance">
+<li><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
+<li>
+<ul class="inheritance">
+<li><a href="../../../../org/cleartk/classifier/jar/EncodingJarClassifier.html" title="class in org.cleartk.classifier.jar">org.cleartk.classifier.jar.EncodingJarClassifier</a>&lt;ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</li>
+<li>
+<ul class="inheritance">
+<li><a href="../../../../org/cleartk/classifier/jar/Classifier_ImplBase.html" title="class in org.cleartk.classifier.jar">org.cleartk.classifier.jar.Classifier_ImplBase</a>&lt;<a href="../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</a>,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</li>
+<li>
+<ul class="inheritance">
+<li>org.cleartk.classifier.libsvm.LIBSVMClassifier&lt;OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="description">
+<ul class="blockList">
+<li class="blockList">
+<dl>
+<dt>All Implemented Interfaces:</dt>
+<dd><a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier">Classifier</a>&lt;OUTCOME_TYPE&gt;</dd>
+</dl>
+<dl>
+<dt>Direct Known Subclasses:</dt>
+<dd><a href="../../../../org/cleartk/classifier/libsvm/LIBSVMBooleanOutcomeClassifier.html" title="class in org.cleartk.classifier.libsvm">LIBSVMBooleanOutcomeClassifier</a>, <a href="../../../../org/cleartk/classifier/libsvm/LIBSVMStringOutcomeClassifier.html" title="class in org.cleartk.classifier.libsvm">LIBSVMStringOutcomeClassifier</a></dd>
+</dl>
+<hr>
+<br>
+<pre>public abstract class <a href="../../../../src-html/org/cleartk/classifier/libsvm/LIBSVMClassifier.html#line.51">LIBSVMClassifier</a>&lt;OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;
+extends <a href="../../../../org/cleartk/classifier/jar/Classifier_ImplBase.html" title="class in org.cleartk.classifier.jar">Classifier_ImplBase</a>&lt;<a href="../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</a>,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</pre>
+<div class="block"><br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+<dl><dt><span class="strong">Author:</span></dt>
+  <dd>Philipp Wetzler</dd></dl>
+</li>
+</ul>
+</div>
+<div class="summary">
+<ul class="blockList">
+<li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field_summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected libsvm.svm_model</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html#model">model</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected <a href="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Ordering.html?is-external=true" title="class or interface in com.google.common.collect">Ordering</a>&lt;<a href="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</a>&lt;<a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">OUTCOME_TYPE</a>&gt;&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html#orderByScore">orderByScore</a></strong></code>&nbsp;</td>
+</tr>
+</table>
+<ul class="blockList">
+<li class="blockList"><a name="fields_inherited_from_class_org.cleartk.classifier.jar.EncodingJarClassifier">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.cleartk.classifier.jar.<a href="../../../../org/cleartk/classifier/jar/EncodingJarClassifier.html" title="class in org.cleartk.classifier.jar">EncodingJarClassifier</a></h3>
+<code><a href="../../../../org/cleartk/classifier/jar/EncodingJarClassifier.html#featuresEncoder">featuresEncoder</a>, <a href="../../../../org/cleartk/classifier/jar/EncodingJarClassifier.html#outcomeEncoder">outcomeEncoder</a></code></li>
+</ul>
+</li>
+</ul>
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_summary">
+<!--   -->
+</a>
+<h3>Constructor Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
+<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Constructor and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><strong><a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html#LIBSVMClassifier(org.cleartk.classifier.encoder.features.FeaturesEncoder, org.cleartk.classifier.encoder.outcome.OutcomeEncoder, libsvm.svm_model)">LIBSVMClassifier</a></strong>(<a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features">FeaturesEncoder</a>&lt;<a href="../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</a>&gt;&nbsp;featuresEncoder,
+                                <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome">OutcomeEncoder</a>&lt;<a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">OUTCOME_TYPE</a>,<a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">ENCODED_OUTCOME_TYPE</a>&gt;&nbsp;outcomeEncoder,
+                                libsvm.svm_model&nbsp;model)</code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- ========== METHOD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_summary">
+<!--   -->
+</a>
+<h3>Method Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
+<caption><span>Methods</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code><a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">OUTCOME_TYPE</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html#classify(java.util.List)">classify</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</a>&gt;&nbsp;features)</code>
+<div class="block">Classifies a list of features.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected static libsvm.svm_node[]</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html#convertToLIBSVM(org.cleartk.classifier.util.featurevector.FeatureVector)">convertToLIBSVM</a></strong>(<a href="../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</a>&nbsp;featureVector)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected abstract <a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">ENCODED_OUTCOME_TYPE</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html#decodePrediction(double)">decodePrediction</a></strong>(double&nbsp;prediction)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code><a href="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</a>&lt;<a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">OUTCOME_TYPE</a>&gt;&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html#score(java.util.List, int)">score</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</a>&gt;&nbsp;features,
+          int&nbsp;maxResults)</code>
+<div class="block">Get the N best classifications along with their scores.</div>
+</td>
+</tr>
+</table>
+<ul class="blockList">
+<li class="blockList"><a name="methods_inherited_from_class_java.lang.Object">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;java.lang.<a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
+<code><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="details">
+<ul class="blockList">
+<li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field_detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="model">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>model</h4>
+<pre>protected&nbsp;libsvm.svm_model <a href="../../../../src-html/org/cleartk/classifier/libsvm/LIBSVMClassifier.html#line.103">model</a></pre>
+</li>
+</ul>
+<a name="orderByScore">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>orderByScore</h4>
+<pre>protected&nbsp;<a href="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/collect/Ordering.html?is-external=true" title="class or interface in com.google.common.collect">Ordering</a>&lt;<a href="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</a>&lt;<a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">OUTCOME_TYPE</a>&gt;&gt; <a href="../../../../src-html/org/cleartk/classifier/libsvm/LIBSVMClassifier.html#line.105">orderByScore</a></pre>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_detail">
+<!--   -->
+</a>
+<h3>Constructor Detail</h3>
+<a name="LIBSVMClassifier(org.cleartk.classifier.encoder.features.FeaturesEncoder, org.cleartk.classifier.encoder.outcome.OutcomeEncoder, libsvm.svm_model)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>LIBSVMClassifier</h4>
+<pre>public&nbsp;<a href="../../../../src-html/org/cleartk/classifier/libsvm/LIBSVMClassifier.html#line.54">LIBSVMClassifier</a>(<a href="../../../../org/cleartk/classifier/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.classifier.encoder.features">FeaturesEncoder</a>&lt;<a href="../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</a>&gt;&nbsp;featuresEncoder,
+                <a href="../../../../org/cleartk/classifier/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.classifier.encoder.outcome">OutcomeEncoder</a>&lt;<a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">OUTCOME_TYPE</a>,<a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">ENCODED_OUTCOME_TYPE</a>&gt;&nbsp;outcomeEncoder,
+                libsvm.svm_model&nbsp;model)</pre>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ============ METHOD DETAIL ========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_detail">
+<!--   -->
+</a>
+<h3>Method Detail</h3>
+<a name="classify(java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>classify</h4>
+<pre>public&nbsp;<a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">OUTCOME_TYPE</a>&nbsp;<a href="../../../../src-html/org/cleartk/classifier/libsvm/LIBSVMClassifier.html#line.62">classify</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</a>&gt;&nbsp;features)
+                      throws <a href="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</a></pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../org/cleartk/classifier/Classifier.html#classify(java.util.List)">Classifier</a></code></strong></div>
+<div class="block">Classifies a list of features.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>features</code> - a list of features to be classified</dd>
+<dt><span class="strong">Returns:</span></dt><dd>the classification made</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code><a href="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</a></code></dd></dl>
+</li>
+</ul>
+<a name="convertToLIBSVM(org.cleartk.classifier.util.featurevector.FeatureVector)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>convertToLIBSVM</h4>
+<pre>protected static&nbsp;libsvm.svm_node[]&nbsp;<a href="../../../../src-html/org/cleartk/classifier/libsvm/LIBSVMClassifier.html#line.88">convertToLIBSVM</a>(<a href="../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</a>&nbsp;featureVector)</pre>
+</li>
+</ul>
+<a name="decodePrediction(double)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>decodePrediction</h4>
+<pre>protected abstract&nbsp;<a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">ENCODED_OUTCOME_TYPE</a>&nbsp;<a href="../../../../src-html/org/cleartk/classifier/libsvm/LIBSVMClassifier.html#line.101">decodePrediction</a>(double&nbsp;prediction)</pre>
+</li>
+</ul>
+<a name="score(java.util.List, int)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>score</h4>
+<pre>public&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/cleartk/classifier/ScoredOutcome.html" title="class in org.cleartk.classifier">ScoredOutcome</a>&lt;<a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">OUTCOME_TYPE</a>&gt;&gt;&nbsp;<a href="../../../../src-html/org/cleartk/classifier/libsvm/LIBSVMClassifier.html#line.73">score</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/cleartk/classifier/Feature.html" title="class in org.cleartk.classifier">Feature</a>&gt;&nbsp;features,
+                                      int&nbsp;maxResults)
+                                        throws <a href="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</a></pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../org/cleartk/classifier/Classifier.html#score(java.util.List, int)">Classifier</a></code></strong></div>
+<div class="block">Get the N best classifications along with their scores.</div>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="../../../../org/cleartk/classifier/Classifier.html#score(java.util.List, int)">score</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../org/cleartk/classifier/Classifier.html" title="interface in org.cleartk.classifier">Classifier</a>&lt;<a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">OUTCOME_TYPE</a>&gt;</code></dd>
+<dt><strong>Overrides:</strong></dt>
+<dd><code><a href="../../../../org/cleartk/classifier/jar/Classifier_ImplBase.html#score(java.util.List, int)">score</a></code>&nbsp;in class&nbsp;<code><a href="../../../../org/cleartk/classifier/jar/Classifier_ImplBase.html" title="class in org.cleartk.classifier.jar">Classifier_ImplBase</a>&lt;<a href="../../../../org/cleartk/classifier/util/featurevector/FeatureVector.html" title="class in org.cleartk.classifier.util.featurevector">FeatureVector</a>,<a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">OUTCOME_TYPE</a>,<a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifier.html" title="type parameter in LIBSVMClassifier">ENCODED_OUTCOME_TYPE</a>&gt;</code></dd>
+<dt><span class="strong">Parameters:</span></dt><dd><code>features</code> - a list of features to be classified</dd><dd><code>maxResults</code> - the maximum number of classifications to return</dd>
+<dt><span class="strong">Returns:</span></dt><dd>a sorted list of the best N classifications with their scores</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code><a href="../../../../org/cleartk/classifier/CleartkProcessingException.html" title="class in org.cleartk.classifier">CleartkProcessingException</a></code></dd></dl>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- ========= END OF CLASS DATA ========= -->
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+<!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/LIBSVMClassifier.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../index-all.html">Index</a></li>
+<li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li><a href="../../../../org/cleartk/classifier/libsvm/LIBSVMBooleanOutcomeDataWriter.html" title="class in org.cleartk.classifier.libsvm"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/cleartk/classifier/libsvm/LIBSVMClassifierBuilder.html" title="class in org.cleartk.classifier.libsvm"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../index.html?org/cleartk/classifier/libsvm/LIBSVMClassifier.html" target="_top">Frames</a></li>
+<li><a href="LIBSVMClassifier.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_bottom">
+<li><a href="../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_bottom");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#field_summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li><a href="#field_detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_bottom">
+<!--   -->
+</a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; 2013. All Rights Reserved.</small></p>
+</body>
+</html>

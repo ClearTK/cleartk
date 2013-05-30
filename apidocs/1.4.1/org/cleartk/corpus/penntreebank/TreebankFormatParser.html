@@ -1,0 +1,606 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- NewPage -->
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<title>TreebankFormatParser (ClearTK Release 1.4.1 API)</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<script type="text/javascript"><!--
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="TreebankFormatParser (ClearTK Release 1.4.1 API)";
+    }
+//-->
+</script>
+<noscript>
+<div>JavaScript is disabled on your browser.</div>
+</noscript>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+<!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/TreebankFormatParser.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../index-all.html">Index</a></li>
+<li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li><a href="../../../../org/cleartk/corpus/penntreebank/RangeSpecification.html" title="class in org.cleartk.corpus.penntreebank"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/cleartk/corpus/penntreebank/TreebankGoldAnnotator.html" title="class in org.cleartk.corpus.penntreebank"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../index.html?org/cleartk/corpus/penntreebank/TreebankFormatParser.html" target="_top">Frames</a></li>
+<li><a href="TreebankFormatParser.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_top">
+<li><a href="../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_top");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#field_summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li><a href="#field_detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_top">
+<!--   -->
+</a></div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+<!-- ======== START OF CLASS DATA ======== -->
+<div class="header">
+<div class="subTitle">org.cleartk.corpus.penntreebank</div>
+<h2 title="Class TreebankFormatParser" class="title">Class TreebankFormatParser</h2>
+</div>
+<div class="contentContainer">
+<ul class="inheritance">
+<li><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
+<li>
+<ul class="inheritance">
+<li>org.cleartk.corpus.penntreebank.TreebankFormatParser</li>
+</ul>
+</li>
+</ul>
+<div class="description">
+<ul class="blockList">
+<li class="blockList">
+<hr>
+<br>
+<pre>public class <a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.55">TreebankFormatParser</a>
+extends <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
+<div class="block">This class was written to be a stand alone parser for the Penn Treebank data. Basically, I need a
+ way to synch up the propbank data with extents of plain text that are labeled. This is not
+ possible to do without parsing the treebank data first. The parse method will parse a single
+ sentence from the treebank data from e.g. wsj/mrg/06/wsj_0656.mrg.
+ 
+ I initially looked at the OpenNLP treebank parser but they made a few assumptions about they
+ wanted to keep for the parser that would make it difficult to align with the propbank data. See:
+ http://sourceforge.net/projects/opennlp/forums/forum/9943/topic/1751983 for relevant discussion.
+ I looked at their parsing implementation and tried to modify it. However, I think the code below
+ bears little resemblance to theirs. But there may yet be some snippets taken directly out of that
+ code. The two regular expressions used are very similar.
+ 
+ <br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+<dl><dt><span class="strong">Author:</span></dt>
+  <dd>Philip Ogren</dd></dl>
+</li>
+</ul>
+</div>
+<div class="summary">
+<ul class="blockList">
+<li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field_summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#cleanUPRegex1">cleanUPRegex1</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#cleanUPRegex2">cleanUPRegex2</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#cleanUPRegex3">cleanUPRegex3</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#cleanUPRegex4">cleanUPRegex4</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#LEAF_NODE_REGEX">LEAF_NODE_REGEX</a></strong></code>
+<div class="block">used to identify tokens in Penn Treebank labeled constituents.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#TYPE_REGEX">TYPE_REGEX</a></strong></code>
+<div class="block">used to identify the type of a consituent in a treebank parse tree.</div>
+</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_summary">
+<!--   -->
+</a>
+<h3>Constructor Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
+<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Constructor and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#TreebankFormatParser()">TreebankFormatParser</a></strong>()</code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- ========== METHOD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_summary">
+<!--   -->
+</a>
+<h3>Method Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
+<caption><span>Methods</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected static <a href="../../../../org/cleartk/syntax/constituent/util/TreebankNode.html" title="class in org.cleartk.syntax.constituent.util">TreebankNode</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#getLeafNode(java.lang.String)">getLeafNode</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;parseFragment)</code>
+<div class="block">Uses the leafNodePattern to identify a string as a terminal.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#getType(java.lang.String)">getType</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;parseFragment)</code>
+<div class="block">Returns the type of a constituent of some fragment of a treebank parse.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#inferPlainText(java.lang.String)">inferPlainText</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;treebankText)</code>
+<div class="block">A treebank parse does not preserve whitespace information.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static int</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#movePastWhiteSpaceChars(java.lang.String, int)">movePastWhiteSpaceChars</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;text,
+                                              int&nbsp;textOffset)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static boolean</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#parensMatch(java.lang.String)">parensMatch</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;contents)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="../../../../org/cleartk/syntax/constituent/util/TopTreebankNode.html" title="class in org.cleartk.syntax.constituent.util">TopTreebankNode</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#parse(java.lang.String)">parse</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;parse)</code>
+<div class="block">Create TreebankNode objects corresponding to the given TreeBank format parse, e.g.:</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="../../../../org/cleartk/syntax/constituent/util/TopTreebankNode.html" title="class in org.cleartk.syntax.constituent.util">TopTreebankNode</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#parse(java.lang.String, java.lang.String, int)">parse</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;parse,
+          <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;text,
+          int&nbsp;textOffset)</code>
+<div class="block">Create TreebankNode objects corresponding to the given TreeBank format parse, e.g.:</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/cleartk/syntax/constituent/util/TopTreebankNode.html" title="class in org.cleartk.syntax.constituent.util">TopTreebankNode</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#parseDocument(java.lang.String, int, java.lang.String)">parseDocument</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;parse,
+                          int&nbsp;textOffset,
+                          <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;text)</code>
+<div class="block">This method parses an entire documents worth of treebanked sentences.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#prepareString(java.lang.String)">prepareString</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;parse)</code>
+<div class="block">This method was created simply as a way to clean up the parse string for a sentence in the
+ treebank syntax.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#splitSentences(java.lang.String)">splitSentences</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;mrgContents)</code>
+<div class="block">Generally speaking, we expect one treebanked sentence per line.</div>
+</td>
+</tr>
+</table>
+<ul class="blockList">
+<li class="blockList"><a name="methods_inherited_from_class_java.lang.Object">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;java.lang.<a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
+<code><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="details">
+<ul class="blockList">
+<li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field_detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="cleanUPRegex1">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>cleanUPRegex1</h4>
+<pre>public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.155">cleanUPRegex1</a></pre>
+<dl><dt><span class="strong">See Also:</span></dt><dd><a href="../../../../constant-values.html#org.cleartk.corpus.penntreebank.TreebankFormatParser.cleanUPRegex1">Constant Field Values</a></dd></dl>
+</li>
+</ul>
+<a name="cleanUPRegex2">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>cleanUPRegex2</h4>
+<pre>public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.159">cleanUPRegex2</a></pre>
+<dl><dt><span class="strong">See Also:</span></dt><dd><a href="../../../../constant-values.html#org.cleartk.corpus.penntreebank.TreebankFormatParser.cleanUPRegex2">Constant Field Values</a></dd></dl>
+</li>
+</ul>
+<a name="cleanUPRegex3">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>cleanUPRegex3</h4>
+<pre>public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.163">cleanUPRegex3</a></pre>
+<dl><dt><span class="strong">See Also:</span></dt><dd><a href="../../../../constant-values.html#org.cleartk.corpus.penntreebank.TreebankFormatParser.cleanUPRegex3">Constant Field Values</a></dd></dl>
+</li>
+</ul>
+<a name="cleanUPRegex4">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>cleanUPRegex4</h4>
+<pre>public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.167">cleanUPRegex4</a></pre>
+<dl><dt><span class="strong">See Also:</span></dt><dd><a href="../../../../constant-values.html#org.cleartk.corpus.penntreebank.TreebankFormatParser.cleanUPRegex4">Constant Field Values</a></dd></dl>
+</li>
+</ul>
+<a name="LEAF_NODE_REGEX">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>LEAF_NODE_REGEX</h4>
+<pre>public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.64">LEAF_NODE_REGEX</a></pre>
+<div class="block">used to identify tokens in Penn Treebank labeled constituents. It will match strings such as:
+ <ul>
+ <li>(NNP Community)
+ <li>(: --)
+ <li>(-NONE- *U*)
+ </ul></div>
+<dl><dt><span class="strong">See Also:</span></dt><dd><a href="../../../../constant-values.html#org.cleartk.corpus.penntreebank.TreebankFormatParser.LEAF_NODE_REGEX">Constant Field Values</a></dd></dl>
+</li>
+</ul>
+<a name="TYPE_REGEX">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>TYPE_REGEX</h4>
+<pre>public static final&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.131">TYPE_REGEX</a></pre>
+<div class="block">used to identify the type of a consituent in a treebank parse tree. It will match strings such
+ as:
+ <ul>
+ <li>"NNP" in "(NNP Community)"
+ <li>":" in "(: --)"
+ <li>"-NONE-" in "(-NONE- *U*)"
+ </ul></div>
+<dl><dt><span class="strong">See Also:</span></dt><dd><a href="../../../../constant-values.html#org.cleartk.corpus.penntreebank.TreebankFormatParser.TYPE_REGEX">Constant Field Values</a></dd></dl>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_detail">
+<!--   -->
+</a>
+<h3>Constructor Detail</h3>
+<a name="TreebankFormatParser()">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>TreebankFormatParser</h4>
+<pre>public&nbsp;<a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.55">TreebankFormatParser</a>()</pre>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ============ METHOD DETAIL ========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_detail">
+<!--   -->
+</a>
+<h3>Method Detail</h3>
+<a name="getLeafNode(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getLeafNode</h4>
+<pre>protected static&nbsp;<a href="../../../../org/cleartk/syntax/constituent/util/TreebankNode.html" title="class in org.cleartk.syntax.constituent.util">TreebankNode</a>&nbsp;<a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.79">getLeafNode</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;parseFragment)</pre>
+<div class="block">Uses the leafNodePattern to identify a string as a terminal. Examples:
+ <ul>
+ <li>parseFragment = "(NNP Community)", returns a leaf node
+ <li>parseFragment = "(QP ($ $) (CD 107) (CD million) )", returns null
+ </ul></div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>parseFragment</code> - some fragment of a treebank parse.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>if the string matches, then a node will be returned. Otherwise, null is returned.</dd></dl>
+</li>
+</ul>
+<a name="getType(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getType</h4>
+<pre>protected static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.148">getType</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;parseFragment)</pre>
+<div class="block">Returns the type of a constituent of some fragment of a treebank parse. Assumes that the first
+ character is a parenthesis. Examples:
+ <ul>
+ <li>parseFragment = "(NP-LOC (NNP Calif.) )" return = "NP-LOC"
+ <li>parseFragment = "(NP" return "NP"
+ <li>parseFragment = "(-NONE- *U*) ) (PP (IN of)" return = "-NONE-"
+ </ul></div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>parseFragment</code> - some fragment of a treebank parse</dd>
+<dt><span class="strong">Returns:</span></dt><dd>the type of the constituent.</dd></dl>
+</li>
+</ul>
+<a name="inferPlainText(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>inferPlainText</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.202">inferPlainText</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;treebankText)</pre>
+<div class="block">A treebank parse does not preserve whitespace information. This method provides a simple
+ mechanism for inferring the original plain text of a treebank parse. If you have access to the
+ original plain text, then you can bypass use of this method by calling the appropriate parse
+ method.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>treebankText</code> - One or more parses in Treebank parenthesized format.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>a "best" guess of the original plain text given in the parse.</dd><dt><span class="strong">See Also:</span></dt><dd><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#parse(java.lang.String, java.lang.String, int)"><code>parse(String, String, int)</code></a></dd></dl>
+</li>
+</ul>
+<a name="movePastWhiteSpaceChars(java.lang.String, int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>movePastWhiteSpaceChars</h4>
+<pre>public static&nbsp;int&nbsp;<a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.435">movePastWhiteSpaceChars</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;text,
+                          int&nbsp;textOffset)</pre>
+</li>
+</ul>
+<a name="parensMatch(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>parensMatch</h4>
+<pre>public static&nbsp;boolean&nbsp;<a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.510">parensMatch</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;contents)</pre>
+</li>
+</ul>
+<a name="parse(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>parse</h4>
+<pre>public static&nbsp;<a href="../../../../org/cleartk/syntax/constituent/util/TopTreebankNode.html" title="class in org.cleartk.syntax.constituent.util">TopTreebankNode</a>&nbsp;<a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.274">parse</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;parse)</pre>
+<div class="block">Create TreebankNode objects corresponding to the given TreeBank format parse, e.g.:
+ 
+ <PRE>
+ ( (X (NP (NP (NML (NN Complex ) (NN trait )) (NN analysis )) (PP (IN of ) (NP (DT the ) (NN mouse ) (NN striatum )))) (: : ) (S (NP-SBJ (JJ independent ) (NNS QTLs )) (VP (VBP modulate ) (NP (NP (NN volume )) (CC and ) (NP (NN neuron ) (NN number)))))) )
+ </PRE>
+ 
+ The text will be inferred automatically from the words in the parse.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>parse</code> - A TreeBank formatted parse</dd>
+<dt><span class="strong">Returns:</span></dt><dd>The TreebankNode root of the parse tree</dd><dt><span class="strong">See Also:</span></dt><dd><a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#inferPlainText(java.lang.String)"><code>inferPlainText(String)</code></a>, 
+<a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#parse(java.lang.String, java.lang.String, int)"><code>parse(String, String, int)</code></a></dd></dl>
+</li>
+</ul>
+<a name="parse(java.lang.String, java.lang.String, int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>parse</h4>
+<pre>public static&nbsp;<a href="../../../../org/cleartk/syntax/constituent/util/TopTreebankNode.html" title="class in org.cleartk.syntax.constituent.util">TopTreebankNode</a>&nbsp;<a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.324">parse</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;parse,
+                    <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;text,
+                    int&nbsp;textOffset)</pre>
+<div class="block">Create TreebankNode objects corresponding to the given TreeBank format parse, e.g.:
+ 
+ <PRE>
+ ( (X (NP (NP (NML (NN Complex ) (NN trait )) (NN analysis )) (PP (IN of ) (NP (DT the ) (NN mouse ) (NN striatum )))) (: : ) (S (NP-SBJ (JJ independent ) (NNS QTLs )) (VP (VBP modulate ) (NP (NP (NN volume )) (CC and ) (NP (NN neuron ) (NN number)))))) )
+ </PRE>
+ 
+ The start and end offsets of each TreebankNode will be aligned to the word offsets in the given
+ text.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>parse</code> - A TreeBank formatted parse</dd><dd><code>text</code> - The text to which the parse should be aligned</dd><dd><code>textOffset</code> - The character offset at which the parse text should start to be aligned. For example,
+          if the words of the parse start right at the beginning of the text, the appropriate
+          textOffset is 0.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>The TreebankNode root of the parse tree. The root node will be a TopTreebankNode, and
+         all its descendants will be TreebankNodes.</dd><dt><span class="strong">See Also:</span></dt><dd><a href="../../../../org/cleartk/syntax/constituent/util/TopTreebankNode.html" title="class in org.cleartk.syntax.constituent.util"><code>TopTreebankNode</code></a>, 
+<a href="../../../../org/cleartk/syntax/constituent/util/TreebankNode.html" title="class in org.cleartk.syntax.constituent.util"><code>TreebankNode</code></a></dd></dl>
+</li>
+</ul>
+<a name="parseDocument(java.lang.String, int, java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>parseDocument</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../org/cleartk/syntax/constituent/util/TopTreebankNode.html" title="class in org.cleartk.syntax.constituent.util">TopTreebankNode</a>&gt;&nbsp;<a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.538">parseDocument</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;parse,
+                                  int&nbsp;textOffset,
+                                  <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;text)</pre>
+<div class="block">This method parses an entire documents worth of treebanked sentences.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>parse</code> - a single document provided as treebank parenthesized parses</dd><dd><code>textOffset</code> - a value that corresponds to the character offset of the first character of the
+          document. The appropriate value for this method will typically be 0.</dd><dd><code>text</code> - a single document provided as plain text. If you do not have access to the original
+          plain text of the document, you can generate some using
+          <a href="../../../../org/cleartk/corpus/penntreebank/TreebankFormatParser.html#inferPlainText(java.lang.String)"><code>inferPlainText(String)</code></a>.</dd></dl>
+</li>
+</ul>
+<a name="prepareString(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>prepareString</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.182">prepareString</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;parse)</pre>
+<div class="block">This method was created simply as a way to clean up the parse string for a sentence in the
+ treebank syntax. The most important thing that it does is add a type called TOP to the top node
+ of the sentence. This simplifies parsing. The other string replacements just remove white space
+ and such and are probably unnecessary. This was inspired by the OpenNLP solution which takes in
+ one line at a time from a file that has been modified in this way.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>parse</code> - a String in the treebank format</dd>
+<dt><span class="strong">Returns:</span></dt><dd>a String in the treebank that has been cleaned up a bit.</dd></dl>
+</li>
+</ul>
+<a name="splitSentences(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>splitSentences</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;<a href="../../../../src-html/org/cleartk/corpus/penntreebank/TreebankFormatParser.html#line.483">splitSentences</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;mrgContents)</pre>
+<div class="block">Generally speaking, we expect one treebanked sentence per line. This method will simply return
+ the lines of a document assuming that each line has matching parentheses. However, the native
+ penn treebank data contains parsed sentences that are broken up across multiple lines. Each
+ sentence in the PTB starts with "( (S..." and so we split on this to get the sentences. If this
+ method sees "( (S...", then it will return the contents split on that pattern. If not, it will
+ return the lines of the input string.
+ 
+ Splits an .mrg file (e.g. wsj/mrg/00/wsj_0020.mrg) into sentence parses.</div>
+<dl><dt><span class="strong">Returns:</span></dt><dd>individual sentence parses from treebank - i.e. strings of the form "( (S..."</dd></dl>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- ========= END OF CLASS DATA ========= -->
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+<!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/TreebankFormatParser.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../index-all.html">Index</a></li>
+<li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li><a href="../../../../org/cleartk/corpus/penntreebank/RangeSpecification.html" title="class in org.cleartk.corpus.penntreebank"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/cleartk/corpus/penntreebank/TreebankGoldAnnotator.html" title="class in org.cleartk.corpus.penntreebank"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../index.html?org/cleartk/corpus/penntreebank/TreebankFormatParser.html" target="_top">Frames</a></li>
+<li><a href="TreebankFormatParser.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_bottom">
+<li><a href="../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_bottom");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#field_summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li><a href="#field_detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_bottom">
+<!--   -->
+</a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; 2013. All Rights Reserved.</small></p>
+</body>
+</html>

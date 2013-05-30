@@ -1,0 +1,900 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- NewPage -->
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<title>PennTreebankTokenizer (ClearTK Release 1.4.1 API)</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<script type="text/javascript"><!--
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="PennTreebankTokenizer (ClearTK Release 1.4.1 API)";
+    }
+//-->
+</script>
+<noscript>
+<div>JavaScript is disabled on your browser.</div>
+</noscript>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+<!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/PennTreebankTokenizer.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../index-all.html">Index</a></li>
+<li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li>Prev Class</li>
+<li><a href="../../../../org/cleartk/token/tokenizer/Subtokenizer.html" title="class in org.cleartk.token.tokenizer"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../index.html?org/cleartk/token/tokenizer/PennTreebankTokenizer.html" target="_top">Frames</a></li>
+<li><a href="PennTreebankTokenizer.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_top">
+<li><a href="../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_top");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#field_summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li><a href="#field_detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_top">
+<!--   -->
+</a></div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+<!-- ======== START OF CLASS DATA ======== -->
+<div class="header">
+<div class="subTitle">org.cleartk.token.tokenizer</div>
+<h2 title="Class PennTreebankTokenizer" class="title">Class PennTreebankTokenizer</h2>
+</div>
+<div class="contentContainer">
+<ul class="inheritance">
+<li><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
+<li>
+<ul class="inheritance">
+<li><a href="../../../../org/cleartk/token/tokenizer/Tokenizer_ImplBase.html" title="class in org.cleartk.token.tokenizer">org.cleartk.token.tokenizer.Tokenizer_ImplBase</a></li>
+<li>
+<ul class="inheritance">
+<li>org.cleartk.token.tokenizer.PennTreebankTokenizer</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="description">
+<ul class="blockList">
+<li class="blockList">
+<dl>
+<dt>All Implemented Interfaces:</dt>
+<dd><a href="../../../../org/cleartk/token/tokenizer/Tokenizer.html" title="interface in org.cleartk.token.tokenizer">Tokenizer</a></dd>
+</dl>
+<hr>
+<br>
+<pre>public class <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.49">PennTreebankTokenizer</a>
+extends <a href="../../../../org/cleartk/token/tokenizer/Tokenizer_ImplBase.html" title="class in org.cleartk.token.tokenizer">Tokenizer_ImplBase</a></pre>
+<div class="block"><br>
+ Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+<dl><dt><span class="strong">Author:</span></dt>
+  <dd>Philip Ogren
+ 
+         This code was derived directly (i.e. translated) from a python script that Steven Bethard
+         gave me called tokenizer.py. This copyright of this script is owned by the Regents of the
+         University of Colorado and therefore there is no restriction on our use and distribution
+         of this derivitive work here. The python script was derived from a sed script available
+         here:
+ 
+         http://www.cis.upenn.edu/~treebank/tokenization.html
+ 
+         Steve's script fixes several misc. errors., Philip Ogren</dd></dl>
+</li>
+</ul>
+</div>
+<div class="summary">
+<ul class="blockList">
+<li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field_summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#ampersandPattern">ampersandPattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#ampersandRegex">ampersandRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#beginOrEndPattern">beginOrEndPattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#beginOrEndRegex">beginOrEndRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#bracesPattern">bracesPattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#bracesRegex">bracesRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#closedBracesRegex">closedBracesRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#colonPattern">colonPattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#colonRegex">colonRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#commaPattern">commaPattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#commaRegex">commaRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#dashPattern">dashPattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#dashRegex">dashRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#dollarSignPattern">dollarSignPattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#dollarSignRegex">dollarSignRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#doubleQuotePattern">doubleQuotePattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#doubleQuoteRegex">doubleQuoteRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#ellipsisPattern">ellipsisPattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#ellipsisRegex">ellipsisRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#extraSpacePattern">extraSpacePattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#extraSpaceRegex">extraSpaceRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#multipleWhitespacePattern">multipleWhitespacePattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#multipleWhitespaceRegex">multipleWhitespaceRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#nonFinalPunctPattern">nonFinalPunctPattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#nonFinalPunctRegex">nonFinalPunctRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#nonPeriodPunctPattern">nonPeriodPunctPattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#nonPeriodPunctRegex">nonPeriodPunctRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#oneWordAbbreviationPattern">oneWordAbbreviationPattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#oneWordAbbreviationRegex">oneWordAbbreviationRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#openBracesRegex">openBracesRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>[]</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#patterns">patterns</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#periodPattern">periodPattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#periodRegex">periodRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#quotePattern">quotePattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#quoteRegex">quoteRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#singleQuotePattern">singleQuotePattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#singleQuoteRegex">singleQuoteRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#tAbbreviationPattern">tAbbreviationPattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#tAbbreviationRegex">tAbbreviationRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>[]</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#threeWordAbbreviationPatterns">threeWordAbbreviationPatterns</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#threeWordAbbreviationRegexes">threeWordAbbreviationRegexes</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#tripleQuotePattern">tripleQuotePattern</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#tripleQuoteRegex">tripleQuoteRegex</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>[]</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#twoWordAbbreviationPatterns">twoWordAbbreviationPatterns</a></strong></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#twoWordAbbreviationRegexes">twoWordAbbreviationRegexes</a></strong></code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_summary">
+<!--   -->
+</a>
+<h3>Constructor Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
+<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Constructor and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#PennTreebankTokenizer()">PennTreebankTokenizer</a></strong>()</code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- ========== METHOD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_summary">
+<!--   -->
+</a>
+<h3>Method Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
+<caption><span>Methods</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code><a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/token/tokenizer/PennTreebankTokenizer.html#getTokenTexts(java.lang.String)">getTokenTexts</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;text)</code>
+<div class="block">Tokenizes the input text and returns a string array corresponding to the tokens.</div>
+</td>
+</tr>
+</table>
+<ul class="blockList">
+<li class="blockList"><a name="methods_inherited_from_class_org.cleartk.token.tokenizer.Tokenizer_ImplBase">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.cleartk.token.tokenizer.<a href="../../../../org/cleartk/token/tokenizer/Tokenizer_ImplBase.html" title="class in org.cleartk.token.tokenizer">Tokenizer_ImplBase</a></h3>
+<code><a href="../../../../org/cleartk/token/tokenizer/Tokenizer_ImplBase.html#getTokens(java.lang.String)">getTokens</a></code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a name="methods_inherited_from_class_java.lang.Object">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;java.lang.<a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
+<code><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="details">
+<ul class="blockList">
+<li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field_detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="ampersandPattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>ampersandPattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.79">ampersandPattern</a></pre>
+</li>
+</ul>
+<a name="ampersandRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>ampersandRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.77">ampersandRegex</a></pre>
+</li>
+</ul>
+<a name="beginOrEndPattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>beginOrEndPattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.180">beginOrEndPattern</a></pre>
+</li>
+</ul>
+<a name="beginOrEndRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>beginOrEndRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.178">beginOrEndRegex</a></pre>
+</li>
+</ul>
+<a name="bracesPattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>bracesPattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.57">bracesPattern</a></pre>
+</li>
+</ul>
+<a name="bracesRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>bracesRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.55">bracesRegex</a></pre>
+</li>
+</ul>
+<a name="closedBracesRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>closedBracesRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.53">closedBracesRegex</a></pre>
+</li>
+</ul>
+<a name="colonPattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>colonPattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.91">colonPattern</a></pre>
+</li>
+</ul>
+<a name="colonRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>colonRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.89">colonRegex</a></pre>
+</li>
+</ul>
+<a name="commaPattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>commaPattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.67">commaPattern</a></pre>
+</li>
+</ul>
+<a name="commaRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>commaRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.65">commaRegex</a></pre>
+</li>
+</ul>
+<a name="dashPattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>dashPattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.85">dashPattern</a></pre>
+</li>
+</ul>
+<a name="dashRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>dashRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.83">dashRegex</a></pre>
+</li>
+</ul>
+<a name="dollarSignPattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>dollarSignPattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.73">dollarSignPattern</a></pre>
+</li>
+</ul>
+<a name="dollarSignRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>dollarSignRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.71">dollarSignRegex</a></pre>
+</li>
+</ul>
+<a name="doubleQuotePattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>doubleQuotePattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.128">doubleQuotePattern</a></pre>
+</li>
+</ul>
+<a name="doubleQuoteRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>doubleQuoteRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.126">doubleQuoteRegex</a></pre>
+</li>
+</ul>
+<a name="ellipsisPattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>ellipsisPattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.62">ellipsisPattern</a></pre>
+</li>
+</ul>
+<a name="ellipsisRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>ellipsisRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.60">ellipsisRegex</a></pre>
+</li>
+</ul>
+<a name="extraSpacePattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>extraSpacePattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.184">extraSpacePattern</a></pre>
+</li>
+</ul>
+<a name="extraSpaceRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>extraSpaceRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.182">extraSpaceRegex</a></pre>
+</li>
+</ul>
+<a name="multipleWhitespacePattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>multipleWhitespacePattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.188">multipleWhitespacePattern</a></pre>
+</li>
+</ul>
+<a name="multipleWhitespaceRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>multipleWhitespaceRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.186">multipleWhitespaceRegex</a></pre>
+</li>
+</ul>
+<a name="nonFinalPunctPattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>nonFinalPunctPattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.97">nonFinalPunctPattern</a></pre>
+</li>
+</ul>
+<a name="nonFinalPunctRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>nonFinalPunctRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.95">nonFinalPunctRegex</a></pre>
+</li>
+</ul>
+<a name="nonPeriodPunctPattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>nonPeriodPunctPattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.112">nonPeriodPunctPattern</a></pre>
+</li>
+</ul>
+<a name="nonPeriodPunctRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>nonPeriodPunctRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.110">nonPeriodPunctRegex</a></pre>
+</li>
+</ul>
+<a name="oneWordAbbreviationPattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>oneWordAbbreviationPattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.137">oneWordAbbreviationPattern</a></pre>
+</li>
+</ul>
+<a name="oneWordAbbreviationRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>oneWordAbbreviationRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.135">oneWordAbbreviationRegex</a></pre>
+</li>
+</ul>
+<a name="openBracesRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>openBracesRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.51">openBracesRegex</a></pre>
+</li>
+</ul>
+<a name="patterns">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>patterns</h4>
+<pre>protected&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>[] <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.192">patterns</a></pre>
+</li>
+</ul>
+<a name="periodPattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>periodPattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.107">periodPattern</a></pre>
+</li>
+</ul>
+<a name="periodRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>periodRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.104">periodRegex</a></pre>
+</li>
+</ul>
+<a name="quotePattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>quotePattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.132">quotePattern</a></pre>
+</li>
+</ul>
+<a name="quoteRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>quoteRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.130">quoteRegex</a></pre>
+</li>
+</ul>
+<a name="singleQuotePattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>singleQuotePattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.120">singleQuotePattern</a></pre>
+</li>
+</ul>
+<a name="singleQuoteRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>singleQuoteRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.118">singleQuoteRegex</a></pre>
+</li>
+</ul>
+<a name="tAbbreviationPattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>tAbbreviationPattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.175">tAbbreviationPattern</a></pre>
+</li>
+</ul>
+<a name="tAbbreviationRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>tAbbreviationRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.173">tAbbreviationRegex</a></pre>
+</li>
+</ul>
+<a name="threeWordAbbreviationPatterns">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>threeWordAbbreviationPatterns</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>[] <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.164">threeWordAbbreviationPatterns</a></pre>
+</li>
+</ul>
+<a name="threeWordAbbreviationRegexes">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>threeWordAbbreviationRegexes</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[] <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.160">threeWordAbbreviationRegexes</a></pre>
+</li>
+</ul>
+<a name="tripleQuotePattern">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>tripleQuotePattern</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.124">tripleQuotePattern</a></pre>
+</li>
+</ul>
+<a name="tripleQuoteRegex">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>tripleQuoteRegex</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a> <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.122">tripleQuoteRegex</a></pre>
+</li>
+</ul>
+<a name="twoWordAbbreviationPatterns">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>twoWordAbbreviationPatterns</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>[] <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.151">twoWordAbbreviationPatterns</a></pre>
+</li>
+</ul>
+<a name="twoWordAbbreviationRegexes">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>twoWordAbbreviationRegexes</h4>
+<pre>public static&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[] <a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.141">twoWordAbbreviationRegexes</a></pre>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_detail">
+<!--   -->
+</a>
+<h3>Constructor Detail</h3>
+<a name="PennTreebankTokenizer()">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>PennTreebankTokenizer</h4>
+<pre>public&nbsp;<a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.194">PennTreebankTokenizer</a>()</pre>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ============ METHOD DETAIL ========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_detail">
+<!--   -->
+</a>
+<h3>Method Detail</h3>
+<a name="getTokenTexts(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getTokenTexts</h4>
+<pre>public&nbsp;<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>[]&nbsp;<a href="../../../../src-html/org/cleartk/token/tokenizer/PennTreebankTokenizer.html#line.211">getTokenTexts</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;text)</pre>
+<div class="block">Tokenizes the input text and returns a string array corresponding to the tokens.</div>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="../../../../org/cleartk/token/tokenizer/Tokenizer_ImplBase.html#getTokenTexts(java.lang.String)">getTokenTexts</a></code>&nbsp;in class&nbsp;<code><a href="../../../../org/cleartk/token/tokenizer/Tokenizer_ImplBase.html" title="class in org.cleartk.token.tokenizer">Tokenizer_ImplBase</a></code></dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- ========= END OF CLASS DATA ========= -->
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+<!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/PennTreebankTokenizer.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../index-all.html">Index</a></li>
+<li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li>Prev Class</li>
+<li><a href="../../../../org/cleartk/token/tokenizer/Subtokenizer.html" title="class in org.cleartk.token.tokenizer"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../index.html?org/cleartk/token/tokenizer/PennTreebankTokenizer.html" target="_top">Frames</a></li>
+<li><a href="PennTreebankTokenizer.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_bottom">
+<li><a href="../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_bottom");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#field_summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li><a href="#field_detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_bottom">
+<!--   -->
+</a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; 2013. All Rights Reserved.</small></p>
+</body>
+</html>

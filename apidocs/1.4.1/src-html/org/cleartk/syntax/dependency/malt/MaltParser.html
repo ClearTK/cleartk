@@ -1,0 +1,283 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (c) 2010, Regents of the University of Colorado <a name="line.2"></a>
+<span class="sourceLineNo">003</span> * All rights reserved.<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * <a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * <a name="line.7"></a>
+<span class="sourceLineNo">008</span> * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<span class="sourceLineNo">009</span> * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<span class="sourceLineNo">010</span> * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<span class="sourceLineNo">011</span> * <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<span class="sourceLineNo">023</span> */<a name="line.23"></a>
+<span class="sourceLineNo">024</span>package org.cleartk.syntax.dependency.malt;<a name="line.24"></a>
+<span class="sourceLineNo">025</span><a name="line.25"></a>
+<span class="sourceLineNo">026</span>import java.io.File;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import java.util.ArrayList;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import java.util.HashMap;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import java.util.List;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import java.util.Map;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import java.util.SortedSet;<a name="line.31"></a>
+<span class="sourceLineNo">032</span><a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.apache.uima.UimaContext;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import org.apache.uima.analysis_engine.AnalysisEngineDescription;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import org.apache.uima.analysis_engine.AnalysisEngineProcessException;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import org.apache.uima.jcas.JCas;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import org.apache.uima.jcas.cas.FSArray;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import org.apache.uima.resource.ResourceInitializationException;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import org.apache.uima.resource.metadata.TypeSystemDescription;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import org.cleartk.syntax.dependency.type.DependencyNode;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import org.cleartk.syntax.dependency.type.DependencyRelation;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>import org.cleartk.syntax.dependency.type.TopDependencyNode;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>import org.cleartk.token.type.Sentence;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>import org.cleartk.token.type.Token;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>import org.maltparser.MaltParserService;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import org.maltparser.core.exception.MaltChainedException;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import org.maltparser.core.options.OptionManager;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>import org.maltparser.core.symbol.SymbolTable;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>import org.maltparser.core.syntaxgraph.DependencyStructure;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>import org.uimafit.component.JCasAnnotator_ImplBase;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>import org.uimafit.descriptor.ConfigurationParameter;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import org.uimafit.factory.AnalysisEngineFactory;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>import org.uimafit.factory.ConfigurationParameterFactory;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>import org.uimafit.factory.TypeSystemDescriptionFactory;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>import org.uimafit.util.FSCollectionFactory;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>import org.uimafit.util.JCasUtil;<a name="line.56"></a>
+<span class="sourceLineNo">057</span><a name="line.57"></a>
+<span class="sourceLineNo">058</span>/**<a name="line.58"></a>
+<span class="sourceLineNo">059</span> * &lt;br&gt;<a name="line.59"></a>
+<span class="sourceLineNo">060</span> * Copyright (c) 2010, Regents of the University of Colorado &lt;br&gt;<a name="line.60"></a>
+<span class="sourceLineNo">061</span> * All rights reserved.<a name="line.61"></a>
+<span class="sourceLineNo">062</span> */<a name="line.62"></a>
+<span class="sourceLineNo">063</span>public class MaltParser extends JCasAnnotator_ImplBase {<a name="line.63"></a>
+<span class="sourceLineNo">064</span><a name="line.64"></a>
+<span class="sourceLineNo">065</span>  @Deprecated<a name="line.65"></a>
+<span class="sourceLineNo">066</span>  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem");<a name="line.66"></a>
+<span class="sourceLineNo">067</span><a name="line.67"></a>
+<span class="sourceLineNo">068</span>  public static final String ENGMALT_RESOURCE_NAME = "/models/engmalt.linear-1.7.mco";<a name="line.68"></a>
+<span class="sourceLineNo">069</span><a name="line.69"></a>
+<span class="sourceLineNo">070</span>  public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {<a name="line.70"></a>
+<span class="sourceLineNo">071</span>    // get the resource path and strip the ".mco" suffix<a name="line.71"></a>
+<span class="sourceLineNo">072</span>    String fileName = MaltParser.class.getResource(ENGMALT_RESOURCE_NAME).getFile();<a name="line.72"></a>
+<span class="sourceLineNo">073</span>    String fileBase = fileName.substring(0, fileName.length() - 4);<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    return getDescription(fileBase);<a name="line.74"></a>
+<span class="sourceLineNo">075</span>  }<a name="line.75"></a>
+<span class="sourceLineNo">076</span><a name="line.76"></a>
+<span class="sourceLineNo">077</span>  public static AnalysisEngineDescription getDescription(String modelFileName)<a name="line.77"></a>
+<span class="sourceLineNo">078</span>      throws ResourceInitializationException {<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    return AnalysisEngineFactory.createPrimitiveDescription(<a name="line.79"></a>
+<span class="sourceLineNo">080</span>        MaltParser.class,<a name="line.80"></a>
+<span class="sourceLineNo">081</span>        TYPE_SYSTEM_DESCRIPTION,<a name="line.81"></a>
+<span class="sourceLineNo">082</span>        PARAM_MODEL_FILE_NAME,<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        modelFileName);<a name="line.83"></a>
+<span class="sourceLineNo">084</span>  }<a name="line.84"></a>
+<span class="sourceLineNo">085</span><a name="line.85"></a>
+<span class="sourceLineNo">086</span>  @ConfigurationParameter(<a name="line.86"></a>
+<span class="sourceLineNo">087</span>      description = "The path to the model file, without the .mco suffix.",<a name="line.87"></a>
+<span class="sourceLineNo">088</span>      mandatory = true)<a name="line.88"></a>
+<span class="sourceLineNo">089</span>  private String modelFileName;<a name="line.89"></a>
+<span class="sourceLineNo">090</span><a name="line.90"></a>
+<span class="sourceLineNo">091</span>  public static final String PARAM_MODEL_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(<a name="line.91"></a>
+<span class="sourceLineNo">092</span>      MaltParser.class,<a name="line.92"></a>
+<span class="sourceLineNo">093</span>      "modelFileName");<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>  private MaltParserService service;<a name="line.95"></a>
+<span class="sourceLineNo">096</span><a name="line.96"></a>
+<span class="sourceLineNo">097</span>  @Override<a name="line.97"></a>
+<span class="sourceLineNo">098</span>  public void initialize(UimaContext context) throws ResourceInitializationException {<a name="line.98"></a>
+<span class="sourceLineNo">099</span>    super.initialize(context);<a name="line.99"></a>
+<span class="sourceLineNo">100</span>    try {<a name="line.100"></a>
+<span class="sourceLineNo">101</span>      OptionManager.instance().loadOptionDescriptionFile();<a name="line.101"></a>
+<span class="sourceLineNo">102</span>      OptionManager.instance().getOptionDescriptions().generateMaps();<a name="line.102"></a>
+<span class="sourceLineNo">103</span>      this.service = new MaltParserService();<a name="line.103"></a>
+<span class="sourceLineNo">104</span>      File modelFile = new File(this.modelFileName);<a name="line.104"></a>
+<span class="sourceLineNo">105</span>      String fileName = modelFile.getName();<a name="line.105"></a>
+<span class="sourceLineNo">106</span>      String workingDirectory = modelFile.getParent();<a name="line.106"></a>
+<span class="sourceLineNo">107</span>      String command = String.format("-c %s -m parse -w %s", fileName, workingDirectory);<a name="line.107"></a>
+<span class="sourceLineNo">108</span>      this.service.initializeParserModel(command);<a name="line.108"></a>
+<span class="sourceLineNo">109</span>    } catch (MaltChainedException e) {<a name="line.109"></a>
+<span class="sourceLineNo">110</span>      throw new ResourceInitializationException(e);<a name="line.110"></a>
+<span class="sourceLineNo">111</span>    }<a name="line.111"></a>
+<span class="sourceLineNo">112</span>  }<a name="line.112"></a>
+<span class="sourceLineNo">113</span><a name="line.113"></a>
+<span class="sourceLineNo">114</span>  @Override<a name="line.114"></a>
+<span class="sourceLineNo">115</span>  public void collectionProcessComplete() throws AnalysisEngineProcessException {<a name="line.115"></a>
+<span class="sourceLineNo">116</span>    super.collectionProcessComplete();<a name="line.116"></a>
+<span class="sourceLineNo">117</span>    try {<a name="line.117"></a>
+<span class="sourceLineNo">118</span>      this.service.terminateParserModel();<a name="line.118"></a>
+<span class="sourceLineNo">119</span>    } catch (MaltChainedException e) {<a name="line.119"></a>
+<span class="sourceLineNo">120</span>      throw new AnalysisEngineProcessException(e);<a name="line.120"></a>
+<span class="sourceLineNo">121</span>    }<a name="line.121"></a>
+<span class="sourceLineNo">122</span>  }<a name="line.122"></a>
+<span class="sourceLineNo">123</span><a name="line.123"></a>
+<span class="sourceLineNo">124</span>  @Override<a name="line.124"></a>
+<span class="sourceLineNo">125</span>  public void process(JCas jCas) throws AnalysisEngineProcessException {<a name="line.125"></a>
+<span class="sourceLineNo">126</span>    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {<a name="line.126"></a>
+<span class="sourceLineNo">127</span>      List&lt;Token&gt; tokens = JCasUtil.selectCovered(jCas, Token.class, sentence);<a name="line.127"></a>
+<span class="sourceLineNo">128</span><a name="line.128"></a>
+<span class="sourceLineNo">129</span>      // convert tokens into MaltParser input array<a name="line.129"></a>
+<span class="sourceLineNo">130</span>      List&lt;String&gt; inputStrings = new ArrayList&lt;String&gt;();<a name="line.130"></a>
+<span class="sourceLineNo">131</span>      int lineNo = -1;<a name="line.131"></a>
+<span class="sourceLineNo">132</span>      for (Token token : tokens) {<a name="line.132"></a>
+<span class="sourceLineNo">133</span>        lineNo += 1;<a name="line.133"></a>
+<span class="sourceLineNo">134</span>        String text = token.getCoveredText();<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        String pos = token.getPos();<a name="line.135"></a>
+<span class="sourceLineNo">136</span><a name="line.136"></a>
+<span class="sourceLineNo">137</span>        // line format is &lt;index&gt;\t&lt;word&gt;\t_\t&lt;pos&gt;\t&lt;pos&gt;\t_<a name="line.137"></a>
+<span class="sourceLineNo">138</span>        String lineFormat = "%1$d\t%2$s\t_\t%3$s\t%3$s\t_";<a name="line.138"></a>
+<span class="sourceLineNo">139</span>        inputStrings.add(String.format(lineFormat, lineNo + 1, text, pos));<a name="line.139"></a>
+<span class="sourceLineNo">140</span>      }<a name="line.140"></a>
+<span class="sourceLineNo">141</span><a name="line.141"></a>
+<span class="sourceLineNo">142</span>      try {<a name="line.142"></a>
+<span class="sourceLineNo">143</span>        // parse with MaltParser<a name="line.143"></a>
+<span class="sourceLineNo">144</span>        String[] input = inputStrings.toArray(new String[inputStrings.size()]);<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        DependencyStructure graph = this.service.parse(input);<a name="line.145"></a>
+<span class="sourceLineNo">146</span><a name="line.146"></a>
+<span class="sourceLineNo">147</span>        // convert MaltParser structure into annotations<a name="line.147"></a>
+<span class="sourceLineNo">148</span>        Map&lt;Integer, DependencyNode&gt; nodes = new HashMap&lt;Integer, DependencyNode&gt;();<a name="line.148"></a>
+<span class="sourceLineNo">149</span>        SortedSet&lt;Integer&gt; tokenIndices = graph.getTokenIndices();<a name="line.149"></a>
+<span class="sourceLineNo">150</span>        for (int i : tokenIndices) {<a name="line.150"></a>
+<span class="sourceLineNo">151</span>          org.maltparser.core.syntaxgraph.node.DependencyNode maltNode = graph.getTokenNode(i);<a name="line.151"></a>
+<span class="sourceLineNo">152</span>          Token token = tokens.get(maltNode.getIndex() - 1);<a name="line.152"></a>
+<span class="sourceLineNo">153</span>          DependencyNode node;<a name="line.153"></a>
+<span class="sourceLineNo">154</span>          if (maltNode.getHead().getIndex() != 0) {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>            node = new DependencyNode(jCas, token.getBegin(), token.getEnd());<a name="line.155"></a>
+<span class="sourceLineNo">156</span>          } else {<a name="line.156"></a>
+<span class="sourceLineNo">157</span>            node = new TopDependencyNode(jCas, token.getBegin(), token.getEnd());<a name="line.157"></a>
+<span class="sourceLineNo">158</span>          }<a name="line.158"></a>
+<span class="sourceLineNo">159</span>          nodes.put(i, node);<a name="line.159"></a>
+<span class="sourceLineNo">160</span>        }<a name="line.160"></a>
+<span class="sourceLineNo">161</span><a name="line.161"></a>
+<span class="sourceLineNo">162</span>        // add relation annotations<a name="line.162"></a>
+<span class="sourceLineNo">163</span>        Map&lt;DependencyNode, List&lt;DependencyRelation&gt;&gt; headRelations;<a name="line.163"></a>
+<span class="sourceLineNo">164</span>        headRelations = new HashMap&lt;DependencyNode, List&lt;DependencyRelation&gt;&gt;();<a name="line.164"></a>
+<span class="sourceLineNo">165</span>        Map&lt;DependencyNode, List&lt;DependencyRelation&gt;&gt; childRelations;<a name="line.165"></a>
+<span class="sourceLineNo">166</span>        childRelations = new HashMap&lt;DependencyNode, List&lt;DependencyRelation&gt;&gt;();<a name="line.166"></a>
+<span class="sourceLineNo">167</span>        SymbolTable table = graph.getSymbolTables().getSymbolTable("DEPREL");<a name="line.167"></a>
+<span class="sourceLineNo">168</span>        for (int i : tokenIndices) {<a name="line.168"></a>
+<span class="sourceLineNo">169</span>          org.maltparser.core.syntaxgraph.node.DependencyNode maltNode = graph.getTokenNode(i);<a name="line.169"></a>
+<span class="sourceLineNo">170</span>          int headIndex = maltNode.getHead().getIndex();<a name="line.170"></a>
+<span class="sourceLineNo">171</span>          if (headIndex != 0) {<a name="line.171"></a>
+<span class="sourceLineNo">172</span>            String label = maltNode.getHeadEdge().getLabelSymbol(table);<a name="line.172"></a>
+<span class="sourceLineNo">173</span>            DependencyNode node = nodes.get(i);<a name="line.173"></a>
+<span class="sourceLineNo">174</span>            DependencyNode head = nodes.get(headIndex);<a name="line.174"></a>
+<span class="sourceLineNo">175</span>            DependencyRelation rel = new DependencyRelation(jCas);<a name="line.175"></a>
+<span class="sourceLineNo">176</span>            rel.setHead(head);<a name="line.176"></a>
+<span class="sourceLineNo">177</span>            rel.setChild(node);<a name="line.177"></a>
+<span class="sourceLineNo">178</span>            rel.setRelation(label);<a name="line.178"></a>
+<span class="sourceLineNo">179</span>            rel.addToIndexes();<a name="line.179"></a>
+<span class="sourceLineNo">180</span>            if (!headRelations.containsKey(node)) {<a name="line.180"></a>
+<span class="sourceLineNo">181</span>              headRelations.put(node, new ArrayList&lt;DependencyRelation&gt;());<a name="line.181"></a>
+<span class="sourceLineNo">182</span>            }<a name="line.182"></a>
+<span class="sourceLineNo">183</span>            headRelations.get(node).add(rel);<a name="line.183"></a>
+<span class="sourceLineNo">184</span>            if (!childRelations.containsKey(head)) {<a name="line.184"></a>
+<span class="sourceLineNo">185</span>              childRelations.put(head, new ArrayList&lt;DependencyRelation&gt;());<a name="line.185"></a>
+<span class="sourceLineNo">186</span>            }<a name="line.186"></a>
+<span class="sourceLineNo">187</span>            childRelations.get(head).add(rel);<a name="line.187"></a>
+<span class="sourceLineNo">188</span>          }<a name="line.188"></a>
+<span class="sourceLineNo">189</span>        }<a name="line.189"></a>
+<span class="sourceLineNo">190</span><a name="line.190"></a>
+<span class="sourceLineNo">191</span>        // finalize nodes: add links between nodes and relations<a name="line.191"></a>
+<span class="sourceLineNo">192</span>        for (DependencyNode node : nodes.values()) {<a name="line.192"></a>
+<span class="sourceLineNo">193</span>          List&lt;DependencyRelation&gt; heads = headRelations.get(node);<a name="line.193"></a>
+<span class="sourceLineNo">194</span>          node.setHeadRelations(new FSArray(jCas, heads == null ? 0 : heads.size()));<a name="line.194"></a>
+<span class="sourceLineNo">195</span>          if (heads != null) {<a name="line.195"></a>
+<span class="sourceLineNo">196</span>            FSCollectionFactory.fillArrayFS(node.getHeadRelations(), heads);<a name="line.196"></a>
+<span class="sourceLineNo">197</span>          }<a name="line.197"></a>
+<span class="sourceLineNo">198</span>          List&lt;DependencyRelation&gt; children = childRelations.get(node);<a name="line.198"></a>
+<span class="sourceLineNo">199</span>          node.setChildRelations(new FSArray(jCas, children == null ? 0 : children.size()));<a name="line.199"></a>
+<span class="sourceLineNo">200</span>          if (children != null) {<a name="line.200"></a>
+<span class="sourceLineNo">201</span>            FSCollectionFactory.fillArrayFS(node.getChildRelations(), children);<a name="line.201"></a>
+<span class="sourceLineNo">202</span>          }<a name="line.202"></a>
+<span class="sourceLineNo">203</span>          node.addToIndexes();<a name="line.203"></a>
+<span class="sourceLineNo">204</span>        }<a name="line.204"></a>
+<span class="sourceLineNo">205</span><a name="line.205"></a>
+<span class="sourceLineNo">206</span>      } catch (MaltChainedException e) {<a name="line.206"></a>
+<span class="sourceLineNo">207</span>        throw new AnalysisEngineProcessException(e);<a name="line.207"></a>
+<span class="sourceLineNo">208</span>      }<a name="line.208"></a>
+<span class="sourceLineNo">209</span>    }<a name="line.209"></a>
+<span class="sourceLineNo">210</span>  }<a name="line.210"></a>
+<span class="sourceLineNo">211</span>}<a name="line.211"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/* First created by JCasGen Thu May 30 17:14:47 MDT 2013 */<a name="line.3"></a>
+<span class="sourceLineNo">004</span>package org.cleartk.timeml.type;<a name="line.4"></a>
+<span class="sourceLineNo">005</span><a name="line.5"></a>
+<span class="sourceLineNo">006</span>import org.apache.uima.jcas.JCas; <a name="line.6"></a>
+<span class="sourceLineNo">007</span>import org.apache.uima.jcas.JCasRegistry;<a name="line.7"></a>
+<span class="sourceLineNo">008</span>import org.apache.uima.jcas.cas.TOP_Type;<a name="line.8"></a>
+<span class="sourceLineNo">009</span><a name="line.9"></a>
+<span class="sourceLineNo">010</span><a name="line.10"></a>
+<span class="sourceLineNo">011</span><a name="line.11"></a>
+<span class="sourceLineNo">012</span>/** <a name="line.12"></a>
+<span class="sourceLineNo">013</span> * Updated by JCasGen Thu May 30 17:14:47 MDT 2013<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * XML source: /Users/bethard/Code/cleartk/cleartk-type-system/src/main/resources/org/cleartk/TypeSystem.xml<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * @generated */<a name="line.15"></a>
+<span class="sourceLineNo">016</span>public class Event extends Anchor {<a name="line.16"></a>
+<span class="sourceLineNo">017</span>  /** @generated<a name="line.17"></a>
+<span class="sourceLineNo">018</span>   * @ordered <a name="line.18"></a>
+<span class="sourceLineNo">019</span>   */<a name="line.19"></a>
+<span class="sourceLineNo">020</span>  @SuppressWarnings ("hiding")<a name="line.20"></a>
+<span class="sourceLineNo">021</span>  public final static int typeIndexID = JCasRegistry.register(Event.class);<a name="line.21"></a>
+<span class="sourceLineNo">022</span>  /** @generated<a name="line.22"></a>
+<span class="sourceLineNo">023</span>   * @ordered <a name="line.23"></a>
+<span class="sourceLineNo">024</span>   */<a name="line.24"></a>
+<span class="sourceLineNo">025</span>  @SuppressWarnings ("hiding")<a name="line.25"></a>
+<span class="sourceLineNo">026</span>  public final static int type = typeIndexID;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>  /** @generated  */<a name="line.27"></a>
+<span class="sourceLineNo">028</span>  @Override<a name="line.28"></a>
+<span class="sourceLineNo">029</span>  public              int getTypeIndexID() {return typeIndexID;}<a name="line.29"></a>
+<span class="sourceLineNo">030</span> <a name="line.30"></a>
+<span class="sourceLineNo">031</span>  /** Never called.  Disable default constructor<a name="line.31"></a>
+<span class="sourceLineNo">032</span>   * @generated */<a name="line.32"></a>
+<span class="sourceLineNo">033</span>  protected Event() {/* intentionally empty block */}<a name="line.33"></a>
+<span class="sourceLineNo">034</span>    <a name="line.34"></a>
+<span class="sourceLineNo">035</span>  /** Internal - constructor used by generator <a name="line.35"></a>
+<span class="sourceLineNo">036</span>   * @generated */<a name="line.36"></a>
+<span class="sourceLineNo">037</span>  public Event(int addr, TOP_Type type) {<a name="line.37"></a>
+<span class="sourceLineNo">038</span>    super(addr, type);<a name="line.38"></a>
+<span class="sourceLineNo">039</span>    readObject();<a name="line.39"></a>
+<span class="sourceLineNo">040</span>  }<a name="line.40"></a>
+<span class="sourceLineNo">041</span>  <a name="line.41"></a>
+<span class="sourceLineNo">042</span>  /** @generated */<a name="line.42"></a>
+<span class="sourceLineNo">043</span>  public Event(JCas jcas) {<a name="line.43"></a>
+<span class="sourceLineNo">044</span>    super(jcas);<a name="line.44"></a>
+<span class="sourceLineNo">045</span>    readObject();   <a name="line.45"></a>
+<span class="sourceLineNo">046</span>  } <a name="line.46"></a>
+<span class="sourceLineNo">047</span><a name="line.47"></a>
+<span class="sourceLineNo">048</span>  /** @generated */  <a name="line.48"></a>
+<span class="sourceLineNo">049</span>  public Event(JCas jcas, int begin, int end) {<a name="line.49"></a>
+<span class="sourceLineNo">050</span>    super(jcas);<a name="line.50"></a>
+<span class="sourceLineNo">051</span>    setBegin(begin);<a name="line.51"></a>
+<span class="sourceLineNo">052</span>    setEnd(end);<a name="line.52"></a>
+<span class="sourceLineNo">053</span>    readObject();<a name="line.53"></a>
+<span class="sourceLineNo">054</span>  }   <a name="line.54"></a>
+<span class="sourceLineNo">055</span><a name="line.55"></a>
+<span class="sourceLineNo">056</span>  /** &lt;!-- begin-user-doc --&gt;<a name="line.56"></a>
+<span class="sourceLineNo">057</span>    * Write your own initialization here<a name="line.57"></a>
+<span class="sourceLineNo">058</span>    * &lt;!-- end-user-doc --&gt;<a name="line.58"></a>
+<span class="sourceLineNo">059</span>  @generated modifiable */<a name="line.59"></a>
+<span class="sourceLineNo">060</span>  private void readObject() {/*default - does nothing empty block */}<a name="line.60"></a>
+<span class="sourceLineNo">061</span>     <a name="line.61"></a>
+<span class="sourceLineNo">062</span> <a name="line.62"></a>
+<span class="sourceLineNo">063</span>    <a name="line.63"></a>
+<span class="sourceLineNo">064</span>  //*--------------*<a name="line.64"></a>
+<span class="sourceLineNo">065</span>  //* Feature: eventClass<a name="line.65"></a>
+<span class="sourceLineNo">066</span><a name="line.66"></a>
+<span class="sourceLineNo">067</span>  /** getter for eventClass - gets <a name="line.67"></a>
+<span class="sourceLineNo">068</span>   * @generated */<a name="line.68"></a>
+<span class="sourceLineNo">069</span>  public String getEventClass() {<a name="line.69"></a>
+<span class="sourceLineNo">070</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_eventClass == null)<a name="line.70"></a>
+<span class="sourceLineNo">071</span>      jcasType.jcas.throwFeatMissing("eventClass", "org.cleartk.timeml.type.Event");<a name="line.71"></a>
+<span class="sourceLineNo">072</span>    return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_eventClass);}<a name="line.72"></a>
+<span class="sourceLineNo">073</span>    <a name="line.73"></a>
+<span class="sourceLineNo">074</span>  /** setter for eventClass - sets  <a name="line.74"></a>
+<span class="sourceLineNo">075</span>   * @generated */<a name="line.75"></a>
+<span class="sourceLineNo">076</span>  public void setEventClass(String v) {<a name="line.76"></a>
+<span class="sourceLineNo">077</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_eventClass == null)<a name="line.77"></a>
+<span class="sourceLineNo">078</span>      jcasType.jcas.throwFeatMissing("eventClass", "org.cleartk.timeml.type.Event");<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_eventClass, v);}    <a name="line.79"></a>
+<span class="sourceLineNo">080</span>   <a name="line.80"></a>
+<span class="sourceLineNo">081</span>    <a name="line.81"></a>
+<span class="sourceLineNo">082</span>  //*--------------*<a name="line.82"></a>
+<span class="sourceLineNo">083</span>  //* Feature: eventInstanceID<a name="line.83"></a>
+<span class="sourceLineNo">084</span><a name="line.84"></a>
+<span class="sourceLineNo">085</span>  /** getter for eventInstanceID - gets <a name="line.85"></a>
+<span class="sourceLineNo">086</span>   * @generated */<a name="line.86"></a>
+<span class="sourceLineNo">087</span>  public String getEventInstanceID() {<a name="line.87"></a>
+<span class="sourceLineNo">088</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_eventInstanceID == null)<a name="line.88"></a>
+<span class="sourceLineNo">089</span>      jcasType.jcas.throwFeatMissing("eventInstanceID", "org.cleartk.timeml.type.Event");<a name="line.89"></a>
+<span class="sourceLineNo">090</span>    return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_eventInstanceID);}<a name="line.90"></a>
+<span class="sourceLineNo">091</span>    <a name="line.91"></a>
+<span class="sourceLineNo">092</span>  /** setter for eventInstanceID - sets  <a name="line.92"></a>
+<span class="sourceLineNo">093</span>   * @generated */<a name="line.93"></a>
+<span class="sourceLineNo">094</span>  public void setEventInstanceID(String v) {<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_eventInstanceID == null)<a name="line.95"></a>
+<span class="sourceLineNo">096</span>      jcasType.jcas.throwFeatMissing("eventInstanceID", "org.cleartk.timeml.type.Event");<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_eventInstanceID, v);}    <a name="line.97"></a>
+<span class="sourceLineNo">098</span>   <a name="line.98"></a>
+<span class="sourceLineNo">099</span>    <a name="line.99"></a>
+<span class="sourceLineNo">100</span>  //*--------------*<a name="line.100"></a>
+<span class="sourceLineNo">101</span>  //* Feature: signalID<a name="line.101"></a>
+<span class="sourceLineNo">102</span><a name="line.102"></a>
+<span class="sourceLineNo">103</span>  /** getter for signalID - gets <a name="line.103"></a>
+<span class="sourceLineNo">104</span>   * @generated */<a name="line.104"></a>
+<span class="sourceLineNo">105</span>  public String getSignalID() {<a name="line.105"></a>
+<span class="sourceLineNo">106</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_signalID == null)<a name="line.106"></a>
+<span class="sourceLineNo">107</span>      jcasType.jcas.throwFeatMissing("signalID", "org.cleartk.timeml.type.Event");<a name="line.107"></a>
+<span class="sourceLineNo">108</span>    return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_signalID);}<a name="line.108"></a>
+<span class="sourceLineNo">109</span>    <a name="line.109"></a>
+<span class="sourceLineNo">110</span>  /** setter for signalID - sets  <a name="line.110"></a>
+<span class="sourceLineNo">111</span>   * @generated */<a name="line.111"></a>
+<span class="sourceLineNo">112</span>  public void setSignalID(String v) {<a name="line.112"></a>
+<span class="sourceLineNo">113</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_signalID == null)<a name="line.113"></a>
+<span class="sourceLineNo">114</span>      jcasType.jcas.throwFeatMissing("signalID", "org.cleartk.timeml.type.Event");<a name="line.114"></a>
+<span class="sourceLineNo">115</span>    jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_signalID, v);}    <a name="line.115"></a>
+<span class="sourceLineNo">116</span>   <a name="line.116"></a>
+<span class="sourceLineNo">117</span>    <a name="line.117"></a>
+<span class="sourceLineNo">118</span>  //*--------------*<a name="line.118"></a>
+<span class="sourceLineNo">119</span>  //* Feature: stem<a name="line.119"></a>
+<span class="sourceLineNo">120</span><a name="line.120"></a>
+<span class="sourceLineNo">121</span>  /** getter for stem - gets <a name="line.121"></a>
+<span class="sourceLineNo">122</span>   * @generated */<a name="line.122"></a>
+<span class="sourceLineNo">123</span>  public String getStem() {<a name="line.123"></a>
+<span class="sourceLineNo">124</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_stem == null)<a name="line.124"></a>
+<span class="sourceLineNo">125</span>      jcasType.jcas.throwFeatMissing("stem", "org.cleartk.timeml.type.Event");<a name="line.125"></a>
+<span class="sourceLineNo">126</span>    return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_stem);}<a name="line.126"></a>
+<span class="sourceLineNo">127</span>    <a name="line.127"></a>
+<span class="sourceLineNo">128</span>  /** setter for stem - sets  <a name="line.128"></a>
+<span class="sourceLineNo">129</span>   * @generated */<a name="line.129"></a>
+<span class="sourceLineNo">130</span>  public void setStem(String v) {<a name="line.130"></a>
+<span class="sourceLineNo">131</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_stem == null)<a name="line.131"></a>
+<span class="sourceLineNo">132</span>      jcasType.jcas.throwFeatMissing("stem", "org.cleartk.timeml.type.Event");<a name="line.132"></a>
+<span class="sourceLineNo">133</span>    jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_stem, v);}    <a name="line.133"></a>
+<span class="sourceLineNo">134</span>   <a name="line.134"></a>
+<span class="sourceLineNo">135</span>    <a name="line.135"></a>
+<span class="sourceLineNo">136</span>  //*--------------*<a name="line.136"></a>
+<span class="sourceLineNo">137</span>  //* Feature: pos<a name="line.137"></a>
+<span class="sourceLineNo">138</span><a name="line.138"></a>
+<span class="sourceLineNo">139</span>  /** getter for pos - gets <a name="line.139"></a>
+<span class="sourceLineNo">140</span>   * @generated */<a name="line.140"></a>
+<span class="sourceLineNo">141</span>  public String getPos() {<a name="line.141"></a>
+<span class="sourceLineNo">142</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_pos == null)<a name="line.142"></a>
+<span class="sourceLineNo">143</span>      jcasType.jcas.throwFeatMissing("pos", "org.cleartk.timeml.type.Event");<a name="line.143"></a>
+<span class="sourceLineNo">144</span>    return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_pos);}<a name="line.144"></a>
+<span class="sourceLineNo">145</span>    <a name="line.145"></a>
+<span class="sourceLineNo">146</span>  /** setter for pos - sets  <a name="line.146"></a>
+<span class="sourceLineNo">147</span>   * @generated */<a name="line.147"></a>
+<span class="sourceLineNo">148</span>  public void setPos(String v) {<a name="line.148"></a>
+<span class="sourceLineNo">149</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_pos == null)<a name="line.149"></a>
+<span class="sourceLineNo">150</span>      jcasType.jcas.throwFeatMissing("pos", "org.cleartk.timeml.type.Event");<a name="line.150"></a>
+<span class="sourceLineNo">151</span>    jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_pos, v);}    <a name="line.151"></a>
+<span class="sourceLineNo">152</span>   <a name="line.152"></a>
+<span class="sourceLineNo">153</span>    <a name="line.153"></a>
+<span class="sourceLineNo">154</span>  //*--------------*<a name="line.154"></a>
+<span class="sourceLineNo">155</span>  //* Feature: tense<a name="line.155"></a>
+<span class="sourceLineNo">156</span><a name="line.156"></a>
+<span class="sourceLineNo">157</span>  /** getter for tense - gets <a name="line.157"></a>
+<span class="sourceLineNo">158</span>   * @generated */<a name="line.158"></a>
+<span class="sourceLineNo">159</span>  public String getTense() {<a name="line.159"></a>
+<span class="sourceLineNo">160</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_tense == null)<a name="line.160"></a>
+<span class="sourceLineNo">161</span>      jcasType.jcas.throwFeatMissing("tense", "org.cleartk.timeml.type.Event");<a name="line.161"></a>
+<span class="sourceLineNo">162</span>    return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_tense);}<a name="line.162"></a>
+<span class="sourceLineNo">163</span>    <a name="line.163"></a>
+<span class="sourceLineNo">164</span>  /** setter for tense - sets  <a name="line.164"></a>
+<span class="sourceLineNo">165</span>   * @generated */<a name="line.165"></a>
+<span class="sourceLineNo">166</span>  public void setTense(String v) {<a name="line.166"></a>
+<span class="sourceLineNo">167</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_tense == null)<a name="line.167"></a>
+<span class="sourceLineNo">168</span>      jcasType.jcas.throwFeatMissing("tense", "org.cleartk.timeml.type.Event");<a name="line.168"></a>
+<span class="sourceLineNo">169</span>    jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_tense, v);}    <a name="line.169"></a>
+<span class="sourceLineNo">170</span>   <a name="line.170"></a>
+<span class="sourceLineNo">171</span>    <a name="line.171"></a>
+<span class="sourceLineNo">172</span>  //*--------------*<a name="line.172"></a>
+<span class="sourceLineNo">173</span>  //* Feature: aspect<a name="line.173"></a>
+<span class="sourceLineNo">174</span><a name="line.174"></a>
+<span class="sourceLineNo">175</span>  /** getter for aspect - gets <a name="line.175"></a>
+<span class="sourceLineNo">176</span>   * @generated */<a name="line.176"></a>
+<span class="sourceLineNo">177</span>  public String getAspect() {<a name="line.177"></a>
+<span class="sourceLineNo">178</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_aspect == null)<a name="line.178"></a>
+<span class="sourceLineNo">179</span>      jcasType.jcas.throwFeatMissing("aspect", "org.cleartk.timeml.type.Event");<a name="line.179"></a>
+<span class="sourceLineNo">180</span>    return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_aspect);}<a name="line.180"></a>
+<span class="sourceLineNo">181</span>    <a name="line.181"></a>
+<span class="sourceLineNo">182</span>  /** setter for aspect - sets  <a name="line.182"></a>
+<span class="sourceLineNo">183</span>   * @generated */<a name="line.183"></a>
+<span class="sourceLineNo">184</span>  public void setAspect(String v) {<a name="line.184"></a>
+<span class="sourceLineNo">185</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_aspect == null)<a name="line.185"></a>
+<span class="sourceLineNo">186</span>      jcasType.jcas.throwFeatMissing("aspect", "org.cleartk.timeml.type.Event");<a name="line.186"></a>
+<span class="sourceLineNo">187</span>    jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_aspect, v);}    <a name="line.187"></a>
+<span class="sourceLineNo">188</span>   <a name="line.188"></a>
+<span class="sourceLineNo">189</span>    <a name="line.189"></a>
+<span class="sourceLineNo">190</span>  //*--------------*<a name="line.190"></a>
+<span class="sourceLineNo">191</span>  //* Feature: cardinality<a name="line.191"></a>
+<span class="sourceLineNo">192</span><a name="line.192"></a>
+<span class="sourceLineNo">193</span>  /** getter for cardinality - gets <a name="line.193"></a>
+<span class="sourceLineNo">194</span>   * @generated */<a name="line.194"></a>
+<span class="sourceLineNo">195</span>  public String getCardinality() {<a name="line.195"></a>
+<span class="sourceLineNo">196</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_cardinality == null)<a name="line.196"></a>
+<span class="sourceLineNo">197</span>      jcasType.jcas.throwFeatMissing("cardinality", "org.cleartk.timeml.type.Event");<a name="line.197"></a>
+<span class="sourceLineNo">198</span>    return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_cardinality);}<a name="line.198"></a>
+<span class="sourceLineNo">199</span>    <a name="line.199"></a>
+<span class="sourceLineNo">200</span>  /** setter for cardinality - sets  <a name="line.200"></a>
+<span class="sourceLineNo">201</span>   * @generated */<a name="line.201"></a>
+<span class="sourceLineNo">202</span>  public void setCardinality(String v) {<a name="line.202"></a>
+<span class="sourceLineNo">203</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_cardinality == null)<a name="line.203"></a>
+<span class="sourceLineNo">204</span>      jcasType.jcas.throwFeatMissing("cardinality", "org.cleartk.timeml.type.Event");<a name="line.204"></a>
+<span class="sourceLineNo">205</span>    jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_cardinality, v);}    <a name="line.205"></a>
+<span class="sourceLineNo">206</span>   <a name="line.206"></a>
+<span class="sourceLineNo">207</span>    <a name="line.207"></a>
+<span class="sourceLineNo">208</span>  //*--------------*<a name="line.208"></a>
+<span class="sourceLineNo">209</span>  //* Feature: polarity<a name="line.209"></a>
+<span class="sourceLineNo">210</span><a name="line.210"></a>
+<span class="sourceLineNo">211</span>  /** getter for polarity - gets <a name="line.211"></a>
+<span class="sourceLineNo">212</span>   * @generated */<a name="line.212"></a>
+<span class="sourceLineNo">213</span>  public String getPolarity() {<a name="line.213"></a>
+<span class="sourceLineNo">214</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_polarity == null)<a name="line.214"></a>
+<span class="sourceLineNo">215</span>      jcasType.jcas.throwFeatMissing("polarity", "org.cleartk.timeml.type.Event");<a name="line.215"></a>
+<span class="sourceLineNo">216</span>    return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_polarity);}<a name="line.216"></a>
+<span class="sourceLineNo">217</span>    <a name="line.217"></a>
+<span class="sourceLineNo">218</span>  /** setter for polarity - sets  <a name="line.218"></a>
+<span class="sourceLineNo">219</span>   * @generated */<a name="line.219"></a>
+<span class="sourceLineNo">220</span>  public void setPolarity(String v) {<a name="line.220"></a>
+<span class="sourceLineNo">221</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_polarity == null)<a name="line.221"></a>
+<span class="sourceLineNo">222</span>      jcasType.jcas.throwFeatMissing("polarity", "org.cleartk.timeml.type.Event");<a name="line.222"></a>
+<span class="sourceLineNo">223</span>    jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_polarity, v);}    <a name="line.223"></a>
+<span class="sourceLineNo">224</span>   <a name="line.224"></a>
+<span class="sourceLineNo">225</span>    <a name="line.225"></a>
+<span class="sourceLineNo">226</span>  //*--------------*<a name="line.226"></a>
+<span class="sourceLineNo">227</span>  //* Feature: modality<a name="line.227"></a>
+<span class="sourceLineNo">228</span><a name="line.228"></a>
+<span class="sourceLineNo">229</span>  /** getter for modality - gets <a name="line.229"></a>
+<span class="sourceLineNo">230</span>   * @generated */<a name="line.230"></a>
+<span class="sourceLineNo">231</span>  public String getModality() {<a name="line.231"></a>
+<span class="sourceLineNo">232</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_modality == null)<a name="line.232"></a>
+<span class="sourceLineNo">233</span>      jcasType.jcas.throwFeatMissing("modality", "org.cleartk.timeml.type.Event");<a name="line.233"></a>
+<span class="sourceLineNo">234</span>    return jcasType.ll_cas.ll_getStringValue(addr, ((Event_Type)jcasType).casFeatCode_modality);}<a name="line.234"></a>
+<span class="sourceLineNo">235</span>    <a name="line.235"></a>
+<span class="sourceLineNo">236</span>  /** setter for modality - sets  <a name="line.236"></a>
+<span class="sourceLineNo">237</span>   * @generated */<a name="line.237"></a>
+<span class="sourceLineNo">238</span>  public void setModality(String v) {<a name="line.238"></a>
+<span class="sourceLineNo">239</span>    if (Event_Type.featOkTst &amp;&amp; ((Event_Type)jcasType).casFeat_modality == null)<a name="line.239"></a>
+<span class="sourceLineNo">240</span>      jcasType.jcas.throwFeatMissing("modality", "org.cleartk.timeml.type.Event");<a name="line.240"></a>
+<span class="sourceLineNo">241</span>    jcasType.ll_cas.ll_setStringValue(addr, ((Event_Type)jcasType).casFeatCode_modality, v);}    <a name="line.241"></a>
+<span class="sourceLineNo">242</span>  }<a name="line.242"></a>
+<span class="sourceLineNo">243</span><a name="line.243"></a>
+<span class="sourceLineNo">244</span>    <a name="line.244"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

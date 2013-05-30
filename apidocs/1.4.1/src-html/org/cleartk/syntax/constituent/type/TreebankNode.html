@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/* First created by JCasGen Thu May 30 17:14:47 MDT 2013 */<a name="line.3"></a>
+<span class="sourceLineNo">004</span>package org.cleartk.syntax.constituent.type;<a name="line.4"></a>
+<span class="sourceLineNo">005</span><a name="line.5"></a>
+<span class="sourceLineNo">006</span>import org.apache.uima.jcas.JCas; <a name="line.6"></a>
+<span class="sourceLineNo">007</span>import org.apache.uima.jcas.JCasRegistry;<a name="line.7"></a>
+<span class="sourceLineNo">008</span>import org.apache.uima.jcas.cas.TOP_Type;<a name="line.8"></a>
+<span class="sourceLineNo">009</span><a name="line.9"></a>
+<span class="sourceLineNo">010</span>import org.apache.uima.jcas.cas.FSArray;<a name="line.10"></a>
+<span class="sourceLineNo">011</span>import org.cleartk.score.type.ScoredAnnotation;<a name="line.11"></a>
+<span class="sourceLineNo">012</span>import org.apache.uima.jcas.cas.StringArray;<a name="line.12"></a>
+<span class="sourceLineNo">013</span><a name="line.13"></a>
+<span class="sourceLineNo">014</span><a name="line.14"></a>
+<span class="sourceLineNo">015</span>/** <a name="line.15"></a>
+<span class="sourceLineNo">016</span> * Updated by JCasGen Thu May 30 17:14:47 MDT 2013<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * XML source: /Users/bethard/Code/cleartk/cleartk-type-system/src/main/resources/org/cleartk/TypeSystem.xml<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * @generated */<a name="line.18"></a>
+<span class="sourceLineNo">019</span>public class TreebankNode extends ScoredAnnotation {<a name="line.19"></a>
+<span class="sourceLineNo">020</span>  /** @generated<a name="line.20"></a>
+<span class="sourceLineNo">021</span>   * @ordered <a name="line.21"></a>
+<span class="sourceLineNo">022</span>   */<a name="line.22"></a>
+<span class="sourceLineNo">023</span>  @SuppressWarnings ("hiding")<a name="line.23"></a>
+<span class="sourceLineNo">024</span>  public final static int typeIndexID = JCasRegistry.register(TreebankNode.class);<a name="line.24"></a>
+<span class="sourceLineNo">025</span>  /** @generated<a name="line.25"></a>
+<span class="sourceLineNo">026</span>   * @ordered <a name="line.26"></a>
+<span class="sourceLineNo">027</span>   */<a name="line.27"></a>
+<span class="sourceLineNo">028</span>  @SuppressWarnings ("hiding")<a name="line.28"></a>
+<span class="sourceLineNo">029</span>  public final static int type = typeIndexID;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>  /** @generated  */<a name="line.30"></a>
+<span class="sourceLineNo">031</span>  @Override<a name="line.31"></a>
+<span class="sourceLineNo">032</span>  public              int getTypeIndexID() {return typeIndexID;}<a name="line.32"></a>
+<span class="sourceLineNo">033</span> <a name="line.33"></a>
+<span class="sourceLineNo">034</span>  /** Never called.  Disable default constructor<a name="line.34"></a>
+<span class="sourceLineNo">035</span>   * @generated */<a name="line.35"></a>
+<span class="sourceLineNo">036</span>  protected TreebankNode() {/* intentionally empty block */}<a name="line.36"></a>
+<span class="sourceLineNo">037</span>    <a name="line.37"></a>
+<span class="sourceLineNo">038</span>  /** Internal - constructor used by generator <a name="line.38"></a>
+<span class="sourceLineNo">039</span>   * @generated */<a name="line.39"></a>
+<span class="sourceLineNo">040</span>  public TreebankNode(int addr, TOP_Type type) {<a name="line.40"></a>
+<span class="sourceLineNo">041</span>    super(addr, type);<a name="line.41"></a>
+<span class="sourceLineNo">042</span>    readObject();<a name="line.42"></a>
+<span class="sourceLineNo">043</span>  }<a name="line.43"></a>
+<span class="sourceLineNo">044</span>  <a name="line.44"></a>
+<span class="sourceLineNo">045</span>  /** @generated */<a name="line.45"></a>
+<span class="sourceLineNo">046</span>  public TreebankNode(JCas jcas) {<a name="line.46"></a>
+<span class="sourceLineNo">047</span>    super(jcas);<a name="line.47"></a>
+<span class="sourceLineNo">048</span>    readObject();   <a name="line.48"></a>
+<span class="sourceLineNo">049</span>  } <a name="line.49"></a>
+<span class="sourceLineNo">050</span><a name="line.50"></a>
+<span class="sourceLineNo">051</span>  /** @generated */  <a name="line.51"></a>
+<span class="sourceLineNo">052</span>  public TreebankNode(JCas jcas, int begin, int end) {<a name="line.52"></a>
+<span class="sourceLineNo">053</span>    super(jcas);<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    setBegin(begin);<a name="line.54"></a>
+<span class="sourceLineNo">055</span>    setEnd(end);<a name="line.55"></a>
+<span class="sourceLineNo">056</span>    readObject();<a name="line.56"></a>
+<span class="sourceLineNo">057</span>  }   <a name="line.57"></a>
+<span class="sourceLineNo">058</span><a name="line.58"></a>
+<span class="sourceLineNo">059</span>  /** &lt;!-- begin-user-doc --&gt;<a name="line.59"></a>
+<span class="sourceLineNo">060</span>    * Write your own initialization here<a name="line.60"></a>
+<span class="sourceLineNo">061</span>    * &lt;!-- end-user-doc --&gt;<a name="line.61"></a>
+<span class="sourceLineNo">062</span>  @generated modifiable */<a name="line.62"></a>
+<span class="sourceLineNo">063</span>  private void readObject() {/*default - does nothing empty block */}<a name="line.63"></a>
+<span class="sourceLineNo">064</span>     <a name="line.64"></a>
+<span class="sourceLineNo">065</span> <a name="line.65"></a>
+<span class="sourceLineNo">066</span>    <a name="line.66"></a>
+<span class="sourceLineNo">067</span>  //*--------------*<a name="line.67"></a>
+<span class="sourceLineNo">068</span>  //* Feature: nodeType<a name="line.68"></a>
+<span class="sourceLineNo">069</span><a name="line.69"></a>
+<span class="sourceLineNo">070</span>  /** getter for nodeType - gets <a name="line.70"></a>
+<span class="sourceLineNo">071</span>   * @generated */<a name="line.71"></a>
+<span class="sourceLineNo">072</span>  public String getNodeType() {<a name="line.72"></a>
+<span class="sourceLineNo">073</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_nodeType == null)<a name="line.73"></a>
+<span class="sourceLineNo">074</span>      jcasType.jcas.throwFeatMissing("nodeType", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.74"></a>
+<span class="sourceLineNo">075</span>    return jcasType.ll_cas.ll_getStringValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_nodeType);}<a name="line.75"></a>
+<span class="sourceLineNo">076</span>    <a name="line.76"></a>
+<span class="sourceLineNo">077</span>  /** setter for nodeType - sets  <a name="line.77"></a>
+<span class="sourceLineNo">078</span>   * @generated */<a name="line.78"></a>
+<span class="sourceLineNo">079</span>  public void setNodeType(String v) {<a name="line.79"></a>
+<span class="sourceLineNo">080</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_nodeType == null)<a name="line.80"></a>
+<span class="sourceLineNo">081</span>      jcasType.jcas.throwFeatMissing("nodeType", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.81"></a>
+<span class="sourceLineNo">082</span>    jcasType.ll_cas.ll_setStringValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_nodeType, v);}    <a name="line.82"></a>
+<span class="sourceLineNo">083</span>   <a name="line.83"></a>
+<span class="sourceLineNo">084</span>    <a name="line.84"></a>
+<span class="sourceLineNo">085</span>  //*--------------*<a name="line.85"></a>
+<span class="sourceLineNo">086</span>  //* Feature: nodeValue<a name="line.86"></a>
+<span class="sourceLineNo">087</span><a name="line.87"></a>
+<span class="sourceLineNo">088</span>  /** getter for nodeValue - gets <a name="line.88"></a>
+<span class="sourceLineNo">089</span>   * @generated */<a name="line.89"></a>
+<span class="sourceLineNo">090</span>  public String getNodeValue() {<a name="line.90"></a>
+<span class="sourceLineNo">091</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_nodeValue == null)<a name="line.91"></a>
+<span class="sourceLineNo">092</span>      jcasType.jcas.throwFeatMissing("nodeValue", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    return jcasType.ll_cas.ll_getStringValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_nodeValue);}<a name="line.93"></a>
+<span class="sourceLineNo">094</span>    <a name="line.94"></a>
+<span class="sourceLineNo">095</span>  /** setter for nodeValue - sets  <a name="line.95"></a>
+<span class="sourceLineNo">096</span>   * @generated */<a name="line.96"></a>
+<span class="sourceLineNo">097</span>  public void setNodeValue(String v) {<a name="line.97"></a>
+<span class="sourceLineNo">098</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_nodeValue == null)<a name="line.98"></a>
+<span class="sourceLineNo">099</span>      jcasType.jcas.throwFeatMissing("nodeValue", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.99"></a>
+<span class="sourceLineNo">100</span>    jcasType.ll_cas.ll_setStringValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_nodeValue, v);}    <a name="line.100"></a>
+<span class="sourceLineNo">101</span>   <a name="line.101"></a>
+<span class="sourceLineNo">102</span>    <a name="line.102"></a>
+<span class="sourceLineNo">103</span>  //*--------------*<a name="line.103"></a>
+<span class="sourceLineNo">104</span>  //* Feature: leaf<a name="line.104"></a>
+<span class="sourceLineNo">105</span><a name="line.105"></a>
+<span class="sourceLineNo">106</span>  /** getter for leaf - gets <a name="line.106"></a>
+<span class="sourceLineNo">107</span>   * @generated */<a name="line.107"></a>
+<span class="sourceLineNo">108</span>  public boolean getLeaf() {<a name="line.108"></a>
+<span class="sourceLineNo">109</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_leaf == null)<a name="line.109"></a>
+<span class="sourceLineNo">110</span>      jcasType.jcas.throwFeatMissing("leaf", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.110"></a>
+<span class="sourceLineNo">111</span>    return jcasType.ll_cas.ll_getBooleanValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_leaf);}<a name="line.111"></a>
+<span class="sourceLineNo">112</span>    <a name="line.112"></a>
+<span class="sourceLineNo">113</span>  /** setter for leaf - sets  <a name="line.113"></a>
+<span class="sourceLineNo">114</span>   * @generated */<a name="line.114"></a>
+<span class="sourceLineNo">115</span>  public void setLeaf(boolean v) {<a name="line.115"></a>
+<span class="sourceLineNo">116</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_leaf == null)<a name="line.116"></a>
+<span class="sourceLineNo">117</span>      jcasType.jcas.throwFeatMissing("leaf", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.117"></a>
+<span class="sourceLineNo">118</span>    jcasType.ll_cas.ll_setBooleanValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_leaf, v);}    <a name="line.118"></a>
+<span class="sourceLineNo">119</span>   <a name="line.119"></a>
+<span class="sourceLineNo">120</span>    <a name="line.120"></a>
+<span class="sourceLineNo">121</span>  //*--------------*<a name="line.121"></a>
+<span class="sourceLineNo">122</span>  //* Feature: parent<a name="line.122"></a>
+<span class="sourceLineNo">123</span><a name="line.123"></a>
+<span class="sourceLineNo">124</span>  /** getter for parent - gets <a name="line.124"></a>
+<span class="sourceLineNo">125</span>   * @generated */<a name="line.125"></a>
+<span class="sourceLineNo">126</span>  public TreebankNode getParent() {<a name="line.126"></a>
+<span class="sourceLineNo">127</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_parent == null)<a name="line.127"></a>
+<span class="sourceLineNo">128</span>      jcasType.jcas.throwFeatMissing("parent", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.128"></a>
+<span class="sourceLineNo">129</span>    return (TreebankNode)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_parent)));}<a name="line.129"></a>
+<span class="sourceLineNo">130</span>    <a name="line.130"></a>
+<span class="sourceLineNo">131</span>  /** setter for parent - sets  <a name="line.131"></a>
+<span class="sourceLineNo">132</span>   * @generated */<a name="line.132"></a>
+<span class="sourceLineNo">133</span>  public void setParent(TreebankNode v) {<a name="line.133"></a>
+<span class="sourceLineNo">134</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_parent == null)<a name="line.134"></a>
+<span class="sourceLineNo">135</span>      jcasType.jcas.throwFeatMissing("parent", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.135"></a>
+<span class="sourceLineNo">136</span>    jcasType.ll_cas.ll_setRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_parent, jcasType.ll_cas.ll_getFSRef(v));}    <a name="line.136"></a>
+<span class="sourceLineNo">137</span>   <a name="line.137"></a>
+<span class="sourceLineNo">138</span>    <a name="line.138"></a>
+<span class="sourceLineNo">139</span>  //*--------------*<a name="line.139"></a>
+<span class="sourceLineNo">140</span>  //* Feature: children<a name="line.140"></a>
+<span class="sourceLineNo">141</span><a name="line.141"></a>
+<span class="sourceLineNo">142</span>  /** getter for children - gets <a name="line.142"></a>
+<span class="sourceLineNo">143</span>   * @generated */<a name="line.143"></a>
+<span class="sourceLineNo">144</span>  public FSArray getChildren() {<a name="line.144"></a>
+<span class="sourceLineNo">145</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_children == null)<a name="line.145"></a>
+<span class="sourceLineNo">146</span>      jcasType.jcas.throwFeatMissing("children", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.146"></a>
+<span class="sourceLineNo">147</span>    return (FSArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_children)));}<a name="line.147"></a>
+<span class="sourceLineNo">148</span>    <a name="line.148"></a>
+<span class="sourceLineNo">149</span>  /** setter for children - sets  <a name="line.149"></a>
+<span class="sourceLineNo">150</span>   * @generated */<a name="line.150"></a>
+<span class="sourceLineNo">151</span>  public void setChildren(FSArray v) {<a name="line.151"></a>
+<span class="sourceLineNo">152</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_children == null)<a name="line.152"></a>
+<span class="sourceLineNo">153</span>      jcasType.jcas.throwFeatMissing("children", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.153"></a>
+<span class="sourceLineNo">154</span>    jcasType.ll_cas.ll_setRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_children, jcasType.ll_cas.ll_getFSRef(v));}    <a name="line.154"></a>
+<span class="sourceLineNo">155</span>    <a name="line.155"></a>
+<span class="sourceLineNo">156</span>  /** indexed getter for children - gets an indexed value - <a name="line.156"></a>
+<span class="sourceLineNo">157</span>   * @generated */<a name="line.157"></a>
+<span class="sourceLineNo">158</span>  public TreebankNode getChildren(int i) {<a name="line.158"></a>
+<span class="sourceLineNo">159</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_children == null)<a name="line.159"></a>
+<span class="sourceLineNo">160</span>      jcasType.jcas.throwFeatMissing("children", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.160"></a>
+<span class="sourceLineNo">161</span>    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_children), i);<a name="line.161"></a>
+<span class="sourceLineNo">162</span>    return (TreebankNode)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_children), i)));}<a name="line.162"></a>
+<span class="sourceLineNo">163</span><a name="line.163"></a>
+<span class="sourceLineNo">164</span>  /** indexed setter for children - sets an indexed value - <a name="line.164"></a>
+<span class="sourceLineNo">165</span>   * @generated */<a name="line.165"></a>
+<span class="sourceLineNo">166</span>  public void setChildren(int i, TreebankNode v) { <a name="line.166"></a>
+<span class="sourceLineNo">167</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_children == null)<a name="line.167"></a>
+<span class="sourceLineNo">168</span>      jcasType.jcas.throwFeatMissing("children", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.168"></a>
+<span class="sourceLineNo">169</span>    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_children), i);<a name="line.169"></a>
+<span class="sourceLineNo">170</span>    jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_children), i, jcasType.ll_cas.ll_getFSRef(v));}<a name="line.170"></a>
+<span class="sourceLineNo">171</span>   <a name="line.171"></a>
+<span class="sourceLineNo">172</span>    <a name="line.172"></a>
+<span class="sourceLineNo">173</span>  //*--------------*<a name="line.173"></a>
+<span class="sourceLineNo">174</span>  //* Feature: nodeTags<a name="line.174"></a>
+<span class="sourceLineNo">175</span><a name="line.175"></a>
+<span class="sourceLineNo">176</span>  /** getter for nodeTags - gets <a name="line.176"></a>
+<span class="sourceLineNo">177</span>   * @generated */<a name="line.177"></a>
+<span class="sourceLineNo">178</span>  public StringArray getNodeTags() {<a name="line.178"></a>
+<span class="sourceLineNo">179</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_nodeTags == null)<a name="line.179"></a>
+<span class="sourceLineNo">180</span>      jcasType.jcas.throwFeatMissing("nodeTags", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.180"></a>
+<span class="sourceLineNo">181</span>    return (StringArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_nodeTags)));}<a name="line.181"></a>
+<span class="sourceLineNo">182</span>    <a name="line.182"></a>
+<span class="sourceLineNo">183</span>  /** setter for nodeTags - sets  <a name="line.183"></a>
+<span class="sourceLineNo">184</span>   * @generated */<a name="line.184"></a>
+<span class="sourceLineNo">185</span>  public void setNodeTags(StringArray v) {<a name="line.185"></a>
+<span class="sourceLineNo">186</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_nodeTags == null)<a name="line.186"></a>
+<span class="sourceLineNo">187</span>      jcasType.jcas.throwFeatMissing("nodeTags", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.187"></a>
+<span class="sourceLineNo">188</span>    jcasType.ll_cas.ll_setRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_nodeTags, jcasType.ll_cas.ll_getFSRef(v));}    <a name="line.188"></a>
+<span class="sourceLineNo">189</span>    <a name="line.189"></a>
+<span class="sourceLineNo">190</span>  /** indexed getter for nodeTags - gets an indexed value - <a name="line.190"></a>
+<span class="sourceLineNo">191</span>   * @generated */<a name="line.191"></a>
+<span class="sourceLineNo">192</span>  public String getNodeTags(int i) {<a name="line.192"></a>
+<span class="sourceLineNo">193</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_nodeTags == null)<a name="line.193"></a>
+<span class="sourceLineNo">194</span>      jcasType.jcas.throwFeatMissing("nodeTags", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.194"></a>
+<span class="sourceLineNo">195</span>    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_nodeTags), i);<a name="line.195"></a>
+<span class="sourceLineNo">196</span>    return jcasType.ll_cas.ll_getStringArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_nodeTags), i);}<a name="line.196"></a>
+<span class="sourceLineNo">197</span><a name="line.197"></a>
+<span class="sourceLineNo">198</span>  /** indexed setter for nodeTags - sets an indexed value - <a name="line.198"></a>
+<span class="sourceLineNo">199</span>   * @generated */<a name="line.199"></a>
+<span class="sourceLineNo">200</span>  public void setNodeTags(int i, String v) { <a name="line.200"></a>
+<span class="sourceLineNo">201</span>    if (TreebankNode_Type.featOkTst &amp;&amp; ((TreebankNode_Type)jcasType).casFeat_nodeTags == null)<a name="line.201"></a>
+<span class="sourceLineNo">202</span>      jcasType.jcas.throwFeatMissing("nodeTags", "org.cleartk.syntax.constituent.type.TreebankNode");<a name="line.202"></a>
+<span class="sourceLineNo">203</span>    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_nodeTags), i);<a name="line.203"></a>
+<span class="sourceLineNo">204</span>    jcasType.ll_cas.ll_setStringArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((TreebankNode_Type)jcasType).casFeatCode_nodeTags), i, v);}<a name="line.204"></a>
+<span class="sourceLineNo">205</span>  }<a name="line.205"></a>
+<span class="sourceLineNo">206</span><a name="line.206"></a>
+<span class="sourceLineNo">207</span>    <a name="line.207"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
