@@ -60,7 +60,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-ml-libsvm</artifactId>
+			<artifactId>cleartk-ml-liblinear</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
