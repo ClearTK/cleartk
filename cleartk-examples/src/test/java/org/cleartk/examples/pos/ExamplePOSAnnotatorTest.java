@@ -167,6 +167,7 @@ public class ExamplePOSAnnotatorTest extends ExamplesTestBase {
     HideOutput hider = new HideOutput();
     BuildTestExamplePosModel.main();
     hider.restoreOutput();
+    hider.close();
 
     String modelFileName = JarClassifierBuilder.getModelJarFile(
         ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY).getPath();

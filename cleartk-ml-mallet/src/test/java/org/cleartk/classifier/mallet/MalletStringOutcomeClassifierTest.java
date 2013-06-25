@@ -141,6 +141,7 @@ public class MalletStringOutcomeClassifierTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(new String[] { outputDirectoryName, "C45" });
     hider.restoreOutput();
+    hider.close();
 
     MalletStringOutcomeClassifierBuilder builder = new MalletStringOutcomeClassifierBuilder();
     MalletStringOutcomeClassifier classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);

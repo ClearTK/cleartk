@@ -111,6 +111,7 @@ public class MalletCRFStringOutcomeClassifierTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName);
     hider.restoreOutput();
+    hider.close();
 
     MalletCRFStringOutcomeClassifierBuilder builder = new MalletCRFStringOutcomeClassifierBuilder();
     MalletCRFStringOutcomeClassifier classifier;

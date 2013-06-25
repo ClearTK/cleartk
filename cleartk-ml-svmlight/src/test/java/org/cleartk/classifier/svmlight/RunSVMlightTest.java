@@ -256,6 +256,7 @@ public class RunSVMlightTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "1.0");
     hider.restoreOutput();
+    hider.close();
 
     // read in the classifier and test it on new instances
     SVMlightBooleanOutcomeClassifierBuilder builder = new SVMlightBooleanOutcomeClassifierBuilder();
@@ -294,6 +295,7 @@ public class RunSVMlightTest extends DefaultTestBase {
         Train.main(this.outputDirectoryName, "-42");
       } finally {
         hider.restoreOutput();
+        hider.close();
       }
       Assert.fail("expected FileNotFoundException");
     } catch (FileNotFoundException e) {
@@ -336,6 +338,7 @@ public class RunSVMlightTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "0.01", "-t", "1", "-d", "2");
     hider.restoreOutput();
+    hider.close();
 
     // read in the classifier and test it on new instances
     SVMlightStringOutcomeClassifierBuilder builder = new SVMlightStringOutcomeClassifierBuilder();
@@ -378,6 +381,7 @@ public class RunSVMlightTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "1", "-w", "0.0001");
     hider.restoreOutput();
+    hider.close();
 
     // read in the regression and test it on new instances
     SVMlightRegressionBuilder builder = new SVMlightRegressionBuilder();
@@ -433,6 +437,7 @@ public class RunSVMlightTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "1", "-w", "0.0001");
     hider.restoreOutput();
+    hider.close();
 
     // read in the ranking SVM model and test it on new instances
     SVMlightRankBuilder builder = new SVMlightRankBuilder();

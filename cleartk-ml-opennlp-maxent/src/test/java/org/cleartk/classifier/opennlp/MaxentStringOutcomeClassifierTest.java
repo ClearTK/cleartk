@@ -132,6 +132,7 @@ public class MaxentStringOutcomeClassifierTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName);
     hider.restoreOutput();
+    hider.close();
 
     MaxentStringOutcomeClassifierBuilder builder = new MaxentStringOutcomeClassifierBuilder();
     MaxentStringOutcomeClassifier classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
@@ -318,6 +319,7 @@ public class MaxentStringOutcomeClassifierTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName + "/", "10", "1");
     hider.restoreOutput();
+    hider.close();
 
     MaxentStringOutcomeClassifierBuilder builder = new MaxentStringOutcomeClassifierBuilder();
     MaxentStringOutcomeClassifier classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);

@@ -132,6 +132,7 @@ public class MaxentBooleanOutcomeClassifierTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName);
     hider.restoreOutput();
+    hider.close();
 
     MaxentBooleanOutcomeClassifierBuilder builder = new MaxentBooleanOutcomeClassifierBuilder();
     MaxentBooleanOutcomeClassifier classifier;
@@ -319,6 +320,7 @@ public class MaxentBooleanOutcomeClassifierTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName + "/", "10", "1");
     hider.restoreOutput();
+    hider.close();
 
     MaxentBooleanOutcomeClassifierBuilder builder = new MaxentBooleanOutcomeClassifierBuilder();
     MaxentBooleanOutcomeClassifier classifier;

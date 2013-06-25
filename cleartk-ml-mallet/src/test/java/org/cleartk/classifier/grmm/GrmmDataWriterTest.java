@@ -162,6 +162,7 @@ public class GrmmDataWriterTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName, "template.txt");
     hider.restoreOutput();
+    hider.close();
   }
 
 }

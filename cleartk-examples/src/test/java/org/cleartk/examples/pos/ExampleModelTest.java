@@ -53,6 +53,7 @@ public class ExampleModelTest extends ExamplesTestBase {
     HideOutput hider = new HideOutput();
     BuildTestExamplePosModel.main();
     hider.restoreOutput();
+    hider.close();
 
     AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator.getClassifierDescription(JarClassifierBuilder.getModelJarFile(
         ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY).getPath());

@@ -26,13 +26,10 @@ package org.cleartk.classifier.opennlp;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -41,7 +38,6 @@ import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
@@ -109,6 +105,7 @@ public class MaxentBooleanOutcomeDataWriterTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName, "10", "1");
     hider.restoreOutput();
+    hider.close();
 
   }
 
@@ -152,7 +149,7 @@ public class MaxentBooleanOutcomeDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.collectionProcessComplete();
     assertNotNull(aepe);
     hider.restoreOutput();
-
+    hider.close();
   }
 
   public static class Test5Annotator extends CleartkAnnotator<Boolean> {

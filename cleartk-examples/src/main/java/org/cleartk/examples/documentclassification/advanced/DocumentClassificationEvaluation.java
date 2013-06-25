@@ -265,6 +265,7 @@ public class DocumentClassificationEvaluation extends
         outputDirectory,
         this.trainingArguments.toArray(new String[this.trainingArguments.size()]));
     hider.restoreOutput();
+    hider.close();
   }
 
   /**

@@ -87,6 +87,7 @@ public class LIBLINEARTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "1.0", "-s", "1");
     hider.restoreOutput();
+    hider.close();
 
     // read in the classifier and test it on new instances
     LIBLINEARBooleanOutcomeClassifier classifier;
@@ -127,6 +128,7 @@ public class LIBLINEARTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "1.0", "-s", "0");
     hider.restoreOutput();
+    hider.close();
 
     // read in the classifier and test it on new instances
     LIBLINEARStringOutcomeClassifierBuilder builder = new LIBLINEARStringOutcomeClassifierBuilder();

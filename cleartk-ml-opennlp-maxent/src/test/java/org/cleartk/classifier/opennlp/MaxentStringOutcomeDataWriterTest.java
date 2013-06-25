@@ -105,6 +105,7 @@ public class MaxentStringOutcomeDataWriterTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName, "10", "1");
     hider.restoreOutput();
+    hider.close();
 
   }
 
@@ -148,6 +149,7 @@ public class MaxentStringOutcomeDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.collectionProcessComplete();
     assertNotNull(aepe);
     hider.restoreOutput();
+    hider.close();
 
   }
 

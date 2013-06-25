@@ -77,6 +77,7 @@ public class LIBSVMTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "1.0", "-s", "0", "-t", "0");
     hider.restoreOutput();
+    hider.close();
 
     // read in the classifier and test it on new instances
     LIBSVMBooleanOutcomeClassifierBuilder builder = new LIBSVMBooleanOutcomeClassifierBuilder();
@@ -123,6 +124,7 @@ public class LIBSVMTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "10", "-t", "0");
     hider.restoreOutput();
+    hider.close();
 
     // read in the classifier and test it on new instances
     LIBSVMStringOutcomeClassifierBuilder builder = new LIBSVMStringOutcomeClassifierBuilder();

@@ -124,6 +124,7 @@ public class GrmmClassifierTest extends DefaultTestBase {
     // train and create a model with this template:
     Train.main(outputDirectoryName, templateFilename);
     hider.restoreOutput();
+    hider.close();
 
     // check that the classifier is successfully loaded from the model
     File modelJarFile = JarClassifierBuilder.getModelJarFile(this.outputDirectory);

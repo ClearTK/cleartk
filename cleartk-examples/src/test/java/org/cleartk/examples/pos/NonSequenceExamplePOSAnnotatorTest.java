@@ -164,6 +164,7 @@ public class NonSequenceExamplePOSAnnotatorTest extends ExamplesTestBase {
     HideOutput hider = new HideOutput();
     org.cleartk.classifier.jar.Train.main(args);
     hider.restoreOutput();
+    hider.close();
 
     AnalysisEngineDescription taggerDescription = AnalysisEngineFactory.createPrimitiveDescription(
         NonSequenceExamplePOSAnnotator.class,

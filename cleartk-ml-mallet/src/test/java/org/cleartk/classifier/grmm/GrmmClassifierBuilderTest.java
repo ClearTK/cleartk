@@ -92,6 +92,7 @@ public class GrmmClassifierBuilderTest extends DefaultTestBase {
     // file does not exist, expect exception
     Train.main(outputDirectoryName, "template.txt");
     hider.restoreOutput();
+    hider.close();
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -100,6 +101,7 @@ public class GrmmClassifierBuilderTest extends DefaultTestBase {
     // file does not exist, expect exception
     Train.main(outputDirectoryName, null);
     hider.restoreOutput();
+    hider.close();
   }
 
   @Test
@@ -109,5 +111,6 @@ public class GrmmClassifierBuilderTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, templateFilename);
     hider.restoreOutput();
+    hider.close();
   }
 }

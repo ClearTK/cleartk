@@ -292,6 +292,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
       DisableLogging.enableLogging(level);
       hider.restoreOutput();
     }
+    hider.close();
 
     AnalysisEngineDescription taggerDescription = ExamplePOSAnnotator.getClassifierDescription(JarClassifierBuilder.getModelJarFile(
         outDirectoryName).getPath());
