@@ -15,6 +15,7 @@
 		<module>cleartk-ml-opennlp-maxent</module>
 		<module>cleartk-ml-svmlight</module>
 		<module>cleartk-ml-tksvmlight</module>
+		<module>cleartk-ml-liblinear</module>
 		<module>cleartk-ml-libsvm</module>
 		<module>cleartk-ml-mallet</module>
 		<module>cleartk-ml-crfsuite</module>
@@ -132,6 +133,11 @@
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-tksvmlight</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.cleartk</groupId>
+				<artifactId>cleartk-ml-liblinear</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

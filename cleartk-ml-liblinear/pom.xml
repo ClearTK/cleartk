@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>cleartk-ml-libsvm</artifactId>
+	<artifactId>cleartk-ml-liblinear</artifactId>
 	<packaging>jar</packaging>
-	<name>ClearTK ML LIBSVM</name>
-	<description>ClearTK wrapper for LIBSVM</description>
+	<name>ClearTK ML LIBLINEAR</name>
+	<description>ClearTK wrapper for LIBLINEAR</description>
 	<url>http://cleartk.googlecode.com/</url>
 	<licenses>
 		<license>
@@ -47,9 +47,9 @@
 			<artifactId>cleartk-ml</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>tw.edu.ntu.csie</groupId>
-			<artifactId>libsvm</artifactId>
-			<version>3.1</version>
+			<groupId>de.bwaldvogel</groupId>
+			<artifactId>liblinear</artifactId>
+			<version>1.92</version>
 		</dependency>
 		<!-- test only -->
 		<dependency>
