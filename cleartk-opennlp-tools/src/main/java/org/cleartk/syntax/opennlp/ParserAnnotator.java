@@ -52,6 +52,8 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
@@ -71,7 +73,7 @@ import org.uimafit.factory.initializable.InitializableFactory;
  * 
  * @author Philipp Wetzler, Philip Ogren.
  */
-
+@Beta
 public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, TOP_NODE_TYPE extends Annotation>
     extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Parse, TOP_NODE_TYPE> {
 

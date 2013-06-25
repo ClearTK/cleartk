@@ -41,6 +41,8 @@ import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
@@ -52,6 +54,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  *          An econder that is used for TreeFeatureVectors.
  * 
  */
+@Beta
 public class TreeFeatureVectorFeaturesEncoder implements FeaturesEncoder<TreeFeatureVector> {
 
   /**

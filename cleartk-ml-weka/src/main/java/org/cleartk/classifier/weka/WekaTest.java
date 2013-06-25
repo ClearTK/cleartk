@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.annotations.Beta;
+
 import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instance;
@@ -34,7 +36,7 @@ import weka.core.Instances;
  * @author Philip Ogren
  * 
  */
-
+@Beta
 public class WekaTest {
 
   public static void main(String[] args) {

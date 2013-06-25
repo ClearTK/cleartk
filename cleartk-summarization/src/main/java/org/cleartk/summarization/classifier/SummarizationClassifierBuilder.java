@@ -34,6 +34,9 @@ import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.summarization.SummarizationModel_ImplBase;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 public abstract class SummarizationClassifierBuilder<MODEL_TYPE extends SummarizationModel_ImplBase>
     extends JarClassifierBuilder<SummarizationClassifier<MODEL_TYPE>> {
 

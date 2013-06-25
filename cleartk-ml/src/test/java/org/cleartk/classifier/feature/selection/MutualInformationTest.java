@@ -62,10 +62,9 @@ import com.google.common.io.Files;
  */
 public class MutualInformationTest extends DefaultTestBase {
 
-  @SuppressWarnings("deprecation")
   @Before
   public void localSetUp() throws Throwable {
-    this.engine = AnalysisEngineFactory.createPrimitive(NoOpAnnotator.class, typeSystemDescription);
+    this.engine = AnalysisEngineFactory.createPrimitive(NoOpAnnotator.class);
     this.jCasObjects = new ArrayList<JCas>();
   }
 

@@ -34,6 +34,8 @@ import org.cleartk.syntax.constituent.util.TopTreebankNode;
 import org.cleartk.corpus.penntreebank.TreebankFormatParser;
 import org.cleartk.syntax.constituent.util.TreebankNode;
 
+import com.google.common.annotations.Beta;
+
 /**
  * 
  * 
@@ -41,6 +43,7 @@ import org.cleartk.syntax.constituent.util.TreebankNode;
  * Copyright (c) 2013, Regents of the University of Colorado <br>
  * All rights reserved.
  */
+@Beta
 public class TreeKernel {
   public static final double LAMBDA_DEFAULT = 0.4;
 

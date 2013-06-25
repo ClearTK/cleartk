@@ -1,7 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-ml-crfsuite</artifactId>
-	<version>0.2.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>ClearTK ML CRFsuite</name>
 	<url>http://cleartk.googlecode.com/</url>
@@ -36,22 +35,19 @@
 		</developer>
 	</developers>
 	<parent>
-		<artifactId>cleartk-parent</artifactId>
+		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>
-		<version>1.3.0</version>
-		<relativePath>../cleartk-parent</relativePath>
+		<version>2.0.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-ml</artifactId>
-			<version>1.3.0</version>
+			<artifactId>cleartk-util</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-test-util</artifactId>
-			<version>1.2.1</version>
-			<scope>test</scope>
+			<artifactId>cleartk-ml</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
@@ -67,8 +63,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-util</artifactId>
-			<version>0.9.2</version>
+			<artifactId>cleartk-test-util</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<scm>

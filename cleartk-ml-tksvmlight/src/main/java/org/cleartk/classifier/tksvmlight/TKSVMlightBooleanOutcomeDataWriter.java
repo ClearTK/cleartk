@@ -36,6 +36,8 @@ import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
+import com.google.common.annotations.Beta;
+
 /**
  * The data writer for tree kernel svm light.
  * 
@@ -45,6 +47,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * 
  * @author Daryl Lonnon
  */
+@Beta
 public class TKSVMlightBooleanOutcomeDataWriter
     extends
     DataWriter_ImplBase<TKSVMlightBooleanOutcomeClassifierBuilder, TreeFeatureVector, Boolean, Boolean> {

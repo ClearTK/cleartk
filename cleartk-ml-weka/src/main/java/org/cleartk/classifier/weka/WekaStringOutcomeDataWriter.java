@@ -32,6 +32,8 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 
+import com.google.common.annotations.Beta;
+
 import weka.core.Attribute;
 import weka.core.Instances;
 import weka.core.SparseInstance;
@@ -45,7 +47,7 @@ import weka.core.SparseInstance;
  *         http://weka.wikispaces.com/Creating+an+ARFF+file
  * 
  */
-
+@Beta
 public class WekaStringOutcomeDataWriter extends
     DataWriter_ImplBase<WekaStringOutcomeClassifierBuilder, Iterable<Feature>, String, String> {
 

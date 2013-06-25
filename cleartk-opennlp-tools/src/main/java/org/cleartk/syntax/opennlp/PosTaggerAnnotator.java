@@ -47,6 +47,8 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -56,6 +58,7 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  * 
  */
+@Beta
 @TypeCapability(inputs = { "org.cleartk.token.type.Sentence", "org.cleartk.token.type.Token" })
 public class PosTaggerAnnotator extends JCasAnnotator_ImplBase {
 

@@ -34,6 +34,9 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.summarization.SummarizationModel_ImplBase;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 public class SummarizationClassifier<MODEL_TYPE extends SummarizationModel_ImplBase> implements
     Classifier<Boolean> {
 

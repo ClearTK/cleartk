@@ -26,6 +26,8 @@ package org.cleartk.syntax.opennlp.parser;
 
 import org.cleartk.syntax.opennlp.ParserAnnotator;
 
+import com.google.common.annotations.Beta;
+
 import opennlp.tools.parser.ParserModel;
 import opennlp.tools.postag.POSTagger;
 
@@ -44,6 +46,7 @@ import opennlp.tools.postag.POSTagger;
  *         part-of-speech tags in the CAS.
  * 
  */
+@Beta
 public class Parser extends opennlp.tools.parser.chunking.Parser {
 
   public Parser(ParserModel model, int beamSize, double advancePercentage) {

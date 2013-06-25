@@ -33,6 +33,9 @@ import org.cleartk.classifier.feature.transform.InstanceDataWriter;
 import org.cleartk.classifier.jar.DirectoryDataWriter;
 import org.cleartk.summarization.SummarizationModel_ImplBase;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 public abstract class SummarizationDataWriter<MODEL_TYPE extends SummarizationModel_ImplBase, CLASSIFIER_BUILDER_TYPE extends SummarizationClassifierBuilder<MODEL_TYPE>>
     extends DirectoryDataWriter<CLASSIFIER_BUILDER_TYPE, SummarizationClassifier<MODEL_TYPE>>
     implements DataWriter<Boolean> {

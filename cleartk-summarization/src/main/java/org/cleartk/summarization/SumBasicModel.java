@@ -49,6 +49,7 @@ import org.cleartk.classifier.feature.transform.InstanceStream;
 import org.cleartk.util.Options_ImplBase;
 import org.kohsuke.args4j.Option;
 
+import com.google.common.annotations.Beta;
 import com.google.common.base.Function;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Multiset;
@@ -69,6 +70,7 @@ import com.google.common.collect.Ordering;
  * @author Lee Becker
  * 
  */
+@Beta
 public class SumBasicModel extends SummarizationModel_ImplBase {
 
   /**

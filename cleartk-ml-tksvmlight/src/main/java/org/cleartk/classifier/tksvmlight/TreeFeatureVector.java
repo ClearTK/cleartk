@@ -27,6 +27,8 @@ package org.cleartk.classifier.tksvmlight;
 import java.util.LinkedHashMap;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
@@ -40,6 +42,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * All features that are named with the prefix "TK_" are treated as trees.
  * 
  */
+@Beta
 public class TreeFeatureVector {
   private LinkedHashMap<String, String> trees = null;
   private FeatureVector features = null;

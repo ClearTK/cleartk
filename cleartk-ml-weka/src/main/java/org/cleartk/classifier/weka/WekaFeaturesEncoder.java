@@ -26,6 +26,8 @@ import java.util.Map;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 
+import com.google.common.annotations.Beta;
+
 import weka.core.Attribute;
 import weka.core.Utils;
 
@@ -36,7 +38,7 @@ import weka.core.Utils;
  * @author Philip Ogren
  * 
  */
-
+@Beta
 public class WekaFeaturesEncoder implements FeaturesEncoder<Iterable<Feature>> {
 
   private static final long serialVersionUID = 1L;

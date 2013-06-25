@@ -52,6 +52,8 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.JCasUtil;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -68,7 +70,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @see SentenceDetector
  */
-
+@Beta
 @TypeCapability(outputs = "org.cleartk.token.type.Sentence")
 public class SentenceAnnotator extends JCasAnnotator_ImplBase {
 

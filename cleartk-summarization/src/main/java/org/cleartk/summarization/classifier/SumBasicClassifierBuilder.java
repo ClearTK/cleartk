@@ -30,6 +30,9 @@ import java.io.InputStream;
 
 import org.cleartk.summarization.SumBasicModel;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 public class SumBasicClassifierBuilder extends SummarizationClassifierBuilder<SumBasicModel> {
 
   @Override

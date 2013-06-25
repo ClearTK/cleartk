@@ -27,6 +27,8 @@ import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
 
+import com.google.common.annotations.Beta;
+
 import weka.core.Instance;
 
 /**
@@ -35,6 +37,7 @@ import weka.core.Instance;
  * @author Philip Ogren
  * 
  */
+@Beta
 public abstract class WekaStringOutcomeClassifier extends Classifier_ImplBase<Instance, String, String> {
 
 	//TODO need to add the Weka model as a parameter

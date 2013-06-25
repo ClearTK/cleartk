@@ -41,6 +41,8 @@ import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
@@ -48,7 +50,7 @@ import org.cleartk.classifier.jar.DataWriter_ImplBase;
  * 
  * @author Daryl Lonnon
  */
-
+@Beta
 public class TKSVMlightStringOutcomeDataWriter
     extends
     DataWriter_ImplBase<TKSVMlightStringOutcomeClassifierBuilder, TreeFeatureVector, String, Integer> {

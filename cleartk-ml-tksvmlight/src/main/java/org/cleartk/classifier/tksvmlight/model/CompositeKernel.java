@@ -29,6 +29,8 @@ import org.cleartk.classifier.svmlight.model.Kernel;
 import org.cleartk.classifier.tksvmlight.TreeFeatureVector;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
+import com.google.common.annotations.Beta;
+
 /**
  * 
  * 
@@ -36,6 +38,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * Copyright (c) 2013, Regents of the University of Colorado <br>
  * All rights reserved.
  */
+@Beta
 public class CompositeKernel {
   private Kernel featureKernel;
 

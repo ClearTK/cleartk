@@ -36,6 +36,8 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
 import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
 
+import com.google.common.annotations.Beta;
+
 /**
  * A Tree Kernel SVM light classifier implementation. All features named with the prefix "TK"
  * treated as Tree Kernels.
@@ -47,6 +49,7 @@ import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
  * @author Daryl Lonnon
  * @see TKSVMlightStringOutcomeClassifier
  */
+@Beta
 public class TKSVMlightBooleanOutcomeClassifier extends
     Classifier_ImplBase<TreeFeatureVector, Boolean, Boolean> {
 

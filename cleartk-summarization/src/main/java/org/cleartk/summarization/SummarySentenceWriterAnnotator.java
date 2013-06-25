@@ -17,6 +17,9 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 public class SummarySentenceWriterAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription(File outputFile, boolean writeScores)

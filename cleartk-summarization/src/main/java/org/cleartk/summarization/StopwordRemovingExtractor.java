@@ -33,6 +33,8 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 
+import com.google.common.annotations.Beta;
+
 /**
  * Feature that will prevent extraction with the subExtractor if the covered annotation text is a
  * stopword
@@ -40,6 +42,7 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
  * @author Lee Becker
  * 
  */
+@Beta
 public class StopwordRemovingExtractor implements SimpleFeatureExtractor {
 
   private Set<String> stopwords;

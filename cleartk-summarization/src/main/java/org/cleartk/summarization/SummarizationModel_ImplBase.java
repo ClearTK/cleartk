@@ -33,6 +33,8 @@ import java.util.Map;
 
 import org.cleartk.classifier.Feature;
 
+import com.google.common.annotations.Beta;
+
 /**
  * Base class for summarization models. Subclasses of this class will typically process the features
  * and produce a map of the features of selected sentences and the summary score provided by the
@@ -41,6 +43,7 @@ import org.cleartk.classifier.Feature;
  * @author Lee Becker
  * 
  */
+@Beta
 public abstract class SummarizationModel_ImplBase implements Serializable {
 
   private static final long serialVersionUID = 1L;

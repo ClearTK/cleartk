@@ -35,6 +35,7 @@ import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
 
+import com.google.common.annotations.Beta;
 import com.google.common.base.Joiner;
 import com.google.common.io.ByteStreams;
 
@@ -48,6 +49,7 @@ import com.google.common.io.ByteStreams;
  * 
  * @author Daryl Lonnon
  */
+@Beta
 public class TKSVMlightBooleanOutcomeClassifierBuilder
     extends
     ClassifierBuilder_ImplBase<TKSVMlightBooleanOutcomeClassifier, TreeFeatureVector, Boolean, Boolean> {

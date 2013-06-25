@@ -28,6 +28,8 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -40,7 +42,7 @@ import org.apache.uima.jcas.tcas.Annotation;
  * 
  * @author Philip Ogren
  */
-
+@Beta
 public abstract class InputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> {
   public abstract List<TOKEN_TYPE> getTokens(JCas jCas, SENTENCE_TYPE sentence);
 

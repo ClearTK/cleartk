@@ -49,6 +49,7 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
+import com.google.common.annotations.Beta;
 import com.google.common.base.Charsets;
 import com.google.common.io.LineProcessor;
 import com.google.common.io.Resources;
@@ -64,6 +65,7 @@ import com.google.common.io.Resources;
  * 
  * @author Lee Becker
  */
+@Beta
 public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
   public static enum TokenField {
     COVERED_TEXT, STEM, LEMMA

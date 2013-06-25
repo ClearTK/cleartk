@@ -64,8 +64,10 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.pipeline.SimplePipeline;
 import org.xml.sax.SAXException;
 
+import com.google.common.annotations.Beta;
 import com.google.common.io.Files;
 
+@Beta
 public class SumBasic extends Summarize_ImplBase<File> {
 
   private static final int DEFAULT_MAX_NUM_SENTENCES = 10;

@@ -28,6 +28,9 @@ import java.io.IOException;
 
 import org.cleartk.summarization.SumBasicModel;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 public class SumBasicDataWriter extends
     SummarizationDataWriter<SumBasicModel, SummarizationClassifierBuilder<SumBasicModel>> {
 

@@ -29,6 +29,8 @@ import java.util.Collection;
 
 import org.apache.uima.collection.CollectionReader;
 
+import com.google.common.annotations.Beta;
+
 /**
  * A base class for training and running a sentence extraction based summarizer. This defines the
  * expected functionality of a summarizer
@@ -43,6 +45,7 @@ import org.apache.uima.collection.CollectionReader;
  * 
  * @author Lee Becker
  */
+@Beta
 public abstract class Summarize_ImplBase<ITEM_TYPE> {
   protected abstract CollectionReader getCollectionReader(Collection<ITEM_TYPE> items)
       throws Exception;

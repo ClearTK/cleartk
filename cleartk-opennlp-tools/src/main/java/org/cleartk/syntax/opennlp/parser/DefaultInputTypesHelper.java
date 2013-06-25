@@ -31,6 +31,8 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.util.JCasUtil;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -39,7 +41,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Philip Ogren
  */
-
+@Beta
 public class DefaultInputTypesHelper extends InputTypesHelper<Token, Sentence> {
 
   public List<Token> getTokens(JCas jCas, Sentence sentence) {

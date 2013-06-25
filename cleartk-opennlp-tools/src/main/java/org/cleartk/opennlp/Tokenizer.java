@@ -32,6 +32,8 @@ import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.ExternalResourceFactory;
 
+import com.google.common.annotations.Beta;
+
 /**
  * An OpenNLP {@link opennlp.tools.tokenize.Tokenizer} that uses the ClearTK type system.
  * 
@@ -41,6 +43,7 @@ import org.uimafit.factory.ExternalResourceFactory;
  * 
  * @author Steven Bethard
  */
+@Beta
 public class Tokenizer {
   public static AnalysisEngineDescription getDescription(String languageCode)
       throws ResourceInitializationException {

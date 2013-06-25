@@ -26,6 +26,8 @@ package org.cleartk.classifier.tksvmlight.model;
 import org.cleartk.classifier.svmlight.model.SupportVector;
 import org.cleartk.classifier.tksvmlight.TreeFeatureVector;
 
+import com.google.common.annotations.Beta;
+
 /**
  * 
  * 
@@ -33,6 +35,7 @@ import org.cleartk.classifier.tksvmlight.TreeFeatureVector;
  * Copyright (c) 2013, Regents of the University of Colorado <br>
  * All rights reserved.
  */
+@Beta
 public class TKSupportVector extends SupportVector {
   TreeFeatureVector tfv = null;
 

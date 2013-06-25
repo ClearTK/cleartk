@@ -46,6 +46,8 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.InvalidFeatureVectorValueException;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 
+import com.google.common.annotations.Beta;
+
 /**
  * 
  * 
@@ -53,6 +55,7 @@ import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
  * Copyright (c) 2013, Regents of the University of Colorado <br>
  * All rights reserved.
  */
+@Beta
 public class TKSVMlightModel {
   String version;
 

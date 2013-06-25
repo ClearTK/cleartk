@@ -38,6 +38,8 @@ import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.uimafit.util.FSCollectionFactory;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2011, Regents of the University of Colorado <br>
@@ -46,7 +48,7 @@ import org.uimafit.util.FSCollectionFactory;
  * 
  * @author Philip Ogren
  */
-
+@Beta
 public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation>
     implements OutputTypesHelper<TOKEN_TYPE, SENTENCE_TYPE, Parse, TreebankNode> {
 

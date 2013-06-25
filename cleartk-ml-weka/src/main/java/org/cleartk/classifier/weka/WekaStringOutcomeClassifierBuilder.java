@@ -22,13 +22,15 @@ import java.io.File;
 
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
+
+import com.google.common.annotations.Beta;
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
  * @author Philip Ogren
  * 
  */
-
+@Beta
 public class WekaStringOutcomeClassifierBuilder extends ClassifierBuilder_ImplBase<WekaStringOutcomeClassifier, Iterable<Feature>, String, String> {
 
 	@Override

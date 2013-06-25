@@ -31,6 +31,8 @@ import opennlp.tools.util.Sequence;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -45,7 +47,7 @@ import org.cleartk.syntax.opennlp.ParserAnnotator;
  *         instantiated with. This class is not intended for use outside of the
  *         {@link ParserAnnotator}.
  */
-
+@Beta
 public class CasPosTagger<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation>
     implements POSTagger {
 

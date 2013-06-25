@@ -34,6 +34,8 @@ import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
 
+import com.google.common.annotations.Beta;
+
 /**
  * A class that provided interfaces to package and unpackage a
  * {@link TKSVMlightStringOutcomeClassifier} into a jar file.
@@ -44,6 +46,7 @@ import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
  * 
  * @author Daryl Lonnon
  */
+@Beta
 public class TKSVMlightStringOutcomeClassifierBuilder
     extends
     ClassifierBuilder_ImplBase<TKSVMlightStringOutcomeClassifier, TreeFeatureVector, String, Integer> {
