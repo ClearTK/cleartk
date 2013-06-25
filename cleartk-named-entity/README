@@ -1,3 +1,0 @@
-This project has been deprecated due to its lack of having any named entity analysis engines.  The code related to the corpus ACE 2005 and
-CONLL 2003 has been moved to cleartk-corpus.  The code related to the term finder and gazetteer feature extractor is being removed 
-because of lack of use and neglect.  

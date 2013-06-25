@@ -28,10 +28,8 @@ import org.apache.lucene.analysis.snowball.SnowballFilter;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 
 /**
  * This class borrows from {@link SnowballFilter}
@@ -45,9 +43,6 @@ import org.uimafit.factory.TypeSystemDescriptionFactory;
  */
 
 public class DefaultSnowballStemmer extends SnowballStemmer<Token> {
-
-  @Deprecated
-  public static TypeSystemDescription TYPE_SYSTEM_DESCRIPTION = TypeSystemDescriptionFactory.createTypeSystemDescription("org.cleartk.TypeSystem");
 
   public static AnalysisEngineDescription getDescription(String language)
       throws ResourceInitializationException {

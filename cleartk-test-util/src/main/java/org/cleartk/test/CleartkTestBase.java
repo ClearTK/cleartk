@@ -36,7 +36,6 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
@@ -44,7 +43,6 @@ import org.junit.rules.TemporaryFolder;
 import org.uimafit.component.NoOpAnnotator;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.JCasFactory;
-import org.uimafit.factory.TypeSystemDescriptionFactory;
 import org.uimafit.pipeline.JCasIterable;
 
 /**
@@ -191,9 +189,6 @@ public abstract class CleartkTestBase {
 
   protected JCas jCas;
 
-  @Deprecated
-  protected TypeSystemDescription typeSystemDescription;
-
   @Rule
   public TemporaryFolder folder = new TemporaryFolder();
 
@@ -203,27 +198,15 @@ public abstract class CleartkTestBase {
 
   @Before
   public void setUp() throws Exception {
-    String[] typeSystemDescriptorNames = getTypeSystemDescriptorNames();
-    if (typeSystemDescriptorNames == null) {
-      typeSystemDescription = TypeSystemDescriptionFactory.createTypeSystemDescription();
-    } else {
-      typeSystemDescription = TypeSystemDescriptionFactory.createTypeSystemDescription(typeSystemDescriptorNames);
-    }
-    jCas = JCasFactory.createJCas(typeSystemDescription);
+    jCas = JCasFactory.createJCas();
     outputDirectory = folder.newFolder("output");
     outputDirectoryName = outputDirectory.getPath();
-  }
-
-  @Deprecated
-  public String[] getTypeSystemDescriptorNames() {
-    return null;
   }
 
   public int getCollectionReaderCount(CollectionReader reader) throws UIMAException, IOException {
 
     AnalysisEngine aeAdapter = AnalysisEngineFactory.createPrimitive(
-        NoOpAnnotator.class,
-        typeSystemDescription);
+        NoOpAnnotator.class);
 
     int count = 0;
     JCasIterable jCases = new JCasIterable(reader, aeAdapter);
@@ -239,111 +222,5 @@ public abstract class CleartkTestBase {
     assertEquals(expectedCount, getCollectionReaderCount(reader));
   }
 
-  /**
-   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the
-   * LIBSVM executables to be installed on your system's path should be disabled. Current value:
-   * {@value #LIBSVM_TESTS_PROPERTY_VALUE}.
-   * 
-   * @deprecated Use the constants in the cleartk-ml-libsvm module.
-   */
-  @Deprecated
-  public static final String LIBSVM_TESTS_PROPERTY_VALUE = "libsvm";
-
-  @Deprecated
-  protected void assumeLibsvmEnabled() {
-    // note that we can't log the message here as well, or it the log will display the wrong method
-    this.assumeTestsEnabled(ALL_TESTS_PROPERTY_VALUE, LIBSVM_TESTS_PROPERTY_VALUE);
-  }
-
-  @Deprecated
-  public static final String LIBSVM_TEST_MESSAGE = String.format(
-      "This test requires installation of LIBSVM executables.  To skip it, set -D%s=%s",
-      SKIP_TESTS_PROPERTY,
-      LIBSVM_TESTS_PROPERTY_VALUE);
-
-  /**
-   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the
-   * LIBLINEAR executables to be installed on your system's path should be disabled. Current value:
-   * {@value #LIBLINEAR_TESTS_PROPERTY_VALUE}.
-   * 
-   * @deprecated Use the constants in the cleartk-ml-libsvm module.
-   */
-  @Deprecated
-  public static final String LIBLINEAR_TESTS_PROPERTY_VALUE = "liblinear";
-
-  @Deprecated
-  protected void assumeLiblinearEnabled() {
-    // note that we can't log the message here as well, or it the log will display the wrong method
-    this.assumeTestsEnabled(ALL_TESTS_PROPERTY_VALUE, LIBLINEAR_TESTS_PROPERTY_VALUE);
-  }
-
-  @Deprecated
-  public static final String LIBLINEAR_TEST_MESSAGE = String.format(
-      "This test requires installation of LIBLINEAR executables.  To skip it, set -D%s=%s",
-      SKIP_TESTS_PROPERTY,
-      LIBLINEAR_TESTS_PROPERTY_VALUE);
-
-  /**
-   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the
-   * SVMlight executables to be installed on your system's path should be disabled. Current value:
-   * {@value #SVMLIGHT_TESTS_PROPERTY_VALUE}.
-   * 
-   * @deprecated Use the constants in the cleartk-ml-svmlight module.
-   */
-  @Deprecated
-  public static final String SVMLIGHT_TESTS_PROPERTY_VALUE = "svmlight";
-
-  /**
-   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the
-   * SVMlight executables to be installed on your system's path should be disabled. Current value:
-   * {@value #SVMLIGHT_RANK_TESTS_PROPERTY_VALUE}.
-   * 
-   * @deprecated Use the constants in the cleartk-ml-svmlight module.
-   */
-  @Deprecated
-  public static final String SVMLIGHT_RANK_TESTS_PROPERTY_VALUE = "svmlightrank";
-
-  @Deprecated
-  protected void assumeSvmLightEnabled() {
-    // note that we can't log the message here as well, or it the log will display the wrong method
-    this.assumeTestsEnabled(ALL_TESTS_PROPERTY_VALUE, SVMLIGHT_TESTS_PROPERTY_VALUE);
-  }
-
-  @Deprecated
-  public static final String SVMLIGHT_TEST_MESSAGE = String.format(
-      "This test requires installation of SVMlight executables.  To skip it, set -D%s=%s",
-      SKIP_TESTS_PROPERTY,
-      SVMLIGHT_TESTS_PROPERTY_VALUE);
-
-  @Deprecated
-  public static final String SVMLIGHT_RANK_TEST_MESSAGE = String.format(
-      "This test requires installation of SVMlightRank executables.  To skip it, set -D%s=%s",
-      SKIP_TESTS_PROPERTY,
-      SVMLIGHT_TESTS_PROPERTY_VALUE);
-
-  /**
-   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the TK
-   * SvmLight executables to be installed on your system's path should be disabled. Current value:
-   * {@value #TK_SVMLIGHT_TESTS_PROPERTY_VALUE}.
-   * 
-   * @deprecated Use the constants in the cleartk-ml-tksvmlight module.
-   */
-  @Deprecated
-  public static final String TK_SVMLIGHT_TESTS_PROPERTY_VALUE = "tksvmlight";
-
-  @Deprecated
-  protected void assumeTkSvmLightEnabled() {
-    // note that we can't log the message here as well, or it the log will display the wrong method
-    this.assumeTestsEnabled(
-        ALL_TESTS_PROPERTY_VALUE,
-        COMMON_TESTS_PROPERTY_VALUE,
-        TK_SVMLIGHT_TESTS_PROPERTY_VALUE);
-  }
-
-  @Deprecated
-  public static final String TK_SVMLIGHT_TEST_MESSAGE = String.format(
-      "This test requires installation of tree-kernel SVMlight executables.  To skip it, set -D%s=%s",
-      SKIP_TESTS_PROPERTY,
-      TK_SVMLIGHT_TESTS_PROPERTY_VALUE);
 
 }

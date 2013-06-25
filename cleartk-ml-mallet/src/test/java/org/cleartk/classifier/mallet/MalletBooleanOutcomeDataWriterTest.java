@@ -26,13 +26,10 @@ package org.cleartk.classifier.mallet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -41,12 +38,9 @@ import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.classifier.mallet.factory.MCMaxEntTrainerFactory;
-import org.cleartk.classifier.mallet.factory.MaxEntTrainerFactory;
 import org.cleartk.classifier.mallet.factory.NaiveBayesTrainerFactory;
 import org.cleartk.classifier.util.InstanceFactory;
 import org.cleartk.test.DefaultTestBase;
@@ -113,106 +107,9 @@ public class MalletBooleanOutcomeDataWriterTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName, NaiveBayesTrainerFactory.class.getName());
     hider.restoreOutput();
-
+    hider.close();
   }
 
-  /**
-   * This test is identical to test1 except that the features are compressed by
-   * NameNumberFeaturesEncoder.
-   */
-  @Test
-  @Deprecated
-  public void test2() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-        Test1Annotator.class,
-        typeSystemDescription,
-        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultBinaryMalletDataWriterFactory.class.getName(),
-        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
-        true);
-
-    dataWriterAnnotator.process(jCas);
-    dataWriterAnnotator.collectionProcessComplete();
-
-    File trainFile = new MalletBooleanOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
-    String[] lines = FileUtil.loadListOfStrings(trainFile);
-
-    assertEquals("0:1.0 1:3.0 2:1.234 true", lines[0]);
-    assertEquals("3:1.0 4:2 false", lines[1]);
-    assertEquals("null:0 true", lines[2]);
-    assertEquals("5:1.0 false", lines[3]);
-
-    lines = FileUtil.loadListOfStrings(new File(
-        outputDirectoryName,
-        NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
-    Set<String> lineSet = new HashSet<String>();
-    for (int i = 0; i < lines.length; i++)
-      lineSet.add(lines[i]);
-
-    assertEquals("6", lines[0]);
-    assertTrue(lineSet.contains("6"));
-    assertTrue(lineSet.contains("name_2PO\t3"));
-    assertTrue(lineSet.contains("precision\t2"));
-    assertTrue(lineSet.contains("distance\t1"));
-    assertTrue(lineSet.contains("pos_NN\t0"));
-    assertTrue(lineSet.contains("A_B_AB\t5"));
-    assertTrue(lineSet.contains("p's\t4"));
-    assertEquals(7, lineSet.size());
-
-    HideOutput hider = new HideOutput();
-    Train.main(outputDirectoryName, MaxEntTrainerFactory.class.getName());
-    hider.restoreOutput();
-  }
-
-  /**
-   * This test is identical to test2 except that the feature lookup file is sorted by
-   * NameNumberFeaturesEncoder.
-   */
-
-  @Test
-  @Deprecated
-  public void test3() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-        Test1Annotator.class,
-        typeSystemDescription,
-        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultBinaryMalletDataWriterFactory.class.getName(),
-        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
-        true,
-        MalletDataWriterFactory_ImplBase.PARAM_SORT,
-        true);
-
-    dataWriterAnnotator.process(jCas);
-    dataWriterAnnotator.collectionProcessComplete();
-
-    File trainFile = new MalletBooleanOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
-    String[] lines = FileUtil.loadListOfStrings(trainFile);
-
-    assertEquals("0:1.0 1:3.0 2:1.234 true", lines[0]);
-    assertEquals("3:1.0 4:2 false", lines[1]);
-    assertEquals("null:0 true", lines[2]);
-    assertEquals("5:1.0 false", lines[3]);
-
-    lines = FileUtil.loadListOfStrings(new File(
-        outputDirectoryName,
-        NameNumberFeaturesEncoder.LOOKUP_FILE_NAME));
-    int i = 0;
-    assertEquals("6", lines[i++]);
-    assertEquals("A_B_AB	5", lines[i++]);
-    assertEquals("distance	1", lines[i++]);
-    assertEquals("name_2PO	3", lines[i++]);
-    assertEquals("p's	4", lines[i++]);
-    assertEquals("pos_NN	0", lines[i++]);
-    assertEquals("precision	2", lines[i++]);
-
-    HideOutput hider = new HideOutput();
-    Train.main(outputDirectoryName, MCMaxEntTrainerFactory.class.getName());
-    hider.restoreOutput();
-  }
 
   public static class Test4Annotator extends CleartkAnnotator<Boolean> {
 
@@ -251,7 +148,7 @@ public class MalletBooleanOutcomeDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.collectionProcessComplete();
     assertNotNull(aepe);
     hider.restoreOutput();
-
+    hider.close();
   }
 
   public static class Test5Annotator extends CleartkAnnotator<Boolean> {
@@ -261,31 +158,6 @@ public class MalletBooleanOutcomeDataWriterTest extends DefaultTestBase {
       Instance<Boolean> instance = InstanceFactory.createInstance(Boolean.TRUE, "b c d");
       this.dataWriter.write(instance);
     }
-  }
-
-  /**
-   * This test is identical to test1 except that the features are compressed by
-   * NameNumberFeaturesEncoder.
-   */
-  @Test
-  @Deprecated
-  public void test5() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
-        Test5Annotator.class,
-        typeSystemDescription,
-        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        outputDirectoryName,
-        CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
-        DefaultBinaryMalletDataWriterFactory.class.getName(),
-        MalletDataWriterFactory_ImplBase.PARAM_COMPRESS,
-        true);
-
-    dataWriterAnnotator.process(jCas);
-    dataWriterAnnotator.collectionProcessComplete();
-
-    File trainFile = new MalletBooleanOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
-    String[] lines = FileUtil.loadListOfStrings(trainFile);
-    assertEquals("0:1.0 1:1.0 2:1.0 true", lines[0]);
   }
 
 }

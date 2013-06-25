@@ -165,42 +165,6 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
     }
   }
 
-  @Deprecated
-  public static AnalysisEngineDescription getDescription(TypeSystemDescription typeSystemDescription)
-      throws ResourceInitializationException {
-    return getDescription(typeSystemDescription, null);
-  }
-
-  @Deprecated
-  public static AnalysisEngineDescription getDescription(
-      TypeSystemDescription typeSystemDescription,
-      Class<? extends Annotation> windowClass) throws ResourceInitializationException {
-    return getDescription(typeSystemDescription, windowClass, '(', ')');
-  }
-
-  @Deprecated
-  public static AnalysisEngineDescription getDescription(
-      TypeSystemDescription typeSystemDescription,
-      Class<? extends Annotation> windowClass,
-      char leftParen,
-      char rightParen) throws ResourceInitializationException {
-    AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
-        ParentheticalAnnotator.class,
-        typeSystemDescription,
-        PARAM_LEFT_PARENTHESIS,
-        "" + leftParen,
-        PARAM_RIGHT_PARENTHESIS,
-        "" + rightParen);
-
-    if (windowClass != null) {
-      ConfigurationParameterFactory.addConfigurationParameters(
-          aed,
-          PARAM_WINDOW_TYPE_NAME,
-          windowClass.getName());
-    }
-
-    return aed;
-  }
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return getDescription(null, '(', ')');

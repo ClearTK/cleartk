@@ -9,7 +9,7 @@
 	<licenses>
 		<license>
 			<name>The BSD 3-Clause License</name>
-			<url>http://cleartk.googlecode.com/git/cleartk-semantic-roles/LICENSE</url>
+			<url>http://cleartk.googlecode.com/git/cleartk-ml/LICENSE</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -136,11 +136,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-clearparser</artifactId>
-				<version>0.7.3</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-maltparser</artifactId>
 				<version>0.8.2</version>
 			</dependency>
@@ -153,21 +148,6 @@
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-token</artifactId>
 				<version>0.9.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-named-entity</artifactId>
-				<version>0.6.6</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-syntax</artifactId>
-				<version>0.7.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-semantic-roles</artifactId>
-				<version>0.6.4</version>
 			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
@@ -243,9 +223,6 @@
 
 										<!-- bsh -->
 										<link>http://www.beanshell.org/javadoc/</link>
-
-										<!-- clearparser -->
-										<!-- (none available) -->
 
 										<!-- commons-compress -->
 										<link>http://commons.apache.org/compress/apidocs/</link>
@@ -425,10 +402,6 @@
 				</dependency>
 				<dependency>
 					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-clearparser</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-maltparser</artifactId>
 				</dependency>
 				<dependency>
@@ -439,18 +412,6 @@
 				<dependency>
 					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-token</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-named-entity</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-syntax</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-semantic-roles</artifactId>
 				</dependency>
 				<dependency>
 					<groupId>org.cleartk</groupId>
@@ -566,10 +527,6 @@
 				-->
 				<dependency>
 					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-clearparser</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-maltparser</artifactId>
 				</dependency>
 				<!-- omit because of GPL licensing issues
@@ -582,18 +539,6 @@
 				<dependency>
 					<groupId>org.cleartk</groupId>
 					<artifactId>cleartk-token</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-named-entity</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-syntax</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-semantic-roles</artifactId>
 				</dependency>
 				<dependency>
 					<groupId>org.cleartk</groupId>

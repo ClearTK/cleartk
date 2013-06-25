@@ -35,14 +35,10 @@
 		<module>cleartk-opennlp-tools</module>
 		<module>cleartk-berkeleyparser</module>
 		<module>cleartk-clearnlp</module>
-		<module>cleartk-clearparser</module>
 		<module>cleartk-maltparser</module>
 		<module>cleartk-stanford-corenlp</module>
 		<!-- home-grown components -->
 		<module>cleartk-token</module>
-		<module>cleartk-named-entity</module>
-		<module>cleartk-syntax</module>
-		<module>cleartk-semantic-roles</module>
 		<module>cleartk-summarization</module>
 		<module>cleartk-timeml</module>
 		<module>cleartk-examples</module>
