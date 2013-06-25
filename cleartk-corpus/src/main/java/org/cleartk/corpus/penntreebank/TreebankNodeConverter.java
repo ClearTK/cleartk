@@ -21,12 +21,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.constituent.util;
+package org.cleartk.corpus.penntreebank;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.uima.cas.FeatureStructure;
@@ -34,8 +31,9 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
+import org.cleartk.util.treebank.TopTreebankNode;
+import org.cleartk.util.treebank.TreebankNode;
 import org.uimafit.util.FSCollectionFactory;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -46,7 +44,7 @@ import org.uimafit.util.JCasUtil;
  * @author Philip Ogren
  * 
  */
-public class TreebankNodeUtility {
+public class TreebankNodeConverter {
   public static org.cleartk.syntax.constituent.type.TopTreebankNode convert(
       TopTreebankNode pojoNode,
       JCas jCas,
@@ -135,115 +133,4 @@ public class TreebankNodeUtility {
     uimaNode.setChildren(uimaChildrenFSArray);
     return uimaNode;
   }
-
-  public static org.cleartk.syntax.constituent.type.TopTreebankNode getTopNode(
-      org.cleartk.syntax.constituent.type.TreebankNode node) {
-    if (node instanceof org.cleartk.syntax.constituent.type.TopTreebankNode)
-      return (org.cleartk.syntax.constituent.type.TopTreebankNode) node;
-
-    org.cleartk.syntax.constituent.type.TreebankNode parent = node.getParent();
-    while (parent != null) {
-      if (parent instanceof org.cleartk.syntax.constituent.type.TopTreebankNode)
-        return (org.cleartk.syntax.constituent.type.TopTreebankNode) parent;
-      node = parent;
-      parent = node.getParent();
-    }
-    return null;
-  }
-
-  /**
-   * A "pretty print" of this node that may be useful for e.g. debugging.
-   */
-  public static void print(PrintStream out, org.cleartk.syntax.constituent.type.TreebankNode node) {
-    out.println(print(node, 0));
-  }
-
-  private static String print(org.cleartk.syntax.constituent.type.TreebankNode node, int tabs) {
-    StringBuffer returnValue = new StringBuffer();
-    String tabString = getTabs(tabs);
-    returnValue.append(tabString + node.getNodeType());
-    if (node.getNodeValue() != null)
-      returnValue.append(":" + node.getNodeValue() + "\n");
-    else {
-      returnValue.append(":" + node.getCoveredText() + "\n");
-    }
-    if (node.getChildren().size() > 0) {
-      Collection<org.cleartk.syntax.constituent.type.TreebankNode> children = JCasUtil.select(
-          node.getChildren(),
-          org.cleartk.syntax.constituent.type.TreebankNode.class);
-      for (org.cleartk.syntax.constituent.type.TreebankNode child : children) {
-        returnValue.append(print(child, (tabs + 1)));
-      }
-    }
-    return returnValue.toString();
-  }
-
-  private static String getTabs(int tabs) {
-    char[] chars = new char[tabs];
-    Arrays.fill(chars, ' ');
-    return new String(chars);
-  }
-
-  /**
-   * Create a leaf TreebankNode in a JCas.
-   * 
-   * @param jCas
-   *          The JCas which the annotation should be added to.
-   * @param begin
-   *          The begin offset of the node.
-   * @param end
-   *          The end offset of the node.
-   * @param nodeType
-   *          The part of speech tag of the node.
-   * @return The TreebankNode which was added to the JCas.
-   */
-  public static org.cleartk.syntax.constituent.type.TreebankNode newNode(
-      JCas jCas,
-      int begin,
-      int end,
-      String nodeType) {
-    org.cleartk.syntax.constituent.type.TreebankNode node = new org.cleartk.syntax.constituent.type.TreebankNode(
-        jCas,
-        begin,
-        end);
-    node.setNodeType(nodeType);
-    node.setChildren(new FSArray(jCas, 0));
-    node.setLeaf(true);
-    node.addToIndexes();
-    return node;
-  }
-
-  /**
-   * Create a branch TreebankNode in a JCas. The offsets of this node will be determined by its
-   * children.
-   * 
-   * @param jCas
-   *          The JCas which the annotation should be added to.
-   * @param nodeType
-   *          The phrase type tag of the node.
-   * @param children
-   *          The TreebankNode children of the node.
-   * @return The TreebankNode which was added to the JCas.
-   */
-  public static org.cleartk.syntax.constituent.type.TreebankNode newNode(
-      JCas jCas,
-      String nodeType,
-      org.cleartk.syntax.constituent.type.TreebankNode... children) {
-    int begin = children[0].getBegin();
-    int end = children[children.length - 1].getEnd();
-    org.cleartk.syntax.constituent.type.TreebankNode node = new org.cleartk.syntax.constituent.type.TreebankNode(
-        jCas,
-        begin,
-        end);
-    node.setNodeType(nodeType);
-    node.addToIndexes();
-    FSArray fsArray = new FSArray(jCas, children.length);
-    fsArray.copyFromArray(children, 0, 0, children.length);
-    node.setChildren(fsArray);
-    for (org.cleartk.syntax.constituent.type.TreebankNode child : children) {
-      child.setParent(node);
-    }
-    return node;
-  }
-
 }

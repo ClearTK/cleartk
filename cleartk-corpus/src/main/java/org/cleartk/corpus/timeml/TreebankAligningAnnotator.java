@@ -35,14 +35,14 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
+import org.cleartk.corpus.penntreebank.TreebankNodeConverter;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.corpus.penntreebank.TreebankFormatParser;
-import org.cleartk.syntax.constituent.util.TreebankNodeUtility;
 import org.cleartk.timeml.type.Text;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.treebank.TreebankFormatParser;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -118,7 +118,7 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
     // problems
     int offset = texts.iterator().next().getBegin();
     String text = jCas.getDocumentText();
-    List<org.cleartk.syntax.constituent.util.TopTreebankNode> utilTrees;
+    List<org.cleartk.util.treebank.TopTreebankNode> utilTrees;
     try {
       utilTrees = TreebankFormatParser.parseDocument(mrgText, offset, text);
     } catch (Exception e) {
@@ -130,10 +130,10 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
     }
 
     // add Token, Sentence and TreebankNode annotations for the text
-    for (org.cleartk.syntax.constituent.util.TopTreebankNode utilTree : utilTrees) {
+    for (org.cleartk.util.treebank.TopTreebankNode utilTree : utilTrees) {
 
       // create a Sentence and set its parse
-      TopTreebankNode tree = TreebankNodeUtility.convert(utilTree, jCas, true);
+      TopTreebankNode tree = TreebankNodeConverter.convert(utilTree, jCas, true);
       Sentence sentence = new Sentence(jCas, tree.getBegin(), tree.getEnd());
       sentence.addToIndexes();
 

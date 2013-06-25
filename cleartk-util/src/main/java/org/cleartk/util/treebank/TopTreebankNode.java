@@ -21,7 +21,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.constituent.util;
+package org.cleartk.util.treebank;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <br>
@@ -32,6 +35,46 @@ package org.cleartk.syntax.constituent.util;
  * @author Philip Ogren
  * 
  */
-public interface TreebankObject {
-  public String getText();
+public class TopTreebankNode extends TreebankNode {
+  List<TreebankNode> terminals;
+
+  String treebankParse;
+
+  public String getTreebankParse() {
+    return treebankParse;
+  }
+
+  public void setTreebankParse(String treebankParse) {
+    this.treebankParse = treebankParse;
+  }
+
+  public TopTreebankNode() {
+    super();
+    terminals = new ArrayList<TreebankNode>();
+  }
+
+  public int getTerminalCount() {
+    return terminals.size();
+  }
+
+  public TreebankNode getTerminal(int index) {
+    if (0 <= index && index < terminals.size())
+      return terminals.get(index);
+    return null;
+  }
+
+  public void initTerminalNodes() {
+    terminals.clear();
+    _initTerminalNodes(this);
+
+  }
+
+  private void _initTerminalNodes(TreebankNode node) {
+    for (TreebankNode child : node.getChildren()) {
+      if (child.isLeaf())
+        terminals.add(child);
+      else
+        _initTerminalNodes(child);
+    }
+  }
 }

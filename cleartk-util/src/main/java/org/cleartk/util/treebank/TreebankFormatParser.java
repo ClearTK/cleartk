@@ -21,16 +21,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.corpus.penntreebank;
+package org.cleartk.util.treebank;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.cleartk.syntax.constituent.util.TopTreebankNode;
-import org.cleartk.syntax.constituent.util.TreebankNode;
 
 /**
  * This class was written to be a stand alone parser for the Penn Treebank data. Basically, I need a
@@ -76,7 +73,7 @@ public class TreebankFormatParser {
    *          some fragment of a treebank parse.
    * @return if the string matches, then a node will be returned. Otherwise, null is returned.
    */
-  protected static TreebankNode getLeafNode(String parseFragment) {
+  public static TreebankNode getLeafNode(String parseFragment) {
     Matcher leafNodeMatcher = leafNodePattern.matcher(parseFragment);
     if (leafNodeMatcher.matches()) {
       String type = leafNodeMatcher.group(1);
@@ -145,7 +142,7 @@ public class TreebankFormatParser {
    *          some fragment of a treebank parse
    * @return the type of the constituent.
    */
-  protected static String getType(String parseFragment) {
+  public static String getType(String parseFragment) {
     Matcher typeMatcher = typePattern.matcher(parseFragment);
     if (typeMatcher.find())
       return typeMatcher.group(1);

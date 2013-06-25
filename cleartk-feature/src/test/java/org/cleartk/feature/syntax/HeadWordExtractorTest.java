@@ -30,7 +30,7 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.syntax.constituent.util.TreebankNodeUtility;
+import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.token.type.Token;
 import org.junit.Assert;
@@ -61,7 +61,7 @@ public class HeadWordExtractorTest extends DefaultTestBase {
   public void testNoTokens() throws Throwable {
     HeadWordExtractor extractor = new HeadWordExtractor(new CoveredTextExtractor(), true);
     jCas.setDocumentText("foo");
-    TreebankNode node = TreebankNodeUtility.newNode(jCas, 0, 3, "NN");
+    TreebankNode node = TreebankNodeUtil.newNode(jCas, 0, 3, "NN");
 
     this.checkFeatures(extractor.extract(jCas, node), "HeadWord", "foo");
   }
@@ -71,10 +71,10 @@ public class HeadWordExtractorTest extends DefaultTestBase {
     try {
       HeadWordExtractor extractor = new HeadWordExtractor(null);
       jCas.setDocumentText("foo");
-      TreebankNode parent = TreebankNodeUtility.newNode(
+      TreebankNode parent = TreebankNodeUtil.newNode(
           jCas,
           null,
-          TreebankNodeUtility.newNode(jCas, 0, 3, null));
+          TreebankNodeUtil.newNode(jCas, 0, 3, null));
 
       this.checkFeatures(extractor.extract(jCas, parent));
     } catch (NullPointerException e) {
@@ -91,10 +91,10 @@ public class HeadWordExtractorTest extends DefaultTestBase {
   @Test
   public void testSimpleSentence() throws Throwable {
     tokenBuilder.buildTokens(jCas, "I ran home", "I ran home", "PRP VBD NN");
-    TreebankNode iNode = TreebankNodeUtility.newNode(jCas, 0, 1, "PRP");
-    TreebankNode ranNode = TreebankNodeUtility.newNode(jCas, 2, 5, "VBD");
-    TreebankNode homeNode = TreebankNodeUtility.newNode(jCas, 6, 10, "NN");
-    TreebankNode vpNode = TreebankNodeUtility.newNode(jCas, "VP", ranNode, homeNode);
+    TreebankNode iNode = TreebankNodeUtil.newNode(jCas, 0, 1, "PRP");
+    TreebankNode ranNode = TreebankNodeUtil.newNode(jCas, 2, 5, "VBD");
+    TreebankNode homeNode = TreebankNodeUtil.newNode(jCas, 6, 10, "NN");
+    TreebankNode vpNode = TreebankNodeUtil.newNode(jCas, "VP", ranNode, homeNode);
 
     CoveredTextExtractor textExtractor = new CoveredTextExtractor();
     TypePathExtractor posExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");
@@ -122,17 +122,17 @@ public class HeadWordExtractorTest extends DefaultTestBase {
         "cat's toy under the box",
         "cat 's toy under the box",
         "NN POS NN IN DT NN");
-    TreebankNode catNode = TreebankNodeUtility.newNode(jCas, 0, 3, "NN");
-    TreebankNode sNode = TreebankNodeUtility.newNode(jCas, 3, 5, "POS");
-    TreebankNode catsNode = TreebankNodeUtility.newNode(jCas, "NP", catNode, sNode);
-    TreebankNode toyNode = TreebankNodeUtility.newNode(jCas, 6, 9, "NN");
-    TreebankNode catstoyNode = TreebankNodeUtility.newNode(jCas, "NP", catsNode, toyNode);
-    TreebankNode underNode = TreebankNodeUtility.newNode(jCas, 10, 15, "IN");
-    TreebankNode theNode = TreebankNodeUtility.newNode(jCas, 16, 19, "DT");
-    TreebankNode boxNode = TreebankNodeUtility.newNode(jCas, 20, 23, "NN");
-    TreebankNode theboxNode = TreebankNodeUtility.newNode(jCas, "NP", theNode, boxNode);
-    TreebankNode undertheboxNode = TreebankNodeUtility.newNode(jCas, "PP", underNode, theboxNode);
-    TreebankNode tree = TreebankNodeUtility.newNode(jCas, "NP", catstoyNode, undertheboxNode);
+    TreebankNode catNode = TreebankNodeUtil.newNode(jCas, 0, 3, "NN");
+    TreebankNode sNode = TreebankNodeUtil.newNode(jCas, 3, 5, "POS");
+    TreebankNode catsNode = TreebankNodeUtil.newNode(jCas, "NP", catNode, sNode);
+    TreebankNode toyNode = TreebankNodeUtil.newNode(jCas, 6, 9, "NN");
+    TreebankNode catstoyNode = TreebankNodeUtil.newNode(jCas, "NP", catsNode, toyNode);
+    TreebankNode underNode = TreebankNodeUtil.newNode(jCas, 10, 15, "IN");
+    TreebankNode theNode = TreebankNodeUtil.newNode(jCas, 16, 19, "DT");
+    TreebankNode boxNode = TreebankNodeUtil.newNode(jCas, 20, 23, "NN");
+    TreebankNode theboxNode = TreebankNodeUtil.newNode(jCas, "NP", theNode, boxNode);
+    TreebankNode undertheboxNode = TreebankNodeUtil.newNode(jCas, "PP", underNode, theboxNode);
+    TreebankNode tree = TreebankNodeUtil.newNode(jCas, "NP", catstoyNode, undertheboxNode);
 
     CoveredTextExtractor textExtractor = new CoveredTextExtractor();
     TypePathExtractor posExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");

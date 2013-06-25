@@ -44,15 +44,15 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.cleartk</groupId>
+			<artifactId>cleartk-util</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-ml-svmlight</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-corpus</artifactId>
 		</dependency>
 		<!-- test only -->
 		<dependency>

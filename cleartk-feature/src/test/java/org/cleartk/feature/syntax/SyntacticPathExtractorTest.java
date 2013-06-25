@@ -29,7 +29,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.syntax.constituent.util.TreebankNodeUtility;
+import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -48,13 +48,13 @@ public class SyntacticPathExtractorTest extends DefaultTestBase {
   @Test
   public void test() throws Throwable {
     tokenBuilder.buildTokens(jCas, "I ran home", "I ran home", "PRP VBD NN");
-    TreebankNode iNode = TreebankNodeUtility.newNode(jCas, 0, 1, "PRP");
-    TreebankNode inpNode = TreebankNodeUtility.newNode(jCas, "NP", iNode);
-    TreebankNode ranNode = TreebankNodeUtility.newNode(jCas, 2, 5, "VBD");
-    TreebankNode homeNode = TreebankNodeUtility.newNode(jCas, 6, 10, "NN");
-    TreebankNode homenpNode = TreebankNodeUtility.newNode(jCas, "NP", homeNode);
-    TreebankNode ranvpNode = TreebankNodeUtility.newNode(jCas, "VP", ranNode, homenpNode);
-    TreebankNode topNode = TreebankNodeUtility.newNode(jCas, "S", inpNode, ranvpNode);
+    TreebankNode iNode = TreebankNodeUtil.newNode(jCas, 0, 1, "PRP");
+    TreebankNode inpNode = TreebankNodeUtil.newNode(jCas, "NP", iNode);
+    TreebankNode ranNode = TreebankNodeUtil.newNode(jCas, 2, 5, "VBD");
+    TreebankNode homeNode = TreebankNodeUtil.newNode(jCas, 6, 10, "NN");
+    TreebankNode homenpNode = TreebankNodeUtil.newNode(jCas, "NP", homeNode);
+    TreebankNode ranvpNode = TreebankNodeUtil.newNode(jCas, "VP", ranNode, homenpNode);
+    TreebankNode topNode = TreebankNodeUtil.newNode(jCas, "S", inpNode, ranvpNode);
 
     CoveredTextExtractor textExtractor = new CoveredTextExtractor();
     TypePathExtractor tagExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");

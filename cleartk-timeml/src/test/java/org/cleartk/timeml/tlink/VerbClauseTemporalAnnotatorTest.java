@@ -43,7 +43,7 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.util.PublicFieldDataWriter;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.syntax.constituent.util.TreebankNodeUtility;
+import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.timeml.TimeMLTestBase;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
@@ -111,21 +111,21 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
     }
 
     // create the TreebankNode annotations
-    TreebankNode root = TreebankNodeUtility.newNode(jCas, "S", TreebankNodeUtility.newNode(
+    TreebankNode root = TreebankNodeUtil.newNode(jCas, "S", TreebankNodeUtil.newNode(
         jCas,
         "NP",
-        this.newNode(jCas, tokens.get(0))), TreebankNodeUtility.newNode(
+        this.newNode(jCas, tokens.get(0))), TreebankNodeUtil.newNode(
         jCas,
         "VP",
         this.newNode(jCas, tokens.get(1)),
-        TreebankNodeUtility.newNode(jCas, "SBAR", TreebankNodeUtility.newNode(
+        TreebankNodeUtil.newNode(jCas, "SBAR", TreebankNodeUtil.newNode(
             jCas,
             "NP",
-            this.newNode(jCas, tokens.get(2))), TreebankNodeUtility.newNode(
+            this.newNode(jCas, tokens.get(2))), TreebankNodeUtil.newNode(
             jCas,
             "VP",
             this.newNode(jCas, tokens.get(3)),
-            TreebankNodeUtility.newNode(jCas, "NP", this.newNode(jCas, tokens.get(4)))))));
+            TreebankNodeUtil.newNode(jCas, "NP", this.newNode(jCas, tokens.get(4)))))));
 
     Sentence sentence = JCasUtil.selectSingle(jCas, Sentence.class);
 
@@ -197,7 +197,7 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
   }
 
   private TreebankNode newNode(JCas jcas, Token token) {
-    return TreebankNodeUtility.newNode(jcas, token.getBegin(), token.getEnd(), token.getPos());
+    return TreebankNodeUtil.newNode(jcas, token.getBegin(), token.getEnd(), token.getPos());
   }
 
   @Test
@@ -212,21 +212,21 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
     Iterator<Token> tokensIter = JCasUtil.select(jCas, Token.class).iterator();
 
     // fill in tree
-    TreebankNode root = TreebankNodeUtility.newNode(jCas, "S", TreebankNodeUtility.newNode(
+    TreebankNode root = TreebankNodeUtil.newNode(jCas, "S", TreebankNodeUtil.newNode(
         jCas,
         "NP",
-        this.newNode(jCas, tokensIter.next())), TreebankNodeUtility.newNode(
+        this.newNode(jCas, tokensIter.next())), TreebankNodeUtil.newNode(
         jCas,
         "VP",
         this.newNode(jCas, tokensIter.next()),
-        TreebankNodeUtility.newNode(jCas, "SBAR", TreebankNodeUtility.newNode(
+        TreebankNodeUtil.newNode(jCas, "SBAR", TreebankNodeUtil.newNode(
             jCas,
             "NP",
-            this.newNode(jCas, tokensIter.next())), TreebankNodeUtility.newNode(
+            this.newNode(jCas, tokensIter.next())), TreebankNodeUtil.newNode(
             jCas,
             "VP",
             this.newNode(jCas, tokensIter.next()),
-            TreebankNodeUtility.newNode(
+            TreebankNodeUtil.newNode(
                 jCas,
                 "NP",
                 this.newNode(jCas, tokensIter.next()),

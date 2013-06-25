@@ -36,6 +36,7 @@ import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
+import org.cleartk.util.treebank.TreebankFormatParser;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
@@ -110,11 +111,11 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
       docText = TreebankFormatParser.inferPlainText(tbText);
       docView.setSofaDataString(docText, "text/plain");
     }
-    List<org.cleartk.syntax.constituent.util.TopTreebankNode> topNodes;
+    List<org.cleartk.util.treebank.TopTreebankNode> topNodes;
     topNodes = TreebankFormatParser.parseDocument(tbText, 0, docText);
 
-    for (org.cleartk.syntax.constituent.util.TopTreebankNode topNode : topNodes) {
-      TopTreebankNode uimaNode = org.cleartk.syntax.constituent.util.TreebankNodeUtility.convert(
+    for (org.cleartk.util.treebank.TopTreebankNode topNode : topNodes) {
+      TopTreebankNode uimaNode = org.cleartk.corpus.penntreebank.TreebankNodeConverter.convert(
           topNode,
           docView,
           postTrees);
