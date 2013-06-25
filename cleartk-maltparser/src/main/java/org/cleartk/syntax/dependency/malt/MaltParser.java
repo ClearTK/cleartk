@@ -49,7 +49,6 @@ import org.maltparser.core.syntaxgraph.DependencyStructure;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.FSCollectionFactory;
 import org.uimafit.util.JCasUtil;
 
@@ -78,13 +77,12 @@ public class MaltParser extends JCasAnnotator_ImplBase {
   }
 
   @ConfigurationParameter(
+      name = PARAM_MODEL_FILE_NAME,
       description = "The path to the model file, without the .mco suffix.",
       mandatory = true)
   private String modelFileName;
 
-  public static final String PARAM_MODEL_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      MaltParser.class,
-      "modelFileName");
+  public static final String PARAM_MODEL_FILE_NAME = "modelFileName";
 
   private MaltParserService service;
 

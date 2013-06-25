@@ -51,9 +51,7 @@ import org.uimafit.util.JCasUtil;
 
 public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_WINDOW_TYPE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      ParentheticalAnnotator.class,
-      "windowTypeName");
+  public static final String PARAM_WINDOW_TYPE_NAME = "windowTypeName";
 
   private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
       + "If no value is given, then the entire document will be tokenized at once. ";
@@ -61,33 +59,33 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
   // do not set the default value to 'org.cleartk.token.type.Sentence'. If you do, then unit tests
   // will break. The symptom will be a tokenizer that doesn't generate any tokens (because there
   // are no sentences to iterate over.
-  @ConfigurationParameter(description = WINDOW_TYPE_DESCRIPTION)
+  @ConfigurationParameter(
+      name = PARAM_WINDOW_TYPE_NAME,
+      description = WINDOW_TYPE_DESCRIPTION)
   private String windowTypeName;
 
-  public static final String PARAM_PARENTHETICAL_TYPE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      ParentheticalAnnotator.class,
-      "parentheticalTypeName");
+  public static final String PARAM_PARENTHETICAL_TYPE_NAME = "parentheticalTypeName";
 
   @ConfigurationParameter(
+      name = PARAM_PARENTHETICAL_TYPE_NAME,
       description = "class name of the annotations that are created by this annotator.",
       defaultValue = "org.cleartk.util.type.Parenthetical",
       mandatory = true)
   private String parentheticalTypeName;
 
-  public static final String PARAM_LEFT_PARENTHESIS = ConfigurationParameterFactory.createConfigurationParameterName(
-      ParentheticalAnnotator.class,
-      "leftParenthesis");
+  public static final String PARAM_LEFT_PARENTHESIS = "leftParenthesis";
 
-  @ConfigurationParameter(defaultValue = "(", mandatory = true)
+  @ConfigurationParameter(
+      name = PARAM_LEFT_PARENTHESIS,
+      defaultValue = "(", mandatory = true)
   private String leftParenthesis;
 
   private char leftParen;
 
-  public static final String PARAM_RIGHT_PARENTHESIS = ConfigurationParameterFactory.createConfigurationParameterName(
-      ParentheticalAnnotator.class,
-      "rightParenthesis");
+  public static final String PARAM_RIGHT_PARENTHESIS = "rightParenthesis";
 
-  @ConfigurationParameter(defaultValue = ")", mandatory = true)
+  @ConfigurationParameter(name = PARAM_RIGHT_PARENTHESIS, 
+      defaultValue = ")", mandatory = true)
   private String rightParenthesis;
 
   private char rightParen;

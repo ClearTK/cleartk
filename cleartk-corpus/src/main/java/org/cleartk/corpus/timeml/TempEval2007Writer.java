@@ -43,7 +43,6 @@ import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -59,11 +58,10 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public class TempEval2007Writer extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2007Writer.class,
-      "outputDirectoryName");
+  public static final String PARAM_OUTPUT_DIRECTORY_NAME = "outputDirectoryName";
 
   @ConfigurationParameter(
+      name = PARAM_OUTPUT_DIRECTORY_NAME,
       description = "Provides the path where the TimeML documents should be written.",
       mandatory = true)
   private String outputDirectoryName;

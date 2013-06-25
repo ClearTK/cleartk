@@ -48,7 +48,6 @@ import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.JCasUtil;
 
@@ -81,29 +80,26 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
         ParamUtil.getParameterValue(PARAM_WINDOW_CLASS_NAMES, null));
   }
 
-  public static final String PARAM_SENTENCE_MODEL_PATH = ConfigurationParameterFactory.createConfigurationParameterName(
-      SentenceAnnotator.class,
-      "sentenceModelPath");
+  public static final String PARAM_SENTENCE_MODEL_PATH = "sentenceModelPath";
 
   @ConfigurationParameter(
+      name = PARAM_SENTENCE_MODEL_PATH,
       mandatory = true,
       description = "provides the path of the OpenNLP sentence segmenter model file")
   private String sentenceModelPath;
 
-  public static final String PARAM_SENTENCE_TYPE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      SentenceAnnotator.class,
-      "sentenceTypeName");
+  public static final String PARAM_SENTENCE_TYPE_NAME = "sentenceTypeName";
 
-  public static final String PARAM_WINDOW_CLASS_NAMES = ConfigurationParameterFactory.createConfigurationParameterName(
-      SentenceAnnotator.class,
-      "windowClassNames");
+  public static final String PARAM_WINDOW_CLASS_NAMES = "windowClassNames";
 
   @ConfigurationParameter(
+      name = PARAM_WINDOW_CLASS_NAMES,
       mandatory = false,
       description = "provides an array of the annotation types that will be processed by this sentence annotator.  If the parameter is not filled, then SentenceAnnotator will process on the contents of jCas.getDocumentText().  It us up to the caller to ensure annotations do not overlap.")
   private String[] windowClassNames;
 
   @ConfigurationParameter(
+      name = PARAM_SENTENCE_TYPE_NAME,
       description = "class type of the sentences that are created by this annotator. If this parameter is not filled, then sentencesof type org.cleartk.type.Sentence will be created.",
       defaultValue = "org.cleartk.token.type.Sentence")
   private String sentenceTypeName;

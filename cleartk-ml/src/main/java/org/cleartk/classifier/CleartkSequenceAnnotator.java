@@ -36,7 +36,6 @@ import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
 import org.uimafit.factory.initializable.InitializableFactory;
 
@@ -50,35 +49,32 @@ import org.uimafit.factory.initializable.InitializableFactory;
 public abstract class CleartkSequenceAnnotator<OUTCOME_TYPE> extends JCasAnnotator_ImplBase
     implements Initializable {
 
-  public static final String PARAM_CLASSIFIER_FACTORY_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      CleartkSequenceAnnotator.class,
-      "classifierFactoryClassName");
+  public static final String PARAM_CLASSIFIER_FACTORY_CLASS_NAME = "classifierFactoryClassName";
 
   private static final String DEFAULT_CLASSIFIER_FACTORY_CLASS_NAME = "org.cleartk.classifier.jar.SequenceJarClassifierFactory";
 
   @ConfigurationParameter(
+      name = PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
       mandatory = false,
       description = "provides the full name of the SequenceClassifierFactory class to be used.",
       defaultValue = "org.cleartk.classifier.jar.SequenceJarClassifierFactory")
   private String classifierFactoryClassName;
 
-  public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      CleartkSequenceAnnotator.class,
-      "dataWriterFactoryClassName");
+  public static final String PARAM_DATA_WRITER_FACTORY_CLASS_NAME = "dataWriterFactoryClassName";
 
   private static final String DEFAULT_DATA_WRITER_FACTORY_CLASS_NAME = "org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory";
 
   @ConfigurationParameter(
+      name = PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
       mandatory = false,
       description = "provides the full name of the SequenceDataWriterFactory class to be used.",
       defaultValue = DEFAULT_DATA_WRITER_FACTORY_CLASS_NAME)
   private String dataWriterFactoryClassName;
 
-  public static final String PARAM_IS_TRAINING = ConfigurationParameterFactory.createConfigurationParameterName(
-      CleartkSequenceAnnotator.class,
-      "isTraining");
+  public static final String PARAM_IS_TRAINING = "isTraining";
 
   @ConfigurationParameter(
+      name = PARAM_IS_TRAINING,
       mandatory = false,
       description = "determines whether this annotator is writing training data or using a classifier to annotate. Normally inferred automatically based on whether or not a DataWriterFactory class has been set.")
   private Boolean isTraining;

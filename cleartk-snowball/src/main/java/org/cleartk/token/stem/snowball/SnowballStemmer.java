@@ -35,7 +35,6 @@ import org.cleartk.util.ReflectionUtil;
 import org.tartarus.snowball.SnowballProgram;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.JCasUtil;
 
@@ -51,14 +50,15 @@ import org.uimafit.util.JCasUtil;
  */
 public abstract class SnowballStemmer<TOKEN_TYPE extends Annotation> extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_STEMMER_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      SnowballStemmer.class,
-      "stemmerName");
+  public static final String PARAM_STEMMER_NAME = "stemmerName";
 
   private static final String STEMMER_NAME_DESCRIPTION = "specifies which snowball stemmer to use. Possible values are: "
       + "Danish, Dutch, English, Finnish, French, German2, German, Italian, Kp, Lovins, Norwegian, Porter, Portuguese, Russian, Spanish, Swedish";
 
-  @ConfigurationParameter(description = STEMMER_NAME_DESCRIPTION, mandatory = true)
+  @ConfigurationParameter(
+      name = PARAM_STEMMER_NAME,
+      description = STEMMER_NAME_DESCRIPTION,
+      mandatory = true)
   public String stemmerName;
 
   private SnowballProgram stemmer;

@@ -48,21 +48,20 @@ import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
 import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
+import org.cleartk.feature.syntax.TargetPathExtractor;
+import org.cleartk.feature.token.TokenTextForSelectedPOSExtractor;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
-import org.cleartk.feature.syntax.TargetPathExtractor;
-import org.cleartk.feature.token.TokenTextForSelectedPOSExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -119,14 +118,14 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
   private int eventID;
 
-  @ConfigurationParameter(defaultValue = "false", description = "Create events for all verbs in "
+  @ConfigurationParameter(
+      name = PARAM_CREATE_EVENTS,
+      defaultValue = "false", description = "Create events for all verbs in "
       + "verb-clause relations (using existing events if present, but adding new ones "
       + "wherever they are not present).")
   private boolean createEvents;
 
-  public static final String PARAM_CREATE_EVENTS = ConfigurationParameterFactory.createConfigurationParameterName(
-      VerbClauseTemporalAnnotator.class,
-      "createEvents");
+  public static final String PARAM_CREATE_EVENTS = "createEvents";
 
   public VerbClauseTemporalAnnotator() {
     this.eventID = 1;

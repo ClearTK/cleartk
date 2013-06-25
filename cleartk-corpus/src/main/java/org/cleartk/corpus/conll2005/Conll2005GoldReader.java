@@ -46,7 +46,6 @@ import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -64,12 +63,10 @@ public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
         conll2005DataFile);
   }
 
-  @ConfigurationParameter(mandatory = true, description = "the path of the CoNLL 2005 data file")
+  @ConfigurationParameter(name = PARAM_CONLL2005_DATA_FILE, mandatory = true, description = "the path of the CoNLL 2005 data file")
   private File conll2005DataFile;
 
-  public static final String PARAM_CONLL2005_DATA_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
-      Conll2005GoldReader.class,
-      "conll2005DataFile");
+  public static final String PARAM_CONLL2005_DATA_FILE = "conll2005DataFile";
 
   private BufferedReader reader;
 

@@ -28,7 +28,6 @@ import java.io.IOException;
 import org.cleartk.classifier.SequenceDataWriter;
 import org.cleartk.classifier.SequenceDataWriterFactory;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * A {@link SequenceDataWriterFactory} that creates a data writer from the class given by
@@ -43,11 +42,10 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public class DefaultSequenceDataWriterFactory<OUTCOME_TYPE> extends
     GenericDataWriterFactory<OUTCOME_TYPE> implements SequenceDataWriterFactory<OUTCOME_TYPE> {
 
-  public static final String PARAM_DATA_WRITER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      DefaultSequenceDataWriterFactory.class,
-      "dataWriterClassName");
+  public static final String PARAM_DATA_WRITER_CLASS_NAME = "dataWriterClassName";
 
   @ConfigurationParameter(
+      name = PARAM_DATA_WRITER_CLASS_NAME,
       mandatory = true,
       description = "provides the full name of the data writer class to be used.")
   private String dataWriterClassName;

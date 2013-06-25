@@ -57,7 +57,6 @@ import org.jdom2.output.XMLOutputter;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
@@ -84,11 +83,10 @@ public class TempEval2013Writer extends JCasAnnotator_ImplBase {
         outputDir);
   }
 
-  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2013Writer.class,
-      "outputDirectory");
+  public static final String PARAM_OUTPUT_DIRECTORY = "outputDirectory";
 
   @ConfigurationParameter(
+      name = PARAM_OUTPUT_DIRECTORY,
       description = "Provides the path where the TimeML documents should be written.",
       mandatory = true)
   private File outputDirectory;

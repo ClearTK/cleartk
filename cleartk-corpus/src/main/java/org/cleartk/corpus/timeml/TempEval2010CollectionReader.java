@@ -48,7 +48,6 @@ import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ArrayListMultimap;
@@ -119,21 +118,17 @@ public class TempEval2010CollectionReader extends JCasCollectionReader_ImplBase 
         names);
   }
 
-  @ConfigurationParameter(mandatory = true, description = "The directories containing the TempEval "
+  @ConfigurationParameter(name = PARAM_DATA_DIRECTORIES, mandatory = true, description = "The directories containing the TempEval "
       + "2010 data, e.g. \"tempeval-training-2/english\" and \"tempeval2-test/english\"")
   protected List<File> dataDirectories;
 
-  public static final String PARAM_DATA_DIRECTORIES = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010CollectionReader.class,
-      "dataDirectories");
+  public static final String PARAM_DATA_DIRECTORIES = "dataDirectories";
 
-  @ConfigurationParameter(description = "The names of files that should be included when reading, "
+  @ConfigurationParameter(name = PARAM_SELECTED_FILE_NAMES, description = "The names of files that should be included when reading, "
       + "e.g \"ABC19980108.1830.0711\". If null, then all files in the dataset will be included.")
   protected Set<String> selectedFileNames;
 
-  public static final String PARAM_SELECTED_FILE_NAMES = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010CollectionReader.class,
-      "selectedFileNames");
+  public static final String PARAM_SELECTED_FILE_NAMES = "selectedFileNames";
 
   protected List<URI> uris;
 

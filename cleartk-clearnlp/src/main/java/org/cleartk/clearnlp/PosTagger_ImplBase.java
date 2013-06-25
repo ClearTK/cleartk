@@ -34,7 +34,6 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 import com.googlecode.clearnlp.component.AbstractComponent;
@@ -66,32 +65,29 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends 
 	
 	public static final String DEFAULT_MODEL_FILE_NAME = "ontonotes-en-pos-1.3.0.tgz";
 	
-	public static final String PARAM_MODEL_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-			PosTagger_ImplBase.class,
-			"modelUri");
+	public static final String PARAM_MODEL_URI = "modelUri";
 	
 	@ConfigurationParameter(
+	    name = PARAM_MODEL_URI,
 			description = "This parameter provides the URI to the pos tagger model.")
 	private URI modelUri;
 
-	public static final String PARAM_LANGUAGE_CODE = ConfigurationParameterFactory.createConfigurationParameterName(
-	    PosTagger_ImplBase.class, 
-	    "languageCode");
+	public static final String PARAM_LANGUAGE_CODE = "languageCode";
 	
   @ConfigurationParameter(
+      name = PARAM_LANGUAGE_CODE,
       description = "Language code for the pos tagger (default value=en).",
       defaultValue = AbstractReader.LANG_EN)
   private String languageCode;
 	
-  public static final String PARAM_WINDOW_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
-      PosTagger_ImplBase.class,
-      "windowClass"); 
+  public static final String PARAM_WINDOW_CLASS = "windowClass"; 
   
   private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
       + "By default, the tokenizer will tokenize a document sentence by sentence.  If you do not want to precede tokenization with"
       + "sentence segmentation, then a reasonable value for this parameter is 'org.apache.uima.jcas.tcas.DocumentAnnotation'";
 
   @ConfigurationParameter(
+      name = PARAM_WINDOW_CLASS,
       description = WINDOW_TYPE_DESCRIPTION,
       defaultValue = "org.cleartk.token.type.Sentence")
   private Class<? extends Annotation> windowClass;

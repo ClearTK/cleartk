@@ -47,7 +47,6 @@ import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -61,11 +60,10 @@ import org.uimafit.util.JCasUtil;
  */
 public class PlainTextTLINKGoldAnnotator extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_TLINK_FILE_URL = ConfigurationParameterFactory.createConfigurationParameterName(
-      PlainTextTLINKGoldAnnotator.class,
-      "tlinkFileUrl");
+  public static final String PARAM_TLINK_FILE_URL = "tlinkFileUrl";
 
   @ConfigurationParameter(
+      name = PARAM_TLINK_FILE_URL,
       mandatory = true,
       description = "the URL to a plain-text TLINK file, e.g."
           + "http://www.bethard.info/data/timebank-verb-clause.txt")

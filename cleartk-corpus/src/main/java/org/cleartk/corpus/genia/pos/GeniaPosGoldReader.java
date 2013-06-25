@@ -54,7 +54,6 @@ import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -71,48 +70,43 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 
   public static final String GENIA_POS_VIEW = "GeniaPOSView";
 
-  public static final String PARAM_GENIA_CORPUS_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
-      GeniaPosGoldReader.class,
-      "geniaCorpusFile");
+  public static final String PARAM_GENIA_CORPUS_FILE = "geniaCorpusFile";
 
   @ConfigurationParameter(
+      name = PARAM_GENIA_CORPUS_FILE,
       description = "names the file that is the Genia corpus to be loaded. A good value is probably '.../GENIAcorpus3.02.pos.xml'.  Please see README in this directory for edits that you may need to make to this file manually.",
       mandatory = true)
   private File geniaCorpusFile;
 
-  public static final String PARAM_LOAD_SENTENCES = ConfigurationParameterFactory.createConfigurationParameterName(
-      GeniaPosGoldReader.class,
-      "loadSentences");
+  public static final String PARAM_LOAD_SENTENCES = "loadSentences";
 
   @ConfigurationParameter(
+      name = PARAM_LOAD_SENTENCES,
       description = "determines whether sentence annotations will be added from the Genia corpus.",
       defaultValue = "true")
   private boolean loadSentences = true;
 
-  public static final String PARAM_LOAD_TOKENS = ConfigurationParameterFactory.createConfigurationParameterName(
-      GeniaPosGoldReader.class,
-      "loadTokens");
+  public static final String PARAM_LOAD_TOKENS = "loadTokens";
 
   @ConfigurationParameter(
+      name = PARAM_LOAD_TOKENS,
       description = "determines whether tokens annotations will be added from the Genia corpus. ",
       defaultValue = "true")
   private boolean loadTokens = true;
 
-  public static final String PARAM_LOAD_POS_TAGS = ConfigurationParameterFactory.createConfigurationParameterName(
-      GeniaPosGoldReader.class,
-      "loadPosTags");
+  public static final String PARAM_LOAD_POS_TAGS = "loadPosTags";
 
   @ConfigurationParameter(
+      name = PARAM_LOAD_POS_TAGS,
       description = "determines whether the part of speech tags assigned to each token in the genia corpus will be loaded. The default value of 'true' is used if this "
           + "parameter is unspecified. If 'loadTokens' is 'false', then 'loadPOSTags' will be treated as 'false' regardless of what is given in the descriptor file.",
       defaultValue = "true")
   private boolean loadPosTags = true;
 
-  public static final String PARAM_ARTICLE_IDS_LIST_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
-      GeniaPosGoldReader.class,
-      "articleIdsListFile");
+  public static final String PARAM_ARTICLE_IDS_LIST_FILE = "articleIdsListFile";
 
   @ConfigurationParameter(
+      name = PARAM_ARTICLE_IDS_LIST_FILE,
       description = "names the file used to specify the article ids that should be read in")
   File articleIdsListFile;
 

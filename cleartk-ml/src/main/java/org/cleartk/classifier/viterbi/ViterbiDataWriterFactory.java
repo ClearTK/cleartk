@@ -37,7 +37,6 @@ import org.cleartk.classifier.SequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
 import org.uimafit.factory.initializable.InitializableFactory;
 
@@ -53,11 +52,10 @@ import org.uimafit.factory.initializable.InitializableFactory;
 public class ViterbiDataWriterFactory<OUTCOME_TYPE> extends DirectoryDataWriterFactory implements
     SequenceDataWriterFactory<OUTCOME_TYPE>, Initializable {
 
-  public static final String PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES = ConfigurationParameterFactory.createConfigurationParameterName(
-      ViterbiDataWriterFactory.class,
-      "outcomeFeatureExtractorNames");
+  public static final String PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES = "outcomeFeatureExtractorNames";
 
   @ConfigurationParameter(
+      name = PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
       mandatory = false,
       description = "An optional, multi-valued, string parameter that "
           + "specifies which OutcomeFeatureExtractors should be used. "
@@ -67,11 +65,10 @@ public class ViterbiDataWriterFactory<OUTCOME_TYPE> extends DirectoryDataWriterF
           + "org.cleartk.classifier.feature.extractor.outcome.DefaultOutcomeFeatureExtractor")
   protected String outcomeFeatureExtractorNames[];
 
-  public static final String PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
-      ViterbiDataWriterFactory.class,
-      "delegatedDataWriterFactoryClass");
+  public static final String PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS = "delegatedDataWriterFactoryClass";
 
   @ConfigurationParameter(
+      name = PARAM_DELEGATED_DATA_WRITER_FACTORY_CLASS,
       mandatory = true,
       defaultValue = "org.cleartk.classifier.jar.DefaultDataWriterFactory",
       description = "A single, required, string parameter that provides "

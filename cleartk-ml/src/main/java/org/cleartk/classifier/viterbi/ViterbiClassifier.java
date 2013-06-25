@@ -42,7 +42,6 @@ import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
 
 /**
@@ -58,11 +57,10 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
 
   protected OutcomeFeatureExtractor[] outcomeFeatureExtractors;
 
-  public static final String PARAM_STACK_SIZE = ConfigurationParameterFactory.createConfigurationParameterName(
-      ViterbiClassifier.class,
-      "stackSize");
+  public static final String PARAM_STACK_SIZE = "stackSize";
 
   @ConfigurationParameter(
+      name = PARAM_STACK_SIZE,
       description = "specifies the maximum number of candidate paths to "
           + "keep track of. In general, this number should be higher than the number "
           + "of possible classifications at any given point in the sequence. This "
@@ -74,11 +72,10 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
       defaultValue = "1")
   protected int stackSize;
 
-  public static final String PARAM_ADD_SCORES = ConfigurationParameterFactory.createConfigurationParameterName(
-      ViterbiClassifier.class,
-      "addScores");
+  public static final String PARAM_ADD_SCORES = "addScores";
 
   @ConfigurationParameter(
+      name = PARAM_ADD_SCORES,
       description = "specifies whether the scores of candidate sequence classifications should be "
           + "calculated by summing classfication scores for each member of the sequence or by multiplying them. A value of "
           + "true means that the scores will be summed. A value of false means that the scores will be multiplied. ",

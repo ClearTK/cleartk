@@ -45,7 +45,6 @@ import org.cleartk.token.type.Token;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Joiner;
@@ -66,94 +65,84 @@ public class TempEval2010GoldAnnotator extends JCasAnnotator_ImplBase {
   }
 
   @ConfigurationParameter(
+      name = PARAM_TEXT_VIEWS, 
       defaultValue = CAS.NAME_DEFAULT_SOFA,
       description = "Views where document text should be placed")
   private String[] textViews;
 
   @ConfigurationParameter(
+      name = PARAM_DOCUMENT_CREATION_TIME_VIEWS,
       defaultValue = CAS.NAME_DEFAULT_SOFA,
       description = "Views where DocumentCreationTime annotations should be placed")
   private String[] documentCreationTimeViews;
 
   @ConfigurationParameter(
+      name = PARAM_TIME_EXTENT_VIEWS,
       defaultValue = CAS.NAME_DEFAULT_SOFA,
       description = "Views where Time annotations should be placed")
   private String[] timeExtentViews;
 
   @ConfigurationParameter(
+      name = PARAM_TIME_ATTRIBUTE_VIEWS,
       defaultValue = CAS.NAME_DEFAULT_SOFA,
       description = "Views where Time annotation attributes should be placed")
   private String[] timeAttributeViews;
 
   @ConfigurationParameter(
+      name = PARAM_EVENT_EXTENT_VIEWS,
       defaultValue = CAS.NAME_DEFAULT_SOFA,
       description = "Views where Event annotations should be placed")
   private String[] eventExtentViews;
 
   @ConfigurationParameter(
+      name = PARAM_EVENT_ATTRIBUTE_VIEWS,
       defaultValue = CAS.NAME_DEFAULT_SOFA,
       description = "Views where Event annotation attributes should be placed")
   private String[] eventAttributeViews;
 
   @ConfigurationParameter(
+      name = PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEWS,
       defaultValue = CAS.NAME_DEFAULT_SOFA,
       description = "Views where TemporalLink annotations between events and the document creation time should be placed")
   private String[] temporalLinkEventToDocumentCreationTimeViews;
 
   @ConfigurationParameter(
+      name = PARAM_TEMPORAL_LINK_EVENT_TO_SAME_SENTENCE_TIME_VIEWS,
       defaultValue = CAS.NAME_DEFAULT_SOFA,
       description = "Views where TemporalLink annotations between events and times within the same sentence should be placed")
   private String[] temporalLinkEventToSameSentenceTimeViews;
 
   @ConfigurationParameter(
+      name = PARAM_TEMPORAL_LINK_EVENT_TO_SUBORDINATED_EVENT_VIEWS,
       defaultValue = CAS.NAME_DEFAULT_SOFA,
       description = "Views where TemporalLink annotations between events and syntactically dominated events should be placed")
   private String[] temporalLinkEventToSubordinatedEventViews;
 
   @ConfigurationParameter(
+      name = PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEWS,
       defaultValue = CAS.NAME_DEFAULT_SOFA,
       description = "Views where TemporalLink annotations between main events in adjacent sentences should be placed")
   private String[] temporalLinkMainEventToNextSentenceMainEventViews;
 
-  public static final String PARAM_TEXT_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010GoldAnnotator.class,
-      "textViews");
+  public static final String PARAM_TEXT_VIEWS = "textViews";
 
-  public static final String PARAM_DOCUMENT_CREATION_TIME_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010GoldAnnotator.class,
-      "documentCreationTimeViews");
+  public static final String PARAM_DOCUMENT_CREATION_TIME_VIEWS = "documentCreationTimeViews";
 
-  public static final String PARAM_TIME_EXTENT_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010GoldAnnotator.class,
-      "timeExtentViews");
+  public static final String PARAM_TIME_EXTENT_VIEWS = "timeExtentViews";
 
-  public static final String PARAM_TIME_ATTRIBUTE_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010GoldAnnotator.class,
-      "timeAttributeViews");
+  public static final String PARAM_TIME_ATTRIBUTE_VIEWS = "timeAttributeViews";
 
-  public static final String PARAM_EVENT_EXTENT_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010GoldAnnotator.class,
-      "eventExtentViews");
+  public static final String PARAM_EVENT_EXTENT_VIEWS = "eventExtentViews";
 
-  public static final String PARAM_EVENT_ATTRIBUTE_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010GoldAnnotator.class,
-      "eventAttributeViews");
+  public static final String PARAM_EVENT_ATTRIBUTE_VIEWS = "eventAttributeViews";
 
-  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010GoldAnnotator.class,
-      "temporalLinkEventToDocumentCreationTimeViews");
+  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEWS = "temporalLinkEventToDocumentCreationTimeViews";
 
-  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_SAME_SENTENCE_TIME_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010GoldAnnotator.class,
-      "temporalLinkEventToSameSentenceTimeViews");
+  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_SAME_SENTENCE_TIME_VIEWS =  "temporalLinkEventToSameSentenceTimeViews";
 
-  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_SUBORDINATED_EVENT_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010GoldAnnotator.class,
-      "temporalLinkEventToSubordinatedEventViews");
+  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_SUBORDINATED_EVENT_VIEWS = "temporalLinkEventToSubordinatedEventViews";
 
-  public static final String PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEWS = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010GoldAnnotator.class,
-      "temporalLinkMainEventToNextSentenceMainEventViews");
+  public static final String PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEWS = "temporalLinkMainEventToNextSentenceMainEventViews";
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {

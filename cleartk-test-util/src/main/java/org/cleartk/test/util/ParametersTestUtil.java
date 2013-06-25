@@ -68,10 +68,8 @@ public class ParametersTestUtil {
 
     while (files.hasNext()) {
       File file = files.next();
-      String className = file.getPath();
-      className = className.substring(14);
+      String className = file.getName();
       className = className.substring(0, className.length() - 5);
-      className = className.replace(File.separatorChar, '.');
       Class<?> cls = Class.forName(className);
       Field[] fields = cls.getDeclaredFields();
       for (Field field : fields) {

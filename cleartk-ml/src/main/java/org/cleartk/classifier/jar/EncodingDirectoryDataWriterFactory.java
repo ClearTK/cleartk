@@ -38,7 +38,6 @@ import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
 
 /**
@@ -58,11 +57,10 @@ import org.uimafit.factory.initializable.Initializable;
 public abstract class EncodingDirectoryDataWriterFactory<ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
     extends DirectoryDataWriterFactory implements Initializable {
 
-  public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = ConfigurationParameterFactory.createConfigurationParameterName(
-      EncodingDirectoryDataWriterFactory.class,
-      "loadEncodersFromFileSystem");
+  public static final String PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM = "loadEncodersFromFileSystem";
 
   @ConfigurationParameter(
+      name = PARAM_LOAD_ENCODERS_FROM_FILE_SYSTEM,
       mandatory = false,
       description = "when true indicates that the FeaturesEncoder and "
           + "OutcomeEncoder should be loaded from the file system "

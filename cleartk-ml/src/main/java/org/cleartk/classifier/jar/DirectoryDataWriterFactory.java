@@ -33,7 +33,6 @@ import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
 
 /**
@@ -52,11 +51,10 @@ import org.uimafit.factory.initializable.Initializable;
  */
 public abstract class DirectoryDataWriterFactory implements Initializable {
 
-  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
-      DirectoryDataWriterFactory.class,
-      "outputDirectory");
+  public static final String PARAM_OUTPUT_DIRECTORY = "outputDirectory";
 
   @ConfigurationParameter(
+      name = PARAM_OUTPUT_DIRECTORY,
       mandatory = true,
       description = "provides the name of the directory where the "
           + "training data will be written.  if you do not set this "

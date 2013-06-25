@@ -66,11 +66,9 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
         DefaultOutputTypesHelper.class.getName());
   }
 
-  public static final String PARAM_PARSER_MODEL_PATH = ConfigurationParameterFactory.createConfigurationParameterName(
-      ParserAnnotator.class,
-      "parserModelPath");
+  public static final String PARAM_PARSER_MODEL_PATH = "parserModelPath";
 
-  @ConfigurationParameter
+  @ConfigurationParameter(name = PARAM_PARSER_MODEL_PATH)
   private String parserModelPath;
 
   protected CoarseToFineMaxRuleParser parser;

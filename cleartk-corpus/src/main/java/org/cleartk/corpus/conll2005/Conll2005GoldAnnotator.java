@@ -52,7 +52,6 @@ import org.cleartk.util.AnnotationUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.FSCollectionFactory;
 
 /**
@@ -66,13 +65,12 @@ import org.uimafit.util.FSCollectionFactory;
 public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(
+      name = PARAM_HAS_VERB_SENSES,
       mandatory = true,
       description = "does the data file contain verb sense tags")
   private Boolean hasVerbSenses;
 
-  public static final String PARAM_HAS_VERB_SENSES = ConfigurationParameterFactory.createConfigurationParameterName(
-      Conll2005GoldAnnotator.class,
-      "hasVerbSenses");
+  public static final String PARAM_HAS_VERB_SENSES = "hasVerbSenses";
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {

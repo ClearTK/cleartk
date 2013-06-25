@@ -51,7 +51,6 @@ import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Joiner;
@@ -69,96 +68,96 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
     return AnalysisEngineFactory.createPrimitiveDescription(TempEval2010Writer.class);
   }
 
-  @ConfigurationParameter(mandatory = true, description = "The directory where the TempEval .tab "
+  @ConfigurationParameter(
+      name = PARAM_OUTPUT_DIRECTORY,
+      mandatory = true, description = "The directory where the TempEval .tab "
       + "files should be written.")
   private File outputDirectory;
 
-  @ConfigurationParameter(mandatory = true, description = "View containing the document text.")
+  @ConfigurationParameter(
+      name = PARAM_TEXT_VIEW, 
+      mandatory = true, description = "View containing the document text.")
   private String textView;
 
-  @ConfigurationParameter(description = "View containing DocumentCreationTime annotations. If "
+  @ConfigurationParameter(
+      name = PARAM_DOCUMENT_CREATION_TIME_VIEW,
+      description = "View containing DocumentCreationTime annotations. If "
       + "provided, the document creation times file will be written.")
   private String documentCreationTimeView;
 
-  @ConfigurationParameter(description = "View containing Time annotations. If provided, the time "
+  @ConfigurationParameter(
+      name = PARAM_TIME_EXTENT_VIEW,
+      description = "View containing Time annotations. If provided, the time "
       + "extents file will be written.")
   private String timeExtentView;
 
-  @ConfigurationParameter(description = "View containing Time annotations with their attributes. "
+  @ConfigurationParameter(
+      name = PARAM_TIME_ATTRIBUTE_VIEW,
+      description = "View containing Time annotations with their attributes. "
       + "If provided, the time attributes file will be written.")
   private String timeAttributeView;
 
-  @ConfigurationParameter(description = "View containing Event annotations. If provided, the "
+  @ConfigurationParameter(
+      name = PARAM_EVENT_EXTENT_VIEW,
+      description = "View containing Event annotations. If provided, the "
       + "event extents will be written.")
   private String eventExtentView;
 
-  @ConfigurationParameter(description = "View containing Event annotations with their attributes. "
+  @ConfigurationParameter(
+      name = PARAM_EVENT_ATTRIBUTE_VIEW,
+      description = "View containing Event annotations with their attributes. "
       + "If provided, the event attributes file will be written.")
   private String eventAttributeView;
 
-  @ConfigurationParameter(description = "View containing TemporalLink annotations between events "
+  @ConfigurationParameter(
+      name = PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEW,
+      description = "View containing TemporalLink annotations between events "
       + "and the document creation time. If provided, the corresponding temporal links file will "
       + "be written.")
   private String temporalLinkEventToDocumentCreationTimeView;
 
-  @ConfigurationParameter(description = "View containing TemporalLink annotations between events "
+  @ConfigurationParameter(
+      name = PARAM_TEMPORAL_LINK_EVENT_TO_SAME_SENTENCE_TIME_VIEW,
+      description = "View containing TemporalLink annotations between events "
       + "and times within the same sentence. If provided, the corresponding temporal links file "
       + "will be written.")
   private String temporalLinkEventToSameSentenceTimeView;
 
-  @ConfigurationParameter(description = "View containing TemporalLink annotations between events "
+  @ConfigurationParameter(
+      name = PARAM_TEMPORAL_LINK_EVENT_TO_SUBORDINATED_EVENT_VIEW,
+      description = "View containing TemporalLink annotations between events "
       + "and syntactically dominated events. If provided, the corresponding temporal links file "
       + "will be written.")
   private String temporalLinkEventToSubordinatedEventView;
 
-  @ConfigurationParameter(description = "View containing TemporalLink annotations between main "
+  @ConfigurationParameter(
+      name = PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEW,
+      description = "View containing TemporalLink annotations between main "
       + "events in adjacent sentences. If provided, the corresponding temporal links file will be "
       + "written.")
   private String temporalLinkMainEventToNextSentenceMainEventView;
 
-  public static final String PARAM_OUTPUT_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010Writer.class,
-      "outputDirectory");
+  public static final String PARAM_OUTPUT_DIRECTORY = "outputDirectory";
 
-  public static final String PARAM_TEXT_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010Writer.class,
-      "textView");
+  public static final String PARAM_TEXT_VIEW = "textView";
 
-  public static final String PARAM_DOCUMENT_CREATION_TIME_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010Writer.class,
-      "documentCreationTimeView");
+  public static final String PARAM_DOCUMENT_CREATION_TIME_VIEW = "documentCreationTimeView";
 
-  public static final String PARAM_TIME_EXTENT_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010Writer.class,
-      "timeExtentView");
+  public static final String PARAM_TIME_EXTENT_VIEW = "timeExtentView";
 
-  public static final String PARAM_TIME_ATTRIBUTE_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010Writer.class,
-      "timeAttributeView");
+  public static final String PARAM_TIME_ATTRIBUTE_VIEW = "timeAttributeView";
 
-  public static final String PARAM_EVENT_EXTENT_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010Writer.class,
-      "eventExtentView");
+  public static final String PARAM_EVENT_EXTENT_VIEW = "eventExtentView";
 
-  public static final String PARAM_EVENT_ATTRIBUTE_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010Writer.class,
-      "eventAttributeView");
+  public static final String PARAM_EVENT_ATTRIBUTE_VIEW = "eventAttributeView";
 
-  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010Writer.class,
-      "temporalLinkEventToDocumentCreationTimeView");
+  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEW = "temporalLinkEventToDocumentCreationTimeView";
 
-  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_SAME_SENTENCE_TIME_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010Writer.class,
-      "temporalLinkEventToSameSentenceTimeView");
+  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_SAME_SENTENCE_TIME_VIEW = "temporalLinkEventToSameSentenceTimeView";
 
-  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_SUBORDINATED_EVENT_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010Writer.class,
-      "temporalLinkEventToSubordinatedEventView");
+  public static final String PARAM_TEMPORAL_LINK_EVENT_TO_SUBORDINATED_EVENT_VIEW = "temporalLinkEventToSubordinatedEventView";
 
-  public static final String PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEW = ConfigurationParameterFactory.createConfigurationParameterName(
-      TempEval2010Writer.class,
-      "temporalLinkMainEventToNextSentenceMainEventView");
+  public static final String PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEW = "temporalLinkMainEventToNextSentenceMainEventView";
 
   private List<PrintWriter> writers;
 
