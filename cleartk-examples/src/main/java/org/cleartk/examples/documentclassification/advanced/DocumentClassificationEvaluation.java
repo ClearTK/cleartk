@@ -101,13 +101,13 @@ public class DocumentClassificationEvaluation extends
         name = "--train-dir",
         usage = "Specify the directory containing the training documents.  This is used for cross-validation, and for training in a holdout set evaluation. "
             + "When we run this example we point to a directory containing training data from a subset of the 20 newsgroup corpus - i.e. a directory called '3news-bydate/train'")
-    public File trainDirectory = new File("src/main/resources/data/3news-bydate/train");
+    public File trainDirectory = new File("data/3news-bydate/train");
 
     @Option(
         name = "--test-dir",
         usage = "Specify the directory containing the test (aka holdout/validation) documents.  This is for holdout set evaluation. "
             + "When we run this example we point to a directory containing training data from a subset of the 20 newsgroup corpus - i.e. a directory called '3news-bydate/test'")
-    public File testDirectory = new File("src/main/resources/data/3news-bydate/test");
+    public File testDirectory = new File("data/3news-bydate/test");
 
     @Option(
         name = "--models-dir",

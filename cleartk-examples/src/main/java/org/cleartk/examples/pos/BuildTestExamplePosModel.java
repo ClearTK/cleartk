@@ -60,7 +60,7 @@ public class BuildTestExamplePosModel {
     String outputDirectory = ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY;
 
     // select all the .tree files in the treebank directory
-    File treebankDirectory = new File("src/main/resources/data/pos/treebank");
+    File treebankDirectory = new File("data/pos/treebank");
     IOFileFilter treeFileFilter = FileFilterUtils.suffixFileFilter(".tree");
     Collection<File> files = FileUtils.listFiles(treebankDirectory, treeFileFilter, null);
 

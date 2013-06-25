@@ -56,7 +56,7 @@ public class TrainNamedEntityChunker {
 
   public static class Options extends Options_ImplBase {
     @Option(name = "--train-dir", usage = "The directory containing MASC-annotated files")
-    public File trainDirectory = new File("src/main/resources/data/MASC-1.0.3/data/written");
+    public File trainDirectory = new File("data/MASC-1.0.3/data/written");
 
     @Option(name = "--model-dir", usage = "The directory where the model should be written")
     public File modelDirectory = new File("target/chunking/ne-model");

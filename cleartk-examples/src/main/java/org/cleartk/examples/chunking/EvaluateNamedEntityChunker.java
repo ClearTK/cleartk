@@ -88,7 +88,7 @@ public class EvaluateNamedEntityChunker extends
         name = "--train-dir",
         usage = "Specify the directory containing the training documents.  This is used for cross-validation and for training in a holdout set evaluator. "
             + "When we run this example we point to a directory containing training data from the MASC-1.0.3 corpus - i.e. a directory called 'MASC-1.0.3/data/written'")
-    public File trainDirectory = new File("src/main/resources/data/MASC-1.0.3/data/written");
+    public File trainDirectory = new File("data/MASC-1.0.3/data/written");
 
     @Option(
         name = "--models-dir",

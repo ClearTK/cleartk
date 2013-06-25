@@ -56,7 +56,7 @@ public class RunModel {
 
   public static class Options extends Options_ImplBase {
     @Option(name = "--test-dir", usage = "Specify the directory containing the documents to label.")
-    public File testDirectory = new File("src/main/resources/data/3news-bydate/test");
+    public File testDirectory = new File("data/3news-bydate/test");
 
     @Option(
         name = "--models-dir",

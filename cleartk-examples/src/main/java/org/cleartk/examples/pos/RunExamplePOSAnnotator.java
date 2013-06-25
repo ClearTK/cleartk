@@ -51,7 +51,7 @@ import org.uimafit.pipeline.SimplePipeline;
 public class RunExamplePOSAnnotator {
 
   public static void main(String[] args) throws Exception {
-    String samplePath = "src/main/resources/data/sample/2008_Sichuan_earthquake.txt";
+    String samplePath = "data/sample/2008_Sichuan_earthquake.txt";
     List<File> files = Arrays.asList(new File(samplePath));
 
     // A collection reader that creates one CAS per file, containing the file's URI

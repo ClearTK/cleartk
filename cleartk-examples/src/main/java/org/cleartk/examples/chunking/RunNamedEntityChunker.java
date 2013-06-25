@@ -63,7 +63,7 @@ public class RunNamedEntityChunker {
     public File modelDirectory = new File("target/chunking/ne-model");
 
     @Option(name = "--text-file", usage = "The file to label with named entities.")
-    public File textFile = new File("src/main/resources/data/sample/2008_Sichuan_earthquake.txt");
+    public File textFile = new File("data/sample/2008_Sichuan_earthquake.txt");
   }
 
   public static void main(String[] args) throws Exception {

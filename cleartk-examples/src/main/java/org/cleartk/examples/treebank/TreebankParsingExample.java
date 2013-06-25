@@ -61,15 +61,15 @@ import org.uimafit.pipeline.SimplePipeline;
  * If you do not have access to PennTreebank data or any other treebank data, then you can run this
  * script with the following arguments:
  * <ul>
- * <li>-td src/main/resources/data/pos/treebank</li>
- * <li>-o src/main/resources/data/pos/treebank</li>
+ * <li>-td data/pos/treebank</li>
+ * <li>-o data/pos/treebank</li>
  * <li>-suf tree</li>
  * </ul>
  * 
  * To view the resulting xmi file in the CAS Visual Debugger you can run the eclipse launch
  * configuration labeled "CVD (cleartk-examples)". When the CVD opens select Menu -> File -> Read
  * XMI CAS File. Now navigate to the single xmi file located in
- * src/main/resources/data/pos/treebank. Once the file is open in the CVD be sure to examine the
+ * data/pos/treebank. Once the file is open in the CVD be sure to examine the
  * different views by selecting different values from the drop down box labeled "Select View" near
  * the top of the window.
  * 
