@@ -50,7 +50,6 @@ import org.jdom2.input.SAXBuilder;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -64,11 +63,10 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 
 @SofaCapability(outputSofas = { Ace2005Constants.ACE_2005_APF_URI_VIEW, ViewURIUtil.URI })
 public class Ace2005GoldReader extends JCasCollectionReader_ImplBase {
-  public static final String PARAM_ACE_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      Ace2005GoldReader.class,
-      "aceDirectoryName");
+  public static final String PARAM_ACE_DIRECTORY_NAME = "aceDirectoryName";
 
   @ConfigurationParameter(
+      name = PARAM_ACE_DIRECTORY_NAME,
       mandatory = true,
       description = "Takes the name of directory that contains ACE data.  Typically, a folder such as \".../ACE_2005/optimization/English/all\".  The folder should contain files that come in pairs - i.e. for each .sgm file there should be a corresponding .apf.xml file.")
   private String aceDirectoryName;
@@ -79,11 +77,11 @@ public class Ace2005GoldReader extends JCasCollectionReader_ImplBase {
       + "If parameter value is not given, then all files will be read in. An example file might look like this: \n\n"
       + "AFP_ENG_20030304.0250\n" + "AFP_ENG_20030305.0918\n" + "...\n";
 
-  public static final String PARAM_ACE_FILE_NAMES_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
-      Ace2005GoldReader.class,
-      "aceFileNamesFile");
+  public static final String PARAM_ACE_FILE_NAMES_FILE = "aceFileNamesFile";
 
-  @ConfigurationParameter(description = PARAM_ACE_FILE_NAMES_DESCRIPTION)
+  @ConfigurationParameter(
+      name = PARAM_ACE_FILE_NAMES_FILE,
+      description = PARAM_ACE_FILE_NAMES_DESCRIPTION)
   private String aceFileNamesFile;
 
   File[] aceFiles;

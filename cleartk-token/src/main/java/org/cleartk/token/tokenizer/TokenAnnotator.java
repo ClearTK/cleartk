@@ -38,7 +38,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.JCasUtil;
 
@@ -58,37 +57,34 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
     return AnalysisEngineFactory.createPrimitiveDescription(TokenAnnotator.class);
   }
 
-  public static final String PARAM_TOKENIZER_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      TokenAnnotator.class,
-      "tokenizerName");
+  public static final String PARAM_TOKENIZER_NAME = "tokenizerName";
 
   private static final String TOKENIZER_DESCRIPTION = "specifies the class type of the tokenizer that will be used by this annotator. "
       + "If this parameter is not filled, then the default tokenenizer (org.cleartk.token.util.PennTreebankTokenizer) is used. "
       + "A tokenenizer is defined as any implementation of the interface defined by org.cleartk.token.util.Tokenizer.";
 
   @ConfigurationParameter(
+      name = PARAM_TOKENIZER_NAME,
       description = TOKENIZER_DESCRIPTION,
       defaultValue = "org.cleartk.token.tokenizer.PennTreebankTokenizer")
   private String tokenizerName;
 
-  public static final String PARAM_TOKEN_TYPE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      TokenAnnotator.class,
-      "tokenTypeName");
+  public static final String PARAM_TOKEN_TYPE_NAME = "tokenTypeName";
 
   @ConfigurationParameter(
+      name = PARAM_TOKEN_TYPE_NAME,
       description = "class type of the tokens that are created by this annotator. If this parameter is not filled, then tokens of type org.cleartk.token.type.Token will be created.",
       defaultValue = "org.cleartk.token.type.Token")
   private String tokenTypeName;
 
-  public static final String PARAM_WINDOW_TYPE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      TokenAnnotator.class,
-      "windowTypeName");
+  public static final String PARAM_WINDOW_TYPE_NAME = "windowTypeName";
 
   private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
       + "By default, the tokenizer will tokenize a document sentence by sentence.  If you do not want to precede tokenization with"
       + "sentence segmentation, then a reasonable value for this parameter is 'org.apache.uima.jcas.tcas.DocumentAnnotation'";
 
   @ConfigurationParameter(
+      name = PARAM_WINDOW_TYPE_NAME,
       description = WINDOW_TYPE_DESCRIPTION,
       defaultValue = "org.cleartk.token.type.Sentence")
   private String windowTypeName;

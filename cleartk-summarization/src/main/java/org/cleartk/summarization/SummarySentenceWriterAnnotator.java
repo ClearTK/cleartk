@@ -14,7 +14,6 @@ import org.cleartk.summarization.type.SummarySentence;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
@@ -32,16 +31,12 @@ public class SummarySentenceWriterAnnotator extends JCasAnnotator_ImplBase {
         writeScores);
   }
 
-  public static final String PARAM_OUTPUT_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-      SummarySentenceWriterAnnotator.class,
-      "outputUri");
+  public static final String PARAM_OUTPUT_URI = "outputUri";
 
-  @ConfigurationParameter(mandatory = true)
+  @ConfigurationParameter(name = PARAM_OUTPUT_URI, mandatory = true)
   protected URI outputUri;
 
-  public static final String PARAM_WRITE_SCORES = ConfigurationParameterFactory.createConfigurationParameterName(
-      SummarySentenceWriterAnnotator.class,
-      "writeScores");
+  public static final String PARAM_WRITE_SCORES = "writeScores";
 
   @ConfigurationParameter(mandatory = false)
   protected Boolean writeScores = false;

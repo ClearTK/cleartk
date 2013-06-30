@@ -35,7 +35,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -45,10 +44,13 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 public class SimpleLineHandler implements LineHandler {
 
-  public static final String PARAM_DELIMITER = ConfigurationParameterFactory
-      .createConfigurationParameterName(SimpleLineHandler.class, "delimiter");
+  public static final String PARAM_DELIMITER = "delimiter";
 
-  @ConfigurationParameter(mandatory = true, defaultValue = "|", description = "specifies a string that delimits the id from the text. ")
+  @ConfigurationParameter(
+      name = PARAM_DELIMITER,
+      mandatory = true,
+      defaultValue = "|",
+      description = "specifies a string that delimits the id from the text. ")
   private String delimiter;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {

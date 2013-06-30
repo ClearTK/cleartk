@@ -36,7 +36,6 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.collect.HashMultimap;
@@ -76,34 +75,31 @@ public abstract class DependencyParser_ImplBase<
 
 	public static final String DEFAULT_MODEL_FILE_NAME = "ontonotes-en-dep-1.3.0.tgz";
 	
-	public static final String PARAM_PARSER_MODEL_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-			DependencyParser_ImplBase.class,
-			"parserModelUri");
+	public static final String PARAM_PARSER_MODEL_URI = "parserModelUri";
 	
 	@ConfigurationParameter(
+	    name = PARAM_PARSER_MODEL_URI,
 			description = "This parameter provides the file name of the dependency parser model required by the factory method provided by ClearParserUtil.")
 	private URI parserModelUri;
 	
 
-	public static final String PARAM_LANGUAGE_CODE = ConfigurationParameterFactory.createConfigurationParameterName(
-	    DependencyParser_ImplBase.class, 
-	    "languageCode");
+	public static final String PARAM_LANGUAGE_CODE = "languageCode";
 
 	@ConfigurationParameter(
+	    name = PARAM_LANGUAGE_CODE,
 	    description = "Language code for the dependency parser (default value=en).",
 	    defaultValue = AbstractReader.LANG_EN)
 	private String languageCode;
 	
 	
-  public static final String PARAM_WINDOW_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
-      DependencyParser_ImplBase.class,
-      "windowClass");
+  public static final String PARAM_WINDOW_CLASS = "windowClass";
 
   private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
       + "By default, the tokenizer will tokenize a document sentence by sentence.  If you do not want to precede tokenization with"
       + "sentence segmentation, then a reasonable value for this parameter is 'org.apache.uima.jcas.tcas.DocumentAnnotation'";
 
   @ConfigurationParameter(
+      name = PARAM_WINDOW_CLASS,
       description = WINDOW_TYPE_DESCRIPTION,
       defaultValue = "org.cleartk.token.type.Sentence")
   private Class<WINDOW_TYPE> windowClass;

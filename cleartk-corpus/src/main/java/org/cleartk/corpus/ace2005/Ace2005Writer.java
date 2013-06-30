@@ -45,7 +45,6 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -60,11 +59,10 @@ import org.uimafit.util.JCasUtil;
 
 public class Ace2005Writer extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      Ace2005Writer.class,
-      "outputDirectoryName");
+  public static final String PARAM_OUTPUT_DIRECTORY_NAME = "outputDirectoryName";
 
   @ConfigurationParameter(
+      name = PARAM_OUTPUT_DIRECTORY_NAME,
       mandatory = true,
       description = "provides the path of the directory where the XML files should be written.")
   private String outputDirectoryName;

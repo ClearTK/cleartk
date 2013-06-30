@@ -55,7 +55,6 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -75,38 +74,34 @@ import org.uimafit.util.JCasUtil;
  */
 public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
-  public static final String PARAM_TF_IDF_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-      DocumentClassificationAnnotator.class,
-      "tfIdfUri");
+  public static final String PARAM_TF_IDF_URI = "tfIdfUri";
 
   @ConfigurationParameter(
+      name = PARAM_TF_IDF_URI,
       mandatory = false,
       description = "provides a URI where the tf*idf map will be written")
   protected URI tfIdfUri;
 
-  public static final String PARAM_TF_IDF_CENTROID_SIMILARITY_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-      DocumentClassificationAnnotator.class,
-      "tfIdfCentroidSimilarityUri");
+  public static final String PARAM_TF_IDF_CENTROID_SIMILARITY_URI = "tfIdfCentroidSimilarityUri";
 
   @ConfigurationParameter(
+      name = PARAM_TF_IDF_CENTROID_SIMILARITY_URI,
       mandatory = false,
       description = "provides a URI where the tf*idf centroid data will be written")
   protected URI tfIdfCentroidSimilarityUri;
 
-  public static final String PARAM_ZMUS_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-      DocumentClassificationAnnotator.class,
-      "zmusUri");
+  public static final String PARAM_ZMUS_URI = "zmusUri";
 
   @ConfigurationParameter(
+      name = PARAM_ZMUS_URI,
       mandatory = false,
       description = "provides a URI where the Zero Mean, Unit Std Dev feature data will be written")
   protected URI zmusUri;
 
-  public static final String PARAM_MINMAX_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-      DocumentClassificationAnnotator.class,
-      "minmaxUri");
+  public static final String PARAM_MINMAX_URI = "minmaxUri";
 
   @ConfigurationParameter(
+      name = PARAM_MINMAX_URI,
       mandatory = false,
       description = "provides a URI where the min-max feature normalizaation data will be written")
   protected URI minmaxUri;

@@ -50,7 +50,6 @@ import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -67,16 +66,19 @@ import org.uimafit.factory.ConfigurationParameterFactory;
  */
 @SofaCapability(outputSofas = ViewURIUtil.URI)
 public class Conll2003GoldReader extends JCasCollectionReader_ImplBase {
-  public static final String PARAM_DATA_FILE_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(Conll2003GoldReader.class, "dataFileName");
+  
+  public static final String PARAM_DATA_FILE_NAME = "dataFileName";
 
-  @ConfigurationParameter(mandatory = true, description = "Points to CoNLL data (e.g. ner/eng.train).")
+  @ConfigurationParameter(
+      name = PARAM_DATA_FILE_NAME,
+      mandatory = true, description = "Points to CoNLL data (e.g. ner/eng.train).")
   private String dataFileName;
 
-  public static final String PARAM_LOAD_NAMED_ENTITIES = ConfigurationParameterFactory
-      .createConfigurationParameterName(Conll2003GoldReader.class, "loadNamedEntities");
+  public static final String PARAM_LOAD_NAMED_ENTITIES = "loadNamedEntities";
 
-  @ConfigurationParameter(mandatory = true, description = "determines if the named entities are loaded (i.e. named entity mention annotations are created) or if just plain text from the files is loaded.", defaultValue = "true")
+  @ConfigurationParameter(
+      name = PARAM_LOAD_NAMED_ENTITIES,
+      mandatory = true, description = "determines if the named entities are loaded (i.e. named entity mention annotations are created) or if just plain text from the files is loaded.", defaultValue = "true")
   private boolean loadNamedEntities;
 
   public static final String DOCSTART = "-DOCSTART-";

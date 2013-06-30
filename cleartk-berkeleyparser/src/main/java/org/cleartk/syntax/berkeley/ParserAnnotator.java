@@ -36,7 +36,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.IOUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 import edu.berkeley.nlp.PCFGLA.CoarseToFineMaxRuleParser;
 import edu.berkeley.nlp.PCFGLA.Grammar;
@@ -66,11 +65,9 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
         DefaultOutputTypesHelper.class.getName());
   }
 
-  public static final String PARAM_PARSER_MODEL_PATH = ConfigurationParameterFactory.createConfigurationParameterName(
-      ParserAnnotator.class,
-      "parserModelPath");
+  public static final String PARAM_PARSER_MODEL_PATH = "parserModelPath";
 
-  @ConfigurationParameter
+  @ConfigurationParameter(name = PARAM_PARSER_MODEL_PATH)
   private String parserModelPath;
 
   protected CoarseToFineMaxRuleParser parser;

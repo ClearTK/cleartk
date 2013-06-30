@@ -41,7 +41,6 @@ import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -75,9 +74,7 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
         false);
   }
 
-  public static final String PARAM_POST_TREES = ConfigurationParameterFactory.createConfigurationParameterName(
-      TreebankGoldAnnotator.class,
-      "postTrees");
+  public static final String PARAM_POST_TREES = "postTrees";
 
   private static final String POST_TREES_DESCRIPTION = "specifies whether or not to post trees (i.e. annotations of type TreebankNode) to the CAS.  "
       + "Sometimes treebank data is used only for the part-of-speech data that it contains.  "
@@ -85,6 +82,7 @@ public class TreebankGoldAnnotator extends JCasAnnotator_ImplBase {
       + "Instead, this parameter can be set to false which results in  only the part-of-speech data being added.";
 
   @ConfigurationParameter(
+      name = PARAM_POST_TREES,
       description = POST_TREES_DESCRIPTION,
       mandatory = false,
       defaultValue = "true")

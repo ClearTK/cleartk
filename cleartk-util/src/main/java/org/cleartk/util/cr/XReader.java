@@ -37,7 +37,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.CleartkInitializationException;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.xml.sax.SAXException;
 
 /**
@@ -55,10 +54,12 @@ public class XReader extends FilesCollectionReader {
 
   public static final String XCAS = "XCAS";
 
-  public static final String PARAM_XML_SCHEME = ConfigurationParameterFactory
-      .createConfigurationParameterName(XReader.class, "xmlScheme");
+  public static final String PARAM_XML_SCHEME = "xmlScheme";
 
-  @ConfigurationParameter(defaultValue = "XMI", description = "specifies the UIMA XML serialization scheme that should be used. Valid values for this parameter are 'XMI' and 'XCAS'")
+  @ConfigurationParameter(
+      name = PARAM_XML_SCHEME,
+      defaultValue = "XMI",
+      description = "specifies the UIMA XML serialization scheme that should be used. Valid values for this parameter are 'XMI' and 'XCAS'")
   private String xmlScheme;
 
   @Override

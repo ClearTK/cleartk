@@ -44,7 +44,6 @@ import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
@@ -92,11 +91,10 @@ public class PosTaggerAnnotator extends JCasAnnotator_ImplBase {
         ParamUtil.getParameterValue(PARAM_POSTAG_MODEL_FILE, "/models/en-pos-maxent.bin"));
   }
 
-  public static final String PARAM_POSTAG_MODEL_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
-      PosTaggerAnnotator.class,
-      "postagModelFile");
+  public static final String PARAM_POSTAG_MODEL_FILE = "postagModelFile";
 
   @ConfigurationParameter(
+      name = PARAM_POSTAG_MODEL_FILE,
       mandatory = true,
       description = "provides the path of the OpenNLP part-of-speech tagger model file, e.g.  resources/models/OpenNLP.POSTags.English.bin.gz.  See javadoc for opennlp.maxent.io.SuffixSensitiveGISModelReader.")
   private String postagModelFile;

@@ -39,7 +39,6 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.util.ReflectionUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.JCasUtil;
 
@@ -55,10 +54,11 @@ import org.uimafit.util.JCasUtil;
 public abstract class POSAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation>
     extends CleartkSequenceAnnotator<String> {
 
-  public static final String PARAM_FEATURE_EXTRACTOR_CLASS_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(POSAnnotator.class, "featureExtractorClassName");
+  public static final String PARAM_FEATURE_EXTRACTOR_CLASS_NAME = "featureExtractorClassName";
 
-  @ConfigurationParameter(mandatory = true, description = "provides the full name of the class that will be used to extract features", defaultValue = "org.cleartk.token.pos.impl.DefaultFeatureExtractor")
+  @ConfigurationParameter(
+      name = PARAM_FEATURE_EXTRACTOR_CLASS_NAME,
+      mandatory = true, description = "provides the full name of the class that will be used to extract features", defaultValue = "org.cleartk.token.pos.impl.DefaultFeatureExtractor")
   private String featureExtractorClassName;
 
   protected POSFeatureExtractor<TOKEN_TYPE, SENTENCE_TYPE> featureExtractor;

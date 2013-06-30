@@ -43,7 +43,6 @@ import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <p>
@@ -76,27 +75,25 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
    */
   public static final String TREEBANK_VIEW = "TREEBANK_VIEW";
 
-  public static final String PARAM_CORPUS_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      PennTreebankReader.class,
-      "corpusDirectoryName");
+  public static final String PARAM_CORPUS_DIRECTORY_NAME = "corpusDirectoryName";
 
   private static final String CORPUS_DIRECTORY_DESCRIPTION = "Specifies the location of WSJ/PennTreebank treebank files.  "
       + "The directory should contain subdirectories corresponding to the sections (e.g. '00', '01', etc.) "
       + "That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. "
       + "There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24. ";
 
-  @ConfigurationParameter(mandatory = true, description = CORPUS_DIRECTORY_DESCRIPTION)
+  @ConfigurationParameter(
+      name = PARAM_CORPUS_DIRECTORY_NAME,
+      mandatory = true, description = CORPUS_DIRECTORY_DESCRIPTION)
   private String corpusDirectoryName;
 
-  public static final String PARAM_SECTIONS_SPECIFIER = ConfigurationParameterFactory.createConfigurationParameterName(
-      PennTreebankReader.class,
-      "sectionsSpecifier");
+  public static final String PARAM_SECTIONS_SPECIFIER = "sectionsSpecifier";
 
   private static final String SECTIONS_DESCRIPTION = "specifies which sections of PTB to read in.  "
       + "The required format for values of this parameter allows for comma-separated section numbers and section ranges, "
       + "for example '02,07-12,16'.";
 
-  @ConfigurationParameter(defaultValue = "00-24", description = SECTIONS_DESCRIPTION)
+  @ConfigurationParameter(name = PARAM_SECTIONS_SPECIFIER, defaultValue = "00-24", description = SECTIONS_DESCRIPTION)
   private String sectionsSpecifier;
 
   protected File directory;

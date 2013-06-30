@@ -35,7 +35,6 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.Initializable;
 
 /**
@@ -45,11 +44,10 @@ import org.uimafit.factory.initializable.Initializable;
  */
 public abstract class GenericJarClassifierFactory<CLASSIFIER_TYPE> implements Initializable {
 
-  public static final String PARAM_CLASSIFIER_JAR_PATH = ConfigurationParameterFactory.createConfigurationParameterName(
-      GenericJarClassifierFactory.class,
-      "classifierJarPath");
+  public static final String PARAM_CLASSIFIER_JAR_PATH = "classifierJarPath";
 
   @ConfigurationParameter(
+      name = PARAM_CLASSIFIER_JAR_PATH,
       mandatory = true,
       description = "provides the path to the jar file that should be used to instantiate the classifier.")
   private String classifierJarPath;

@@ -41,7 +41,6 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -52,13 +51,12 @@ import org.uimafit.util.JCasUtil;
 public class Conll2005Writer extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(
+      name = PARAM_OUTPUT_FILE,
       mandatory = true,
       description = "the path where the CoNLL-2005-formatted text should be written")
   private File outputFile;
 
-  public static final String PARAM_OUTPUT_FILE = ConfigurationParameterFactory.createConfigurationParameterName(
-      Conll2005Writer.class,
-      "outputFile");
+  public static final String PARAM_OUTPUT_FILE = "outputFile";
 
   private PrintWriter output;
 

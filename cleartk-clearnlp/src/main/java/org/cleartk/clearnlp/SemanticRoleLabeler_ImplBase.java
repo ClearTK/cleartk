@@ -38,7 +38,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.collect.Lists;
@@ -85,48 +84,43 @@ public abstract class SemanticRoleLabeler_ImplBase<
   public static final String DEFAULT_ROLESET_MODEL_FILE_NAME = "ontonotes-en-role-1.3.0.tgz";
   public static final String DEFAULT_SRL_MODEL_FILE_NAME = "ontonotes-en-srl-1.3.0.tgz";
 
-  public static final String PARAM_SRL_MODEL_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-      SemanticRoleLabeler_ImplBase.class, 
-      "srlModelUri");
+  public static final String PARAM_SRL_MODEL_URI = "srlModelUri";
 
   @ConfigurationParameter(
+      name = PARAM_SRL_MODEL_URI,
       description = "This parameter provides the URI pointing to the semantic role labeler model.  If none is specified it will use the default ontonotes model.")
   private URI srlModelUri;
 
-  public static final String PARAM_PRED_ID_MODEL_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-      SemanticRoleLabeler_ImplBase.class,
-      "predIdModelUri");
+  public static final String PARAM_PRED_ID_MODEL_URI = "predIdModelUri";
   @ConfigurationParameter(
+      name = PARAM_PRED_ID_MODEL_URI,
       description = "This parameter provides the URI pointing to the predicate identifier model.  If none is specified it will use the default ontonotes model.")
   private URI predIdModelUri;
   
-  public static final String PARAM_ROLESET_MODEL_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-      SemanticRoleLabeler_ImplBase.class,
-      "rolesetModelUri");
+  public static final String PARAM_ROLESET_MODEL_URI = "rolesetModelUri";
 
   @ConfigurationParameter(
+      name = PARAM_ROLESET_MODEL_URI,
       description = "This parameter provides the URI pointing to the role set classifier model.  If none is specified it will use the default ontonotes model.")
   private URI rolesetModelUri;
 
  
-  public static final String PARAM_LANGUAGE_CODE = ConfigurationParameterFactory.createConfigurationParameterName(
-      SemanticRoleLabeler_ImplBase.class,
-      "languageCode");
+  public static final String PARAM_LANGUAGE_CODE = "languageCode";
   
   @ConfigurationParameter(
+      name = PARAM_LANGUAGE_CODE,
       description = "Language code for the semantic role labeler (default value=en).",
       defaultValue= AbstractReader.LANG_EN)
   private String languageCode;
   
-  public static final String PARAM_WINDOW_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
-      SemanticRoleLabeler_ImplBase.class,
-      "windowClass");
+  public static final String PARAM_WINDOW_CLASS = "windowClass";
 
   private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
       + "By default, the tokenizer will tokenize a document sentence by sentence.  If you do not want to precede tokenization with"
       + "sentence segmentation, then a reasonable value for this parameter is 'org.apache.uima.jcas.tcas.DocumentAnnotation'";
 
   @ConfigurationParameter(
+      name = PARAM_WINDOW_CLASS,
       description = WINDOW_TYPE_DESCRIPTION,
       defaultValue = "org.cleartk.token.type.Sentence")
   private Class<? extends WINDOW_TYPE> windowClass;

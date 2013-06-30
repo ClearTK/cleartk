@@ -36,7 +36,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 import com.googlecode.clearnlp.component.AbstractComponent;
@@ -69,33 +68,30 @@ public abstract class MPAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
 	
 	public static final String DEFAULT_DICTIONARY_FILE_NAME= "dictionary-1.2.0.zip";
 	
-    public static final String PARAM_LANGUAGE_CODE = ConfigurationParameterFactory.createConfigurationParameterName(
-    		MPAnalyzer_ImplBase.class,
-    		"languageCode");
+    public static final String PARAM_LANGUAGE_CODE = "languageCode";
     
     @ConfigurationParameter(
+        name = PARAM_LANGUAGE_CODE,
     		description = "Language code (default value=en).",
     		defaultValue= AbstractReader.LANG_EN)
     private String languageCode;
 	
 	
-	public static final String PARAM_DICTIONARY_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-			MPAnalyzer_ImplBase.class, 
-			"dictionaryUri");
+	public static final String PARAM_DICTIONARY_URI = "dictionaryUri";
 	
 	@ConfigurationParameter(
+	    name = PARAM_DICTIONARY_URI,
 			description = "This parameter provides the URI to the morphological analyzer dictionary used for lemmatizing.")
 	private URI dictionaryUri;
 	
-	public static final String PARAM_WINDOW_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
-      MPAnalyzer_ImplBase.class,
-      "windowClass"); 
+	public static final String PARAM_WINDOW_CLASS = "windowClass"; 
   
   private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
       + "By default, the tokenizer will tokenize a document sentence by sentence.  If you do not want to precede tokenization with"
       + "sentence segmentation, then a reasonable value for this parameter is 'org.apache.uima.jcas.tcas.DocumentAnnotation'";
 
   @ConfigurationParameter(
+      name = PARAM_WINDOW_CLASS,
       description = WINDOW_TYPE_DESCRIPTION,
       defaultValue = "org.cleartk.token.type.Sentence")
   private Class<? extends Annotation> windowClass;

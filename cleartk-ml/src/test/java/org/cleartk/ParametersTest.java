@@ -38,5 +38,6 @@ public class ParametersTest {
   @Test
   public void testParameterNames() throws ClassNotFoundException {
     ParametersTestUtil.testParameterDefinitions("src/main/java", "ChunkLabeler_ImplBase.java");
+    ParametersTestUtil.testParameterDefinitions("src/test/java");
   }
 }

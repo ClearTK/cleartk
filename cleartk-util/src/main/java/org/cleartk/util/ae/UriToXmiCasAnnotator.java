@@ -42,7 +42,6 @@ import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -81,11 +80,10 @@ public class UriToXmiCasAnnotator extends JCasAnnotator_ImplBase {
     XMI, XCAS
   }
 
-  public static final String PARAM_XML_SCHEME = ConfigurationParameterFactory.createConfigurationParameterName(
-      UriToXmiCasAnnotator.class,
-      "xmlScheme");
+  public static final String PARAM_XML_SCHEME = "xmlScheme";
 
   @ConfigurationParameter(
+      name = PARAM_XML_SCHEME,
       defaultValue = "XMI",
       description = "specifies the UIMA XML serialization scheme that should be used. Valid values for this parameter are 'XMI' and 'XCAS'")
   private XmlScheme xmlScheme;

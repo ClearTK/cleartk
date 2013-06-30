@@ -47,17 +47,16 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.XMLSerializer;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
-import org.cleartk.eval.AnnotationStatistics;
-import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.corpus.timeml.TempEval2010CollectionReader;
 import org.cleartk.corpus.timeml.TempEval2010GoldAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010Writer;
+import org.cleartk.eval.AnnotationStatistics;
+import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.pipeline.JCasIterable;
 import org.uimafit.pipeline.SimplePipeline;
 import org.xml.sax.SAXException;
@@ -281,12 +280,12 @@ public class TempEval2010Evaluation extends
 
   public static abstract class XMIAnnotator extends JCasAnnotator_ImplBase {
 
-    @ConfigurationParameter(mandatory = true)
+    @ConfigurationParameter(
+        name = PARAM_XMI_DIRECTORY,
+        mandatory = true)
     protected File xmiDirectory;
 
-    public static final String PARAM_XMI_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
-        XMIAnnotator.class,
-        "xmiDirectory");
+    public static final String PARAM_XMI_DIRECTORY = "xmiDirectory";
 
     protected File getFile(JCas jCas) throws AnalysisEngineProcessException {
       return new File(this.xmiDirectory, ViewURIUtil.getURI(jCas).getFragment() + ".xmi");

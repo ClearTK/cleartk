@@ -46,7 +46,6 @@ import org.cleartk.util.treebank.TreebankFormatParser;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -60,11 +59,10 @@ import org.uimafit.util.JCasUtil;
  */
 public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_TREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      TreebankAligningAnnotator.class,
-      "treebankDirectoryName");
+  public static final String PARAM_TREEBANK_DIRECTORY_NAME = "treebankDirectoryName";
 
   @ConfigurationParameter(
+      name = PARAM_TREEBANK_DIRECTORY_NAME,
       mandatory = true,
       description = "the path to the treebank directory containing the XX/wsj_XXXX.mrg files.")
   private String treebankDirectoryName;

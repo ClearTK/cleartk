@@ -59,7 +59,6 @@ import org.apache.uima.util.FileUtils;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -75,10 +74,12 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 
 public class PlainTextWriter extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(PlainTextWriter.class, "outputDirectoryName");
+  public static final String PARAM_OUTPUT_DIRECTORY_NAME = "outputDirectoryName";
 
-  @ConfigurationParameter(mandatory = true, description = "takes a path to directory into which output files will be written.")
+  @ConfigurationParameter(
+      name = PARAM_OUTPUT_DIRECTORY_NAME,
+      mandatory = true,
+      description = "takes a path to directory into which output files will be written.")
   private String outputDirectoryName;
 
   private File outputDirectory;

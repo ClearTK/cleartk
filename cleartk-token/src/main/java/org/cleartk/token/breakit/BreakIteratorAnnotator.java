@@ -35,7 +35,6 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 
 /**
@@ -49,26 +48,28 @@ import org.uimafit.factory.initializable.InitializableFactory;
 
 public class BreakIteratorAnnotator extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_LOCALE = ConfigurationParameterFactory
-      .createConfigurationParameterName(BreakIteratorAnnotator.class, "locale");
+  public static final String PARAM_LOCALE = "locale";
 
-  @ConfigurationParameter(description = "provides the name of the locale to be used to instantiate the break iterator")
+  @ConfigurationParameter(
+      name = PARAM_LOCALE,
+      description = "provides the name of the locale to be used to instantiate the break iterator")
   private Locale locale;
 
   public static enum BreakIteratorType {
     WORD, SENTENCE
   }
 
-  public static final String PARAM_BREAK_ITERATOR_TYPE = ConfigurationParameterFactory
-      .createConfigurationParameterName(BreakIteratorAnnotator.class, "breakIteratorType");
+  public static final String PARAM_BREAK_ITERATOR_TYPE = "breakIteratorType";
 
-  @ConfigurationParameter(description = "provides the type of the locale to be used to instantiate the break iterator.  Should be one of  'WORD' or 'SENTENCE'", defaultValue = "SENTENCE")
+  @ConfigurationParameter(
+      name = PARAM_BREAK_ITERATOR_TYPE,
+      description = "provides the type of the locale to be used to instantiate the break iterator.  Should be one of  'WORD' or 'SENTENCE'", defaultValue = "SENTENCE")
   private BreakIteratorType breakIteratorType;
 
-  public static final String PARAM_ANNOTATION_TYPE_NAME = ConfigurationParameterFactory
-      .createConfigurationParameterName(BreakIteratorAnnotator.class, "annotationTypeName");
+  public static final String PARAM_ANNOTATION_TYPE_NAME = "annotationTypeName";
 
-  @ConfigurationParameter(description = "class type of the annotations that are created by this annotator.")
+  @ConfigurationParameter(name = PARAM_ANNOTATION_TYPE_NAME, 
+      description = "class type of the annotations that are created by this annotator.")
   private String annotationTypeName;
 
   private Class<? extends Annotation> annotationClass;

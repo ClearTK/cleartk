@@ -49,7 +49,6 @@ import org.cleartk.util.IOUtil;
 import org.cleartk.util.ParamUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 
 import com.google.common.annotations.Beta;
@@ -83,38 +82,34 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
 
   public static final float DEFAULT_ADVANCE_PERCENTAGE = (float) AbstractBottomUpParser.defaultAdvancePercentage;
 
-  public static final String PARAM_PARSER_MODEL_PATH = ConfigurationParameterFactory.createConfigurationParameterName(
-      ParserAnnotator.class,
-      "parserModelPath");
+  public static final String PARAM_PARSER_MODEL_PATH = "parserModelPath";
 
   @ConfigurationParameter(
+      name = PARAM_PARSER_MODEL_PATH,
       defaultValue = DEFAULT_PARSER_MODEL_PATH,
       description = "provides the path of the OpenNLP parser model build file, e.g. /models/en-parser-chunking.bin.  See javadoc for opennlp.tools.parser.chunking.Parser.")
   private String parserModelPath;
 
-  public static final String PARAM_BEAM_SIZE = ConfigurationParameterFactory.createConfigurationParameterName(
-      ParserAnnotator.class,
-      "beamSize");
+  public static final String PARAM_BEAM_SIZE = "beamSize";
 
   @ConfigurationParameter(
+      name = PARAM_BEAM_SIZE,
       defaultValue = "" + DEFAULT_BEAM_SIZE,
       description = "indicates the beam size that should be used in the parser's search.  See javadoc for opennlp.tools.parser.chunking.Parser.")
   private int beamSize;
 
-  public static final String PARAM_ADVANCE_PERCENTAGE = ConfigurationParameterFactory.createConfigurationParameterName(
-      ParserAnnotator.class,
-      "advancePercentage");
+  public static final String PARAM_ADVANCE_PERCENTAGE = "advancePercentage";
 
   @ConfigurationParameter(
+      name = PARAM_ADVANCE_PERCENTAGE,
       defaultValue = "" + AbstractBottomUpParser.defaultAdvancePercentage,
       description = "indicates \"the amount of probability mass required of advanced outcomes\".  See javadoc for opennlp.tools.parser.chunking.Parser.")
   private float advancePercentage;
 
-  public static final String PARAM_USE_TAGS_FROM_CAS = ConfigurationParameterFactory.createConfigurationParameterName(
-      ParserAnnotator.class,
-      "useTagsFromCas");
+  public static final String PARAM_USE_TAGS_FROM_CAS = "useTagsFromCas";
 
   @ConfigurationParameter(
+      name = PARAM_USE_TAGS_FROM_CAS,
       defaultValue = "false",
       description = "determines whether or not part-of-speech tags that are already in the CAS will be used or not.")
   private boolean useTagsFromCas;

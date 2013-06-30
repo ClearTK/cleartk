@@ -78,15 +78,12 @@ public class ParametersTestUtil {
         if (ConfigurationParameterFactory.isConfigurationParameterField(field)) {
           org.uimafit.descriptor.ConfigurationParameter annotation = field.getAnnotation(org.uimafit.descriptor.ConfigurationParameter.class);
           String parameterName = annotation.name();
-          String expectedName = className + "." + field.getName();
-          if (parameterName.equals(org.uimafit.descriptor.ConfigurationParameter.USE_FIELD_NAME))
-            expectedName = org.uimafit.descriptor.ConfigurationParameter.USE_FIELD_NAME;
+          String expectedName = field.getName();
           if (!expectedName.equals(parameterName)) {
             badParameters.add("'" + parameterName + "' should be '" + expectedName + "'");
           }
 
-          expectedName = className + "." + field.getName(); // change it back to the real parameter
-                                                            // name
+          expectedName = className+"."+field.getName(); 
           String fieldName = getParameterNameField(expectedName);
           try {
             Field fld = cls.getDeclaredField(fieldName);
@@ -94,7 +91,7 @@ public class ParametersTestUtil {
                 || (fld.getModifiers() & Modifier.FINAL) == 0
                 || (fld.getModifiers() & Modifier.PUBLIC) == 0) {
               missingParameterNameFields.add(expectedName);
-            } else if (!fld.get(null).equals(expectedName)) {
+            } else if (!fld.get(null).equals(expectedName.substring(expectedName.lastIndexOf(".")+1))) {
               missingParameterNameFields.add(expectedName);
             }
           } catch (Exception e) {

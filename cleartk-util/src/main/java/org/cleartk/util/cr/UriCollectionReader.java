@@ -48,7 +48,6 @@ import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
@@ -172,45 +171,40 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
     return CollectionReaderFactory.createCollectionReader(getDescriptionFromUris(uris));
   }
 
-  public static final String PARAM_FILES = ConfigurationParameterFactory.createConfigurationParameterName(
-      UriCollectionReader.class,
-      "files");
+  public static final String PARAM_FILES = "files";
 
   @ConfigurationParameter(
+      name = PARAM_FILES,
       description = "provides a list of files whose URI should be written to the default sofa within the CAS")
   private Collection<File> files = new ArrayList<File>();
 
-  public static final String PARAM_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
-      UriCollectionReader.class,
-      "directory");
+  public static final String PARAM_DIRECTORY = "directory";
 
   @ConfigurationParameter(
+      name = PARAM_DIRECTORY,
       description = "provids a directory containing files whose URIs should be written to the defaul sofa within the CAS")
   private File directory = null;
 
-  public static final String PARAM_URIS = ConfigurationParameterFactory.createConfigurationParameterName(
-      UriCollectionReader.class,
-      "uris");
+  public static final String PARAM_URIS = "uris";
 
   @ConfigurationParameter(
+      name = PARAM_URIS,
       description = "This parameter provides a list of URIs that should be written to the default sofa within the CAS.  Proper URI construction is the responsibility of the caller")
   private Collection<URI> uris = new ArrayList<URI>();
 
-  public static final String PARAM_FILE_FILTER_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
-      UriCollectionReader.class,
-      "fileFilterClass");
+  public static final String PARAM_FILE_FILTER_CLASS = "fileFilterClass";
 
   @ConfigurationParameter(
+      name = PARAM_FILE_FILTER_CLASS,
       defaultValue = "org.cleartk.util.cr.UriCollectionReader.RejectSystemFiles",
       mandatory = false,
       description = "The class used for filtering files when PARAM_DIRECTORY is set")
   private Class<? extends IOFileFilter> fileFilterClass;
 
-  public static final String PARAM_DIRECTORY_FILTER_CLASS = ConfigurationParameterFactory.createConfigurationParameterName(
-      UriCollectionReader.class,
-      "directoryFilterClass");
+  public static final String PARAM_DIRECTORY_FILTER_CLASS = "directoryFilterClass";
 
   @ConfigurationParameter(
+      name = PARAM_DIRECTORY_FILTER_CLASS,
       defaultValue = "org.cleartk.util.cr.UriCollectionReader.RejectSystemDirectories",
       mandatory = false,
       description = "The class used for filtering sub-directories when PARAM_DIRECTORY is set.  To disable recursion, pass in a directory filter that rejects all directory files")

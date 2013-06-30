@@ -47,7 +47,6 @@ import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -70,30 +69,28 @@ import org.uimafit.factory.ConfigurationParameterFactory;
     ViewURIUtil.URI })
 public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
 
-  public static final String PARAM_PROPBANK_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      PropbankGoldReader.class,
-      "propbankFileName");
+  public static final String PARAM_PROPBANK_FILE_NAME = "propbankFileName";
 
-  @ConfigurationParameter(description = "points to propbank data file", mandatory = true)
+  @ConfigurationParameter(
+      name = PARAM_PROPBANK_FILE_NAME, description = "points to propbank data file", mandatory = true)
   private String propbankFileName;
 
-  public static final String PARAM_PENNTREEBANK_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      PropbankGoldReader.class,
-      "penntreebankDirectoryName");
+  public static final String PARAM_PENNTREEBANK_DIRECTORY_NAME = "penntreebankDirectoryName";
 
   private static final String PENN_TREEBANK_DIRECTORY_DESCRIPTION = "points to the PennTreebank corpus. "
       + "The directory should contain subdirectories corresponding to the sections (e.g. \"00\", \"01\", etc.)  "
       + "That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. "
       + "There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24.";
 
-  @ConfigurationParameter(description = PENN_TREEBANK_DIRECTORY_DESCRIPTION, mandatory = true)
+  @ConfigurationParameter(
+      name = PARAM_PENNTREEBANK_DIRECTORY_NAME,
+      description = PENN_TREEBANK_DIRECTORY_DESCRIPTION, mandatory = true)
   private String penntreebankDirectoryName;
 
-  public static final String PARAM_WSJ_SECTIONS = ConfigurationParameterFactory.createConfigurationParameterName(
-      PropbankGoldReader.class,
-      "wsjSections");
+  public static final String PARAM_WSJ_SECTIONS = "wsjSections";
 
   @ConfigurationParameter(
+      name = PARAM_WSJ_SECTIONS,
       description = "Determines which sections of WSJ will be used.  The format allows for comma-separated section numbers and section ranges, for example \"02,07-12,16\".",
       mandatory = true)
   private String wsjSections;

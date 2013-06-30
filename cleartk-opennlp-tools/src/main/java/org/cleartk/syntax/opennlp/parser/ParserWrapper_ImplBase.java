@@ -29,7 +29,6 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 
 import com.google.common.annotations.Beta;
@@ -43,22 +42,21 @@ import com.google.common.annotations.Beta;
 public abstract class ParserWrapper_ImplBase<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, PARSE_TYPE, TOP_NODE_TYPE extends Annotation>
     extends JCasAnnotator_ImplBase {
 
-  public static final String PARAM_INPUT_TYPES_HELPER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      ParserWrapper_ImplBase.class,
-      "inputTypesHelperClassName");
+  public static final String PARAM_INPUT_TYPES_HELPER_CLASS_NAME = "inputTypesHelperClassName";
 
   @ConfigurationParameter(
+      name = PARAM_INPUT_TYPES_HELPER_CLASS_NAME,
       defaultValue = "org.cleartk.syntax.opennlp.parser.DefaultInputTypesHelper",
       mandatory = true)
   protected String inputTypesHelperClassName;
 
   protected InputTypesHelper<TOKEN_TYPE, SENTENCE_TYPE> inputTypesHelper;
 
-  public static final String PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      ParserWrapper_ImplBase.class,
-      "outputTypesHelperClassName");
+  public static final String PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME = "outputTypesHelperClassName";
 
-  @ConfigurationParameter(mandatory = true)
+  @ConfigurationParameter(
+		  name = PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
+		  mandatory = true)
   protected String outputTypesHelperClassName;
 
   protected OutputTypesHelper<TOKEN_TYPE, SENTENCE_TYPE, PARSE_TYPE, TOP_NODE_TYPE> outputTypesHelper;

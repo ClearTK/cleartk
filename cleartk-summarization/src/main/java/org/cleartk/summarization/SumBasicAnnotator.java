@@ -46,7 +46,6 @@ import org.cleartk.summarization.type.SummarySentence;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
@@ -71,18 +70,15 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
     COVERED_TEXT, STEM, LEMMA
   }
 
-  public static final String PARAM_TOKEN_FIELD = ConfigurationParameterFactory.createConfigurationParameterName(
-      SumBasicAnnotator.class,
-      "tokenField");
+  public static final String PARAM_TOKEN_FIELD = "tokenField";
 
-  @ConfigurationParameter(mandatory = false, description = "token field")
+  @ConfigurationParameter(name = PARAM_TOKEN_FIELD, mandatory = false, description = "token field")
   protected TokenField tokenField = TokenField.COVERED_TEXT;
 
-  public static final String PARAM_STOPWORDS_URI = ConfigurationParameterFactory.createConfigurationParameterName(
-      SumBasicAnnotator.class,
-      "stopwordsUri");
+  public static final String PARAM_STOPWORDS_URI = "stopwordsUri";
 
   @ConfigurationParameter(
+      name = PARAM_STOPWORDS_URI,
       mandatory = false,
       description = "provides a URI pointing to a file containing a whitespace separated list of stopwords")
   protected URI stopwordsUri = null;

@@ -60,7 +60,6 @@ import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.pipeline.SimplePipeline;
 import org.xml.sax.SAXException;
 
@@ -295,12 +294,10 @@ public class SumBasic extends Summarize_ImplBase<File> {
   // summarization extraction.
   public static abstract class XMIAnnotator extends JCasAnnotator_ImplBase {
 
-    @ConfigurationParameter(mandatory = true)
+    @ConfigurationParameter(name = PARAM_XMI_DIRECTORY, mandatory = true)
     protected File xmiDirectory;
 
-    public static final String PARAM_XMI_DIRECTORY = ConfigurationParameterFactory.createConfigurationParameterName(
-        XMIAnnotator.class,
-        "xmiDirectory");
+    public static final String PARAM_XMI_DIRECTORY = "xmiDirectory";
 
     protected File getFile(JCas jCas) throws AnalysisEngineProcessException {
       File origFile = new File(ViewURIUtil.getURI(jCas));

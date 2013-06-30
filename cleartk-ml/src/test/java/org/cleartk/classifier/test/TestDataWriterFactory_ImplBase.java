@@ -30,7 +30,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.DataWriterFactory_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -44,16 +43,20 @@ import org.uimafit.factory.ConfigurationParameterFactory;
 public abstract class TestDataWriterFactory_ImplBase<OUTCOME_TYPE> extends
     DataWriterFactory_ImplBase<List<NameNumber>, OUTCOME_TYPE, String> {
 
-  public static final String PARAM_COMPRESS = ConfigurationParameterFactory
-      .createConfigurationParameterName(TestDataWriterFactory_ImplBase.class, "compress");
+  public static final String PARAM_COMPRESS = "compress";
 
-  @ConfigurationParameter(defaultValue = "false", description = "when true indicates that the FeaturesEncoder should compress the feature names.  See org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder")
+  @ConfigurationParameter(
+      name = PARAM_COMPRESS,
+      defaultValue = "false",
+      description = "when true indicates that the FeaturesEncoder should compress the feature names.  See org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder")
   protected boolean compress = false;
 
-  public static final String PARAM_SORT = ConfigurationParameterFactory
-      .createConfigurationParameterName(TestDataWriterFactory_ImplBase.class, "sort");
+  public static final String PARAM_SORT = "sort";
 
-  @ConfigurationParameter(defaultValue = "false", description = "when true indicates that the FeaturesEncoder should write the feature names in sorted order.")
+  @ConfigurationParameter(
+      name = PARAM_SORT,
+      defaultValue = "false",
+      description = "when true indicates that the FeaturesEncoder should write the feature names in sorted order.")
   protected boolean sort = false;
 
   @Override

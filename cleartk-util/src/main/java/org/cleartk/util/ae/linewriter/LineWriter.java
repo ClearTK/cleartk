@@ -40,7 +40,6 @@ import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ViewURIUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.ConfigurationParameterFactory;
 import org.uimafit.factory.initializable.InitializableFactory;
 import org.uimafit.util.JCasUtil;
 
@@ -79,11 +78,11 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "\t/mydata/uima-output/\n"
       + "\tC:/Documents and Settings/User/My Documents/workspace/My Project/data/experiment/output\n";
 
-  public static final String PARAM_OUTPUT_DIRECTORY_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      LineWriter.class,
-      "outputDirectoryName");
+  public static final String PARAM_OUTPUT_DIRECTORY_NAME = "outputDirectoryName";
 
-  @ConfigurationParameter(description = OUTPUT_DIRECTORY_NAME_DESCRIPTION)
+  @ConfigurationParameter(
+      description = OUTPUT_DIRECTORY_NAME_DESCRIPTION,
+      name = PARAM_OUTPUT_DIRECTORY_NAME)
   private String outputDirectoryName;
 
   private static final String FILE_SUFFIX_DESCRIPTION = "provides a file "
@@ -94,11 +93,9 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "parameter is given, then the files will be named the same as the document id. Example values "
       + "that could be provided might include: \n\n" + ".txt\n" + ".tokens\n" + ".annotations.txt";
 
-  public static final String PARAM_FILE_SUFFIX = ConfigurationParameterFactory.createConfigurationParameterName(
-      LineWriter.class,
-      "fileSuffix");
+  public static final String PARAM_FILE_SUFFIX = "fileSuffix";
 
-  @ConfigurationParameter(description = FILE_SUFFIX_DESCRIPTION)
+  @ConfigurationParameter(description = FILE_SUFFIX_DESCRIPTION, name = PARAM_FILE_SUFFIX)
   private String fileSuffix;
 
   private static final String OUTPUT_FILE_NAME_DESCRIPTION = "takes a file "
@@ -111,11 +108,9 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "/mydata/uima-output/annotations.txt\n"
       + "C:\\Documents and Settings\\User\\My Documents\\workspace\\My Project\\data\\experiment\\output\\output.annotations\n";
 
-  public static final String PARAM_OUTPUT_FILE_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      LineWriter.class,
-      "outputFileName");
+  public static final String PARAM_OUTPUT_FILE_NAME = "outputFileName";
 
-  @ConfigurationParameter(description = OUTPUT_FILE_NAME_DESCRIPTION)
+  @ConfigurationParameter(description = OUTPUT_FILE_NAME_DESCRIPTION, name = PARAM_OUTPUT_FILE_NAME)
   private String outputFileName;
 
   private static final String OUTPUT_ANNOTATION_CLASS_NAME_DESCRIPTION = "takes the name of the annotation class of the annotations that are to be "
@@ -128,11 +123,10 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "org.cleartk.type.Token\n"
       + "org.cleartk.type.Sentence\n" + "com.yourcompany.yourpackage.YourType";
 
-  public static final String PARAM_OUTPUT_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      LineWriter.class,
-      "outputAnnotationClassName");
+  public static final String PARAM_OUTPUT_ANNOTATION_CLASS_NAME = "outputAnnotationClassName";
 
   @ConfigurationParameter(
+      name = PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
       mandatory = true,
       description = OUTPUT_ANNOTATION_CLASS_NAME_DESCRIPTION,
       defaultValue = "org.apache.uima.jcas.tcas.Annotation")
@@ -145,11 +139,10 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "org.cleartk.util.linewriter.annotation.CoveredTextAnnotationWriter (default)\n"
       + "org.cleartk.util.linewriter.annotation.TokenPOSWriter\n";
 
-  public static final String PARAM_ANNOTATION_WRITER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      LineWriter.class,
-      "annotationWriterClassName");
+  public static final String PARAM_ANNOTATION_WRITER_CLASS_NAME = "annotationWriterClassName";
 
   @ConfigurationParameter(
+      name = PARAM_ANNOTATION_WRITER_CLASS_NAME,
       mandatory = true,
       description = ANNOTATION_WRITER_CLASS_NAME_DESCRIPTION,
       defaultValue = "org.cleartk.util.ae.linewriter.annotation.CoveredTextAnnotationWriter")
@@ -172,11 +165,11 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "org.cleartk.type.Sentence\n"
       + "org.apache.uima.jcas.tcas.DocumentAnnotation\n" + "com.yourcompany.yourpackage.YourType\n";
 
-  public static final String PARAM_BLOCK_ANNOTATION_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      LineWriter.class,
-      "blockAnnotationClassName");
+  public static final String PARAM_BLOCK_ANNOTATION_CLASS_NAME = "blockAnnotationClassName";
 
-  @ConfigurationParameter(description = BLOCK_ANNOTATION_CLASS_NAME_DESCRIPTION)
+  @ConfigurationParameter(
+      description = BLOCK_ANNOTATION_CLASS_NAME_DESCRIPTION,
+      name = PARAM_BLOCK_ANNOTATION_CLASS_NAME)
   private String blockAnnotationClassName;
 
   private final static String BLOCK_WRITER_CLASS_NAME_DESCRIPTION = "Provides  the class name of a class that extends org.cleartk.util.linewriter.BlockWriter. "
@@ -186,11 +179,10 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
       + "org.cleartk.util.linewriter.block.BlankLineBlockWriter\n"
       + "org.cleartk.util.linewriter.block.DocumentIdBlockWriter\n";
 
-  public static final String PARAM_BLOCK_WRITER_CLASS_NAME = ConfigurationParameterFactory.createConfigurationParameterName(
-      LineWriter.class,
-      "blockWriterClassName");
+  public static final String PARAM_BLOCK_WRITER_CLASS_NAME = "blockWriterClassName";
 
   @ConfigurationParameter(
+      name = PARAM_BLOCK_WRITER_CLASS_NAME,
       description = BLOCK_WRITER_CLASS_NAME_DESCRIPTION,
       defaultValue = "org.cleartk.util.ae.linewriter.block.BlankLineBlockWriter")
   private String blockWriterClassName;

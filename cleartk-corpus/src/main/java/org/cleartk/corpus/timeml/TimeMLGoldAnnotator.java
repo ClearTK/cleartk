@@ -49,17 +49,16 @@ import org.cleartk.timeml.type.Text;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.ViewURIUtil;
-import org.jdom2.output.XMLOutputter;
 import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.XMLOutputter;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -75,11 +74,10 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
 
   public static final String TIMEML_VIEW_NAME = "TimeMLView";
 
-  public static final String PARAM_LOAD_TLINKS = ConfigurationParameterFactory.createConfigurationParameterName(
-      TimeMLGoldAnnotator.class,
-      "loadTlinks");
+  public static final String PARAM_LOAD_TLINKS = "loadTlinks";
 
   @ConfigurationParameter(
+      name = PARAM_LOAD_TLINKS,
       description = "when false indicates that annotation should not be created for TLINKs (though annotations will still be created for TIMEX3s, EVENTs, etc.).",
       defaultValue = "true")
   private boolean loadTlinks;
