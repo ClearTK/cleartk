@@ -42,6 +42,8 @@ import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
 import org.uimafit.util.JCasUtil;
 
+import com.google.common.base.Joiner;
+
 public class TokenizerTest extends CleartkTestBase {
 	protected static AnalysisEngine tokenizer;
 
@@ -57,11 +59,11 @@ public class TokenizerTest extends CleartkTestBase {
 
 	@Test
 	public void testMarysDog() throws UIMAException, IOException {
-		String text = FileUtils.readFileToString(new File("src/test/resources/token/marysdog.txt"));
-		jCas.setDocumentText(text);
-		new Sentence(jCas, 0, 52).addToIndexes();
-		new Sentence(jCas, 54, 68).addToIndexes();
-		new Sentence(jCas, 70, 91).addToIndexes();
+    this.createSentences(
+        "\"John & Mary's 'dog'...\", Jane thought (to herself).",
+        "\"What a @#$%*!",
+        "a- ``I like 'AT&T'''.");
+
 		SimplePipeline.runPipeline(jCas, tokenizer);
 		
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
@@ -113,12 +115,10 @@ public class TokenizerTest extends CleartkTestBase {
 
 	@Test
 	public void testWatcha() throws UIMAException, IOException {
-		String text = FileUtils.readFileToString(new File("src/test/resources/token/watcha.txt"));
-		jCas.setDocumentText(text);
-
-		new Sentence(jCas, 0, 45).addToIndexes();
-		new Sentence(jCas, 47, 73).addToIndexes();
-		new Sentence(jCas, 75, 109).addToIndexes();
+    this.createSentences(
+        "I can't believe they wanna keep 40% of that.\"",
+        "        ``Whatcha think?''",
+        "        \"I don't --- think so...,\"");
 
 		SimplePipeline.runPipeline(jCas, tokenizer);
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
@@ -161,10 +161,10 @@ public class TokenizerTest extends CleartkTestBase {
 
 	@Test
 	public void testTimes() throws UIMAException, IOException {
-		String text = FileUtils.readFileToString(new File("src/test/resources/token/times.txt"));
-		jCas.setDocumentText(text);
-		new Sentence(jCas, 0, 17).addToIndexes();
-		new Sentence(jCas, 19, 59).addToIndexes();
+    this.createSentences(
+        "I said at 4:45pm.",
+        "        I was born in '80, not the '70s.");
+
 		SimplePipeline.runPipeline(jCas, tokenizer);
 
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
@@ -190,10 +190,13 @@ public class TokenizerTest extends CleartkTestBase {
 	}
 	@Test
 	public void testDollars() throws UIMAException, IOException {
-		String text = FileUtils.readFileToString(new File("src/test/resources/token/dollars.txt"));
-		jCas.setDocumentText(text);
-		new Sentence(jCas, 9, 33).addToIndexes();
-		new Sentence(jCas, 34, 73).addToIndexes();
+    this.createSentences(
+        "        ",
+        "You `paid' US$170,000?!",
+        "        You should've paid only$16.75.",
+        "        ",
+        "        ");
+
 		SimplePipeline.runPipeline(jCas, tokenizer);
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
 		assertEquals(15, tokenIndex.size());
@@ -279,4 +282,27 @@ public class TokenizerTest extends CleartkTestBase {
 		return JCasUtil.selectByIndex(jCas, Token.class, i);
 	}
 
+  /**
+   * Creates sentences, one for each non-whitespace line, and sets the CAS text.
+   */
+  private void createSentences(String... lines) {
+    this.jCas.setDocumentText(Joiner.on("\n").join(lines));
+    int offset = 0;
+    for (String line : lines) {
+      int length = line.length();
+      int start = 0;
+      while (start < length && Character.isWhitespace(line.charAt(start))) {
+        ++start;
+      }
+      int end = length;
+      while (end > 0 && Character.isWhitespace(line.charAt(end - 1))) {
+        --end;
+      }
+      if (start != length && end != 0) {
+        Sentence sentence = new Sentence(this.jCas, offset + start, offset + end);
+        sentence.addToIndexes();
+      }
+      offset += length + 1;
+    }
+  }
 }
