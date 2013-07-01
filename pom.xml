@@ -364,6 +364,7 @@
 				<groupId>org.cleartk</groupId>
 				<artifactId>consistent-versions-plugin</artifactId>
 				<version>1.1.2</version>
+				<inherited>false</inherited>
 				<executions>
 					<execution>
 						<goals>
