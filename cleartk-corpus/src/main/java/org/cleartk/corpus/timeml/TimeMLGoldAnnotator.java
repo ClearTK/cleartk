@@ -203,7 +203,8 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
     }
     int endOffset = textBuffer.length();
 
-    if (element.getName().equals("TIMEX3")) {
+    String elementName = element.getName().toUpperCase();
+    if (elementName.equals("TIMEX3")) {
       String funcInDoc = element.getAttributeValue("functionInDocument");
       boolean isCreationTime = funcInDoc != null && funcInDoc.equals("CREATION_TIME");
       Time time = isCreationTime
@@ -216,14 +217,14 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
       }
       anchors.put(time.getId(), time);
       time.addToIndexes();
-    } else if (element.getName().equals("EVENT")) {
+    } else if (elementName.equals("EVENT")) {
       Event event = new Event(jCas, startOffset, endOffset);
       TimeMLUtil.copyAttributes(element, event, jCas);
       anchors.put(event.getId(), event);
       event.addToIndexes();
-    } else if (element.getName().equals("MAKEINSTANCE")) {
+    } else if (elementName.equals("MAKEINSTANCE")) {
       makeInstances.add(element);
-    } else if (element.getName().equals("TLINK") && this.loadTlinks) {
+    } else if (elementName.equals("TLINK") && this.loadTlinks) {
       TemporalLink temporalLink = new TemporalLink(jCas, startOffset, endOffset);
       TimeMLUtil.copyAttributes(element, temporalLink, jCas);
       String sourceID = this.getOneOf(element, "eventInstanceID", "eventID", "timeID");
@@ -235,10 +236,10 @@ public class TimeMLGoldAnnotator extends JCasAnnotator_ImplBase {
       tlinkSourceIDs.put(temporalLink, sourceID);
       tlinkTargetIDs.put(temporalLink, targetID);
       temporalLink.addToIndexes();
-    } else if (element.getName().equals("TEXT")) {
+    } else if (elementName.equals("TEXT")) {
       Text text = new Text(jCas, startOffset, endOffset);
       text.addToIndexes();
-    } else if (element.getName().toLowerCase().equals("s")) {
+    } else if (elementName.toLowerCase().equals("s")) {
       Sentence sentence = new Sentence(jCas, startOffset, endOffset);
       sentence.addToIndexes();
     }

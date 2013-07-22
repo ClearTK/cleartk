@@ -123,7 +123,7 @@ public class TimeMLUtil {
   }
 
   public static void copyAttributes(Element element, Annotation annotation, JCas jCas) {
-    for (NamePair names : timemlAttributeLists.get(element.getName())) {
+    for (NamePair names : timemlAttributeLists.get(element.getName().toUpperCase())) {
       String featureValue = element.getAttributeValue(names.timemlName);
       if (featureValue != null) {
         String className = annotation.getClass().getName();
@@ -135,7 +135,7 @@ public class TimeMLUtil {
   }
 
   public static void removeInconsistentAttributes(Element element, Annotation annotation, JCas jCas) {
-    for (NamePair names : timemlAttributeLists.get(element.getName())) {
+    for (NamePair names : timemlAttributeLists.get(element.getName().toUpperCase())) {
       String newValue = element.getAttributeValue(names.timemlName);
       String className = annotation.getClass().getName();
       String uimaName = String.format("%s:%s", className, names.uimaName);
