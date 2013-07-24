@@ -32,6 +32,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -191,13 +192,14 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
 
   public static class TestClassifier<T> implements Classifier<T> {
 
+    @Override
     public T classify(List<Feature> features) {
       assertEquals(1, features.size());
       return null;
     }
 
-    public List<ScoredOutcome<T>> score(List<Feature> features, int maxResults)
-        throws CleartkProcessingException {
+    @Override
+    public Map<T, Double> score(List<Feature> features) throws CleartkProcessingException {
       return null;
     }
   }

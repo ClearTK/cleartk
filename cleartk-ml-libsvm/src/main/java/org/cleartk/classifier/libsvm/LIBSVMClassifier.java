@@ -24,20 +24,17 @@
 package org.cleartk.classifier.libsvm;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
+import com.google.common.collect.Maps;
 
 /**
  * <br>
@@ -70,19 +67,17 @@ public abstract class LIBSVMClassifier<OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> exten
   }
 
   @Override
-  public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-      throws CleartkProcessingException {
+  public Map<OUTCOME_TYPE, Double> score(List<Feature> features) throws CleartkProcessingException {
     FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
     double[] decisionValues = new double[this.model.nr_class];
     libsvm.svm.svm_predict_probability(this.model, convertToLIBSVM(featureVector), decisionValues);
-    List<ScoredOutcome<OUTCOME_TYPE>> results = Lists.newArrayList();
+    Map<OUTCOME_TYPE, Double> results = Maps.newHashMap();
     for (int i = 0; i < this.model.nr_class; ++i) {
       int intLabel = this.model.label[i];
       OUTCOME_TYPE outcome = this.outcomeEncoder.decode(this.decodePrediction(intLabel));
-      results.add(new ScoredOutcome<OUTCOME_TYPE>(outcome, decisionValues[i]));
+      results.put(outcome, decisionValues[i]);
     }
-    Collections.sort(results, this.orderByScore);
-    return results.subList(0, Math.min(results.size(), maxResults));
+    return results;
   }
 
   protected static libsvm.svm_node[] convertToLIBSVM(FeatureVector featureVector) {
@@ -101,13 +96,4 @@ public abstract class LIBSVMClassifier<OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> exten
   protected abstract ENCODED_OUTCOME_TYPE decodePrediction(double prediction);
 
   protected libsvm.svm_model model;
-
-  protected Ordering<ScoredOutcome<OUTCOME_TYPE>> orderByScore = Ordering.natural().reverse().onResultOf(
-      new Function<ScoredOutcome<OUTCOME_TYPE>, Double>() {
-        @Override
-        public Double apply(ScoredOutcome<OUTCOME_TYPE> scoredOutcome) {
-          return scoredOutcome.getScore();
-        }
-      });
-
 }

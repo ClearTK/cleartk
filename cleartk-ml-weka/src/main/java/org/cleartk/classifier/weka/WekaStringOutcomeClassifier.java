@@ -19,17 +19,18 @@
 package org.cleartk.classifier.weka;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
 
-import com.google.common.annotations.Beta;
-
 import weka.core.Instance;
+
+import com.google.common.annotations.Beta;
 
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -53,7 +54,7 @@ public abstract class WekaStringOutcomeClassifier extends Classifier_ImplBase<In
 	
 	//TODO no implementation of the score method
 	@Override
-	public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) {
+  public Map<String, Double> score(List<Feature> features) throws CleartkProcessingException {
 		throw new NotImplementedException();
 	}
 

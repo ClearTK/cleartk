@@ -24,7 +24,7 @@
 package org.cleartk.classifier;
 
 import java.util.List;
-
+import java.util.Map;
 
 /**
  * <br>
@@ -46,15 +46,13 @@ public interface SequenceClassifier<OUTCOME_TYPE> {
       throws CleartkProcessingException;
 
   /**
-   * Get the N best sequence classifications along with their scores.
+   * Classify a sequence of feature lists, and return the scores for each of the outcomes for each
+   * feature list.
    * 
    * @param features
    *          a list of features for each member in the sequence
-   * @param maxResults
-   *          the maximum number of classifications to return.
-   * @return a sorted list of the best N sequence classifications with their scores.
+   * @return a map from outcomes to classification scores for each member in the sequence
    */
-  public List<ScoredOutcome<List<OUTCOME_TYPE>>> score(List<List<Feature>> features, int maxResults)
+  public List<Map<OUTCOME_TYPE, Double>> score(List<List<Feature>> features)
       throws CleartkProcessingException;
-
 }

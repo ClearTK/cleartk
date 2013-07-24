@@ -23,20 +23,20 @@
  */
 package org.cleartk.classifier.opennlp;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import opennlp.model.MaxentModel;
 
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
+
+import com.google.common.collect.Maps;
 
 /**
  * <br>
@@ -69,33 +69,15 @@ public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
   }
 
   @Override
-  public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-      throws CleartkProcessingException {
+  public Map<OUTCOME_TYPE, Double> score(List<Feature> features) throws CleartkProcessingException {
     EvalParams evalParams = convertToEvalParams(features);
     double[] evalResults = this.model.eval(evalParams.getContext(), evalParams.getValues());
     String[] encodedOutcomes = (String[]) this.model.getDataStructures()[2];
 
-    List<ScoredOutcome<OUTCOME_TYPE>> returnValues = new ArrayList<ScoredOutcome<OUTCOME_TYPE>>();
-
-    if (maxResults == 1) {
-      String bestOutcome = this.model.getBestOutcome(evalResults);
-      OUTCOME_TYPE encodedBestOutcome = outcomeEncoder.decode(bestOutcome);
-      double bestResult = evalResults[this.model.getIndex(bestOutcome)];
-      returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(encodedBestOutcome, bestResult));
-      return returnValues;
-    }
-
+    Map<OUTCOME_TYPE, Double> returnValues = Maps.newHashMap();
     for (int i = 0; i < evalResults.length; i++) {
-      returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(
-          outcomeEncoder.decode(encodedOutcomes[i]),
-          evalResults[i]));
+      returnValues.put(outcomeEncoder.decode(encodedOutcomes[i]), evalResults[i]);
     }
-
-    Collections.sort(returnValues);
-    if (returnValues.size() > maxResults) {
-      return returnValues.subList(0, maxResults);
-    }
-
     return returnValues;
   }
 

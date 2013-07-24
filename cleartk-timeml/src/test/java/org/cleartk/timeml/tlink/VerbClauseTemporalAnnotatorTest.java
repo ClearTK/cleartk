@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -36,9 +37,9 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.ClassifierFactory;
 import org.cleartk.classifier.CleartkAnnotator;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.util.PublicFieldDataWriter;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
@@ -72,13 +73,15 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
       return "AFTER-NEW";
     }
 
-    public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) {
+    @Override
+    public Map<String, Double> score(List<Feature> features) throws CleartkProcessingException {
       return null;
     }
 
     public Classifier<String> createClassifier() {
       return new AfterNewClassifier();
     }
+
   }
 
   @Test

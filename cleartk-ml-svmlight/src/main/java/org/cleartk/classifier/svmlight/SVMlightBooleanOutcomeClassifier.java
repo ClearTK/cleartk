@@ -23,17 +23,18 @@
  */
 package org.cleartk.classifier.svmlight;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.sigmoid.Sigmoid;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
+
+import com.google.common.collect.Maps;
 
 /**
  * <br>
@@ -61,30 +62,13 @@ public class SVMlightBooleanOutcomeClassifier extends SVMlightClassifier_ImplBas
   }
 
   @Override
-  public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
-      throws CleartkProcessingException {
-
-    List<ScoredOutcome<Boolean>> resultList = new ArrayList<ScoredOutcome<Boolean>>();
-    if (maxResults > 0)
-      resultList.add(this.score(features));
-    if (maxResults > 1) {
-      ScoredOutcome<Boolean> v1 = resultList.get(0);
-      ScoredOutcome<Boolean> v2 = new ScoredOutcome<Boolean>(!v1.getOutcome(), 1 - v1.getScore());
-      resultList.add(v2);
-    }
-    return resultList;
-  }
-
-  private ScoredOutcome<Boolean> score(List<Feature> features) throws CleartkProcessingException {
+  public Map<Boolean, Double> score(List<Feature> features) throws CleartkProcessingException {
     FeatureVector featureVector = featuresEncoder.encodeAll(features);
 
     double prediction = sigmoid.evaluate(model.evaluate(featureVector));
-    boolean encodedResult = (prediction > 0.5);
-
-    if (encodedResult) {
-      return new ScoredOutcome<Boolean>(true, prediction);
-    } else {
-      return new ScoredOutcome<Boolean>(false, 1 - prediction);
-    }
+    Map<Boolean, Double> scores = Maps.newHashMap();
+    scores.put(true, prediction);
+    scores.put(false, 1 - prediction);
+    return scores;
   }
 }

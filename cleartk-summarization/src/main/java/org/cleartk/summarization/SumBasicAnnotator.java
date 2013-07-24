@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.uima.UimaContext;
@@ -36,7 +36,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
@@ -109,16 +108,14 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
       if (this.isTraining()) {
         this.dataWriter.write(instance);
       } else {
-        List<ScoredOutcome<Boolean>> scoredOutcomes = this.classifier.score(
-            instance.getFeatures(),
-            1);
-        if (scoredOutcomes.get(0).getOutcome()) {
-          scoredOutcomes.get(0).getScore();
+        Map<Boolean, Double> scoredOutcomes = this.classifier.score(instance.getFeatures());
+        Double trueScore = scoredOutcomes.get(true);
+        if (trueScore > 0.0) {
           SummarySentence extractedSentence = new SummarySentence(
               jcas,
               sentence.getBegin(),
               sentence.getEnd());
-          extractedSentence.setScore(scoredOutcomes.get(0).getScore());
+          extractedSentence.setScore(trueScore);
           extractedSentence.addToIndexes();
         }
       }

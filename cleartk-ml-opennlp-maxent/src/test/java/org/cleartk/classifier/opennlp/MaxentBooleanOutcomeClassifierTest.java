@@ -31,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -38,13 +39,13 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
+import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
@@ -337,28 +338,11 @@ public class MaxentBooleanOutcomeClassifierTest extends DefaultTestBase {
     classification = classifier.classify(features2);
     assertEquals(Boolean.FALSE, classification);
 
-    ScoredOutcome<Boolean> scoredValue = classifier.score(features1, 1).get(0);
-    assertTrue(scoredValue.getOutcome());
-    assertTrue(scoredValue.getScore() <= 1.0f);
-    assertTrue(scoredValue.getScore() >= 0.0f);
-    scoredValue = classifier.score(features2, 1).get(0);
-    assertEquals(Boolean.FALSE, scoredValue.getOutcome());
-    assertTrue(scoredValue.getScore() <= 1.0f);
-    assertTrue(scoredValue.getScore() >= 0.0f);
+    Map<Boolean, Double> scoredOutcomes1 = classifier.score(features1);
+    Assert.assertTrue(scoredOutcomes1.get(true) > scoredOutcomes1.get(false));
 
-    List<ScoredOutcome<Boolean>> scoredValues = classifier.score(features1, 4);
-    assertEquals(2, scoredValues.size());
-    scoredValue = scoredValues.get(0);
-    assertTrue(scoredValue.getOutcome());
-    assertTrue(scoredValue.getScore() <= 1.0f);
-    assertTrue(scoredValue.getScore() >= 0.0f);
-    scoredValue = scoredValues.get(1);
-    assertEquals(Boolean.FALSE, scoredValue.getOutcome());
-    assertTrue(scoredValue.getScore() <= 1.0f);
-    assertTrue(scoredValue.getScore() >= 0.0f);
-
-    scoredValues = classifier.score(features1, 2);
-    assertEquals(2, scoredValues.size());
+    Map<Boolean, Double> scoredOutcomes2 = classifier.score(features2);
+    Assert.assertTrue(scoredOutcomes2.get(false) > scoredOutcomes2.get(true));
 
     AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
         Test2Annotator.class,

@@ -23,19 +23,16 @@
  */
 package org.cleartk.classifier.liblinear;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
+import com.google.common.collect.Maps;
 
 import de.bwaldvogel.liblinear.FeatureNode;
 import de.bwaldvogel.liblinear.Linear;
@@ -69,8 +66,7 @@ public class GenericLIBLINEARClassifier<OUTCOME_TYPE> extends
   }
 
   @Override
-  public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-      throws CleartkProcessingException {
+  public Map<OUTCOME_TYPE, Double> score(List<Feature> features) throws CleartkProcessingException {
     FeatureNode[] encodedFeatures = this.featuresEncoder.encodeAll(features);
     
     // get score for each outcome
@@ -88,21 +84,11 @@ public class GenericLIBLINEARClassifier<OUTCOME_TYPE> extends
     }
     
     // create scored outcome objects
-    List<ScoredOutcome<OUTCOME_TYPE>> scoredOutcomes = Lists.newArrayList();
+    Map<OUTCOME_TYPE, Double> scoredOutcomes = Maps.newHashMap();
     for (int i = 0; i < encodedOutcomes.length; ++i) {
       OUTCOME_TYPE outcome = this.outcomeEncoder.decode(encodedOutcomes[i]);
-      scoredOutcomes.add(new ScoredOutcome<OUTCOME_TYPE>(outcome, scores[i]));
+      scoredOutcomes.put(outcome, scores[i]);
     }
-    
-    // sort scored outcomes by largest score
-    Collections.sort(scoredOutcomes, Ordering.natural().reverse().onResultOf(new Function<ScoredOutcome<OUTCOME_TYPE>, Double>() {
-      @Override
-      public Double apply(ScoredOutcome<OUTCOME_TYPE> scoredOutcome) {
-        return scoredOutcome.getScore();
-      }
-    }));
-    
-    // return the sorted scored outcomes
-    return scoredOutcomes.subList(0, Math.min(maxResults, scoredOutcomes.size()));
+    return scoredOutcomes;
   }
 }
