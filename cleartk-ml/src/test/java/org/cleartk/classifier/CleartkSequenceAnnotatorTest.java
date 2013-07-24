@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
@@ -156,13 +157,16 @@ public class CleartkSequenceAnnotatorTest extends DefaultTestBase {
   }
 
   public static class TestClassifier<T> implements SequenceClassifier<T> {
+    @Override
     public List<T> classify(List<List<Feature>> features) {
       assertEquals(1, features.size());
       assertEquals(1, features.get(0).size());
       return null;
     }
 
-    public List<ScoredOutcome<List<T>>> score(List<List<Feature>> features, int maxResults) {
+    @Override
+    public List<Map<T, Double>> score(List<List<Feature>> features)
+        throws CleartkProcessingException {
       return null;
     }
   }

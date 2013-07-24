@@ -25,8 +25,8 @@ package org.cleartk.classifier.viterbi;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +35,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.SequenceClassifier;
 import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
@@ -43,6 +42,14 @@ import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 import org.uimafit.component.initialize.ConfigurationParameterInitializer;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.initializable.Initializable;
+
+import com.google.common.base.Functions;
+import com.google.common.base.Objects;
+import com.google.common.base.Objects.ToStringHelper;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
+import com.google.common.primitives.Doubles;
 
 /**
  * <br>
@@ -128,7 +135,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
    * This implementation of Viterbi requires at most stackSize * sequenceLength calls to the
    * classifier. If this proves to be too expensive, then consider using a smaller stack size.
    * 
-   * @param features
+   * @param featureLists
    *          a sequence-worth of features. Each List<Feature> in features should corresond to all
    *          of the features for a given element in a sequence to be classified.
    * @return a list of outcomes (classifications) - one classification for each member of the
@@ -136,108 +143,52 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
    * @see #PARAM_STACK_SIZE
    * @see OutcomeFeatureExtractor
    */
-  public List<OUTCOME_TYPE> viterbi(List<List<Feature>> features) throws CleartkProcessingException {
+  public List<OUTCOME_TYPE> viterbi(List<List<Feature>> featureLists)
+      throws CleartkProcessingException {
 
-    List<ScoredOutcome<List<OUTCOME_TYPE>>> nbestSequences = new ArrayList<ScoredOutcome<List<OUTCOME_TYPE>>>();
-
-    if (features == null || features.size() == 0) {
+    if (featureLists == null || featureLists.size() == 0) {
       return Collections.emptyList();
     }
 
-    List<ScoredOutcome<OUTCOME_TYPE>> scoredOutcomes = delegatedClassifier.score(
-        features.get(0),
-        stackSize);
-    for (ScoredOutcome<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
-      double score = scoredOutcome.getScore();
-      List<OUTCOME_TYPE> sequence = new ArrayList<OUTCOME_TYPE>();
-      sequence.add(scoredOutcome.getOutcome());
-      nbestSequences.add(new ScoredOutcome<List<OUTCOME_TYPE>>(sequence, score));
-    }
+    // find the best paths through the outcome lattice
+    Collection<Path> paths = null;
+    for (List<Feature> features : featureLists) {
 
-    Map<OUTCOME_TYPE, Double> l = new HashMap<OUTCOME_TYPE, Double>();
-    Map<OUTCOME_TYPE, List<OUTCOME_TYPE>> m = new HashMap<OUTCOME_TYPE, List<OUTCOME_TYPE>>();
-
-    for (int i = 1; i < features.size(); i++) {
-
-      List<Feature> instanceFeatures = features.get(i);
-      l.clear();
-      m.clear();
-      for (ScoredOutcome<List<OUTCOME_TYPE>> scoredSequence : nbestSequences) {
-        // add features from previous outcomes from each scoredSequence
-        // in returnValues
-        int outcomeFeaturesCount = 0;
-        List<Object> previousOutcomes = new ArrayList<Object>(scoredSequence.getOutcome());
-        for (OutcomeFeatureExtractor outcomeFeatureExtractor : outcomeFeatureExtractors) {
-          List<Feature> outcomeFeatures = outcomeFeatureExtractor.extractFeatures(previousOutcomes);
-          instanceFeatures.addAll(outcomeFeatures);
-          outcomeFeaturesCount += outcomeFeatures.size();
+      // if this is the first instance, start new paths for each outcome
+      if (paths == null) {
+        paths = Lists.newArrayList();
+        Map<OUTCOME_TYPE, Double> scoredOutcomes = this.getScoredOutcomes(features, null);
+        for (OUTCOME_TYPE outcome : this.getTopOutcomes(scoredOutcomes)) {
+          paths.add(new Path(outcome, scoredOutcomes.get(outcome), null));
         }
-        // score the instance features using the features added by the
-        // outcomeFeatureExtractors
-        scoredOutcomes = delegatedClassifier.score(instanceFeatures, stackSize);
-        // remove the added features from previous outcomes for this
-        // scoredSequence
-        instanceFeatures = instanceFeatures.subList(0, instanceFeatures.size()
-            - outcomeFeaturesCount);
+      }
 
-        for (ScoredOutcome<OUTCOME_TYPE> scoredOutcome : scoredOutcomes) {
-
-          if (!l.containsKey(scoredOutcome.getOutcome())) {
-            double score = scoredSequence.getScore();
-            if (addScores) {
-              score = score + scoredOutcome.getScore();
-            } else {
-              score = score * scoredOutcome.getScore();
-            }
-            l.put(scoredOutcome.getOutcome(), score);
-            m.put(
-                scoredOutcome.getOutcome(),
-                new ArrayList<OUTCOME_TYPE>(scoredSequence.getOutcome()));
-          } else {
-            double newScore = scoredSequence.getScore();
-            if (addScores) {
-              newScore = newScore + scoredOutcome.getScore();
-            } else {
-              newScore = newScore * scoredOutcome.getScore();
-            }
-            double bestScore = l.get(scoredOutcome.getOutcome());
-
-            if (newScore > bestScore) {
-              l.put(scoredOutcome.getOutcome(), newScore);
-              m.put(
-                  scoredOutcome.getOutcome(),
-                  new ArrayList<OUTCOME_TYPE>(scoredSequence.getOutcome()));
+      // for later instances, find the best previous path for each outcome
+      else {
+        Map<OUTCOME_TYPE, Path> maxPaths = Maps.newHashMap();
+        for (Path path : paths) {
+          Map<OUTCOME_TYPE, Double> scoredOutcomes = this.getScoredOutcomes(features, path);
+          for (OUTCOME_TYPE outcome : this.getTopOutcomes(scoredOutcomes)) {
+            double outcomeScore = scoredOutcomes.get(outcome);
+            double score = this.addScores ? path.score + outcomeScore : path.score * outcomeScore;
+            Path maxPath = maxPaths.get(outcome);
+            if (maxPath == null || score > maxPath.score) {
+              maxPaths.put(outcome, new Path(outcome, score, path));
             }
           }
         }
+        paths = maxPaths.values();
       }
-
-      nbestSequences.clear();
-      for (OUTCOME_TYPE outcome : l.keySet()) {
-        List<OUTCOME_TYPE> outcomeSequence = m.get(outcome);
-        outcomeSequence.add(outcome);
-        double score = l.get(outcome);
-        ScoredOutcome<List<OUTCOME_TYPE>> returnValue = new ScoredOutcome<List<OUTCOME_TYPE>>(
-            outcomeSequence,
-            score);
-        nbestSequences.add(returnValue);
-      }
-
-      Collections.sort(nbestSequences);
     }
 
-    Collections.sort(nbestSequences);
-    if (nbestSequences.size() > 0) {
-      return nbestSequences.get(0).getOutcome();
-    }
-
-    return null;
+    // take the maximum of the final paths
+    return Collections.max(paths).outcomes;
   }
 
-  public List<ScoredOutcome<List<OUTCOME_TYPE>>> score(List<List<Feature>> features, int maxResults)
+  @Override
+  public List<Map<OUTCOME_TYPE, Double>> score(List<List<Feature>> features)
       throws CleartkProcessingException {
-    // TODO Auto-generated method stub
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   public Map<String, Type> getTypeArguments(Class<?> genericType) {
@@ -247,4 +198,66 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
     return ReflectionUtil.getTypeArguments(genericType, this.delegatedClassifier);
   }
 
+  private Map<OUTCOME_TYPE, Double> getScoredOutcomes(List<Feature> features, Path path)
+      throws CleartkProcessingException {
+
+    // add the features from preceding outcomes
+    features = Lists.newArrayList(features);
+    if (path != null) {
+      List<Object> previousOutcomes = new ArrayList<Object>(path.outcomes);
+      for (OutcomeFeatureExtractor outcomeFeatureExtractor : this.outcomeFeatureExtractors) {
+        features.addAll(outcomeFeatureExtractor.extractFeatures(previousOutcomes));
+      }
+    }
+
+    // get the scored outcomes for this instance
+    Map<OUTCOME_TYPE, Double> scoredOutcomes = this.delegatedClassifier.score(features);
+    if (scoredOutcomes.isEmpty()) {
+      throw new IllegalStateException("expected at least one scored outcome, found "
+          + scoredOutcomes);
+    }
+    return scoredOutcomes;
+  }
+
+  private List<OUTCOME_TYPE> getTopOutcomes(Map<OUTCOME_TYPE, Double> scoredOutcomes) {
+    // get just the outcomes that fit within the stack
+    Ordering<OUTCOME_TYPE> ordering = Ordering.natural().onResultOf(
+        Functions.forMap(scoredOutcomes));
+    return ordering.greatestOf(scoredOutcomes.keySet(), this.stackSize);
+  }
+
+  private class Path implements Comparable<Path> {
+    public OUTCOME_TYPE outcome;
+
+    public double score;
+
+    public Path parent;
+
+    public List<OUTCOME_TYPE> outcomes;
+
+    public Path(OUTCOME_TYPE outcome, double score, Path parent) {
+      this.outcome = outcome;
+      this.score = score;
+      this.parent = parent;
+      this.outcomes = Lists.newArrayList();
+      if (this.parent != null) {
+        this.outcomes.addAll(this.parent.outcomes);
+      }
+      this.outcomes.add(this.outcome);
+    }
+
+    @Override
+    public String toString() {
+      ToStringHelper helper = Objects.toStringHelper(this);
+      helper.add("outcome", this.outcome);
+      helper.add("score", this.score);
+      helper.add("parent", this.parent);
+      return helper.toString();
+    }
+
+    @Override
+    public int compareTo(Path that) {
+      return Doubles.compare(this.score, that.score);
+    }
+  }
 }

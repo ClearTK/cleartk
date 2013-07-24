@@ -23,20 +23,19 @@
  */
 package org.cleartk.classifier.svmlight;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
 import org.cleartk.classifier.sigmoid.Sigmoid;
 import org.cleartk.classifier.svmlight.model.SVMlightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
+
+import com.google.common.collect.Maps;
 
 /**
  * <br>
@@ -78,20 +77,18 @@ public class SVMlightStringOutcomeClassifier extends Classifier_ImplBase<Feature
   }
 
   @Override
-  public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults)
-      throws CleartkProcessingException {
+  public Map<String, Double> score(List<Feature> features) throws CleartkProcessingException {
     FeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
-    List<ScoredOutcome<String>> results = new ArrayList<ScoredOutcome<String>>();
+    Map<String, Double> results = Maps.newHashMap();
     for (int i : models.keySet()) {
       double score = score(featureVector, i);
       String name = outcomeEncoder.decode(i);
 
-      results.add(new ScoredOutcome<String>(name, score));
+      results.put(name, score);
     }
-    Collections.sort(results);
 
-    return results.subList(0, Math.min(maxResults, results.size()));
+    return results;
   }
 
   private double score(FeatureVector fv, int i) {

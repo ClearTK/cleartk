@@ -24,17 +24,16 @@
  */
 package org.cleartk.summarization.classifier;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.summarization.SummarizationModel_ImplBase;
 
 import com.google.common.annotations.Beta;
+import com.google.common.collect.Maps;
 
 @Beta
 public class SummarizationClassifier<MODEL_TYPE extends SummarizationModel_ImplBase> implements
@@ -50,20 +49,19 @@ public class SummarizationClassifier<MODEL_TYPE extends SummarizationModel_ImplB
 
   @Override
   public Boolean classify(List<Feature> features) throws CleartkProcessingException {
-    List<ScoredOutcome<Boolean>> scores = this.score(features, 1);
-    return scores.get(0).getOutcome();
+    return this.model.getSelectedSentenceScores().containsKey(features);
   }
 
   @Override
-  public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
-      throws CleartkProcessingException {
-    List<ScoredOutcome<Boolean>> scores = new ArrayList<ScoredOutcome<Boolean>>();
-
+  public Map<Boolean, Double> score(List<Feature> features) {
+    Map<Boolean, Double> scores = Maps.newHashMap();
     Double sentenceScore = this.model.getSelectedSentenceScores().get(features);
     if (sentenceScore == null) {
-      scores.add(new ScoredOutcome<Boolean>(false, -1));
+      scores.put(false, 1.0);
+      scores.put(true, -1.0);
     } else {
-      scores.add(new ScoredOutcome<Boolean>(true, sentenceScore));
+      scores.put(false, -1.0);
+      scores.put(true, sentenceScore);
     }
     return scores;
   }

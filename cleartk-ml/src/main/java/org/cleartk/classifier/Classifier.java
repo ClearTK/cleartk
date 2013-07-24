@@ -24,7 +24,7 @@
 package org.cleartk.classifier;
 
 import java.util.List;
-
+import java.util.Map;
 
 /**
  * <br>
@@ -63,15 +63,11 @@ public interface Classifier<OUTCOME_TYPE> {
   public OUTCOME_TYPE classify(List<Feature> features) throws CleartkProcessingException;
 
   /**
-   * Get the N best classifications along with their scores.
+   * Classify a list of features, and return the scores for each of the outcomes
    * 
    * @param features
    *          a list of features to be classified
-   * @param maxResults
-   *          the maximum number of classifications to return
-   * @return a sorted list of the best N classifications with their scores
+   * @return a map from outcomes to classification scores
    */
-  public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-      throws CleartkProcessingException;
-
+  public Map<OUTCOME_TYPE, Double> score(List<Feature> features) throws CleartkProcessingException;
 }

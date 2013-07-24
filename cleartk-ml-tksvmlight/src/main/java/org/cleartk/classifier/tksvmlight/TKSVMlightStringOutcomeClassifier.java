@@ -23,20 +23,20 @@
  */
 package org.cleartk.classifier.tksvmlight;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
 import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
 
 import com.google.common.annotations.Beta;
+import com.google.common.base.Functions;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
 
 /**
  * A One versus All Tree Kernel SVM light classifier implementation. All features named with the
@@ -73,58 +73,29 @@ public class TKSVMlightStringOutcomeClassifier extends
     this.models = models;
   }
 
-  /**
-   * Classify a features list.
-   * 
-   * @param features
-   *          The feature list to classify.
-   * @return A String of the most likely classification.
-   */
+  @Override
   public String classify(List<Feature> features) throws CleartkProcessingException {
-    TreeFeatureVector featureVector = this.featuresEncoder.encodeAll(features);
-
-    int maxScoredIndex = 0;
-    double maxScore = 0;
-    boolean first = true;
-    for (int i : models.keySet()) {
-      double score = score(featureVector, i);
-      if (first || score > maxScore) {
-        first = false;
-        maxScore = score;
-        maxScoredIndex = i;
-      }
-    }
-
-    return outcomeEncoder.decode(maxScoredIndex);
+    Map<String, Double> scores = this.score(features);
+    Ordering<String> byScore = Ordering.natural().onResultOf(Functions.forMap(scores));
+    return byScore.max(scores.keySet());
   }
 
-  /**
-   * Score a list of features against the various models used by the One Verse All SVM classifier.
-   * 
-   * @param features
-   *          The features to classify
-   * @param maxResults
-   *          The maximum number of results to return in the list.
-   * @return A list of scored outcomes ordered by likelihood.
-   */
   @Override
-  public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults)
-      throws CleartkProcessingException {
+  public Map<String, Double> score(List<Feature> features) throws CleartkProcessingException {
     TreeFeatureVector featureVector = this.featuresEncoder.encodeAll(features);
 
-    List<ScoredOutcome<String>> results = new ArrayList<ScoredOutcome<String>>();
+    Map<String, Double> results = Maps.newHashMap();
     for (int i : models.keySet()) {
-      double score = score(featureVector, i);
+      double score = predict(featureVector, i);
       String name = outcomeEncoder.decode(i);
 
-      results.add(new ScoredOutcome<String>(name, score));
+      results.put(name, score);
     }
-    Collections.sort(results);
 
-    return results.subList(0, Math.min(maxResults, results.size()));
+    return results;
   }
 
-  private double score(TreeFeatureVector featureVector, int i) {
+  private double predict(TreeFeatureVector featureVector, int i) {
     return this.models.get(i).evaluate(featureVector);
   }
 }

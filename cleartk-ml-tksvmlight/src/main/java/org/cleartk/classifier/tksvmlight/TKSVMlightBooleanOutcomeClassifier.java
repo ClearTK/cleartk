@@ -23,20 +23,20 @@
  */
 package org.cleartk.classifier.tksvmlight;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Logger;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
 import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
 
 import com.google.common.annotations.Beta;
+import com.google.common.collect.Maps;
 
 /**
  * A Tree Kernel SVM light classifier implementation. All features named with the prefix "TK"
@@ -75,51 +75,23 @@ public class TKSVMlightBooleanOutcomeClassifier extends
     this.model = model;
   }
 
-  /**
-   * Classify a features list.
-   * 
-   * @param features
-   *          The feature list to classify.
-   * @return A Boolean of whether the features match this classification.
-   */
-  public Boolean classify(List<Feature> features) throws CleartkProcessingException {
-    ScoredOutcome<Boolean> s = score(features);
-    return s.getOutcome();
-  }
-
-  /**
-   * Score a list of features against the model.
-   * 
-   * @param features
-   *          The features to classify
-   * @param maxResults
-   *          The maximum number of results to return in the list (at most 2).
-   * @return A list of scored outcomes ordered by likelihood.
-   */
   @Override
-  public List<ScoredOutcome<Boolean>> score(List<Feature> features, int maxResults)
-      throws CleartkProcessingException {
-
-    List<ScoredOutcome<Boolean>> resultList = new ArrayList<ScoredOutcome<Boolean>>();
-    if (maxResults > 0) {
-      resultList.add(this.score(features));
-    }
-    if (maxResults > 1) {
-      ScoredOutcome<Boolean> v1 = resultList.get(0);
-      ScoredOutcome<Boolean> v2 = new ScoredOutcome<Boolean>(!v1.getOutcome(), 1 - v1.getScore());
-      resultList.add(v2);
-    }
-    return resultList;
+  public Boolean classify(List<Feature> features) throws CleartkProcessingException {
+    // TODO: explain why "> 0" instead of "> 0.5" like for SVM-light
+    return this.predict(features) > 0;
   }
 
-  private ScoredOutcome<Boolean> score(List<Feature> features) throws CleartkProcessingException {
+  @Override
+  public Map<Boolean, Double> score(List<Feature> features) throws CleartkProcessingException {
+    double prediction = this.predict(features);
+    Map<Boolean, Double> scores = Maps.newHashMap();
+    scores.put(true, prediction);
+    scores.put(false, 1 - prediction);
+    return scores;
+  }
+
+  private double predict(List<Feature> features) throws CleartkProcessingException {
     TreeFeatureVector featureVector = featuresEncoder.encodeAll(features);
-    double prediction = model.evaluate(featureVector);
-    boolean encodedResult = prediction > 0.0;
-    if (encodedResult) {
-      return new ScoredOutcome<Boolean>(true, prediction);
-    } else {
-      return new ScoredOutcome<Boolean>(false, 1 - prediction);
-    }
+    return model.evaluate(featureVector);
   }
 }

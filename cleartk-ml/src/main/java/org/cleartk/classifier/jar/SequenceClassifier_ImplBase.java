@@ -24,9 +24,10 @@
 package org.cleartk.classifier.jar;
 
 import java.util.List;
+import java.util.Map;
 
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.SequenceClassifier;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
@@ -52,11 +53,10 @@ public abstract class SequenceClassifier_ImplBase<ENCODED_FEATURES_TYPE, OUTCOME
     super(featuresEncoder, outcomeEncoder);
   }
 
-  public List<ScoredOutcome<List<OUTCOME_TYPE>>> score(
-      List<List<Feature>> features,
-      int maxResults) {
+  @Override
+  public List<Map<OUTCOME_TYPE, Double>> score(List<List<Feature>> features)
+      throws CleartkProcessingException {
     throw new UnsupportedOperationException(
         "there is no default implementation of the score method.");
   }
-
 }
