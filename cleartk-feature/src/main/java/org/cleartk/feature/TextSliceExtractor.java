@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.SimpleNamedFeatureExtractor;
 
 /**
  * <br>

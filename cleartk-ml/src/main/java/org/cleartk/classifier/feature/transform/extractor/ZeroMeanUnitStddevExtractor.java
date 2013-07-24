@@ -45,7 +45,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.classifier.feature.transform.OneToOneTrainableExtractor_ImplBase;
 import org.cleartk.classifier.feature.transform.TransformableFeature;
 

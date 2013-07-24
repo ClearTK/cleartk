@@ -42,7 +42,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.classifier.feature.selection.MutualInformationFeatureSelectionExtractor.CombineScoreMethod.CombineScoreFunction;
 import org.cleartk.classifier.feature.selection.MutualInformationFeatureSelectionExtractor.MutualInformationStats.ComputeFeatureScore;
 import org.cleartk.classifier.feature.transform.TransformableFeature;

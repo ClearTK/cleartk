@@ -30,8 +30,7 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor;
-import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor.PatternType;
+import org.cleartk.classifier.feature.extractor.CharacterCategoryPatternExtractor.PatternType;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Test;

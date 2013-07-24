@@ -33,9 +33,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.annotationpair.FeatureExtractor2;
-import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
-import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Joiner;

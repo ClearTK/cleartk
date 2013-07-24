@@ -34,7 +34,7 @@ import java.util.Set;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.uimafit.util.JCasUtil;
 

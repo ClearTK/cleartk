@@ -26,8 +26,8 @@ package org.cleartk.classifier.feature.function;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;

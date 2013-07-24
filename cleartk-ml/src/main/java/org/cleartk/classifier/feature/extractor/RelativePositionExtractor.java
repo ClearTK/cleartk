@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor.simple;
+package org.cleartk.classifier.feature.extractor;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,29 +35,62 @@ import org.cleartk.classifier.Feature;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * <p>
  * 
- * @author Philip Ogren
+ * @author Philipp Wetzler
  * 
  */
 
-public class CoveredTextExtractor<T extends Annotation> implements SimpleNamedFeatureExtractor<T> {
+public class RelativePositionExtractor<T extends Annotation, U extends Annotation> implements
+    FeatureExtractor2<T, U> {
 
-  @Override
-  public String getFeatureName() {
-    return null;
+  public static final String EQUALS = "EQUALS";
+
+  public static final String CONTAINS = "CONTAINS";
+
+  public static final String CONTAINEDBY = "CONTAINEDBY";
+
+  public static final String OVERLAPS_LEFT = "OVERLAPS_LEFT";
+
+  public static final String OVERLAPS_RIGHT = "OVERLAPS_RIGHT";
+
+  public static final String LEFTOF = "LEFTOF";
+
+  public static final String RIGHTOF = "RIGHTOF";
+
+  public List<Feature> extract(JCas view, T annotation1, U annotation2) {
+    String result;
+    if (equals(annotation1, annotation2)) {
+      result = EQUALS;
+    } else if (contains(annotation1, annotation2)) {
+      result = CONTAINS;
+    } else if (contains(annotation2, annotation1)) {
+      result = CONTAINEDBY;
+    } else if (overlaps(annotation1, annotation2) && beginsFirst(annotation1, annotation2)) {
+      result = OVERLAPS_LEFT;
+    } else if (overlaps(annotation1, annotation2)) {
+      result = OVERLAPS_RIGHT;
+    } else if (beginsFirst(annotation1, annotation2)) {
+      result = LEFTOF;
+    } else {
+      result = RIGHTOF;
+    }
+
+    return Collections.singletonList(new Feature("RelativePosition", result));
   }
 
-  @Override
-  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) {
-    // inline Annotation.getCoveredText() here, but use the right JCas instead
-    String jCasText = jCas.getDocumentText();
-    int begin = focusAnnotation.getBegin();
-    int end = focusAnnotation.getEnd();
-    String spannedText = jCasText == null ? null : jCasText.substring(begin, end);
+  private boolean equals(Annotation a1, Annotation a2) {
+    return a1.getBegin() == a2.getBegin() && a1.getEnd() == a2.getEnd();
+  }
 
-    // create a single feature from the text
-    Feature feature = new Feature(spannedText);
-    return Collections.singletonList(feature);
+  private boolean contains(Annotation a1, Annotation a2) {
+    return a1.getBegin() <= a2.getBegin() && a1.getEnd() >= a2.getEnd();
+  }
+
+  private boolean overlaps(Annotation a1, Annotation a2) {
+    return !(a1.getBegin() >= a2.getEnd() || a1.getEnd() <= a2.getBegin());
+  }
+
+  private boolean beginsFirst(Annotation a1, Annotation a2) {
+    return a1.getBegin() < a2.getBegin();
   }
 }

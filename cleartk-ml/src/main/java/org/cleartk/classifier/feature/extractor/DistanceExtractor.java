@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2013, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,26 +21,61 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor.simple;
+package org.cleartk.classifier.feature.extractor;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.classifier.Feature;
+import org.uimafit.util.JCasUtil;
 
 /**
- * A {@link FeatureExtractor1} that provides the name used for the features it creates.
- * 
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * @author Steven Bethard
+ * 
+ * @author Philipp Wetzler
+ * 
  */
-public interface SimpleNamedFeatureExtractor<T extends Annotation> extends
-    FeatureExtractor1<T> {
 
-  /**
-   * Gets the name that will be used for all features created by this feature extractor.
-   * 
-   * @return The feature name
-   */
-  public String getFeatureName();
+public class DistanceExtractor<T extends Annotation, U extends Annotation> implements
+    FeatureExtractor2<T, U> {
+  String name;
+
+  Class<? extends Annotation> unitClass;
+
+  public DistanceExtractor(String name, Class<? extends Annotation> unitClass) {
+    this.name = name;
+    this.unitClass = unitClass;
+  }
+
+  public List<Feature> extract(JCas jCas, Annotation annotation1, Annotation annotation2) {
+    Annotation firstAnnotation, secondAnnotation;
+
+    if (annotation1.getBegin() <= annotation2.getBegin()) {
+      firstAnnotation = annotation1;
+      secondAnnotation = annotation2;
+    } else {
+      firstAnnotation = annotation2;
+      secondAnnotation = annotation1;
+    }
+
+    String featureName = Feature.createName(this.name, "Distance", this.unitClass.getSimpleName());
+    int featureValue;
+    if (secondAnnotation.getBegin() <= firstAnnotation.getEnd()) {
+      featureValue = 0;
+    } else {
+      List<? extends Annotation> annotations = JCasUtil.selectCovered(
+          jCas,
+          unitClass,
+          firstAnnotation.getEnd(),
+          secondAnnotation.getBegin());
+      featureValue = annotations.size();
+    }
+
+    return Collections.singletonList(new Feature(featureName, featureValue));
+  }
 }

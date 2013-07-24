@@ -40,8 +40,6 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor.LastCovered;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Ngram;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Ngrams;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.Sentence;

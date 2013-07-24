@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor.annotationpair;
+package org.cleartk.classifier.feature.extractor;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,65 +29,35 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.util.AnnotationUtil;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
+ * <p>
  * 
- * @author Philip Ogren This class was initially copied from DistanceExtractor and was modified in
- *         two ways:
- *         <ul>
- *         <li>the distance between annotations will be negative if the first annotation comes after
- *         the second</li>
- *         <li>zero will only be returned if the two annotations overlap. Adjacent annotations will
- *         have a distance of |1|.</li>
- *         </ul>
+ * @author Philip Ogren
+ * 
  */
 
-public class DirectedDistanceExtractor<T extends Annotation, U extends Annotation> implements
-    FeatureExtractor2<T, U> {
-  String name;
+public class CoveredTextExtractor<T extends Annotation> implements SimpleNamedFeatureExtractor<T> {
 
-  Class<? extends Annotation> unitClass;
-
-  public DirectedDistanceExtractor(String name, Class<? extends Annotation> unitClass) {
-    this.name = name;
-    this.unitClass = unitClass;
+  @Override
+  public String getFeatureName() {
+    return null;
   }
 
-  public List<Feature> extract(JCas jCas, Annotation annotation1, Annotation annotation2) {
-    String featureName = Feature.createName(this.name, "DDistance", this.unitClass.getSimpleName());
+  @Override
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) {
+    // inline Annotation.getCoveredText() here, but use the right JCas instead
+    String jCasText = jCas.getDocumentText();
+    int begin = focusAnnotation.getBegin();
+    int end = focusAnnotation.getEnd();
+    String spannedText = jCasText == null ? null : jCasText.substring(begin, end);
 
-    Annotation firstAnnotation, secondAnnotation;
-    boolean negate = false;
-    if (annotation1.getBegin() <= annotation2.getBegin()) {
-      firstAnnotation = annotation1;
-      secondAnnotation = annotation2;
-    } else {
-      firstAnnotation = annotation2;
-      secondAnnotation = annotation1;
-      negate = true;
-    }
-
-    int featureValue = 0;
-
-    if (AnnotationUtil.overlaps(annotation1, annotation2)) {
-      featureValue = 0;
-    } else {
-      List<? extends Annotation> annotations = JCasUtil.selectCovered(
-          jCas,
-          unitClass,
-          firstAnnotation.getEnd(),
-          secondAnnotation.getBegin());
-      featureValue = annotations.size() + 1;
-    }
-    if (negate)
-      featureValue = -featureValue;
-
-    return Collections.singletonList(new Feature(featureName, featureValue));
+    // create a single feature from the text
+    Feature feature = new Feature(spannedText);
+    return Collections.singletonList(feature);
   }
 }

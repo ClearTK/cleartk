@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.annotationpair.FeatureExtractor2;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor2;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil.TreebankNodePath;

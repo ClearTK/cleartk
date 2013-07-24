@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,61 +21,49 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor.annotationpair;
+package org.cleartk.classifier.feature.extractor;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * 
  * @author Philipp Wetzler
- * 
  */
+public class NamingExtractor<T extends Annotation> implements FeatureExtractor1<T> {
 
-public class DistanceExtractor<T extends Annotation, U extends Annotation> implements
-    FeatureExtractor2<T, U> {
-  String name;
-
-  Class<? extends Annotation> unitClass;
-
-  public DistanceExtractor(String name, Class<? extends Annotation> unitClass) {
+  /**
+   * Prepends the name of the features produced by subExtractor with the passed in name. To apply
+   * the name to multiple feature extractors pass in a {@link CombinedExtractor}
+   * 
+   * @param name
+   *          The name to prepend to extracted feature names
+   * @param subExtractor
+   *          delegated extractor
+   */
+  public NamingExtractor(String name, FeatureExtractor1<T> subExtractor) {
     this.name = name;
-    this.unitClass = unitClass;
+    this.subExtractor = subExtractor;
   }
 
-  public List<Feature> extract(JCas jCas, Annotation annotation1, Annotation annotation2) {
-    Annotation firstAnnotation, secondAnnotation;
+  public List<Feature> extract(JCas view, T focusAnnotation) throws CleartkExtractorException {
+    List<Feature> features = subExtractor.extract(view, focusAnnotation);
 
-    if (annotation1.getBegin() <= annotation2.getBegin()) {
-      firstAnnotation = annotation1;
-      secondAnnotation = annotation2;
-    } else {
-      firstAnnotation = annotation2;
-      secondAnnotation = annotation1;
+    for (Feature feature : features) {
+      feature.setName(Feature.createName(name, feature.getName()));
     }
 
-    String featureName = Feature.createName(this.name, "Distance", this.unitClass.getSimpleName());
-    int featureValue;
-    if (secondAnnotation.getBegin() <= firstAnnotation.getEnd()) {
-      featureValue = 0;
-    } else {
-      List<? extends Annotation> annotations = JCasUtil.selectCovered(
-          jCas,
-          unitClass,
-          firstAnnotation.getEnd(),
-          secondAnnotation.getBegin());
-      featureValue = annotations.size();
-    }
-
-    return Collections.singletonList(new Feature(featureName, featureValue));
+    return features;
   }
+
+  private String name;
+
+  private FeatureExtractor1<T> subExtractor;
+
 }

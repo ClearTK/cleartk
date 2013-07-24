@@ -26,8 +26,8 @@ package org.cleartk.feature.syntax;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.test.DefaultTestBase;

@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor.annotationpair;
+package org.cleartk.classifier.feature.extractor;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +29,8 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
+import org.cleartk.util.AnnotationUtil;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -36,61 +38,56 @@ import org.cleartk.classifier.Feature;
  * All rights reserved.
  * 
  * 
- * @author Philipp Wetzler
- * 
+ * @author Philip Ogren This class was initially copied from DistanceExtractor and was modified in
+ *         two ways:
+ *         <ul>
+ *         <li>the distance between annotations will be negative if the first annotation comes after
+ *         the second</li>
+ *         <li>zero will only be returned if the two annotations overlap. Adjacent annotations will
+ *         have a distance of |1|.</li>
+ *         </ul>
  */
 
-public class RelativePositionExtractor<T extends Annotation, U extends Annotation> implements
+public class DirectedDistanceExtractor<T extends Annotation, U extends Annotation> implements
     FeatureExtractor2<T, U> {
+  String name;
 
-  public static final String EQUALS = "EQUALS";
+  Class<? extends Annotation> unitClass;
 
-  public static final String CONTAINS = "CONTAINS";
+  public DirectedDistanceExtractor(String name, Class<? extends Annotation> unitClass) {
+    this.name = name;
+    this.unitClass = unitClass;
+  }
 
-  public static final String CONTAINEDBY = "CONTAINEDBY";
+  public List<Feature> extract(JCas jCas, Annotation annotation1, Annotation annotation2) {
+    String featureName = Feature.createName(this.name, "DDistance", this.unitClass.getSimpleName());
 
-  public static final String OVERLAPS_LEFT = "OVERLAPS_LEFT";
-
-  public static final String OVERLAPS_RIGHT = "OVERLAPS_RIGHT";
-
-  public static final String LEFTOF = "LEFTOF";
-
-  public static final String RIGHTOF = "RIGHTOF";
-
-  public List<Feature> extract(JCas view, T annotation1, U annotation2) {
-    String result;
-    if (equals(annotation1, annotation2)) {
-      result = EQUALS;
-    } else if (contains(annotation1, annotation2)) {
-      result = CONTAINS;
-    } else if (contains(annotation2, annotation1)) {
-      result = CONTAINEDBY;
-    } else if (overlaps(annotation1, annotation2) && beginsFirst(annotation1, annotation2)) {
-      result = OVERLAPS_LEFT;
-    } else if (overlaps(annotation1, annotation2)) {
-      result = OVERLAPS_RIGHT;
-    } else if (beginsFirst(annotation1, annotation2)) {
-      result = LEFTOF;
+    Annotation firstAnnotation, secondAnnotation;
+    boolean negate = false;
+    if (annotation1.getBegin() <= annotation2.getBegin()) {
+      firstAnnotation = annotation1;
+      secondAnnotation = annotation2;
     } else {
-      result = RIGHTOF;
+      firstAnnotation = annotation2;
+      secondAnnotation = annotation1;
+      negate = true;
     }
 
-    return Collections.singletonList(new Feature("RelativePosition", result));
-  }
+    int featureValue = 0;
 
-  private boolean equals(Annotation a1, Annotation a2) {
-    return a1.getBegin() == a2.getBegin() && a1.getEnd() == a2.getEnd();
-  }
+    if (AnnotationUtil.overlaps(annotation1, annotation2)) {
+      featureValue = 0;
+    } else {
+      List<? extends Annotation> annotations = JCasUtil.selectCovered(
+          jCas,
+          unitClass,
+          firstAnnotation.getEnd(),
+          secondAnnotation.getBegin());
+      featureValue = annotations.size() + 1;
+    }
+    if (negate)
+      featureValue = -featureValue;
 
-  private boolean contains(Annotation a1, Annotation a2) {
-    return a1.getBegin() <= a2.getBegin() && a1.getEnd() >= a2.getEnd();
-  }
-
-  private boolean overlaps(Annotation a1, Annotation a2) {
-    return !(a1.getBegin() >= a2.getEnd() || a1.getEnd() <= a2.getBegin());
-  }
-
-  private boolean beginsFirst(Annotation a1, Annotation a2) {
-    return a1.getBegin() < a2.getBegin();
+    return Collections.singletonList(new Feature(featureName, featureValue));
   }
 }

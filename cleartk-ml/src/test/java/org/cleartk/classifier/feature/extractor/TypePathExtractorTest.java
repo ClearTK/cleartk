@@ -38,7 +38,6 @@ import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.DependencyRelation;
 import org.cleartk.type.test.Header;
