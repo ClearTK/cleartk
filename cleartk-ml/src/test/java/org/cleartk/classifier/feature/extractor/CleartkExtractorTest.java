@@ -60,9 +60,9 @@ public class CleartkExtractorTest extends DefaultTestBase {
 
   @Test
   public void testBasic() throws Exception {
-    CleartkExtractor extractor = new CleartkExtractor(
+    CleartkExtractor<Chunk, Token> extractor = new CleartkExtractor<Chunk, Token>(
         Token.class,
-        new CoveredTextExtractor(),
+        new CoveredTextExtractor<Token>(),
         new Preceding(2),
         new Preceding(3, 6),
         new Covered(),
@@ -110,13 +110,15 @@ public class CleartkExtractorTest extends DefaultTestBase {
 
   @Test
   public void testBag() throws Exception {
-    CleartkExtractor extractor = new CleartkExtractor(Token.class, new TypePathExtractor(
+    CleartkExtractor<Chunk, Token> extractor = new CleartkExtractor<Chunk, Token>(
         Token.class,
-        "pos"), new Bag(new Preceding(2)), new Bag(new Preceding(3, 6)), new Bag(
-        new FirstCovered(1),
-        new LastCovered(1)), new Bag(new Following(1, 3)), new Bag(new Following(3, 5)), new Bag(
-        new Preceding(1),
-        new Following(1)));
+        new TypePathExtractor<Token>(Token.class, "pos"),
+        new Bag(new Preceding(2)),
+        new Bag(new Preceding(3, 6)),
+        new Bag(new FirstCovered(1), new LastCovered(1)),
+        new Bag(new Following(1, 3)),
+        new Bag(new Following(3, 5)),
+        new Bag(new Preceding(1), new Following(1)));
 
     this.tokenBuilder.buildTokens(
         this.jCas,
@@ -147,9 +149,9 @@ public class CleartkExtractorTest extends DefaultTestBase {
 
   @Test
   public void testCounts() throws Exception {
-    CleartkExtractor extractor = new CleartkExtractor(
+    CleartkExtractor<Chunk, Token> extractor = new CleartkExtractor<Chunk, Token>(
         Token.class,
-        new CoveredTextExtractor(),
+        new CoveredTextExtractor<Token>(),
         new Count(new Preceding(2)),
         new Count(new Covered()),
         new Count(new Following(1, 5)),
@@ -176,9 +178,9 @@ public class CleartkExtractorTest extends DefaultTestBase {
 
   @Test
   public void testNgram() throws Exception {
-    CleartkExtractor extractor = new CleartkExtractor(
+    CleartkExtractor<Chunk, Token> extractor = new CleartkExtractor<Chunk, Token>(
         Token.class,
-        new CoveredTextExtractor(),
+        new CoveredTextExtractor<Token>(),
         new Ngram(new Preceding(2)),
         new Ngram(new Preceding(3, 6)),
         new Ngram(new Preceding(1), new FirstCovered(1), new LastCovered(1)),
@@ -211,9 +213,9 @@ public class CleartkExtractorTest extends DefaultTestBase {
 
   @Test
   public void testNgrams() throws Exception {
-    CleartkExtractor extractor = new CleartkExtractor(
+    CleartkExtractor<Chunk, Token> extractor = new CleartkExtractor<Chunk, Token>(
         Token.class,
-        new CoveredTextExtractor(),
+        new CoveredTextExtractor<Token>(),
         new Ngrams(2, new Preceding(3)),
         new Ngrams(2, new Following(3)),
         new Ngrams(4, new Preceding(3), new Following(3)),
@@ -247,9 +249,9 @@ public class CleartkExtractorTest extends DefaultTestBase {
 
   @Test
   public void testFocus() throws Exception {
-    CleartkExtractor extractor = new CleartkExtractor(
+    CleartkExtractor<Token, Token> extractor = new CleartkExtractor<Token, Token>(
         Token.class,
-        new CoveredTextExtractor(),
+        new CoveredTextExtractor<Token>(),
         new Focus(),
         new Bag(new Preceding(1), new Focus()),
         new Ngram(new Following(2), new Focus()));
@@ -270,22 +272,22 @@ public class CleartkExtractorTest extends DefaultTestBase {
     this.assertFeature("Bag_Preceding_0_1_Focus", "jumped", iter.next());
     this.assertFeature("Ngram_Following_0_2_Focus", "over_the_jumped", iter.next());
 
-    CleartkExtractor chunkExtractor = new CleartkExtractor(
+    CleartkExtractor<Token, Chunk> chunkExtractor = new CleartkExtractor<Token, Chunk>(
         Chunk.class,
-        new CoveredTextExtractor(),
+        new CoveredTextExtractor<Chunk>(),
         new Focus());
     try {
       chunkExtractor.extract(this.jCas, jumped);
       Assert.fail("Expected exception from Focus of wrong type");
-    } catch (IllegalArgumentException e) {
+    } catch (ClassCastException e) {
     }
   }
 
   @Test
   public void testBounds() throws Exception {
-    CleartkExtractor extractor = new CleartkExtractor(
+    CleartkExtractor<Chunk, Token> extractor = new CleartkExtractor<Chunk, Token>(
         Token.class,
-        new CoveredTextExtractor(),
+        new CoveredTextExtractor<Token>(),
         new Preceding(2),
         new LastCovered(1),
         new Following(3));
@@ -339,9 +341,9 @@ public class CleartkExtractorTest extends DefaultTestBase {
 
   @Test
   public void testExtractBetween() throws Exception {
-    CleartkExtractor extractor = new CleartkExtractor(
+    CleartkExtractor<Chunk, Token> extractor = new CleartkExtractor<Chunk, Token>(
         Token.class,
-        new CoveredTextExtractor(),
+        new CoveredTextExtractor<Token>(),
         new Bag(new Preceding(2)),
         new Covered(),
         new Ngram(new Following(3)));
@@ -369,9 +371,9 @@ public class CleartkExtractorTest extends DefaultTestBase {
 
   @Test
   public void testNestedNames() throws Exception {
-    CleartkExtractor extractor = new CleartkExtractor(
+    CleartkExtractor<Chunk, Token> extractor = new CleartkExtractor<Chunk, Token>(
         Token.class,
-        new TypePathExtractor(Token.class, "pos"),
+        new TypePathExtractor<Token>(Token.class, "pos"),
         new Count(new Preceding(1, 5), new Covered()),
         new Bag(new Preceding(3)),
         new Ngram(new Following(2)),

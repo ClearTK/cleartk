@@ -37,19 +37,23 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
  * 
  * @author Philipp Wetzler
  */
-public class NamingExtractor implements SimpleFeatureExtractor {
+public class NamingExtractor<T extends Annotation> implements FeatureExtractor1<T> {
 
-  public NamingExtractor(String name, SimpleFeatureExtractor subExtractor) {
+  /**
+   * Prepends the name of the features produced by subExtractor with the passed in name. To apply
+   * the name to multiple feature extractors pass in a {@link CombinedExtractor}
+   * 
+   * @param name
+   *          The name to prepend to extracted feature names
+   * @param subExtractor
+   *          delegated extractor
+   */
+  public NamingExtractor(String name, FeatureExtractor1<T> subExtractor) {
     this.name = name;
     this.subExtractor = subExtractor;
   }
 
-  public NamingExtractor(String name, SimpleFeatureExtractor... subExtractors) {
-    this(name, new CombinedExtractor(subExtractors));
-  }
-
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkExtractorException {
+  public List<Feature> extract(JCas view, T focusAnnotation) throws CleartkExtractorException {
     List<Feature> features = subExtractor.extract(view, focusAnnotation);
 
     for (Feature feature : features) {
@@ -61,6 +65,6 @@ public class NamingExtractor implements SimpleFeatureExtractor {
 
   private String name;
 
-  private SimpleFeatureExtractor subExtractor;
+  private FeatureExtractor1<T> subExtractor;
 
 }

@@ -43,7 +43,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.classifier.feature.transform.OneToOneTrainableExtractor_ImplBase;
 import org.cleartk.classifier.feature.transform.TransformableFeature;
 
@@ -58,10 +58,10 @@ import org.cleartk.classifier.feature.transform.TransformableFeature;
  * @author Lee Becker
  * 
  */
-public class MinMaxNormalizationExtractor<OUTCOME_T> extends
-    OneToOneTrainableExtractor_ImplBase<OUTCOME_T> implements SimpleFeatureExtractor {
+public class MinMaxNormalizationExtractor<OUTCOME_T, FOCUS_T extends Annotation> extends
+    OneToOneTrainableExtractor_ImplBase<OUTCOME_T> implements FeatureExtractor1<FOCUS_T> {
 
-  private SimpleFeatureExtractor subExtractor;
+  private FeatureExtractor1<FOCUS_T> subExtractor;
 
   private boolean isTrained;
 
@@ -72,7 +72,7 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends
     this(name, null);
   }
 
-  public MinMaxNormalizationExtractor(String name, SimpleFeatureExtractor subExtractor) {
+  public MinMaxNormalizationExtractor(String name, FeatureExtractor1<FOCUS_T> subExtractor) {
     super(name);
     this.subExtractor = subExtractor;
     this.isTrained = false;
@@ -88,8 +88,7 @@ public class MinMaxNormalizationExtractor<OUTCOME_T> extends
   }
 
   @Override
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkExtractorException {
+  public List<Feature> extract(JCas view, FOCUS_T focusAnnotation) throws CleartkExtractorException {
 
     List<Feature> extracted = this.subExtractor.extract(view, focusAnnotation);
     List<Feature> result = new ArrayList<Feature>();

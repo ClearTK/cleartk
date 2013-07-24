@@ -31,7 +31,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 
 import com.google.common.annotations.Beta;
 
@@ -43,20 +43,20 @@ import com.google.common.annotations.Beta;
  * 
  */
 @Beta
-public class StopwordRemovingExtractor implements SimpleFeatureExtractor {
+public class StopwordRemovingExtractor<FOCUS_T extends Annotation> implements
+    FeatureExtractor1<FOCUS_T> {
 
   private Set<String> stopwords;
 
-  private SimpleFeatureExtractor subExtractor;
+  private FeatureExtractor1<FOCUS_T> subExtractor;
 
-  public StopwordRemovingExtractor(Set<String> stopwords, SimpleFeatureExtractor subExtractor) {
+  public StopwordRemovingExtractor(Set<String> stopwords, FeatureExtractor1<FOCUS_T> subExtractor) {
     this.stopwords = stopwords;
     this.subExtractor = subExtractor;
   }
 
   @Override
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkExtractorException {
+  public List<Feature> extract(JCas view, FOCUS_T focusAnnotation) throws CleartkExtractorException {
 
     String spanText = focusAnnotation.getCoveredText();
     List<Feature> features = new ArrayList<Feature>();

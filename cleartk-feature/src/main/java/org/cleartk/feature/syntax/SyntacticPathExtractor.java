@@ -28,11 +28,10 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.annotationpair.AnnotationPairFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.annotationpair.FeatureExtractor2;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 
@@ -45,12 +44,12 @@ import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
  * @author Philipp Wetzler
  * 
  */
-public class SyntacticPathExtractor implements AnnotationPairFeatureExtractor {
+public class SyntacticPathExtractor implements FeatureExtractor2<TreebankNode, TreebankNode> {
   protected final String UP_SEPARATOR = "::";
 
   protected final String DOWN_SEPARATOR = ";;";
 
-  protected SimpleFeatureExtractor pathMemberExtractor;
+  protected FeatureExtractor1<TreebankNode> pathMemberExtractor;
 
   protected String name;
 
@@ -69,7 +68,7 @@ public class SyntacticPathExtractor implements AnnotationPairFeatureExtractor {
    *          if true, generate a partial path only, i.e. from the first node up to the lowest
    *          common ancestor of the two
    */
-  public SyntacticPathExtractor(SimpleFeatureExtractor pathMemberExtractor, boolean partial) {
+  public SyntacticPathExtractor(FeatureExtractor1<TreebankNode> pathMemberExtractor, boolean partial) {
     this.pathMemberExtractor = pathMemberExtractor;
     this.isPartial = partial;
   }
@@ -77,35 +76,25 @@ public class SyntacticPathExtractor implements AnnotationPairFeatureExtractor {
   /**
    * This constructor defaults to a full rather than a partial path.
    */
-  public SyntacticPathExtractor(SimpleFeatureExtractor pathMemberExtractor) {
+  public SyntacticPathExtractor(FeatureExtractor1<TreebankNode> pathMemberExtractor) {
     this(pathMemberExtractor, false);
   }
 
   /**
    * Extract a string representation of a path feature.
    * 
-   * @param leftAnnotation
+   * @param leftConstituent
    *          the first node of the path
    * 
-   * @param rightAnnotation
+   * @param rightConstituent
    *          the last node of the path
    * 
    * @return List of one <em>StringFeature</em>, which contains a string representation of the path
    *         between the two nodes.
    * 
    */
-  public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation)
+  public List<Feature> extract(JCas view, TreebankNode leftConstituent, TreebankNode rightConstituent)
       throws CleartkExtractorException {
-    TreebankNode leftConstituent;
-    TreebankNode rightConstituent;
-    Annotation currentAnnotation = leftAnnotation;
-    try {
-      leftConstituent = (TreebankNode) leftAnnotation;
-      currentAnnotation = rightAnnotation;
-      rightConstituent = (TreebankNode) rightAnnotation;
-    } catch (ClassCastException e) {
-      throw CleartkExtractorException.wrongAnnotationType(TreebankNode.class, currentAnnotation);
-    }
 
     List<TreebankNode> fromStart = TreebankNodeUtil.getPathToRoot(leftConstituent);
     List<TreebankNode> fromEnd = TreebankNodeUtil.getPathToRoot(rightConstituent);

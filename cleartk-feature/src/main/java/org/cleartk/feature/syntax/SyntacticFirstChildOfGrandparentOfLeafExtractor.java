@@ -40,7 +40,7 @@ import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
  * 
  * @author Steven Bethard
  */
-public class SyntacticFirstChildOfGrandparentOfLeafExtractor implements SimpleNamedFeatureExtractor {
+public class SyntacticFirstChildOfGrandparentOfLeafExtractor<T extends Annotation> implements SimpleNamedFeatureExtractor<T> {
   
   private String featureName = "FirstChildOfGrandparent";
   
@@ -50,7 +50,7 @@ public class SyntacticFirstChildOfGrandparentOfLeafExtractor implements SimpleNa
   }
 
   @Override
-  public List<Feature> extract(JCas view, Annotation focusAnnotation) {
+  public List<Feature> extract(JCas view, T focusAnnotation) {
     List<Feature> features = new ArrayList<Feature>();
     TreebankNode node = TreebankNodeUtil.selectMatchingLeaf(view, focusAnnotation);
     if (node != null) {

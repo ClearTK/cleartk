@@ -38,9 +38,9 @@ import org.apache.uima.util.Level;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.extractor.BetweenAnnotationsFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.annotationpair.FeatureExtractor2;
 import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil.TreebankNodePath;
 import org.cleartk.timeml.type.Anchor;
@@ -99,11 +99,11 @@ public abstract class TemporalLinkAnnotator_ImplBase<SOURCE extends Anchor, TARG
   
   private static final String NO_RELATION = "-NO-RELATION-";
 
-  protected List<SimpleFeatureExtractor> sourceExtractors;
+  protected List<FeatureExtractor1<SOURCE>> sourceExtractors;
 
-  protected List<SimpleFeatureExtractor> targetExtractors;
+  protected List<FeatureExtractor1<TARGET>> targetExtractors;
 
-  protected List<BetweenAnnotationsFeatureExtractor> betweenExtractors;
+  protected List<FeatureExtractor2<Anchor,Anchor>> betweenExtractors;
 
   protected class SourceTargetPair {
 
@@ -124,26 +124,26 @@ public abstract class TemporalLinkAnnotator_ImplBase<SOURCE extends Anchor, TARG
     this.sourceClass = sourceClass;
     this.targetClass = targetClass;
     this.trainingRelationTypes = new HashSet<String>(Arrays.asList(trainingRelationTypes));
-    this.sourceExtractors = new ArrayList<SimpleFeatureExtractor>();
-    this.targetExtractors = new ArrayList<SimpleFeatureExtractor>();
-    this.betweenExtractors = new ArrayList<BetweenAnnotationsFeatureExtractor>();
+    this.sourceExtractors = Lists.newArrayList();
+    this.targetExtractors = Lists.newArrayList();
+    this.betweenExtractors = Lists.newArrayList();
   }
 
-  protected void setSourceExtractors(List<SimpleFeatureExtractor> extractors) {
-    this.sourceExtractors = new ArrayList<SimpleFeatureExtractor>();
-    for (SimpleFeatureExtractor extractor : extractors) {
-      this.sourceExtractors.add(new NamingExtractor("Source", extractor));
+  protected void setSourceExtractors(List<FeatureExtractor1<SOURCE>> extractors) {
+    this.sourceExtractors = new ArrayList<FeatureExtractor1<SOURCE>>();
+    for (FeatureExtractor1<SOURCE> extractor : extractors) {
+      this.sourceExtractors.add(new NamingExtractor<SOURCE>("Source", extractor));
     }
   }
 
-  protected void setTargetExtractors(List<SimpleFeatureExtractor> extractors) {
-    this.targetExtractors = new ArrayList<SimpleFeatureExtractor>();
-    for (SimpleFeatureExtractor extractor : extractors) {
-      this.targetExtractors.add(new NamingExtractor("Target", extractor));
+  protected void setTargetExtractors(List<FeatureExtractor1<TARGET>> extractors) {
+    this.targetExtractors = new ArrayList<FeatureExtractor1<TARGET>>();
+    for (FeatureExtractor1<TARGET> extractor : extractors) {
+      this.targetExtractors.add(new NamingExtractor<TARGET>("Target", extractor));
     }
   }
 
-  protected void setBetweenExtractors(List<BetweenAnnotationsFeatureExtractor> extractors) {
+  protected void setBetweenExtractors(List<FeatureExtractor2<Anchor, Anchor>> extractors) {
     this.betweenExtractors = extractors;
   }
 
@@ -187,14 +187,14 @@ public abstract class TemporalLinkAnnotator_ImplBase<SOURCE extends Anchor, TARG
 
       // extract features
       List<Feature> features = new ArrayList<Feature>();
-      for (SimpleFeatureExtractor extractor : this.sourceExtractors) {
+      for (FeatureExtractor1<SOURCE> extractor : this.sourceExtractors) {
         features.addAll(extractor.extract(jCas, source));
       }
-      for (SimpleFeatureExtractor extractor : this.targetExtractors) {
+      for (FeatureExtractor1<TARGET> extractor : this.targetExtractors) {
         features.addAll(extractor.extract(jCas, target));
       }
-      for (BetweenAnnotationsFeatureExtractor extractor : this.betweenExtractors) {
-        features.addAll(extractor.extractBetween(jCas, source, target));
+      for (FeatureExtractor2<Anchor, Anchor> extractor : this.betweenExtractors) {
+        features.addAll(extractor.extract(jCas, source, target));
       }
 
       // during training, write an instance if this pair was labeled

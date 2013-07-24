@@ -65,7 +65,7 @@ import org.uimafit.util.JCasUtil;
  *         converted to strings
  */
 
-public class TypePathExtractor implements SimpleNamedFeatureExtractor {
+public class TypePathExtractor<T extends Annotation> implements SimpleNamedFeatureExtractor<T> {
 
   String featureName;
 
@@ -123,7 +123,7 @@ public class TypePathExtractor implements SimpleNamedFeatureExtractor {
    */
 
   public TypePathExtractor(
-      Class<? extends Annotation> focusClass,
+      Class<T> focusClass,
       String typePath,
       boolean traverseAllPaths,
       boolean returnAllValues,
@@ -171,7 +171,7 @@ public class TypePathExtractor implements SimpleNamedFeatureExtractor {
   /**
    * calls this(type, typePath, false, false, true, jCas)
    */
-  public TypePathExtractor(Class<? extends Annotation> focusClass, String typePath) {
+  public TypePathExtractor(Class<T> focusClass, String typePath) {
     this(focusClass, typePath, false, false, true);
   }
 

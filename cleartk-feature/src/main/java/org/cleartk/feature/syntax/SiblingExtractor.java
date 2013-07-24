@@ -27,11 +27,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.uimafit.util.JCasUtil;
 
@@ -45,9 +43,9 @@ import com.google.common.collect.Lists;
  * 
  * @author Philipp Wetzler
  */
-public class SiblingExtractor implements SimpleFeatureExtractor {
+public class SiblingExtractor implements FeatureExtractor1<TreebankNode> {
 
-  public SiblingExtractor(int offset, SimpleFeatureExtractor subExtractor) {
+  public SiblingExtractor(int offset, FeatureExtractor1<TreebankNode> subExtractor) {
     this.offset = offset;
     this.subExtractor = subExtractor;
 
@@ -66,13 +64,9 @@ public class SiblingExtractor implements SimpleFeatureExtractor {
     }
   }
 
-  public SiblingExtractor(int offset, SimpleFeatureExtractor... subExtractors) {
-    this(offset, new CombinedExtractor(subExtractors));
-  }
 
-  public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
+  public List<Feature> extract(JCas jCas, TreebankNode node)
       throws CleartkExtractorException {
-    TreebankNode node = (TreebankNode) focusAnnotation;
     TreebankNode parent = node.getParent();
 
     if (parent == null)
@@ -101,6 +95,6 @@ public class SiblingExtractor implements SimpleFeatureExtractor {
 
   private String name;
 
-  private SimpleFeatureExtractor subExtractor;
+  private FeatureExtractor1<TreebankNode> subExtractor;
 
 }

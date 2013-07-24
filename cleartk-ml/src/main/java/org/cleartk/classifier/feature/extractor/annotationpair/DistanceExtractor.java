@@ -41,7 +41,8 @@ import org.uimafit.util.JCasUtil;
  * 
  */
 
-public class DistanceExtractor implements AnnotationPairFeatureExtractor {
+public class DistanceExtractor<T extends Annotation, U extends Annotation> implements
+    FeatureExtractor2<T, U> {
   String name;
 
   Class<? extends Annotation> unitClass;

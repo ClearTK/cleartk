@@ -48,7 +48,7 @@ public class CharacterCategoryPatternExtractorTest extends DefaultTestBase {
 
   @Test
   public void testOnePerChar() throws Exception {
-    CharacterCategoryPatternExtractor extractor = new CharacterCategoryPatternExtractor();
+    CharacterCategoryPatternExtractor<Token> extractor = new CharacterCategoryPatternExtractor<Token>();
     this.tokenBuilder.buildTokens(this.jCas, "spam 42 XXyy C3p0 A1-b4.");
     Iterator<Token> tokensIter = JCasUtil.select(this.jCas, Token.class).iterator();
     Token spam = tokensIter.next();
@@ -67,7 +67,7 @@ public class CharacterCategoryPatternExtractorTest extends DefaultTestBase {
 
   @Test
   public void testRepeatsMerged() throws Exception {
-    CharacterCategoryPatternExtractor extractor = new CharacterCategoryPatternExtractor(
+    CharacterCategoryPatternExtractor<Token> extractor = new CharacterCategoryPatternExtractor<Token>(
         PatternType.REPEATS_MERGED);
     this.tokenBuilder.buildTokens(this.jCas, "spam 42 XXyy C3p0 AC1-b43.!");
     Iterator<Token> tokensIter = JCasUtil.select(this.jCas, Token.class).iterator();
@@ -87,7 +87,7 @@ public class CharacterCategoryPatternExtractorTest extends DefaultTestBase {
 
   @Test
   public void testRepeatsAsKleenePlus() throws Exception {
-    CharacterCategoryPatternExtractor extractor = new CharacterCategoryPatternExtractor(
+    CharacterCategoryPatternExtractor<Token> extractor = new CharacterCategoryPatternExtractor<Token>(
         PatternType.REPEATS_AS_KLEENE_PLUS);
     this.tokenBuilder.buildTokens(this.jCas, "spam 42 XXXyy C3p0 AC1-b432. A0BC12");
     Iterator<Token> tokensIter = JCasUtil.select(this.jCas, Token.class).iterator();
@@ -109,7 +109,7 @@ public class CharacterCategoryPatternExtractorTest extends DefaultTestBase {
 
   @Test
   public void testOverriddenClassifier() throws Exception {
-    CharacterCategoryPatternExtractor extractor = new CharacterCategoryPatternExtractor(
+    CharacterCategoryPatternExtractor<Token> extractor = new CharacterCategoryPatternExtractor<Token>(
         PatternType.REPEATS_MERGED) {
       @Override
       protected String classifyChar(char c) {
@@ -135,7 +135,7 @@ public class CharacterCategoryPatternExtractorTest extends DefaultTestBase {
   private void assertFeature(
       String name,
       Object value,
-      CharacterCategoryPatternExtractor extractor,
+      CharacterCategoryPatternExtractor<Token> extractor,
       Token token) throws Exception {
     List<Feature> expected = Arrays.asList(new Feature(name, value));
     List<Feature> actual = extractor.extract(this.jCas, token);

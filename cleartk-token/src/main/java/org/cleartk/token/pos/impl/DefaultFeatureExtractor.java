@@ -36,7 +36,7 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor.Ngram;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.classifier.feature.function.CapitalTypeFeatureFunction;
 import org.cleartk.classifier.feature.function.CharacterNGramFeatureFunction;
 import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
@@ -46,6 +46,8 @@ import org.cleartk.token.pos.POSFeatureExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.initializable.Initializable;
+
+import com.google.common.collect.Lists;
 
 /**
  * <br>
@@ -58,20 +60,20 @@ import org.uimafit.factory.initializable.Initializable;
 
 public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sentence>, Initializable {
 
-  private List<SimpleFeatureExtractor> simpleExtractors;
+  private List<FeatureExtractor1<Token>> simpleExtractors;
 
-  private List<CleartkExtractor> windowExtractors;
+  private List<CleartkExtractor<Token, Token>> windowExtractors;
 
-  private List<CleartkExtractor> windowNGramExtractors;
+  private List<CleartkExtractor<Token, Token>> windowNGramExtractors;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
-    simpleExtractors = new ArrayList<SimpleFeatureExtractor>();
+    simpleExtractors = Lists.newArrayList();
 
-    SimpleFeatureExtractor wordExtractor = new CoveredTextExtractor();
+    FeatureExtractor1<Token> wordExtractor = new CoveredTextExtractor<Token>();
 
     CharacterNGramFeatureFunction.Orientation fromLeft = CharacterNGramFeatureFunction.Orientation.LEFT_TO_RIGHT;
     CharacterNGramFeatureFunction.Orientation fromRight = CharacterNGramFeatureFunction.Orientation.RIGHT_TO_LEFT;
-    simpleExtractors.add(new FeatureFunctionExtractor(
+    simpleExtractors.add(new FeatureFunctionExtractor<Token>(
         wordExtractor,
         new LowerCaseFeatureFunction(),
         new CapitalTypeFeatureFunction(),
@@ -86,16 +88,15 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
         new CharacterNGramFeatureFunction(fromRight, 0, 5),
         new CharacterNGramFeatureFunction(fromRight, 0, 6)));
 
-    windowExtractors = new ArrayList<CleartkExtractor>();
-
-    windowExtractors.add(new CleartkExtractor(
+    windowExtractors = Lists.newArrayList();
+    windowExtractors.add(new CleartkExtractor<Token, Token>(
         Token.class,
         wordExtractor,
         new Preceding(2),
         new Following(2)));
 
-    windowNGramExtractors = new ArrayList<CleartkExtractor>();
-    windowNGramExtractors.add(new CleartkExtractor(Token.class, wordExtractor, new Ngram(
+    windowNGramExtractors = Lists.newArrayList();
+    windowNGramExtractors.add(new CleartkExtractor<Token, Token>(Token.class, wordExtractor, new Ngram(
         new Preceding(2)), new Ngram(new Following(2))));
   }
 
@@ -103,15 +104,15 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
       throws CleartkExtractorException {
     List<Feature> features = new ArrayList<Feature>();
 
-    for (SimpleFeatureExtractor extractor : simpleExtractors) {
+    for (FeatureExtractor1<Token> extractor : simpleExtractors) {
       features.addAll(extractor.extract(jCas, token));
     }
 
-    for (CleartkExtractor extractor : windowExtractors) {
+    for (CleartkExtractor<Token, Token> extractor : windowExtractors) {
       features.addAll(extractor.extractWithin(jCas, token, sentence));
     }
 
-    for (CleartkExtractor extractor : windowNGramExtractors) {
+    for (CleartkExtractor<Token, Token> extractor : windowNGramExtractors) {
       features.addAll(extractor.extractWithin(jCas, token, sentence));
     }
 

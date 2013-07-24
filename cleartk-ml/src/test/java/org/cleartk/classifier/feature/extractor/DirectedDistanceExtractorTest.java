@@ -51,7 +51,9 @@ public class DirectedDistanceExtractorTest extends DefaultTestBase {
         "A simple sentence to test the distance of tokens from each other.",
         "A simple sentence to test the distance of tokens from each other .");
 
-    DirectedDistanceExtractor extractor = new DirectedDistanceExtractor(null, Token.class);
+    DirectedDistanceExtractor<Token, Token> extractor = new DirectedDistanceExtractor<Token, Token>(
+        null,
+        Token.class);
 
     Token token1 = JCasUtil.selectByIndex(jCas, Token.class, 0);
     Token token2 = JCasUtil.selectByIndex(jCas, Token.class, 1);

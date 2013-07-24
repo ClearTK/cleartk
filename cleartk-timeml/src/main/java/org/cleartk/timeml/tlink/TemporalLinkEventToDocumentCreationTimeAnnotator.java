@@ -23,7 +23,6 @@
  */
 package org.cleartk.timeml.tlink;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
@@ -31,6 +30,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.timeml.type.DocumentCreationTime;
@@ -82,19 +82,21 @@ public class TemporalLinkEventToDocumentCreationTimeAnnotator extends
     // The only feature that I didn't try that seems like it might still have some promise
     // would be to find any times within, say, 5 tokens, and do the time value comparison
     // to see whether the nearby time is before, overlapping with or after the DCT
-    this.setSourceExtractors(Arrays.asList(
-        new TypePathExtractor(Event.class, "tense"),
-        new TypePathExtractor(Event.class, "aspect"),
-        new TypePathExtractor(Event.class, "eventClass"),
-        new TypePathExtractor(Event.class, "polarity"),
-        new TypePathExtractor(Event.class, "modality"),
-        // the word, but only if it's an aspectual event
-        new FilteringExtractor<Event>(Event.class, new CoveredTextExtractor()) {
+    List<FeatureExtractor1<Event>> srcExtractors = Lists.newArrayList();
+    srcExtractors.add(new TypePathExtractor<Event>(Event.class, "tense"));
+    srcExtractors.add(new TypePathExtractor<Event>(Event.class, "aspect"));
+    srcExtractors.add(new TypePathExtractor<Event>(Event.class, "eventClass"));
+    srcExtractors.add(new TypePathExtractor<Event>(Event.class, "polarity"));
+    srcExtractors.add(new TypePathExtractor<Event>(Event.class, "modality"));
+    // the word, but only if it's an aspectual event
+    srcExtractors.add(
+        new FilteringExtractor<Event>(Event.class, new CoveredTextExtractor<Event>()) {
           @Override
           protected boolean accept(Event event) {
             return event.getEventClass().equals("ASPECTUAL");
           }
-        }));
+        });
+    this.setSourceExtractors(srcExtractors);
   }
 
   @Override

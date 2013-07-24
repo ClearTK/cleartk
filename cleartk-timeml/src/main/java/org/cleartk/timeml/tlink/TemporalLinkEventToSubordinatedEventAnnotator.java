@@ -24,7 +24,6 @@
 package org.cleartk.timeml.tlink;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -35,12 +34,14 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
+import org.cleartk.classifier.feature.extractor.annotationpair.FeatureExtractor2;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
+import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.feature.syntax.SyntacticFirstChildOfGrandparentOfLeafExtractor;
@@ -89,16 +90,19 @@ public class TemporalLinkEventToSubordinatedEventAnnotator extends
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
-    List<SimpleFeatureExtractor> extractors = Arrays.<SimpleFeatureExtractor> asList(
-        new TypePathExtractor(Event.class, "tense"),
-        new TypePathExtractor(Event.class, "aspect"),
-        new TypePathExtractor(Event.class, "eventClass"),
-        new SyntacticFirstChildOfGrandparentOfLeafExtractor());
+    List<FeatureExtractor1<Event>> extractors = Lists.newArrayList();
+    extractors.add(new TypePathExtractor<Event>(Event.class, "tense"));
+    extractors.add(new TypePathExtractor<Event>(Event.class, "aspect"));
+    extractors.add(new TypePathExtractor<Event>(Event.class, "eventClass"));
+    extractors.add(new SyntacticFirstChildOfGrandparentOfLeafExtractor<Event>());
+
     this.setSourceExtractors(extractors);
     this.setTargetExtractors(extractors);
-    this.setBetweenExtractors(Arrays.asList(
-        new SyntacticLeafToLeafPathPartsExtractor(),
-        new CleartkExtractor(Token.class, new CoveredTextExtractor(), new Bag(new Covered()))));
+    
+    List<FeatureExtractor2<Anchor, Anchor>>btweenExtractors = Lists.newArrayList();
+    btweenExtractors.add(new SyntacticLeafToLeafPathPartsExtractor<Anchor, Anchor>());
+    btweenExtractors.add(new CleartkExtractor<Anchor, Token>(Token.class, new CoveredTextExtractor<Token>(), new Bag(new Covered())));
+    this.setBetweenExtractors(btweenExtractors);
   }
 
   @Override

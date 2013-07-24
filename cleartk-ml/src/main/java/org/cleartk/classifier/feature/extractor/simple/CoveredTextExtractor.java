@@ -41,7 +41,7 @@ import org.cleartk.classifier.Feature;
  * 
  */
 
-public class CoveredTextExtractor implements SimpleNamedFeatureExtractor {
+public class CoveredTextExtractor<T extends Annotation> implements SimpleNamedFeatureExtractor<T> {
 
   @Override
   public String getFeatureName() {

@@ -67,10 +67,10 @@ public class EventClassAnnotator extends EventAttributeAnnotator<String> {
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    this.eventFeatureExtractors.add(new CleartkExtractor(Token.class, new TypePathExtractor(
+    this.eventFeatureExtractors.add(new CleartkExtractor<Event, Token>(Token.class, new TypePathExtractor<Token>(
         Token.class,
         "stem"), new Bag(new Covered())));
-    this.eventFeatureExtractors.add(new CleartkExtractor(Token.class, new TypePathExtractor(
+    this.eventFeatureExtractors.add(new CleartkExtractor<Event, Token>(Token.class, new TypePathExtractor<Token>(
         Token.class,
         "pos"), new Bag(new Covered())));
   }

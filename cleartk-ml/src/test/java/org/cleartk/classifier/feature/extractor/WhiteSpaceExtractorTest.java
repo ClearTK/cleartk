@@ -94,7 +94,7 @@ public class WhiteSpaceExtractorTest extends DefaultTestBase {
 
     Token targetToken = new Token(jc, 0, 4);
     Token t1 = (Token) fsIndex.find(targetToken);
-    WhiteSpaceExtractor extractor = new WhiteSpaceExtractor();
+    WhiteSpaceExtractor<Token> extractor = new WhiteSpaceExtractor<Token>();
     List<Feature> features = extractor.extract(jc, t1);
     assertEquals(2, features.size());
     Feature feature = features.get(0);

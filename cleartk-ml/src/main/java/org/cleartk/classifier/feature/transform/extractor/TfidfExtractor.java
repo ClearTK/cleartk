@@ -42,7 +42,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.classifier.feature.transform.OneToOneTrainableExtractor_ImplBase;
 import org.cleartk.classifier.feature.transform.TransformableFeature;
 
@@ -60,10 +60,10 @@ import com.google.common.collect.Multiset;
  * @author Lee Becker
  * 
  */
-public class TfidfExtractor<OUTCOME_T> extends OneToOneTrainableExtractor_ImplBase<OUTCOME_T>
-    implements SimpleFeatureExtractor {
+public class TfidfExtractor<OUTCOME_T, FOCUS_T extends Annotation> extends
+    OneToOneTrainableExtractor_ImplBase<OUTCOME_T> implements FeatureExtractor1<FOCUS_T> {
 
-  protected SimpleFeatureExtractor subExtractor;
+  protected FeatureExtractor1<FOCUS_T> subExtractor;
 
   protected boolean isTrained;
 
@@ -78,7 +78,7 @@ public class TfidfExtractor<OUTCOME_T> extends OneToOneTrainableExtractor_ImplBa
    * @param extractor
    *          - This assumes that any extractors passed in will produce counts of some variety
    */
-  public TfidfExtractor(String name, SimpleFeatureExtractor extractor) {
+  public TfidfExtractor(String name, FeatureExtractor1<FOCUS_T> extractor) {
     super(name);
     this.subExtractor = extractor;
     this.isTrained = false;
@@ -93,8 +93,7 @@ public class TfidfExtractor<OUTCOME_T> extends OneToOneTrainableExtractor_ImplBa
   }
 
   @Override
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkExtractorException {
+  public List<Feature> extract(JCas view, FOCUS_T focusAnnotation) throws CleartkExtractorException {
 
     List<Feature> extracted = this.subExtractor.extract(view, focusAnnotation);
     List<Feature> result = new ArrayList<Feature>();

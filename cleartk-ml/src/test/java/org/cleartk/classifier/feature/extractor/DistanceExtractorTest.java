@@ -56,7 +56,9 @@ public class DistanceExtractorTest extends DefaultTestBase {
         "A simple sentence to test the distance of tokens from each other.",
         "A simple sentence to test the distance of tokens from each other .");
 
-    DistanceExtractor extractor = new DistanceExtractor(null, Token.class);
+    DistanceExtractor<Token, Token> extractor = new DistanceExtractor<Token, Token>(
+        null,
+        Token.class);
 
     Token token1 = JCasUtil.selectByIndex(jCas, Token.class, 0);
     Token token2 = JCasUtil.selectByIndex(jCas, Token.class, 1);

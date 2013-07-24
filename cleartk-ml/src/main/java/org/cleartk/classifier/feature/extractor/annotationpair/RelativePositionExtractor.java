@@ -40,7 +40,8 @@ import org.cleartk.classifier.Feature;
  * 
  */
 
-public class RelativePositionExtractor implements AnnotationPairFeatureExtractor {
+public class RelativePositionExtractor<T extends Annotation, U extends Annotation> implements
+    FeatureExtractor2<T, U> {
 
   public static final String EQUALS = "EQUALS";
 
@@ -56,7 +57,7 @@ public class RelativePositionExtractor implements AnnotationPairFeatureExtractor
 
   public static final String RIGHTOF = "RIGHTOF";
 
-  public List<Feature> extract(JCas view, Annotation annotation1, Annotation annotation2) {
+  public List<Feature> extract(JCas view, T annotation1, U annotation2) {
     String result;
     if (equals(annotation1, annotation2)) {
       result = EQUALS;

@@ -56,14 +56,16 @@ import org.uimafit.util.JCasUtil;
  */
 public class BasicDocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
-  private CleartkExtractor extractor;
+  private CleartkExtractor<DocumentAnnotation, Token> extractor;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
     // Create an extractor that gives word counts for a document
-    this.extractor = new CleartkExtractor(Token.class, new CoveredTextExtractor(), new Count(
-        new Covered()));
+    this.extractor = new CleartkExtractor<DocumentAnnotation, Token>(
+        Token.class,
+        new CoveredTextExtractor<Token>(),
+        new Count(new Covered()));
   }
 
   public void process(JCas jCas) throws AnalysisEngineProcessException {

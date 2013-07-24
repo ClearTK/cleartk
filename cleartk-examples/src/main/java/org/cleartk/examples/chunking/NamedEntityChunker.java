@@ -41,7 +41,7 @@ import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternE
 import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor.PatternType;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.type.Sentence;
@@ -61,9 +61,9 @@ import org.uimafit.util.JCasUtil;
  */
 public class NamedEntityChunker extends CleartkSequenceAnnotator<String> {
 
-  private SimpleFeatureExtractor extractor;
+  private FeatureExtractor1<Token> extractor;
 
-  private CleartkExtractor contextExtractor;
+  private CleartkExtractor<Token, Token> contextExtractor;
 
   private BIOChunking<Token, NamedEntityMention> chunking;
 
@@ -72,13 +72,13 @@ public class NamedEntityChunker extends CleartkSequenceAnnotator<String> {
     super.initialize(context);
 
     // the token feature extractor: text, char pattern (uppercase, digits, etc.), and part-of-speech
-    this.extractor = new CombinedExtractor(
-        new CoveredTextExtractor(),
-        new CharacterCategoryPatternExtractor(PatternType.REPEATS_MERGED),
-        new TypePathExtractor(Token.class, "pos"));
+    this.extractor = new CombinedExtractor<Token>(
+        new CoveredTextExtractor<Token>(),
+        new CharacterCategoryPatternExtractor<Token>(PatternType.REPEATS_MERGED),
+        new TypePathExtractor<Token>(Token.class, "pos"));
 
     // the context feature extractor: the features above for the 3 preceding and 3 following tokens
-    this.contextExtractor = new CleartkExtractor(
+    this.contextExtractor = new CleartkExtractor<Token, Token>(
         Token.class,
         this.extractor,
         new Preceding(3),

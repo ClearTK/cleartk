@@ -40,7 +40,7 @@ import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.summarization.type.SummarySentence;
 import org.cleartk.token.type.Sentence;
@@ -148,17 +148,17 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
     }
   }
 
-  private SimpleFeatureExtractor createTokenCountsExtractor() {
-    SimpleFeatureExtractor tokenFieldExtractor = new CoveredTextExtractor();
+  private FeatureExtractor1<Token> createTokenCountsExtractor() {
+    FeatureExtractor1<Token> tokenFieldExtractor = new CoveredTextExtractor<Token>();
     switch (this.tokenField) {
       case COVERED_TEXT:
-        tokenFieldExtractor = new CoveredTextExtractor();
+        tokenFieldExtractor = new CoveredTextExtractor<Token>();
         break;
       case STEM:
-        tokenFieldExtractor = new TypePathExtractor(Token.class, "stem");
+        tokenFieldExtractor = new TypePathExtractor<Token>(Token.class, "stem");
         break;
       case LEMMA:
-        tokenFieldExtractor = new TypePathExtractor(Token.class, "lemma");
+        tokenFieldExtractor = new TypePathExtractor<Token>(Token.class, "lemma");
         break;
     }
 

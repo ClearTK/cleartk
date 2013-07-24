@@ -39,6 +39,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
@@ -211,28 +212,28 @@ public class DocumentClassificationEvaluation extends
 
     // Collect TF*IDF stats for computing tf*idf values on extracted tokens
     URI tfIdfDataURI = DocumentClassificationAnnotator.createTokenTfIdfDataURI(outputDirectory);
-    TfidfExtractor<String> extractor = new TfidfExtractor<String>(
+    TfidfExtractor<String, DocumentAnnotation> extractor = new TfidfExtractor<String, DocumentAnnotation>(
         DocumentClassificationAnnotator.TFIDF_EXTRACTOR_KEY);
     extractor.train(instances);
     extractor.save(tfIdfDataURI);
 
     // Collect TF*IDF Centroid stats for computing similarity to corpus centroid
     URI tfIdfCentroidSimDataURI = DocumentClassificationAnnotator.createIdfCentroidSimilarityDataURI(outputDirectory);
-    CentroidTfidfSimilarityExtractor<String> simExtractor = new CentroidTfidfSimilarityExtractor<String>(
+    CentroidTfidfSimilarityExtractor<String, DocumentAnnotation> simExtractor = new CentroidTfidfSimilarityExtractor<String, DocumentAnnotation>(
         DocumentClassificationAnnotator.CENTROID_TFIDF_SIM_EXTRACTOR_KEY);
     simExtractor.train(instances);
     simExtractor.save(tfIdfCentroidSimDataURI);
 
     // Collect ZMUS stats for feature normalization
     URI zmusDataURI = DocumentClassificationAnnotator.createZmusDataURI(outputDirectory);
-    ZeroMeanUnitStddevExtractor<String> zmusExtractor = new ZeroMeanUnitStddevExtractor<String>(
+    ZeroMeanUnitStddevExtractor<String, DocumentAnnotation> zmusExtractor = new ZeroMeanUnitStddevExtractor<String, DocumentAnnotation>(
         DocumentClassificationAnnotator.ZMUS_EXTRACTOR_KEY);
     zmusExtractor.train(instances);
     zmusExtractor.save(zmusDataURI);
 
     // Collect MinMax stats for feature normalization
     URI minmaxDataURI = DocumentClassificationAnnotator.createMinMaxDataURI(outputDirectory);
-    MinMaxNormalizationExtractor<String> minmaxExtractor = new MinMaxNormalizationExtractor<String>(
+    MinMaxNormalizationExtractor<String, DocumentAnnotation> minmaxExtractor = new MinMaxNormalizationExtractor<String, DocumentAnnotation>(
         DocumentClassificationAnnotator.MINMAX_EXTRACTOR_KEY);
     minmaxExtractor.train(instances);
     minmaxExtractor.save(minmaxDataURI);

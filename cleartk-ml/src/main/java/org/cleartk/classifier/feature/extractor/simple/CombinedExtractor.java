@@ -31,6 +31,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 
+import com.google.common.collect.Lists;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -41,18 +43,152 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
  * @author Philipp Wetzler
  * 
  */
-public class CombinedExtractor implements SimpleFeatureExtractor {
+public class CombinedExtractor<T extends Annotation> implements FeatureExtractor1<T> {
 
-  public SimpleFeatureExtractor[] getExtractors() {
-    return extractors;
+  // public SimpleFeatureExtractor[] getExtractors() {
+  // return extractors;
+  // }
+  //
+  public List<FeatureExtractor1<T>> getExtractors() {
+    return this.extractors;
+
   }
 
   /**
    * @param extractors
    *          the array of sub-extractors to be called by this one.
    */
-  public CombinedExtractor(SimpleFeatureExtractor... extractors) {
+  /*
+   * public CombinedExtractor(SimpleFeatureExtractor... extractors) { this.extractors = extractors;
+   * }
+   */
+
+  private CombinedExtractor() {
+    this.extractors = Lists.newArrayList();
+  }
+
+  public CombinedExtractor(List<FeatureExtractor1<T>> extractors) {
     this.extractors = extractors;
+  }
+
+  public CombinedExtractor(
+      FeatureExtractor1<T> extractor1,
+      FeatureExtractor1<T> extractor2) {
+    this();
+    this.extractors.add(extractor1);
+    this.extractors.add(extractor2);
+  }
+
+  public CombinedExtractor(
+      FeatureExtractor1<T> extractor1,
+      FeatureExtractor1<T> extractor2,
+      FeatureExtractor1<T> extractor3) {
+    this();
+    this.extractors.add(extractor1);
+    this.extractors.add(extractor2);
+    this.extractors.add(extractor3);
+  }
+
+  public CombinedExtractor(
+      FeatureExtractor1<T> extractor1,
+      FeatureExtractor1<T> extractor2,
+      FeatureExtractor1<T> extractor3,
+      FeatureExtractor1<T> extractor4) {
+    this();
+    this.extractors.add(extractor1);
+    this.extractors.add(extractor2);
+    this.extractors.add(extractor3);
+    this.extractors.add(extractor4);
+  }
+
+  public CombinedExtractor(
+      FeatureExtractor1<T> extractor1,
+      FeatureExtractor1<T> extractor2,
+      FeatureExtractor1<T> extractor3,
+      FeatureExtractor1<T> extractor4,
+      FeatureExtractor1<T> extractor5) {
+    this();
+    this.extractors.add(extractor1);
+    this.extractors.add(extractor2);
+    this.extractors.add(extractor3);
+    this.extractors.add(extractor4);
+    this.extractors.add(extractor5);
+  }
+
+  public CombinedExtractor(
+      FeatureExtractor1<T> extractor1,
+      FeatureExtractor1<T> extractor2,
+      FeatureExtractor1<T> extractor3,
+      FeatureExtractor1<T> extractor4,
+      FeatureExtractor1<T> extractor5,
+      FeatureExtractor1<T> extractor6) {
+    this();
+    this.extractors.add(extractor1);
+    this.extractors.add(extractor2);
+    this.extractors.add(extractor3);
+    this.extractors.add(extractor4);
+    this.extractors.add(extractor5);
+    this.extractors.add(extractor6);
+  }
+
+  public CombinedExtractor(
+      FeatureExtractor1<T> extractor1,
+      FeatureExtractor1<T> extractor2,
+      FeatureExtractor1<T> extractor3,
+      FeatureExtractor1<T> extractor4,
+      FeatureExtractor1<T> extractor5,
+      FeatureExtractor1<T> extractor6,
+      FeatureExtractor1<T> extractor7) {
+    this();
+    this.extractors.add(extractor1);
+    this.extractors.add(extractor2);
+    this.extractors.add(extractor3);
+    this.extractors.add(extractor4);
+    this.extractors.add(extractor5);
+    this.extractors.add(extractor6);
+    this.extractors.add(extractor7);
+  }
+
+  public CombinedExtractor(
+      FeatureExtractor1<T> extractor1,
+      FeatureExtractor1<T> extractor2,
+      FeatureExtractor1<T> extractor3,
+      FeatureExtractor1<T> extractor4,
+      FeatureExtractor1<T> extractor5,
+      FeatureExtractor1<T> extractor6,
+      FeatureExtractor1<T> extractor7,
+      FeatureExtractor1<T> extractor8) {
+    this();
+    this.extractors.add(extractor1);
+    this.extractors.add(extractor2);
+    this.extractors.add(extractor3);
+    this.extractors.add(extractor4);
+    this.extractors.add(extractor5);
+    this.extractors.add(extractor6);
+    this.extractors.add(extractor7);
+    this.extractors.add(extractor8);
+  }
+
+  public CombinedExtractor(
+      FeatureExtractor1<T> extractor1,
+      FeatureExtractor1<T> extractor2,
+      FeatureExtractor1<T> extractor3,
+      FeatureExtractor1<T> extractor4,
+      FeatureExtractor1<T> extractor5,
+      FeatureExtractor1<T> extractor6,
+      FeatureExtractor1<T> extractor7,
+      FeatureExtractor1<T> extractor8,
+      FeatureExtractor1<T> extractor9) {
+    this();
+    this.extractors.add(extractor1);
+    this.extractors.add(extractor2);
+    this.extractors.add(extractor3);
+    this.extractors.add(extractor4);
+    this.extractors.add(extractor5);
+    this.extractors.add(extractor6);
+    this.extractors.add(extractor7);
+    this.extractors.add(extractor8);
+    this.extractors.add(extractor9);
   }
 
   /**
@@ -62,16 +198,15 @@ public class CombinedExtractor implements SimpleFeatureExtractor {
    * @return the combined list of features generated by the sub-extractors. If <tt>name</tt> was set
    *         in the constructor, the top-level context of all features will have that as their name.
    */
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkExtractorException {
+  public List<Feature> extract(JCas view, T focusAnnotation) throws CleartkExtractorException {
     List<Feature> result = new ArrayList<Feature>();
-    for (SimpleFeatureExtractor extractor : this.extractors) {
+    for (FeatureExtractor1<T> extractor : this.extractors) {
       result.addAll(extractor.extract(view, focusAnnotation));
     }
 
     return result;
   }
 
-  private SimpleFeatureExtractor[] extractors;
+  private List<FeatureExtractor1<T>> extractors;
 
 }

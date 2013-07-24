@@ -24,7 +24,6 @@
 package org.cleartk.timeml.tlink;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -34,7 +33,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.syntax.constituent.type.TreebankNode;
@@ -82,10 +81,11 @@ public class TemporalLinkMainEventToNextSentenceMainEventAnnotator extends
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
-    List<SimpleFeatureExtractor> extractors = Arrays.<SimpleFeatureExtractor> asList(
-        new TypePathExtractor(Event.class, "tense"),
-        new TypePathExtractor(Event.class, "aspect"),
-        new TypePathExtractor(Event.class, "eventClass"));
+    List<FeatureExtractor1<Event>> extractors = Lists.newArrayList();
+    extractors.add(new TypePathExtractor<Event>(Event.class, "tense"));
+    extractors.add(new TypePathExtractor<Event>(Event.class, "aspect"));
+    extractors.add(new TypePathExtractor<Event>(Event.class, "eventClass"));
+    
     this.setSourceExtractors(extractors);
     this.setTargetExtractors(extractors);
   }

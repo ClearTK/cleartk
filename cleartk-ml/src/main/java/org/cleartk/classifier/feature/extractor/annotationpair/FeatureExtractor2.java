@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor.simple;
+package org.cleartk.classifier.feature.extractor.annotationpair;
 
 import java.util.List;
 
@@ -29,7 +29,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.util.AnnotationUtil;
 
 /**
  * <br>
@@ -38,35 +37,9 @@ import org.cleartk.util.AnnotationUtil;
  * 
  * @author Philipp Wetzler
  */
-public class MatchingAnnotationExtractor implements SimpleFeatureExtractor {
+public interface FeatureExtractor2<T extends Annotation, U extends Annotation> {
 
-  public MatchingAnnotationExtractor(
-      Class<? extends Annotation> annotationType,
-      SimpleFeatureExtractor subExtractor) {
-    this.annotationType = annotationType;
-    this.subExtractor = subExtractor;
-  }
+  public List<Feature> extract(JCas view, T annotation1, U annotation2)
+      throws CleartkExtractorException;
 
-  public MatchingAnnotationExtractor(
-      Class<? extends Annotation> annotationType,
-      SimpleFeatureExtractor... subExtractors) {
-    this(annotationType, new CombinedExtractor(subExtractors));
-  }
-
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkExtractorException {
-
-    if (!annotationType.isInstance(focusAnnotation)) {
-      focusAnnotation = AnnotationUtil.selectFirstMatching(view, annotationType, focusAnnotation);
-      if (focusAnnotation == null) {
-        throw CleartkExtractorException.noAnnotationMatchingWindow(annotationType, focusAnnotation);
-      }
-    }
-
-    return subExtractor.extract(view, focusAnnotation);
-  }
-
-  private Class<? extends Annotation> annotationType;
-
-  private SimpleFeatureExtractor subExtractor;
 }

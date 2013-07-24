@@ -34,10 +34,13 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Token;
 import org.uimafit.util.JCasUtil;
+
+import com.google.common.collect.Lists;
 
 /**
  * <br>
@@ -55,7 +58,7 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
    * 
    * Subclasses should override {@link #initialize(org.apache.uima.UimaContext)} to fill this list.
    */
-  protected List<SimpleFeatureExtractor> eventFeatureExtractors;
+  protected List<FeatureExtractor1<Event>> eventFeatureExtractors;
 
   /**
    * The list of feature extractors that will be applied to the Event annotation, with a Sentence
@@ -63,7 +66,7 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
    * 
    * Subclasses should override {@link #initialize(org.apache.uima.UimaContext)} to fill this list.
    */
-  protected List<CleartkExtractor> contextExtractors;
+  protected List<CleartkExtractor<Event, Token>> contextExtractors;
 
   /**
    * The attribute value that should be considered as a default, e.g. "NONE". When the attribute
@@ -103,8 +106,8 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    this.eventFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-    this.contextExtractors = new ArrayList<CleartkExtractor>();
+    this.eventFeatureExtractors = Lists.newArrayList();
+    this.contextExtractors = Lists.newArrayList();
   }
 
   @Override
@@ -114,10 +117,10 @@ public abstract class EventAttributeAnnotator<OUTCOME_TYPE> extends CleartkAnnot
 
         // assemble features
         List<Feature> features = new ArrayList<Feature>();
-        for (SimpleFeatureExtractor extractor : this.eventFeatureExtractors) {
+        for (FeatureExtractor1<Event> extractor : this.eventFeatureExtractors) {
           features.addAll(extractor.extract(jCas, event));
         }
-        for (CleartkExtractor extractor : this.contextExtractors) {
+        for (CleartkExtractor<Event, Token> extractor : this.contextExtractors) {
           features.addAll(extractor.extractWithin(jCas, event, sentence));
         }
 

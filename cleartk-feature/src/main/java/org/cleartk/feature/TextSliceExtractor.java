@@ -41,7 +41,7 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtract
  * 
  * @author Steven Bethard
  */
-public class TextSliceExtractor implements SimpleNamedFeatureExtractor {
+public class TextSliceExtractor<T extends Annotation> implements SimpleNamedFeatureExtractor<T> {
 
   private int start;
 
@@ -87,7 +87,7 @@ public class TextSliceExtractor implements SimpleNamedFeatureExtractor {
     return this.featureName;
   }
 
-  public List<Feature> extract(JCas view, Annotation focusAnnotation) {
+  public List<Feature> extract(JCas view, T focusAnnotation) {
     String text = focusAnnotation.getCoveredText();
     int startOffset = this.start;
     if (startOffset < 0) {

@@ -67,7 +67,7 @@ public class EventModalityAnnotator extends EventAttributeAnnotator<String> {
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    this.contextExtractors.add(new CleartkExtractor(
+    this.contextExtractors.add(new CleartkExtractor<Event, Token>(
         Token.class,
         new TokenTextForSelectedPOSExtractor("RB", "MD", "TO", "IN"),
         new Bag(new Preceding(3))));

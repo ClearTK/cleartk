@@ -56,8 +56,8 @@ public class SyntacticPathExtractorTest extends DefaultTestBase {
     TreebankNode ranvpNode = TreebankNodeUtil.newNode(jCas, "VP", ranNode, homenpNode);
     TreebankNode topNode = TreebankNodeUtil.newNode(jCas, "S", inpNode, ranvpNode);
 
-    CoveredTextExtractor textExtractor = new CoveredTextExtractor();
-    TypePathExtractor tagExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");
+    CoveredTextExtractor<TreebankNode> textExtractor = new CoveredTextExtractor<TreebankNode>();
+    TypePathExtractor<TreebankNode> tagExtractor = new TypePathExtractor<TreebankNode>(TreebankNode.class, "nodeType");
     SyntacticPathExtractor extractor;
     List<Feature> features;
 

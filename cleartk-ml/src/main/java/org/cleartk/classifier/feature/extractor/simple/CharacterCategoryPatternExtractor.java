@@ -43,7 +43,8 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
  * 
  * @author Steven Bethard
  */
-public class CharacterCategoryPatternExtractor implements SimpleNamedFeatureExtractor {
+public class CharacterCategoryPatternExtractor<T extends Annotation> implements
+    SimpleNamedFeatureExtractor<T> {
 
   /**
    * The type of pattern to generate in feature values.

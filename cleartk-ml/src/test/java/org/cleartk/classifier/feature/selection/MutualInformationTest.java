@@ -94,12 +94,12 @@ public class MutualInformationTest extends DefaultTestBase {
   @Test
   public void testMutualInformationFeatureSelection() throws UIMAException, IOException {
 
-    CleartkExtractor extractor = new CleartkExtractor(
+    CleartkExtractor<Sentence, Token> extractor = new CleartkExtractor<Sentence, Token>(
         Token.class,
-        new CoveredTextExtractor(),
+        new CoveredTextExtractor<Token>(),
         new Bag(new Covered()));
 
-    MutualInformationFeatureSelectionExtractor<String> miExtractor = new MutualInformationFeatureSelectionExtractor<String>(
+    MutualInformationFeatureSelectionExtractor<String, Sentence> miExtractor = new MutualInformationFeatureSelectionExtractor<String, Sentence>(
         "miExtractor",
         extractor,
         5);

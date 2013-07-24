@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
@@ -43,7 +42,7 @@ import org.uimafit.util.JCasUtil;
  * @author Philipp Wetzler
  */
 
-public class SubCategorizationExtractor implements SimpleNamedFeatureExtractor {
+public class SubCategorizationExtractor implements SimpleNamedFeatureExtractor<TreebankNode> {
   private String featureName;
 
   public SubCategorizationExtractor(String name) {
@@ -59,12 +58,10 @@ public class SubCategorizationExtractor implements SimpleNamedFeatureExtractor {
     return this.featureName;
   }
 
-  public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
+  public List<Feature> extract(JCas jCas, TreebankNode node)
       throws UnsupportedOperationException {
-    if (!(focusAnnotation instanceof TreebankNode))
-      return new ArrayList<Feature>();
 
-    TreebankNode parent = ((TreebankNode) focusAnnotation).getParent();
+    TreebankNode parent = node.getParent();
     if (parent == null)
       return new ArrayList<Feature>();
 

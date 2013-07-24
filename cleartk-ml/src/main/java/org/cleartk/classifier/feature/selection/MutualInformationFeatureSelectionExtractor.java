@@ -42,7 +42,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.classifier.feature.selection.MutualInformationFeatureSelectionExtractor.CombineScoreMethod.CombineScoreFunction;
 import org.cleartk.classifier.feature.selection.MutualInformationFeatureSelectionExtractor.MutualInformationStats.ComputeFeatureScore;
 import org.cleartk.classifier.feature.transform.TransformableFeature;
@@ -70,8 +70,8 @@ import com.google.common.collect.Table;
  * @author Lee Becker
  * 
  */
-public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
-    FeatureSelectionExtractor<OUTCOME_T> implements SimpleFeatureExtractor {
+public class MutualInformationFeatureSelectionExtractor<OUTCOME_T, FOCUS_T extends Annotation>
+    extends FeatureSelectionExtractor<OUTCOME_T> implements FeatureExtractor1<FOCUS_T> {
 
   /**
    * Specifies how scores for each outcome should be combined/aggregated into a single score
@@ -192,7 +192,10 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
         writer.append(featureName);
         for (OUTCOME_T outcome : this.classConditionalCounts.columnKeySet()) {
           writer.append("\t");
-          writer.append(String.format(Locale.ROOT, "%f", this.mutualInformation(featureName, outcome)));
+          writer.append(String.format(
+              Locale.ROOT,
+              "%f",
+              this.mutualInformation(featureName, outcome)));
         }
         writer.append("\n");
       }
@@ -247,7 +250,7 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
 
   private MutualInformationStats<OUTCOME_T> mutualInfoStats;
 
-  private SimpleFeatureExtractor subExtractor;
+  private FeatureExtractor1<FOCUS_T> subExtractor;
 
   private int numFeatures;
 
@@ -257,14 +260,16 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
 
   private double smoothingCount;
 
-  public MutualInformationFeatureSelectionExtractor(String name, SimpleFeatureExtractor extractor) {
+  public MutualInformationFeatureSelectionExtractor(
+      String name,
+      FeatureExtractor1<FOCUS_T> extractor) {
     super(name);
     this.init(extractor, CombineScoreMethod.MAX, 1.0, 10);
   }
 
   public MutualInformationFeatureSelectionExtractor(
       String name,
-      SimpleFeatureExtractor extractor,
+      FeatureExtractor1<FOCUS_T> extractor,
       int numFeatures) {
     super(name);
     this.init(extractor, CombineScoreMethod.MAX, 1.0, numFeatures);
@@ -272,7 +277,7 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
 
   public MutualInformationFeatureSelectionExtractor(
       String name,
-      SimpleFeatureExtractor extractor,
+      FeatureExtractor1<FOCUS_T> extractor,
       CombineScoreMethod combineMeasureType,
       double smoothingCount,
       int numFeatures) {
@@ -281,7 +286,7 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
   }
 
   private void init(
-      SimpleFeatureExtractor extractor,
+      FeatureExtractor1<FOCUS_T> extractor,
       CombineScoreMethod method,
       double smoothCount,
       int n) {
@@ -292,8 +297,7 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T> extends
   }
 
   @Override
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkExtractorException {
+  public List<Feature> extract(JCas view, FOCUS_T focusAnnotation) throws CleartkExtractorException {
 
     List<Feature> extracted = this.subExtractor.extract(view, focusAnnotation);
     List<Feature> result = new ArrayList<Feature>();

@@ -45,7 +45,7 @@ import com.google.common.base.Joiner;
  * 
  * @author Steven Bethard
  */
-public class TimeWordsExtractor implements SimpleNamedFeatureExtractor {
+public class TimeWordsExtractor<T extends Annotation> implements SimpleNamedFeatureExtractor<T> {
   
   private String featureName = "TimeType";
 
@@ -125,7 +125,7 @@ public class TimeWordsExtractor implements SimpleNamedFeatureExtractor {
   }
 
   @Override
-  public List<Feature> extract(JCas view, Annotation focusAnnotation) {
+  public List<Feature> extract(JCas view, T focusAnnotation) {
     List<String> types = new ArrayList<String>();
     String[] words = focusAnnotation.getCoveredText().split("\\W+");
     for (String word : words) {

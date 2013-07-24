@@ -32,7 +32,6 @@ import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.test.DefaultTestBase;
-import org.cleartk.token.type.Token;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -47,19 +46,10 @@ import org.junit.Test;
 
 public class HeadWordExtractorTest extends DefaultTestBase {
 
-  @Test
-  public void testNoTreebankNode() throws Throwable {
-    HeadWordExtractor extractor = new HeadWordExtractor(null);
-    jCas.setDocumentText("foo");
-    Token token = new Token(jCas, 0, 3);
-    token.addToIndexes();
-
-    this.checkFeatures(extractor.extract(jCas, token), (String) null);
-  }
-
+ 
   @Test
   public void testNoTokens() throws Throwable {
-    HeadWordExtractor extractor = new HeadWordExtractor(new CoveredTextExtractor(), true);
+    HeadWordExtractor extractor = new HeadWordExtractor(new CoveredTextExtractor<TreebankNode>(), true);
     jCas.setDocumentText("foo");
     TreebankNode node = TreebankNodeUtil.newNode(jCas, 0, 3, "NN");
 
@@ -96,8 +86,8 @@ public class HeadWordExtractorTest extends DefaultTestBase {
     TreebankNode homeNode = TreebankNodeUtil.newNode(jCas, 6, 10, "NN");
     TreebankNode vpNode = TreebankNodeUtil.newNode(jCas, "VP", ranNode, homeNode);
 
-    CoveredTextExtractor textExtractor = new CoveredTextExtractor();
-    TypePathExtractor posExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");
+    CoveredTextExtractor<TreebankNode> textExtractor = new CoveredTextExtractor<TreebankNode>();
+    TypePathExtractor<TreebankNode> posExtractor = new TypePathExtractor<TreebankNode>(TreebankNode.class, "nodeType");
     HeadWordExtractor extractor = new HeadWordExtractor(textExtractor);
 
     this.checkFeatures(extractor.extract(jCas, iNode), "HeadWord", "I");
@@ -134,8 +124,8 @@ public class HeadWordExtractorTest extends DefaultTestBase {
     TreebankNode undertheboxNode = TreebankNodeUtil.newNode(jCas, "PP", underNode, theboxNode);
     TreebankNode tree = TreebankNodeUtil.newNode(jCas, "NP", catstoyNode, undertheboxNode);
 
-    CoveredTextExtractor textExtractor = new CoveredTextExtractor();
-    TypePathExtractor posExtractor = new TypePathExtractor(TreebankNode.class, "nodeType");
+    CoveredTextExtractor<TreebankNode> textExtractor = new CoveredTextExtractor<TreebankNode>();
+    TypePathExtractor<TreebankNode> posExtractor = new TypePathExtractor<TreebankNode>(TreebankNode.class, "nodeType");
     HeadWordExtractor extractor;
 
     extractor = new HeadWordExtractor(posExtractor, true);

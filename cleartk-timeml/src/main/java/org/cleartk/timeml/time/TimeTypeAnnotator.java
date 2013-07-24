@@ -40,9 +40,8 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor;
-import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor.PatternType;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Time;
@@ -51,6 +50,8 @@ import org.cleartk.timeml.util.TimeWordsExtractor;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
+
+import com.google.common.collect.Lists;
 
 /**
  * <br>
@@ -78,23 +79,23 @@ public class TimeTypeAnnotator extends CleartkAnnotator<String> {
     }
   };
 
-  private List<SimpleFeatureExtractor> featuresExtractors;
+  private List<FeatureExtractor1<Time>> featuresExtractors;
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    this.featuresExtractors = Arrays.asList(
-        new LastWordExtractor(),
-        new CharacterCategoryPatternExtractor(PatternType.REPEATS_MERGED),
-        new TimeWordsExtractor(),
-        new CleartkExtractor(Token.class, new CoveredTextExtractor(), new Bag(new Covered())));
+    this.featuresExtractors = Lists.newArrayList();
+    this.featuresExtractors.add(new LastWordExtractor<Time>());
+    this.featuresExtractors.add(new CharacterCategoryPatternExtractor<Time>());
+    this.featuresExtractors.add(new TimeWordsExtractor<Time>());
+    this.featuresExtractors.add(new CleartkExtractor<Time, Token>(Token.class, new CoveredTextExtractor<Token>(), new Bag(new Covered())));
   }
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     for (Time time : JCasUtil.select(jCas, Time.class)) {
       List<Feature> features = new ArrayList<Feature>();
-      for (SimpleFeatureExtractor extractor : this.featuresExtractors) {
+      for (FeatureExtractor1<Time> extractor : this.featuresExtractors) {
         features.addAll(extractor.extract(jCas, time));
       }
       if (this.isTraining()) {
@@ -105,7 +106,7 @@ public class TimeTypeAnnotator extends CleartkAnnotator<String> {
     }
   }
 
-  private static class LastWordExtractor implements SimpleNamedFeatureExtractor {
+  private static class LastWordExtractor<T extends Annotation> implements SimpleNamedFeatureExtractor<T> {
     
     private String featureName;
 
@@ -119,7 +120,7 @@ public class TimeTypeAnnotator extends CleartkAnnotator<String> {
     }
 
     @Override
-    public List<Feature> extract(JCas view, Annotation focusAnnotation) {
+    public List<Feature> extract(JCas view, T focusAnnotation) {
       String[] words = focusAnnotation.getCoveredText().split("\\W+");
       return Arrays.asList(new Feature(this.featureName, words[words.length - 1]));
     }

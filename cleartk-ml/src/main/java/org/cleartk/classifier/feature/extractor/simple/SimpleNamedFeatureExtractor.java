@@ -23,8 +23,10 @@
  */
 package org.cleartk.classifier.feature.extractor.simple;
 
+import org.apache.uima.jcas.tcas.Annotation;
+
 /**
- * A {@link SimpleFeatureExtractor} that provides the name used for the features it creates.
+ * A {@link FeatureExtractor1} that provides the name used for the features it creates.
  * 
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -32,7 +34,8 @@ package org.cleartk.classifier.feature.extractor.simple;
  * 
  * @author Steven Bethard
  */
-public interface SimpleNamedFeatureExtractor extends SimpleFeatureExtractor {
+public interface SimpleNamedFeatureExtractor<T extends Annotation> extends
+    FeatureExtractor1<T> {
 
   /**
    * Gets the name that will be used for all features created by this feature extractor.
