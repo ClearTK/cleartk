@@ -68,7 +68,7 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
 
   public static class TestAnnotator extends CleartkSequenceAnnotator<String> {
 
-    private FeatureExtractor1 extractor = new CoveredTextExtractor();
+    private FeatureExtractor1<Token> extractor = new CoveredTextExtractor<Token>();
 
     @Override
     public void process(JCas jCas) throws AnalysisEngineProcessException {

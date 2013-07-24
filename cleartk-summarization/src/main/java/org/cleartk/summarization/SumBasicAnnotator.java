@@ -37,7 +37,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
-import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
 import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.simple.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
@@ -82,7 +81,7 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
       description = "provides a URI pointing to a file containing a whitespace separated list of stopwords")
   protected URI stopwordsUri = null;
 
-  CombinedExtractor extractor;
+  FeatureExtractor1<Sentence> extractor;
 
   Set<String> stopwords;
 
@@ -91,7 +90,7 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
 
     try {
       this.stopwords = this.readStopwords();
-      this.extractor = new CombinedExtractor(this.createTokenCountsExtractor());
+      this.extractor = this.createTokenCountsExtractor();
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
     }
@@ -145,7 +144,7 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
     }
   }
 
-  private FeatureExtractor1<Token> createTokenCountsExtractor() {
+  private FeatureExtractor1<Sentence> createTokenCountsExtractor() {
     FeatureExtractor1<Token> tokenFieldExtractor = new CoveredTextExtractor<Token>();
     switch (this.tokenField) {
       case COVERED_TEXT:
@@ -159,9 +158,9 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
         break;
     }
 
-    CleartkExtractor countsExtractor = new CleartkExtractor(
+    CleartkExtractor<Sentence, Token> countsExtractor = new CleartkExtractor<Sentence, Token>(
         Token.class,
-        new StopwordRemovingExtractor(this.stopwords, tokenFieldExtractor),
+        new StopwordRemovingExtractor<Token>(this.stopwords, tokenFieldExtractor),
         new CleartkExtractor.Count(new CleartkExtractor.Covered()));
 
     return countsExtractor;
