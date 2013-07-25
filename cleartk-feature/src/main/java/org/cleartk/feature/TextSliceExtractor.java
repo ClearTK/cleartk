@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.SimpleNamedFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
 
 /**
  * <br>
@@ -41,7 +41,7 @@ import org.cleartk.classifier.feature.extractor.SimpleNamedFeatureExtractor;
  * 
  * @author Steven Bethard
  */
-public class TextSliceExtractor<T extends Annotation> implements SimpleNamedFeatureExtractor<T> {
+public class TextSliceExtractor<T extends Annotation> implements NamedFeatureExtractor1<T> {
 
   private int start;
 

@@ -34,7 +34,7 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.SimpleNamedFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
 import org.cleartk.token.type.Token;
 
 /**
@@ -44,7 +44,7 @@ import org.cleartk.token.type.Token;
  * 
  * @author Steven Bethard
  */
-public class TokenTextForSelectedPOSExtractor implements SimpleNamedFeatureExtractor<Token> {
+public class TokenTextForSelectedPOSExtractor implements NamedFeatureExtractor1<Token> {
 
   private Set<String> acceptablePOSTags;
 

@@ -34,7 +34,7 @@ import java.util.Set;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.SimpleNamedFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
 
 import com.google.common.base.Joiner;
 
@@ -45,7 +45,7 @@ import com.google.common.base.Joiner;
  * 
  * @author Steven Bethard
  */
-public class TimeWordsExtractor<T extends Annotation> implements SimpleNamedFeatureExtractor<T> {
+public class TimeWordsExtractor<T extends Annotation> implements NamedFeatureExtractor1<T> {
   
   private String featureName = "TimeType";
 

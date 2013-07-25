@@ -31,7 +31,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
-import org.cleartk.classifier.feature.extractor.NamingExtractor;
+import org.cleartk.classifier.feature.extractor.NamingExtractor1;
 
 /**
  * <br>
@@ -53,7 +53,7 @@ public abstract class FilteringExtractor<T extends Annotation> implements Featur
 
   public FilteringExtractor(Class<T> annotationClass, String name, FeatureExtractor1<T> extractor) {
     this.annotationClass = annotationClass;
-    this.extractor = new NamingExtractor<T>(name, extractor);
+    this.extractor = new NamingExtractor1<T>(name, extractor);
   }
 
   @Override

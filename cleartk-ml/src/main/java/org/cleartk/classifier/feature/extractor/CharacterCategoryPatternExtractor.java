@@ -43,7 +43,7 @@ import org.cleartk.classifier.Feature;
  * @author Steven Bethard
  */
 public class CharacterCategoryPatternExtractor<T extends Annotation> implements
-    SimpleNamedFeatureExtractor<T> {
+    NamedFeatureExtractor1<T> {
 
   /**
    * The type of pattern to generate in feature values.

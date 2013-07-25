@@ -64,7 +64,7 @@ import org.uimafit.util.JCasUtil;
  *         converted to strings
  */
 
-public class TypePathExtractor<T extends Annotation> implements SimpleNamedFeatureExtractor<T> {
+public class TypePathExtractor<T extends Annotation> implements NamedFeatureExtractor1<T> {
 
   String featureName;
 

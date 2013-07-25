@@ -40,7 +40,7 @@ import org.cleartk.classifier.feature.extractor.CharacterCategoryPatternExtracto
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
-import org.cleartk.classifier.feature.extractor.SimpleNamedFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
@@ -106,7 +106,7 @@ public class TimeTypeAnnotator extends CleartkAnnotator<String> {
     }
   }
 
-  private static class LastWordExtractor<T extends Annotation> implements SimpleNamedFeatureExtractor<T> {
+  private static class LastWordExtractor<T extends Annotation> implements NamedFeatureExtractor1<T> {
     
     private String featureName;
 

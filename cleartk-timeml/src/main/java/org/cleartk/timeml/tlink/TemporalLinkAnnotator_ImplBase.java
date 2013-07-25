@@ -40,7 +40,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor2;
-import org.cleartk.classifier.feature.extractor.NamingExtractor;
+import org.cleartk.classifier.feature.extractor.NamingExtractor1;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil.TreebankNodePath;
 import org.cleartk.timeml.type.Anchor;
@@ -132,14 +132,14 @@ public abstract class TemporalLinkAnnotator_ImplBase<SOURCE extends Anchor, TARG
   protected void setSourceExtractors(List<FeatureExtractor1<SOURCE>> extractors) {
     this.sourceExtractors = new ArrayList<FeatureExtractor1<SOURCE>>();
     for (FeatureExtractor1<SOURCE> extractor : extractors) {
-      this.sourceExtractors.add(new NamingExtractor<SOURCE>("Source", extractor));
+      this.sourceExtractors.add(new NamingExtractor1<SOURCE>("Source", extractor));
     }
   }
 
   protected void setTargetExtractors(List<FeatureExtractor1<TARGET>> extractors) {
     this.targetExtractors = new ArrayList<FeatureExtractor1<TARGET>>();
     for (FeatureExtractor1<TARGET> extractor : extractors) {
-      this.targetExtractors.add(new NamingExtractor<TARGET>("Target", extractor));
+      this.targetExtractors.add(new NamingExtractor1<TARGET>("Target", extractor));
     }
   }
 

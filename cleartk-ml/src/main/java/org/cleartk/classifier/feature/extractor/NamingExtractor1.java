@@ -36,18 +36,18 @@ import org.cleartk.classifier.Feature;
  * 
  * @author Philipp Wetzler
  */
-public class NamingExtractor<T extends Annotation> implements FeatureExtractor1<T> {
+public class NamingExtractor1<T extends Annotation> implements FeatureExtractor1<T> {
 
   /**
    * Prepends the name of the features produced by subExtractor with the passed in name. To apply
-   * the name to multiple feature extractors pass in a {@link CombinedExtractor}
+   * the name to multiple feature extractors pass in a {@link CombinedExtractor1}
    * 
    * @param name
    *          The name to prepend to extracted feature names
    * @param subExtractor
    *          delegated extractor
    */
-  public NamingExtractor(String name, FeatureExtractor1<T> subExtractor) {
+  public NamingExtractor1(String name, FeatureExtractor1<T> subExtractor) {
     this.name = name;
     this.subExtractor = subExtractor;
   }

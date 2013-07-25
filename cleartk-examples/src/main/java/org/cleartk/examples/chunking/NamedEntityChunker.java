@@ -36,7 +36,7 @@ import org.cleartk.classifier.Instances;
 import org.cleartk.classifier.chunking.BIOChunking;
 import org.cleartk.classifier.feature.extractor.CharacterCategoryPatternExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
-import org.cleartk.classifier.feature.extractor.CombinedExtractor;
+import org.cleartk.classifier.feature.extractor.CombinedExtractor1;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.TypePathExtractor;
@@ -72,7 +72,7 @@ public class NamedEntityChunker extends CleartkSequenceAnnotator<String> {
     super.initialize(context);
 
     // the token feature extractor: text, char pattern (uppercase, digits, etc.), and part-of-speech
-    this.extractor = new CombinedExtractor<Token>(
+    this.extractor = new CombinedExtractor1<Token>(
         new CoveredTextExtractor<Token>(),
         new CharacterCategoryPatternExtractor<Token>(PatternType.REPEATS_MERGED),
         new TypePathExtractor<Token>(Token.class, "pos"));

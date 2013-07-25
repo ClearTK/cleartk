@@ -34,7 +34,7 @@ import org.apache.uima.jcas.tcas.Annotation;
  * 
  * @author Steven Bethard
  */
-public interface SimpleNamedFeatureExtractor<T extends Annotation> extends
+public interface NamedFeatureExtractor1<T extends Annotation> extends
     FeatureExtractor1<T> {
 
   /**

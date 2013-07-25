@@ -320,8 +320,8 @@ public class CleartkExtractor<FOCUS_T extends Annotation, SEARCH_T extends Annot
         Bounds bounds,
         Class<SEARCH_T> annotationClass,
         FeatureExtractor1<SEARCH_T> extractor) throws CleartkExtractorException {
-      String featureName = extractor instanceof SimpleNamedFeatureExtractor
-          ? ((SimpleNamedFeatureExtractor<SEARCH_T>) extractor).getFeatureName()
+      String featureName = extractor instanceof NamedFeatureExtractor1
+          ? ((NamedFeatureExtractor1<SEARCH_T>) extractor).getFeatureName()
           : null;
 
       // slice the appropriate annotations from the CAS
@@ -376,8 +376,8 @@ public class CleartkExtractor<FOCUS_T extends Annotation, SEARCH_T extends Annot
         Bounds bounds,
         Class<SEARCH_T> annotationClass,
         FeatureExtractor1<SEARCH_T> extractor) throws CleartkExtractorException {
-      String featureName = extractor instanceof SimpleNamedFeatureExtractor
-          ? ((SimpleNamedFeatureExtractor<SEARCH_T>) extractor).getFeatureName()
+      String featureName = extractor instanceof NamedFeatureExtractor1
+          ? ((NamedFeatureExtractor1<SEARCH_T>) extractor).getFeatureName()
           : null;
       List<SEARCH_T> anns = this.select(jCas, focusAnnotation, annotationClass, this.end);
       int oobStart;
@@ -814,8 +814,8 @@ public class CleartkExtractor<FOCUS_T extends Annotation, SEARCH_T extends Annot
         Bounds bounds,
         Class<SEARCH_T> annotationClass,
         FeatureExtractor1<SEARCH_T> extractor) throws CleartkExtractorException {
-      String featureName = extractor instanceof SimpleNamedFeatureExtractor
-          ? ((SimpleNamedFeatureExtractor<SEARCH_T>) extractor).getFeatureName()
+      String featureName = extractor instanceof NamedFeatureExtractor1
+          ? ((NamedFeatureExtractor1<SEARCH_T>) extractor).getFeatureName()
           : null;
       featureName = Feature.createName(this.name, featureName);
       List<String> values = new ArrayList<String>();
@@ -880,8 +880,8 @@ public class CleartkExtractor<FOCUS_T extends Annotation, SEARCH_T extends Annot
         Bounds bounds,
         Class<SEARCH_T> annotationClass,
         FeatureExtractor1<SEARCH_T> extractor) throws CleartkExtractorException {
-      String featureName = extractor instanceof SimpleNamedFeatureExtractor
-          ? ((SimpleNamedFeatureExtractor<SEARCH_T>) extractor).getFeatureName()
+      String featureName = extractor instanceof NamedFeatureExtractor1
+          ? ((NamedFeatureExtractor1<SEARCH_T>) extractor).getFeatureName()
           : null;
       featureName = Feature.createName(this.name, featureName);
       List<Feature> extractedFeatures = new ArrayList<Feature>();

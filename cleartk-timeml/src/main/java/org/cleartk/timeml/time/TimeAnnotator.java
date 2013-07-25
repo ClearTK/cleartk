@@ -39,7 +39,7 @@ import org.cleartk.classifier.feature.extractor.CharacterCategoryPatternExtracto
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
-import org.cleartk.classifier.feature.extractor.SimpleNamedFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
@@ -81,7 +81,7 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
     }
   };
 
-  private List<SimpleNamedFeatureExtractor<Token>> tokenFeatureExtractors;
+  private List<NamedFeatureExtractor1<Token>> tokenFeatureExtractors;
 
   private List<CleartkExtractor<Token, Token>> contextFeatureExtractors;
 

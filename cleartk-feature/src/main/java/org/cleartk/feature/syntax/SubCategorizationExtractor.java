@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.SimpleNamedFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.uimafit.util.JCasUtil;
 
@@ -42,7 +42,7 @@ import org.uimafit.util.JCasUtil;
  * @author Philipp Wetzler
  */
 
-public class SubCategorizationExtractor implements SimpleNamedFeatureExtractor<TreebankNode> {
+public class SubCategorizationExtractor implements NamedFeatureExtractor1<TreebankNode> {
   private String featureName;
 
   public SubCategorizationExtractor(String name) {

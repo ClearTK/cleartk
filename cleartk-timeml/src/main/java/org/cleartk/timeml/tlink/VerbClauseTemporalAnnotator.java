@@ -42,7 +42,7 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
-import org.cleartk.classifier.feature.extractor.NamingExtractor;
+import org.cleartk.classifier.feature.extractor.NamingExtractor1;
 import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
@@ -140,19 +140,19 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
     FeatureExtractor1<Token> tokenPOSExtractor = new TypePathExtractor<Token>(Token.class, "pos");
 
     this.sourceFeatureExtractors = Lists.newArrayList();
-    this.sourceFeatureExtractors.add(new NamingExtractor<Token>("Source", new CoveredTextExtractor<Token>()));
-    this.sourceFeatureExtractors.add(new NamingExtractor<Token>("Source", tokenPOSExtractor));
-    this.sourceFeatureExtractors.add(new NamingExtractor<Token>("Source", tokenStemExtractor));
-    this.sourceFeatureExtractors.add(new NamingExtractor<Token>("Source", precedingAuxiliaries));
+    this.sourceFeatureExtractors.add(new NamingExtractor1<Token>("Source", new CoveredTextExtractor<Token>()));
+    this.sourceFeatureExtractors.add(new NamingExtractor1<Token>("Source", tokenPOSExtractor));
+    this.sourceFeatureExtractors.add(new NamingExtractor1<Token>("Source", tokenStemExtractor));
+    this.sourceFeatureExtractors.add(new NamingExtractor1<Token>("Source", precedingAuxiliaries));
 
     this.targetFeatureExtractors = Lists.newArrayList();
-    this.targetFeatureExtractors.add(new NamingExtractor<Token>("Target", new CoveredTextExtractor<Token>()));
-    this.targetFeatureExtractors.add(new NamingExtractor<Token>("Target", tokenPOSExtractor));
-    this.targetFeatureExtractors.add(new NamingExtractor<Token>("Target", tokenStemExtractor));
-    this.targetFeatureExtractors.add(new NamingExtractor<Token>("Target", precedingAuxiliaries));
+    this.targetFeatureExtractors.add(new NamingExtractor1<Token>("Target", new CoveredTextExtractor<Token>()));
+    this.targetFeatureExtractors.add(new NamingExtractor1<Token>("Target", tokenPOSExtractor));
+    this.targetFeatureExtractors.add(new NamingExtractor1<Token>("Target", tokenStemExtractor));
+    this.targetFeatureExtractors.add(new NamingExtractor1<Token>("Target", precedingAuxiliaries));
 
     this.betweenAnchorsFeatureExtractors = new ArrayList<FeatureExtractor1<Annotation>>();
-    this.betweenAnchorsFeatureExtractors.add(new NamingExtractor<Annotation>(
+    this.betweenAnchorsFeatureExtractors.add(new NamingExtractor1<Annotation>(
         "WordsBetween",
         new CleartkExtractor<Annotation, Token>(Token.class, new CoveredTextExtractor<Token>(), new Bag(new Covered()))));
     this.pathExtractor = new TargetPathExtractor();

@@ -41,9 +41,9 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.CombinedExtractor;
+import org.cleartk.classifier.feature.extractor.CombinedExtractor1;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.SimpleNamedFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
 import org.cleartk.classifier.feature.transform.extractor.CentroidTfidfSimilarityExtractor;
 import org.cleartk.classifier.feature.transform.extractor.MinMaxNormalizationExtractor;
 import org.cleartk.classifier.feature.transform.extractor.TfidfExtractor;
@@ -116,7 +116,7 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
   public static final String MINMAX_EXTRACTOR_KEY = "MINMAXFeatures";
 
-  private CombinedExtractor<DocumentAnnotation> extractor;
+  private CombinedExtractor1<DocumentAnnotation> extractor;
 
   public static URI createTokenTfIdfDataURI(File outputDirectoryName) {
     File f = new File(outputDirectoryName, TFIDF_EXTRACTOR_KEY + "_tfidf_extractor.dat");
@@ -146,7 +146,7 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
       CentroidTfidfSimilarityExtractor<String, DocumentAnnotation> simExtractor = initCentroidTfIdfSimilarityExtractor();
       ZeroMeanUnitStddevExtractor<String, DocumentAnnotation> zmusExtractor = initZmusExtractor();
       MinMaxNormalizationExtractor<String, DocumentAnnotation> minmaxExtractor = initMinMaxExtractor();
-      this.extractor = new CombinedExtractor<DocumentAnnotation>(
+      this.extractor = new CombinedExtractor1<DocumentAnnotation>(
           tfIdfExtractor,
           simExtractor,
           zmusExtractor,
@@ -191,7 +191,7 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
   private ZeroMeanUnitStddevExtractor<String, DocumentAnnotation> initZmusExtractor()
       throws IOException {
-    CombinedExtractor<DocumentAnnotation> featuresToNormalizeExtractor = new CombinedExtractor<DocumentAnnotation>(
+    CombinedExtractor1<DocumentAnnotation> featuresToNormalizeExtractor = new CombinedExtractor1<DocumentAnnotation>(
         new CountAnnotationExtractor<DocumentAnnotation>(Sentence.class),
         new CountAnnotationExtractor<DocumentAnnotation>(Token.class));
 
@@ -208,7 +208,7 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
   private MinMaxNormalizationExtractor<String, DocumentAnnotation> initMinMaxExtractor()
       throws IOException {
-    CombinedExtractor<DocumentAnnotation> featuresToNormalizeExtractor = new CombinedExtractor<DocumentAnnotation>(
+    CombinedExtractor1<DocumentAnnotation> featuresToNormalizeExtractor = new CombinedExtractor1<DocumentAnnotation>(
         new CountAnnotationExtractor<DocumentAnnotation>(Sentence.class),
         new CountAnnotationExtractor<DocumentAnnotation>(Token.class));
 
@@ -252,7 +252,7 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
   }
 
   public static class CountAnnotationExtractor<T extends Annotation> implements
-      SimpleNamedFeatureExtractor<T> {
+      NamedFeatureExtractor1<T> {
 
     private Class<? extends Annotation> annotationType;
 

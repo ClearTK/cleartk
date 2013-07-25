@@ -37,7 +37,7 @@ import org.cleartk.classifier.Feature;
  * All rights reserved.
  */
 
-public class WhiteSpaceExtractor<T extends Annotation> implements SimpleNamedFeatureExtractor<T> {
+public class WhiteSpaceExtractor<T extends Annotation> implements NamedFeatureExtractor1<T> {
 
   private static final String FEATURE_NAME = "whitespace";
 

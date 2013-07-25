@@ -42,7 +42,7 @@ import com.google.common.collect.Lists;
  * @author Philipp Wetzler
  * 
  */
-public class CombinedExtractor<T extends Annotation> implements FeatureExtractor1<T> {
+public class CombinedExtractor1<T extends Annotation> implements FeatureExtractor1<T> {
 
   // public SimpleFeatureExtractor[] getExtractors() {
   // return extractors;
@@ -62,15 +62,15 @@ public class CombinedExtractor<T extends Annotation> implements FeatureExtractor
    * }
    */
 
-  private CombinedExtractor() {
+  private CombinedExtractor1() {
     this.extractors = Lists.newArrayList();
   }
 
-  public CombinedExtractor(List<FeatureExtractor1<T>> extractors) {
+  public CombinedExtractor1(List<FeatureExtractor1<T>> extractors) {
     this.extractors = extractors;
   }
 
-  public CombinedExtractor(
+  public CombinedExtractor1(
       FeatureExtractor1<T> extractor1,
       FeatureExtractor1<T> extractor2) {
     this();
@@ -78,7 +78,7 @@ public class CombinedExtractor<T extends Annotation> implements FeatureExtractor
     this.extractors.add(extractor2);
   }
 
-  public CombinedExtractor(
+  public CombinedExtractor1(
       FeatureExtractor1<T> extractor1,
       FeatureExtractor1<T> extractor2,
       FeatureExtractor1<T> extractor3) {
@@ -88,7 +88,7 @@ public class CombinedExtractor<T extends Annotation> implements FeatureExtractor
     this.extractors.add(extractor3);
   }
 
-  public CombinedExtractor(
+  public CombinedExtractor1(
       FeatureExtractor1<T> extractor1,
       FeatureExtractor1<T> extractor2,
       FeatureExtractor1<T> extractor3,
@@ -100,7 +100,7 @@ public class CombinedExtractor<T extends Annotation> implements FeatureExtractor
     this.extractors.add(extractor4);
   }
 
-  public CombinedExtractor(
+  public CombinedExtractor1(
       FeatureExtractor1<T> extractor1,
       FeatureExtractor1<T> extractor2,
       FeatureExtractor1<T> extractor3,
@@ -114,7 +114,7 @@ public class CombinedExtractor<T extends Annotation> implements FeatureExtractor
     this.extractors.add(extractor5);
   }
 
-  public CombinedExtractor(
+  public CombinedExtractor1(
       FeatureExtractor1<T> extractor1,
       FeatureExtractor1<T> extractor2,
       FeatureExtractor1<T> extractor3,
@@ -130,7 +130,7 @@ public class CombinedExtractor<T extends Annotation> implements FeatureExtractor
     this.extractors.add(extractor6);
   }
 
-  public CombinedExtractor(
+  public CombinedExtractor1(
       FeatureExtractor1<T> extractor1,
       FeatureExtractor1<T> extractor2,
       FeatureExtractor1<T> extractor3,
@@ -148,7 +148,7 @@ public class CombinedExtractor<T extends Annotation> implements FeatureExtractor
     this.extractors.add(extractor7);
   }
 
-  public CombinedExtractor(
+  public CombinedExtractor1(
       FeatureExtractor1<T> extractor1,
       FeatureExtractor1<T> extractor2,
       FeatureExtractor1<T> extractor3,
@@ -168,7 +168,7 @@ public class CombinedExtractor<T extends Annotation> implements FeatureExtractor
     this.extractors.add(extractor8);
   }
 
-  public CombinedExtractor(
+  public CombinedExtractor1(
       FeatureExtractor1<T> extractor1,
       FeatureExtractor1<T> extractor2,
       FeatureExtractor1<T> extractor3,
