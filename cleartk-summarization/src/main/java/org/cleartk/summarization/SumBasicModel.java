@@ -46,14 +46,14 @@ import java.util.Set;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.transform.InstanceStream;
-import org.cleartk.util.Options_ImplBase;
-import org.kohsuke.args4j.Option;
 
 import com.google.common.annotations.Beta;
 import com.google.common.base.Function;
 import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Ordering;
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.Option;
 
 /**
  * 
@@ -80,20 +80,25 @@ public class SumBasicModel extends SummarizationModel_ImplBase {
 
   public static final String MODEL_NAME = "model.sumbasic";
 
-  public static class Options extends Options_ImplBase {
+  public interface Options {
 
     @Option(
-        name = "--max-num-sentences",
-        usage = "Specifies the maximum number of sentences to extract in the summary")
-    public int maxNumSentences = 10;
-
-    @Option(name = "--seen-words-prob", usage = "Specify the probability for seen words.")
-    public double seenWordsProbability = 0.0001;
+        longName = "max-num-sentences",
+        description = "Specifies the maximum number of sentences to extract in the summary",
+        defaultValue = "10")
+    public int getMaxNumSentences();
 
     @Option(
-        name = "--composition-function",
-        usage = "Specifies how word probabilities are combined (AVERAGE|SUM|PRODUCT, default=AVERAGE)")
-    public CompositionFunctionType cfType = CompositionFunctionType.AVERAGE;
+        longName = "seen-words-prob",
+        description = "Specify the probability for seen words.",
+        defaultValue = "0.0001")
+    public double getSeenWordsProbability();
+
+    @Option(
+        longName = "composition-function",
+        description = "Specifies how word probabilities are combined (AVERAGE|SUM|PRODUCT, default=AVERAGE)",
+        defaultValue = "AVERAGE")
+    public CompositionFunctionType getCFType();
   }
 
   // Consider moving this elsewhere if needed by other classes
@@ -229,11 +234,10 @@ public class SumBasicModel extends SummarizationModel_ImplBase {
   public static void trainAndWriteModel(File modelDirectory, String... args) throws Exception {
     // This is where the bulk of the sum basic algorithm resides
 
-    Options options = new Options();
-    options.parseOptions(args);
-    int maxNumSentences = options.maxNumSentences;
-    CompositionFunctionType cfType = options.cfType;
-    double seenWordsProbability = options.seenWordsProbability;
+    Options options = CliFactory.parseArguments(Options.class, args);
+    int maxNumSentences = options.getMaxNumSentences();
+    CompositionFunctionType cfType = options.getCFType();
+    double seenWordsProbability = options.getSeenWordsProbability();
 
     // Load the serialized instance data
     Iterable<Instance<Boolean>> instances = InstanceStream.loadFromDirectory(modelDirectory);

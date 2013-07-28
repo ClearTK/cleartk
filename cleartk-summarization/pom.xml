@@ -66,6 +66,10 @@
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-opennlp-tools</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.lexicalscope.jewelcli</groupId>
+			<artifactId>jewelcli</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
