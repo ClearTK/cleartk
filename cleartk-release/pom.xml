@@ -215,9 +215,6 @@
 
 									<!-- Links to all dependency javadocs -->
 									<links>
-										<!-- args4j -->
-										<link>http://args4j.kohsuke.org/args4j/apidocs/</link>
-
 										<!-- berkeley parser -->
 										<!-- (none available) -->
 
