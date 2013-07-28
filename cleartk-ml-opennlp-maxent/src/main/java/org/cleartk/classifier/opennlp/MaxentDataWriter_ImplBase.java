@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2011, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2007-2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -25,21 +25,20 @@ package org.cleartk.classifier.opennlp;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import opennlp.model.RealValueFileEventStream;
 
+import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.CleartkProcessingException;
-import org.cleartk.classifier.encoder.features.BooleanEncoder;
-import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
-import org.cleartk.classifier.encoder.features.NumberEncoder;
-import org.cleartk.classifier.encoder.features.StringEncoder;
-import org.cleartk.classifier.jar.DataWriter_ImplBase;
+import org.cleartk.classifier.DataWriter;
+import org.cleartk.classifier.Instance;
+import org.cleartk.classifier.jar.EncodingDirectoryDataWriter;
+import org.cleartk.classifier.opennlp.encoder.ContextValues;
+import org.cleartk.classifier.opennlp.encoder.ContextValuesFeaturesEncoder;
 
 /**
  * <br>
- * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * <p>
@@ -57,41 +56,21 @@ import org.cleartk.classifier.jar.DataWriter_ImplBase;
  * @see RealValueFileEventStream
  */
 public abstract class MaxentDataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE extends MaxentClassifierBuilder_ImplBase<? extends MaxentClassifier_ImplBase<OUTCOME_TYPE>, OUTCOME_TYPE>, OUTCOME_TYPE>
-    extends DataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE, List<NameNumber>, OUTCOME_TYPE, String> {
+    extends EncodingDirectoryDataWriter<CLASSIFIER_BUILDER_TYPE, Classifier<OUTCOME_TYPE>, ContextValues, OUTCOME_TYPE, String>
+    implements DataWriter<OUTCOME_TYPE> {
 
   public MaxentDataWriter_ImplBase(File outputDirectory) throws IOException {
     super(outputDirectory);
-    NameNumberFeaturesEncoder ftrsNcdr = new NameNumberFeaturesEncoder();
-    ftrsNcdr.addEncoder(new NumberEncoder());
-    ftrsNcdr.addEncoder(new BooleanEncoder());
-    ftrsNcdr.addEncoder(new StringEncoder());
-    this.setFeaturesEncoder(ftrsNcdr);
+    this.setFeaturesEncoder(new ContextValuesFeaturesEncoder());
   }
 
   @Override
-  public void writeEncoded(List<NameNumber> features, String outcome)
-      throws CleartkProcessingException {
-    if (outcome == null) {
-      throw CleartkProcessingException.noInstanceOutcome(features);
+  public void write(Instance<OUTCOME_TYPE> instance) throws CleartkProcessingException {
+    if (instance.getOutcome() == null) {
+      throw CleartkProcessingException.noInstanceOutcome(instance.getFeatures());
     }
-    this.trainingDataWriter.print(outcome);
-
-    if (features.size() == 0) {
-      trainingDataWriter.print(" null=0");
-    }
-
-    // write each of the string features, encoded, into the training data
-    for (NameNumber nameNumber : features) {
-      this.trainingDataWriter.print(' ');
-      if (nameNumber.number.doubleValue() == 1.0)
-        trainingDataWriter.print(nameNumber.name);
-      else
-        trainingDataWriter.print(nameNumber.name + "=" + nameNumber.number);
-
-    }
-
-    // complete the feature line
-    this.trainingDataWriter.println();
+    String outcome = this.classifierBuilder.getOutcomeEncoder().encode(instance.getOutcome());
+    ContextValues contextValues = this.classifierBuilder.getFeaturesEncoder().encodeAll(instance.getFeatures());
+    this.trainingDataWriter.printf("%s %s\n", outcome, contextValues.toMaxentString());
   }
-
 }

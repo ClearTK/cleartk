@@ -97,8 +97,8 @@ public class MaxentStringOutcomeDataWriterTest extends DefaultTestBase {
     File trainFile = new MaxentStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     String[] lines = FileUtil.loadListOfStrings(trainFile);
     assertEquals("A pos_NN distance=3.0 precision=1.234", lines[0]);
-    assertEquals("B name_2PO p's=2", lines[1]);
-    assertEquals("Z null=0", lines[2]);
+    assertEquals("B name_2PO p's=2.0", lines[1]);
+    assertEquals("Z null=0.0", lines[2]);
     assertEquals("A A_B_AB", lines[3]);
 
     // simply train four different models where each one writes over the previous

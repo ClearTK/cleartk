@@ -30,11 +30,10 @@ import opennlp.model.MaxentModel;
 
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
-import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
+import org.cleartk.classifier.opennlp.encoder.ContextValues;
 
 import com.google.common.collect.Maps;
 
@@ -48,12 +47,12 @@ import com.google.common.collect.Maps;
  * @author Steven Bethard
  */
 public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
-    Classifier_ImplBase<List<NameNumber>, OUTCOME_TYPE, String> {
+    Classifier_ImplBase<ContextValues, OUTCOME_TYPE, String> {
 
   protected MaxentModel model;
 
   public MaxentClassifier_ImplBase(
-      FeaturesEncoder<List<NameNumber>> featuresEncoder,
+      FeaturesEncoder<ContextValues> featuresEncoder,
       OutcomeEncoder<OUTCOME_TYPE, String> outcomeEncoder,
       MaxentModel model) {
     super(featuresEncoder, outcomeEncoder);
@@ -61,17 +60,17 @@ public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
   }
 
   public OUTCOME_TYPE classify(List<Feature> features) throws CleartkProcessingException {
-    EvalParams evalParams = convertToEvalParams(features);
+    ContextValues contextValues = this.featuresEncoder.encodeAll(features);
     String encodedOutcome = this.model.getBestOutcome(this.model.eval(
-        evalParams.getContext(),
-        evalParams.getValues()));
+        contextValues.getContext(),
+        contextValues.getValues()));
     return outcomeEncoder.decode(encodedOutcome);
   }
 
   @Override
   public Map<OUTCOME_TYPE, Double> score(List<Feature> features) throws CleartkProcessingException {
-    EvalParams evalParams = convertToEvalParams(features);
-    double[] evalResults = this.model.eval(evalParams.getContext(), evalParams.getValues());
+    ContextValues contextValues = this.featuresEncoder.encodeAll(features);
+    double[] evalResults = this.model.eval(contextValues.getContext(), contextValues.getValues());
     String[] encodedOutcomes = (String[]) this.model.getDataStructures()[2];
 
     Map<OUTCOME_TYPE, Double> returnValues = Maps.newHashMap();
@@ -79,42 +78,6 @@ public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
       returnValues.put(outcomeEncoder.decode(encodedOutcomes[i]), evalResults[i]);
     }
     return returnValues;
-  }
-
-  protected EvalParams convertToEvalParams(List<Feature> features) throws CleartkEncoderException {
-
-    List<NameNumber> contexts = featuresEncoder.encodeAll(features);
-
-    String[] context = new String[contexts.size()];
-    float[] values = new float[contexts.size()];
-
-    for (int i = 0; i < contexts.size(); i++) {
-      NameNumber contextValue = contexts.get(i);
-      context[i] = contextValue.name;
-      values[i] = contextValue.number.floatValue();
-    }
-
-    return new EvalParams(context, values);
-  }
-
-  public class EvalParams {
-    private String[] context;
-
-    private float[] values;
-
-    public String[] getContext() {
-      return context;
-    }
-
-    public float[] getValues() {
-      return values;
-    }
-
-    public EvalParams(String[] context, float[] values) {
-      this.context = context;
-      this.values = values;
-    }
-
   }
 
 }

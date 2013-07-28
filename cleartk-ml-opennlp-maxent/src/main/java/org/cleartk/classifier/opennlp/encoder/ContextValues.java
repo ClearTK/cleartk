@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2011, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,28 +21,60 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.opennlp;
-
-import opennlp.model.MaxentModel;
-
-import org.cleartk.classifier.encoder.features.FeaturesEncoder;
-import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
-import org.cleartk.classifier.opennlp.encoder.ContextValues;
+package org.cleartk.classifier.opennlp.encoder;
 
 /**
+ * A class that holds the String[] and float[] that represent features in OpenNLP Maxent.
+ * 
  * <br>
- * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ * Copyright (c) 2013, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * 
- * @author Philip Ogren
  * @author Steven Bethard
  */
-public class MaxentStringOutcomeClassifier extends MaxentClassifier_ImplBase<String> {
-  public MaxentStringOutcomeClassifier(
-      FeaturesEncoder<ContextValues> featuresEncoder,
-      OutcomeEncoder<String, String> outcomeEncoder,
-      MaxentModel model) {
-    super(featuresEncoder, outcomeEncoder, model);
+public class ContextValues {
+
+  private int size;
+
+  private String[] context;
+
+  private float[] values;
+
+  public ContextValues(String[] context, float[] values) {
+    if (context.length != values.length) {
+      throw new IllegalArgumentException(String.format(
+          "invalid lengths: %s != %s",
+          context.length,
+          values.length));
+    }
+    this.size = context.length;
+    this.context = context;
+    this.values = values;
+  }
+
+  public String[] getContext() {
+    return context;
+  }
+
+  public float[] getValues() {
+    return values;
+  }
+
+  public String toMaxentString() {
+    StringBuilder builder = new StringBuilder();
+    if (this.size == 0) {
+      builder.append("null=0.0");
+    }
+    for (int i = 0; i < this.size; ++i) {
+      if (i > 0) {
+        builder.append(' ');
+      }
+      if (this.values[i] == 1.0f) {
+        builder.append(this.context[i]);
+      } else {
+        builder.append(this.context[i]).append('=').append(this.values[i]);
+      }
+    }
+    return builder.toString();
   }
 }

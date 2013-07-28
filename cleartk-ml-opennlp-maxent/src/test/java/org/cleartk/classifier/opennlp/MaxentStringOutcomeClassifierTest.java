@@ -126,7 +126,7 @@ public class MaxentStringOutcomeClassifierTest extends DefaultTestBase {
     File trainFile = new MaxentStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     BufferedReader reader = new BufferedReader(new FileReader(trainFile));
     String line = reader.readLine();
-    assertEquals("A hello=1234", line);
+    assertEquals("A hello=1234.0", line);
     reader.close();
 
     HideOutput hider = new HideOutput();
