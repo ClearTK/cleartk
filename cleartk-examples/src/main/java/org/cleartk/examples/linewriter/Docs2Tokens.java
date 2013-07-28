@@ -37,14 +37,15 @@ import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.ae.linewriter.AnnotationWriter;
 import org.cleartk.util.ae.linewriter.LineWriter;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.kohsuke.args4j.Option;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
+
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.Option;
 
 /**
  * <br>
@@ -53,29 +54,28 @@ import org.uimafit.pipeline.SimplePipeline;
  */
 public class Docs2Tokens {
 
-  public static class Options extends Options_ImplBase {
+  public interface Options {
     @Option(
-        name = "-i",
-        aliases = "--inputFileName",
-        usage = "specify the directory to read plain text files from",
-        required = false)
-    public File inputDirectoryName = new File("src/test/resources/data/twain");
+        shortName = "i",
+        longName = "inputFileName",
+        description = "specify the directory to read plain text files from",
+        defaultValue = "src/test/resources/data/twain")
+    public File getInputDirectory();
 
     @Option(
-        name = "-o",
-        aliases = "--outputFileName",
-        usage = "specify the file to write tokens to",
-        required = false)
-    public String outputFileName = "target/test/twain-tokens.txt";
+        shortName = "o",
+        longName = "outputFileName",
+        description = "specify the file to write tokens to",
+        defaultValue = "target/test/twain-tokens.txt")
+    public File getOutputFile();
 
   }
 
   public static void main(String[] args) throws UIMAException, IOException {
 
-    Options options = new Options();
-    options.parseOptions(args);
+    Options options = CliFactory.parseArguments(Options.class, args);
 
-    CollectionReader reader = UriCollectionReader.getCollectionReaderFromDirectory(options.inputDirectoryName);
+    CollectionReader reader = UriCollectionReader.getCollectionReaderFromDirectory(options.getInputDirectory());
 
     AnalysisEngineDescription uriToText = UriToDocumentTextAnnotator.getDescription();
 
@@ -88,14 +88,14 @@ public class Docs2Tokens {
     AnalysisEngineDescription lineWriter = AnalysisEngineFactory.createPrimitiveDescription(
         LineWriter.class,
         LineWriter.PARAM_OUTPUT_FILE_NAME,
-        options.outputFileName,
+        options.getOutputFile(),
         LineWriter.PARAM_OUTPUT_ANNOTATION_CLASS_NAME,
         Token.class.getName(),
         LineWriter.PARAM_ANNOTATION_WRITER_CLASS_NAME,
         TokenAnnotationWriter.class.getName());
 
     SimplePipeline.runPipeline(reader, uriToText, sentences, tokenizer, posTagger, lineWriter);
-    System.out.println("results written to " + options.outputFileName);
+    System.out.println("results written to " + options.getOutputFile());
   }
 
   public static class TokenAnnotationWriter implements AnnotationWriter<Token> {

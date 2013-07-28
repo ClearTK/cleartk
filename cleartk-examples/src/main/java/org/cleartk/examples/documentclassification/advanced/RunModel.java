@@ -28,10 +28,11 @@ import java.util.List;
 
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.examples.documentclassification.advanced.DocumentClassificationEvaluation.AnnotatorMode;
-import org.cleartk.util.Options_ImplBase;
-import org.kohsuke.args4j.Option;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.pipeline.SimplePipeline;
+
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.Option;
 
 /**
  * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
@@ -45,28 +46,31 @@ import org.uimafit.pipeline.SimplePipeline;
  */
 public class RunModel {
 
-  public static class Options extends Options_ImplBase {
-    @Option(name = "--test-dir", usage = "Specify the directory containing the documents to label.")
-    public File testDirectory = new File("data/3news-bydate/train");
+  public interface Options {
+    @Option(
+        longName = "test-dir",
+        description = "Specify the directory containing the documents to label.",
+        defaultValue = "data/3news-bydate/test")
+    public File getTestDirectory();
 
     @Option(
-        name = "--models-dir",
-        usage = "specify the directory in which to write out the trained model files")
-    public File modelsDirectory = new File("target/document_classification/models");
+        longName = "models-dir",
+        description = "specify the directory containing the trained model jar",
+        defaultValue = "target/document_classification/models")
+    public File getModelsDirectory();
   }
 
   public static void main(String[] args) throws Exception {
-    Options options = new Options();
-    options.parseOptions(args);
+    Options options = CliFactory.parseArguments(Options.class, args);
 
-    List<File> testFiles = DocumentClassificationEvaluation.getFilesFromDirectory(options.testDirectory);
+    List<File> testFiles = DocumentClassificationEvaluation.getFilesFromDirectory(options.getTestDirectory());
 
     DocumentClassificationEvaluation evaluation = new DocumentClassificationEvaluation(
-        options.modelsDirectory);
+        options.getModelsDirectory());
     CollectionReader collectionReader = evaluation.getCollectionReader(testFiles);
 
     AggregateBuilder builder = DocumentClassificationEvaluation.createDocumentClassificationAggregate(
-        options.modelsDirectory,
+        options.getModelsDirectory(),
         AnnotatorMode.CLASSIFY);
 
     SimplePipeline.runPipeline(collectionReader, builder.createAggregateDescription());

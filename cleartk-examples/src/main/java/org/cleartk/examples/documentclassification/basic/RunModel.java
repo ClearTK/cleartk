@@ -32,13 +32,14 @@ import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
-import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.kohsuke.args4j.Option;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
+
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.Option;
 
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -54,25 +55,28 @@ import org.uimafit.pipeline.SimplePipeline;
  */
 public class RunModel {
 
-  public static class Options extends Options_ImplBase {
-    @Option(name = "--test-dir", usage = "Specify the directory containing the documents to label.")
-    public File testDirectory = new File("data/3news-bydate/test");
+  public interface Options {
+    @Option(
+        longName = "test-dir",
+        description = "Specify the directory containing the documents to label.",
+        defaultValue = "data/3news-bydate/test")
+    public File getTestDirectory();
 
     @Option(
-        name = "--models-dir",
-        usage = "specify the directory in which to write out the trained model files")
-    public File modelsDirectory = new File("target/simple_document_classification/models");
+        longName = "models-dir",
+        description = "specify the directory containing the trained model jar",
+        defaultValue = "target/simple_document_classification/models")
+    public File getModelsDirectory();
   }
 
   public static void main(String[] args) throws Exception {
-    Options options = new Options();
-    options.parseOptions(args);
+    Options options = CliFactory.parseArguments(Options.class, args);
 
     // ////////////////////////////////////////
     // Create collection reader to load URIs
     // ////////////////////////////////////////
     CollectionReader reader = UriCollectionReader.getCollectionReaderFromDirectory(
-        options.testDirectory,
+        options.getTestDirectory(),
         UriCollectionReader.RejectSystemFiles.class,
         UriCollectionReader.RejectSystemDirectories.class);
 
@@ -95,7 +99,7 @@ public class RunModel {
         CleartkAnnotator.PARAM_IS_TRAINING,
         false,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-        JarClassifierBuilder.getModelJarFile(options.modelsDirectory)));
+        JarClassifierBuilder.getModelJarFile(options.getModelsDirectory())));
 
     // //////////////////////////////////////////////////////////////////////////////
     // Run pipeline and classify documents

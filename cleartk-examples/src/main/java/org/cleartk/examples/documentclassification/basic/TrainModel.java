@@ -24,7 +24,6 @@
 package org.cleartk.examples.documentclassification.basic;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.collection.CollectionReader;
@@ -36,13 +35,14 @@ import org.cleartk.examples.documentclassification.advanced.GoldDocumentCategory
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
-import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.kohsuke.args4j.Option;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
+
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.Option;
 
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -59,33 +59,35 @@ import org.uimafit.pipeline.SimplePipeline;
  */
 public class TrainModel {
 
-  public static class Options extends Options_ImplBase {
+  public interface Options {
     @Option(
-        name = "--train-dir",
-        usage = "Specify the directory containing the training documents.  This is used for cross-validation, and for training in a holdout set evaluation. "
-            + "When we run this example we point to a directory containing training data from a subset of the 20 newsgroup corpus - i.e. a directory called '3news-bydate/train'")
-    public File trainDirectory = new File("data/3news-bydate/train");
+        longName = "train-dir",
+        description = "Specify the directory containing the training documents.  This is used for cross-validation, and for training in a holdout set evaluation. "
+            + "When we run this example we point to a directory containing training data from a subset of the 20 newsgroup corpus - i.e. a directory called '3news-bydate/train'",
+        defaultValue = "data/3news-bydate/train")
+    public File getTrainDirectory();
 
     @Option(
-        name = "--models-dir",
-        usage = "specify the directory in which to write out the trained model files")
-    public File modelsDirectory = new File("target/simple_document_classification/models");
+        longName = "models-dir",
+        description = "specify the directory in which to write out the trained model files",
+        defaultValue = "target/simple_document_classification/models")
+    public File getModelsDirectory();
 
     @Option(
-        name = "--training-args",
-        usage = "specify training arguments to be passed to the learner.  For multiple values specify -ta for each - e.g. '-ta -t -ta 0'")
-    public List<String> trainingArguments = Arrays.asList("-t", "0");
+        longName = "training-args",
+        description = "specify training arguments to be passed to the learner.  For multiple values specify -ta for each - e.g. '-ta -t -ta 0'",
+        defaultValue = { "-t", "0" })
+    public List<String> getTrainingArguments();
   }
 
   public static void main(String[] args) throws Exception {
-    Options options = new Options();
-    options.parseOptions(args);
+    Options options = CliFactory.parseArguments(Options.class, args);
 
     // ////////////////////////////////////////
     // Create collection reader to load URIs
     // ////////////////////////////////////////
     CollectionReader reader = UriCollectionReader.getCollectionReaderFromDirectory(
-        options.trainDirectory,
+        options.getTrainDirectory(),
         UriCollectionReader.RejectSystemFiles.class,
         UriCollectionReader.RejectSystemDirectories.class);
 
@@ -111,7 +113,7 @@ public class TrainModel {
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         LIBSVMStringOutcomeDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        options.modelsDirectory));
+        options.getModelsDirectory()));
 
     // ///////////////////////////////////////////
     // Run pipeline to create training data file
@@ -122,8 +124,8 @@ public class TrainModel {
     // Train and write model
     // //////////////////////////////////////////////////////////////////////////////
     JarClassifierBuilder.trainAndPackage(
-        options.modelsDirectory,
-        options.trainingArguments.toArray(new String[options.trainingArguments.size()]));
+        options.getModelsDirectory(),
+        options.getTrainingArguments().toArray(new String[options.getTrainingArguments().size()]));
   }
 
 }

@@ -26,7 +26,6 @@ package org.cleartk.examples.treebank;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -38,16 +37,17 @@ import org.apache.uima.collection.CollectionReader;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.corpus.penntreebank.TreebankGoldAnnotator;
 import org.cleartk.eval.EvaluationConstants;
-import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.ViewURIFileNamer;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.kohsuke.args4j.Option;
 import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.component.xwriter.XWriter;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
+
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.Option;
 
 /**
  * <br>
@@ -68,46 +68,40 @@ import org.uimafit.pipeline.SimplePipeline;
  * 
  * To view the resulting xmi file in the CAS Visual Debugger you can run the eclipse launch
  * configuration labeled "CVD (cleartk-examples)". When the CVD opens select Menu -> File -> Read
- * XMI CAS File. Now navigate to the single xmi file located in
- * data/pos/treebank. Once the file is open in the CVD be sure to examine the
- * different views by selecting different values from the drop down box labeled "Select View" near
- * the top of the window.
+ * XMI CAS File. Now navigate to the single xmi file located in data/pos/treebank. Once the file is
+ * open in the CVD be sure to examine the different views by selecting different values from the
+ * drop down box labeled "Select View" near the top of the window.
  * 
  * @author Philip Ogren
  * 
  */
 public class TreebankParsingExample {
 
-  public static class Options extends Options_ImplBase {
+  public interface Options {
     @Option(
-        name = "-td",
-        aliases = "--treebankDirectory",
-        usage = "specify the directory containing treebank files",
-        required = true)
-    public String treebankDirectory;
+        longName = { "td", "treebankDirectory" },
+        description = "specify the directory containing treebank files")
+    public File getTreebankDirectory();
 
     @Option(
-        name = "-o",
-        aliases = "--outputDirectory",
-        usage = "specify the directory to write the XMI files to",
-        required = true)
-    public String outputDirectory;
+        shortName = "o",
+        longName = "outputDirectory",
+        description = "specify the directory to write the XMI files to")
+    public String getOutputDirectory();
 
     @Option(
-        name = "-suf",
-        aliases = "--treebankFileSuffixes",
-        usage = "specify file suffixes of the treebank files in the treebank directory",
-        multiValued = true)
-    public List<String> treebankFileSuffixes = new ArrayList<String>();
+        longName = { "suf", "treebankFileSuffixes" },
+        description = "specify file suffixes of the treebank files in the treebank directory")
+    public List<String> getTreebankFileSuffixes();
   }
 
   public static void main(String[] args) throws UIMAException, IOException {
-    Options options = new Options();
-    options.parseOptions(args);
+    Options options = CliFactory.parseArguments(Options.class, args);
 
     // Loads URIS specified by files into URI view
-    String[] suffixes = options.treebankFileSuffixes.toArray(new String[options.treebankFileSuffixes.size()]);
-    File treebankDir = new File(options.treebankDirectory);
+    String[] suffixes = options.getTreebankFileSuffixes().toArray(
+        new String[options.getTreebankFileSuffixes().size()]);
+    File treebankDir = options.getTreebankDirectory();
     Collection<File> files = FileUtils.listFiles(treebankDir, suffixes, false);
     CollectionReader reader = UriCollectionReader.getCollectionReaderFromFiles(files);
 
@@ -130,7 +124,7 @@ public class TreebankParsingExample {
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(
         XWriter.class,
         XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-        options.outputDirectory,
+        options.getOutputDirectory(),
         XWriter.PARAM_FILE_NAMER_CLASS_NAME,
         ViewURIFileNamer.class.getName()));
 

@@ -24,12 +24,12 @@
 package org.cleartk.examples.documentclassification.advanced;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.collection.CollectionReader;
-import org.cleartk.util.Options_ImplBase;
-import org.kohsuke.args4j.Option;
+
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.Option;
 
 /**
  * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
@@ -43,34 +43,36 @@ import org.kohsuke.args4j.Option;
  */
 public class TrainModel {
 
-  public static class Options extends Options_ImplBase {
+  public interface Options {
     @Option(
-        name = "--train-dir",
-        usage = "Specify the directory containing the training documents.  This is used for cross-validation, and for training in a holdout set evaluation. "
-            + "When we run this example we point to a directory containing training data from a subset of the 20 newsgroup corpus - i.e. a directory called '3news-bydate/train'")
-    public File trainDirectory = new File("data/3news-bydate/train");
+        longName = "train-dir",
+        description = "Specify the directory containing the training documents.  This is used for cross-validation, and for training in a holdout set evaluation. "
+            + "When we run this example we point to a directory containing training data from a subset of the 20 newsgroup corpus - i.e. a directory called '3news-bydate/train'",
+        defaultValue = "data/3news-bydate/train")
+    public File getTrainDirectory();
 
     @Option(
-        name = "--models-dir",
-        usage = "specify the directory in which to write out the trained model files")
-    public File modelsDirectory = new File("target/document_classification/models");
+        longName = "models-dir",
+        description = "specify the directory in which to write out the trained model files",
+        defaultValue = "target/document_classification/models")
+    public File getModelsDirectory();
 
     @Option(
-        name = "--training-args",
-        usage = "specify training arguments to be passed to the learner.  For multiple values specify -ta for each - e.g. '-ta -t -ta 0'")
-    public List<String> trainingArguments = Arrays.asList("-t", "0");
+        longName = "training-args",
+        description = "specify training arguments to be passed to the learner.  For multiple values specify -ta for each - e.g. '-ta -t -ta 0'",
+        defaultValue = { "-t", "0" })
+    public List<String> getTrainingArguments();
   }
 
   public static void main(String[] args) throws Exception {
-    Options options = new Options();
-    options.parseOptions(args);
+    Options options = CliFactory.parseArguments(Options.class, args);
 
     DocumentClassificationEvaluation evaluation = new DocumentClassificationEvaluation(
-        options.modelsDirectory,
-        options.trainingArguments);
+        options.getModelsDirectory(),
+        options.getTrainingArguments());
 
-    List<File> trainFiles = DocumentClassificationEvaluation.getFilesFromDirectory(options.trainDirectory);
+    List<File> trainFiles = DocumentClassificationEvaluation.getFilesFromDirectory(options.getTrainDirectory());
     CollectionReader collectionReader = evaluation.getCollectionReader(trainFiles);
-    evaluation.train(collectionReader, options.modelsDirectory);
+    evaluation.train(collectionReader, options.getModelsDirectory());
   }
 }
