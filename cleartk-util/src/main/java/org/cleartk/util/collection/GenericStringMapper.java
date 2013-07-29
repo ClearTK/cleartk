@@ -77,7 +77,7 @@ public class GenericStringMapper implements StringMapper, Writable {
     int total = 0;
     int kept = 0;
 
-    stringIntMap = new WrappedHPPCStringIntMap();
+    stringIntMap = new HashMap<String, Integer>();
     for (String s : countingMap.keySet()) {
       Entry e = countingMap.get(s);
       total += 1;
