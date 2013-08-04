@@ -167,7 +167,7 @@ public class CleartkExtractorTest extends DefaultTestBase {
     Assert.assertEquals("bb", chunk.getCoveredText());
 
     List<Feature> features = extractor.extract(this.jCas, chunk);
-    // Assert.assertEquals(19, features.size());
+    Assert.assertEquals(21, features.size());
     Iterator<Feature> iter = features.iterator();
     this.assertFeature("Count_Preceding_0_2_bb", 1, iter.next());
     this.assertFeature("Count_Preceding_0_2_cc", 1, iter.next());
@@ -188,8 +188,8 @@ public class CleartkExtractorTest extends DefaultTestBase {
     this.assertFeature("Count_Bag_Preceding_0_2_cc", 1, iter.next());
     this.assertFeature("Count_Count_Preceding_0_2_bb_1", 1, iter.next());
     this.assertFeature("Count_Count_Preceding_0_2_cc_1", 1, iter.next());
-    this.assertFeature("Count_Count_Count_Preceding_0_2_bb_1", 1, iter.next());
-    this.assertFeature("Count_Count_Count_Preceding_0_2_cc_1", 1, iter.next());
+    this.assertFeature("Count_Count_Count_Preceding_0_2_bb_1_1", 1, iter.next());
+    this.assertFeature("Count_Count_Count_Preceding_0_2_cc_1_1", 1, iter.next());
   }
 
   @Test

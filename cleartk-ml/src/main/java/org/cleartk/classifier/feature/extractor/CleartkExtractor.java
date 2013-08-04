@@ -255,12 +255,12 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
 
   }
 
-  public static class CountFeature extends ContextFeature {
+  public static class NestedCountFeature extends ContextFeature {
     public int count;
 
     public Object countedValue;
 
-    public CountFeature(String baseName, Feature feature, int count, Object countedValue) {
+    public NestedCountFeature(String baseName, Feature feature, int count, Object countedValue) {
       super(baseName, feature);
       this.count = count;
       this.countedValue = countedValue;
@@ -780,8 +780,8 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
             extractor)) {
 
           String countedFeatureValue = null;
-          if (feature instanceof CountFeature) {
-            countedFeatureValue = "" + ((CountFeature) feature).countedValue;
+          if (feature instanceof NestedCountFeature) {
+            countedFeatureValue = "" + ((NestedCountFeature) feature).countedValue;
           }
 
           String extractorName = extractor instanceof SimpleNamedFeatureExtractor
@@ -794,7 +794,7 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
               countedFeatureValue,
               String.valueOf(feature.getValue()));
           System.out.println("this.name = " + this.name);
-          System.out.println("extractor name");
+          System.out.println("extractor name = " + extractorName);
           System.out.println("countedFeature Value= " + countedFeatureValue);
           System.out.println("String.valueOf(feature.getValue()) = " + feature.getValue());
           System.out.println("feature name = " + featureName + "\n");
@@ -805,11 +805,16 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
       List<Feature> features = new ArrayList<Feature>();
       for (String featureName : featureCounts.elementSet()) {
         Feature feature = featureMap.get(featureName);
-        features.add(new CountFeature(
+        String countedFeatureValue = "" + feature.getValue();
+        if (feature instanceof NestedCountFeature) {
+          countedFeatureValue = ((NestedCountFeature) feature).countedValue + "_"
+              + countedFeatureValue;
+        }
+        features.add(new NestedCountFeature(
             featureName,
             new Feature(featureCounts.count(featureName)),
             featureCounts.count(featureName),
-            feature.getValue()));
+            countedFeatureValue));
       }
       return features;
     }
