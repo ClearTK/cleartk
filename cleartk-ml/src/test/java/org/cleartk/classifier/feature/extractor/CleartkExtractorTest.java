@@ -47,6 +47,7 @@ import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.junit.Test;
+import org.uimafit.factory.JCasFactory;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -153,7 +154,12 @@ public class CleartkExtractorTest extends DefaultTestBase {
         new Count(new Preceding(2)),
         new Count(new Covered()),
         new Count(new Following(1, 5)),
-        new Count(new Preceding(3), new Following(4)));
+        new Count(new Preceding(3), new Following(4)),
+        new Count(new Ngrams(2, new Preceding(3), new Following(4))),
+        new Count(new Ngram(new Preceding(2), new Following(2))), // silly!
+        new Count(new Bag(new Preceding(2))), // weird!
+        new Count(new Count(new Preceding(2))), // weird & silly!
+        new Count(new Count(new Count(new Preceding(2))))); // weird & silly!
 
     this.tokenBuilder.buildTokens(this.jCas, "aa bb cc bb aa cc bb cc aa");
     Chunk chunk = new Chunk(this.jCas, 9, 11);
@@ -161,7 +167,7 @@ public class CleartkExtractorTest extends DefaultTestBase {
     Assert.assertEquals("bb", chunk.getCoveredText());
 
     List<Feature> features = extractor.extract(this.jCas, chunk);
-    Assert.assertEquals(9, features.size());
+    // Assert.assertEquals(19, features.size());
     Iterator<Feature> iter = features.iterator();
     this.assertFeature("Count_Preceding_0_2_bb", 1, iter.next());
     this.assertFeature("Count_Preceding_0_2_cc", 1, iter.next());
@@ -172,6 +178,78 @@ public class CleartkExtractorTest extends DefaultTestBase {
     this.assertFeature("Count_Preceding_0_3_Following_0_4_aa", 2, iter.next());
     this.assertFeature("Count_Preceding_0_3_Following_0_4_bb", 2, iter.next());
     this.assertFeature("Count_Preceding_0_3_Following_0_4_cc", 3, iter.next());
+    this.assertFeature("Count_2grams_Preceding_0_3_Following_0_4_aa_bb", 1, iter.next());
+    this.assertFeature("Count_2grams_Preceding_0_3_Following_0_4_bb_cc", 2, iter.next());
+    this.assertFeature("Count_2grams_Preceding_0_3_Following_0_4_cc_aa", 1, iter.next());
+    this.assertFeature("Count_2grams_Preceding_0_3_Following_0_4_aa_cc", 1, iter.next());
+    this.assertFeature("Count_2grams_Preceding_0_3_Following_0_4_cc_bb", 1, iter.next());
+    this.assertFeature("Count_Ngram_Preceding_0_2_Following_0_2_bb_cc_aa_cc", 1, iter.next());
+    this.assertFeature("Count_Bag_Preceding_0_2_bb", 1, iter.next());
+    this.assertFeature("Count_Bag_Preceding_0_2_cc", 1, iter.next());
+    this.assertFeature("Count_Count_Preceding_0_2_bb_1", 1, iter.next());
+    this.assertFeature("Count_Count_Preceding_0_2_cc_1", 1, iter.next());
+    this.assertFeature("Count_Count_Count_Preceding_0_2_bb_1", 1, iter.next());
+    this.assertFeature("Count_Count_Count_Preceding_0_2_cc_1", 1, iter.next());
+  }
+
+  @Test
+  public void testCounts2() throws Exception {
+    CleartkExtractor extractor = new CleartkExtractor(Token.class, new TypePathExtractor(
+        Token.class,
+        "pos"), new Count(new Preceding(2)), new Count(new Covered()), new Count(
+        new Following(1, 5)), new Count(new Preceding(3), new Following(4)), new Count(new Ngrams(
+        2,
+        new Preceding(3),
+        new Following(4))), new Count(new Ngram(new Preceding(2), new Following(2))), // silly!
+        new Count(new Bag(new Preceding(2)))); // weird!
+    // new Count(new Count(new Preceding(2)))); // weird & silly!
+
+    this.tokenBuilder.buildTokens(
+        this.jCas,
+        "aa bb cc bb aa cc bb cc aa",
+        "aa bb cc bb aa cc bb cc aa",
+        "p1 p2 p2 p3 p3 p3 p3 p4 p5");
+    Chunk chunk = new Chunk(this.jCas, 9, 11);
+    chunk.addToIndexes();
+    Assert.assertEquals("bb", chunk.getCoveredText());
+
+    List<Feature> features = extractor.extract(this.jCas, chunk);
+    Assert.assertEquals(16, features.size());
+    Iterator<Feature> iter = features.iterator();
+    this.assertFeature("Count_Preceding_0_2_TypePath(Pos)_p2", 2, iter.next());
+    this.assertFeature("Count_Covered_TypePath(Pos)_p3", 1, iter.next());
+    this.assertFeature("Count_Following_1_5_TypePath(Pos)_p3", 2, iter.next());
+    this.assertFeature("Count_Following_1_5_TypePath(Pos)_p4", 1, iter.next());
+    this.assertFeature("Count_Following_1_5_TypePath(Pos)_p5", 1, iter.next());
+    this.assertFeature("Count_Preceding_0_3_Following_0_4_TypePath(Pos)_p1", 1, iter.next());
+    this.assertFeature("Count_Preceding_0_3_Following_0_4_TypePath(Pos)_p2", 2, iter.next());
+    this.assertFeature("Count_Preceding_0_3_Following_0_4_TypePath(Pos)_p3", 3, iter.next());
+    this.assertFeature("Count_Preceding_0_3_Following_0_4_TypePath(Pos)_p4", 1, iter.next());
+    this.assertFeature(
+        "Count_2grams_Preceding_0_3_Following_0_4_TypePath(Pos)_p1_p2",
+        1,
+        iter.next());
+    this.assertFeature(
+        "Count_2grams_Preceding_0_3_Following_0_4_TypePath(Pos)_p2_p2",
+        1,
+        iter.next());
+    this.assertFeature(
+        "Count_2grams_Preceding_0_3_Following_0_4_TypePath(Pos)_p2_p3",
+        1,
+        iter.next());
+    this.assertFeature(
+        "Count_2grams_Preceding_0_3_Following_0_4_TypePath(Pos)_p3_p3",
+        2,
+        iter.next());
+    this.assertFeature(
+        "Count_2grams_Preceding_0_3_Following_0_4_TypePath(Pos)_p3_p4",
+        1,
+        iter.next());
+    this.assertFeature(
+        "Count_Ngram_Preceding_0_2_Following_0_2_TypePath(Pos)_p2_p2_p3_p3",
+        1,
+        iter.next());
+    this.assertFeature("Count_Bag_Preceding_0_2_TypePath(Pos)_p2", 2, iter.next());
   }
 
   @Test
@@ -207,6 +285,20 @@ public class CleartkExtractorTest extends DefaultTestBase {
     this.assertFeature("Ngram_Following_1_3", "lazy_dog", iter.next());
     this.assertFeature("Ngram_Following_3_5", "._OOB1", iter.next());
     this.assertFeature("Ngram_Preceding_0_2_Following_1_2", "brown_fox_lazy", iter.next());
+
+    extractor = new CleartkExtractor(Token.class, new CoveredTextExtractor(), new Ngram(
+        new Preceding(2),
+        new Following(2)));
+
+    jCas = JCasFactory.createJCas();
+    this.tokenBuilder.buildTokens(this.jCas, "A B C D E");
+    chunk = new Chunk(this.jCas, 4, 5);
+    chunk.addToIndexes();
+    Assert.assertEquals("C", chunk.getCoveredText());
+    features = extractor.extract(this.jCas, chunk);
+    Assert.assertEquals(1, features.size());
+    this.assertFeature("Ngram_Preceding_0_2_Following_0_2", "A_B_D_E", features.get(0));
+
   }
 
   @Test

@@ -24,12 +24,12 @@
 package org.cleartk.classifier.feature.extractor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
@@ -238,6 +238,7 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
       this.feature = feature;
       this.setName(Feature.createName(baseName, feature.getName()));
       this.setValue(this.feature.getValue());
+
     }
 
     public ContextFeature(String baseName, int position, Feature feature) {
@@ -251,6 +252,20 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
       this.setName(Feature.createName(baseName, String.valueOf(position), featureName));
       this.setValue(this.feature.getValue());
     }
+
+  }
+
+  public static class CountFeature extends ContextFeature {
+    public int count;
+
+    public Object countedValue;
+
+    public CountFeature(String baseName, Feature feature, int count, Object countedValue) {
+      super(baseName, feature);
+      this.count = count;
+      this.countedValue = countedValue;
+    }
+
   }
 
   /**
@@ -706,8 +721,8 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
             annotationClass,
             extractor)) {
           ContextFeature contextFeature = (ContextFeature) feature;
-          String fName = Feature.createName(this.name, contextFeature.feature.getName());
-          features.add(new Feature(fName, feature.getValue()));
+          Feature f2 = new Feature(contextFeature.feature.getName(), feature.getValue());
+          features.add(new ContextFeature(this.getName(), f2));
         }
       }
       return features;
@@ -755,6 +770,7 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
         Class<T> annotationClass,
         SimpleFeatureExtractor extractor) throws CleartkExtractorException {
       Multiset<String> featureCounts = LinkedHashMultiset.create();
+      Map<String, Feature> featureMap = new HashMap<String, Feature>();
       for (Context context : this.contexts) {
         for (Feature feature : context.extract(
             jCas,
@@ -762,17 +778,38 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
             bounds,
             annotationClass,
             extractor)) {
-          ContextFeature contextFeature = (ContextFeature) feature;
+
+          String countedFeatureValue = null;
+          if (feature instanceof CountFeature) {
+            countedFeatureValue = "" + ((CountFeature) feature).countedValue;
+          }
+
+          String extractorName = extractor instanceof SimpleNamedFeatureExtractor
+              ? ((SimpleNamedFeatureExtractor) extractor).getFeatureName()
+              : null;
+
           String featureName = Feature.createName(
               this.name,
-              contextFeature.feature.getName(),
+              extractorName,
+              countedFeatureValue,
               String.valueOf(feature.getValue()));
+          System.out.println("this.name = " + this.name);
+          System.out.println("extractor name");
+          System.out.println("countedFeature Value= " + countedFeatureValue);
+          System.out.println("String.valueOf(feature.getValue()) = " + feature.getValue());
+          System.out.println("feature name = " + featureName + "\n");
           featureCounts.add(featureName);
+          featureMap.put(featureName, feature);
         }
       }
       List<Feature> features = new ArrayList<Feature>();
       for (String featureName : featureCounts.elementSet()) {
-        features.add(new Feature(featureName, featureCounts.count(featureName)));
+        Feature feature = featureMap.get(featureName);
+        features.add(new CountFeature(
+            featureName,
+            new Feature(featureCounts.count(featureName)),
+            featureCounts.count(featureName),
+            feature.getValue()));
       }
       return features;
     }
@@ -789,7 +826,14 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
 
     /**
      * Constructs a {@link Context} which converts the features extracted by the argument contexts
-     * into a single ngram feature where all feature values have been concatenated together.
+     * into a single ngram feature where all feature values have been concatenated together. That
+     * is, it takes everything provided by the contexts and makes a single feature value from it.
+     * For example, the code "new Ngram(new Preceding(2), new Following(2)))" if run on token
+     * annotations would return the feature "A_B_D_E" for the token "C" in the text "A B C D E".
+     * That is, it creates a single ngram from the preceding context and following context. Please
+     * see org.cleartk.classifier.feature.extractor.CleartkExtractorTest.testNgram() to run this
+     * example.
+     * 
      * 
      * @param contexts
      *          The contexts which should be combined into an ngram.
@@ -819,7 +863,6 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
       String featureName = extractor instanceof SimpleNamedFeatureExtractor
           ? ((SimpleNamedFeatureExtractor) extractor).getFeatureName()
           : null;
-      featureName = Feature.createName(this.name, featureName);
       List<String> values = new ArrayList<String>();
       for (Context context : this.contexts) {
         for (Feature feature : context.extract(
@@ -831,7 +874,10 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
           values.add(String.valueOf(feature.getValue()));
         }
       }
-      return Arrays.asList(new Feature(featureName, StringUtils.join(values, '_')));
+      Feature feature = new Feature(featureName, Joiner.on('_').join(values));
+      List<Feature> features = new ArrayList<Feature>();
+      features.add(new ContextFeature(this.getName(), feature));
+      return features;
     }
   }
 
@@ -885,7 +931,6 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
       String featureName = extractor instanceof SimpleNamedFeatureExtractor
           ? ((SimpleNamedFeatureExtractor) extractor).getFeatureName()
           : null;
-      featureName = Feature.createName(this.name, featureName);
       List<Feature> extractedFeatures = new ArrayList<Feature>();
       for (Context context : this.contexts) {
         extractedFeatures.addAll(context.extract(
@@ -901,7 +946,8 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
         for (Feature feature : extractedFeatures.subList(i, i + this.n)) {
           values.add(feature.getValue().toString());
         }
-        features.add(new Feature(featureName, Joiner.on('_').join(values)));
+        Feature feature = new Feature(featureName, Joiner.on('_').join(values));
+        features.add(new ContextFeature(this.getName(), feature));
       }
       return features;
     }
