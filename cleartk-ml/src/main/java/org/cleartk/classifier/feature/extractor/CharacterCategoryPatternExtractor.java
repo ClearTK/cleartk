@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor.simple;
+package org.cleartk.classifier.feature.extractor;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +29,6 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 
 /**
  * A feature extractor that generates a pattern based on the <a
@@ -43,7 +42,8 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
  * 
  * @author Steven Bethard
  */
-public class CharacterCategoryPatternExtractor implements SimpleNamedFeatureExtractor {
+public class CharacterCategoryPatternExtractor<T extends Annotation> implements
+    NamedFeatureExtractor1<T> {
 
   /**
    * The type of pattern to generate in feature values.

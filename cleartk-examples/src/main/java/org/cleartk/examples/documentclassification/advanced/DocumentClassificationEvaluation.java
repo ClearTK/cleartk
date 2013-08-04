@@ -39,6 +39,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
@@ -59,10 +60,8 @@ import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
-import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.kohsuke.args4j.Option;
 import org.uimafit.component.ViewTextCopierAnnotator;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -73,6 +72,8 @@ import org.uimafit.testing.util.HideOutput;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Function;
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.Option;
 
 /**
  * <br>
@@ -96,28 +97,32 @@ import com.google.common.base.Function;
 public class DocumentClassificationEvaluation extends
     Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 
-  public static class Options extends Options_ImplBase {
+  public interface Options {
     @Option(
-        name = "--train-dir",
-        usage = "Specify the directory containing the training documents.  This is used for cross-validation, and for training in a holdout set evaluation. "
-            + "When we run this example we point to a directory containing training data from a subset of the 20 newsgroup corpus - i.e. a directory called '3news-bydate/train'")
-    public File trainDirectory = new File("data/3news-bydate/train");
+        longName = "train-dir",
+        description = "Specify the directory containing the training documents.  This is used for cross-validation, and for training in a holdout set evaluation. "
+            + "When we run this example we point to a directory containing training data from a subset of the 20 newsgroup corpus - i.e. a directory called '3news-bydate/train'",
+        defaultValue = "data/3news-bydate/train")
+    public File getTrainDirectory();
 
     @Option(
-        name = "--test-dir",
-        usage = "Specify the directory containing the test (aka holdout/validation) documents.  This is for holdout set evaluation. "
-            + "When we run this example we point to a directory containing training data from a subset of the 20 newsgroup corpus - i.e. a directory called '3news-bydate/test'")
-    public File testDirectory = new File("data/3news-bydate/test");
+        longName = "test-dir",
+        description = "Specify the directory containing the test (aka holdout/validation) documents.  This is for holdout set evaluation. "
+            + "When we run this example we point to a directory containing training data from a subset of the 20 newsgroup corpus - i.e. a directory called '3news-bydate/test'",
+        defaultValue = "data/3news-bydate/test")
+    public File getTestDirectory();
 
     @Option(
-        name = "--models-dir",
-        usage = "specify the directory in which to write out the trained model files")
-    public File modelsDirectory = new File("target/document_classification/models");
+        longName = "models-dir",
+        description = "specify the directory in which to write out the trained model files",
+        defaultValue = "target/document_classification/models")
+    public File getModelsDirectory();
 
     @Option(
-        name = "--training-args",
-        usage = "specify training arguments to be passed to the learner.  For multiple values specify -ta for each - e.g. '-ta -t -ta 0'")
-    public List<String> trainingArguments = Arrays.asList("-t", "0");
+        longName = "training-args",
+        description = "specify training arguments to be passed to the learner.  For multiple values specify -ta for each - e.g. '-ta -t -ta 0'",
+        defaultValue = { "-t", "0" })
+    public List<String> getTrainingArguments();
   }
 
   public static enum AnnotatorMode {
@@ -133,15 +138,14 @@ public class DocumentClassificationEvaluation extends
   }
 
   public static void main(String[] args) throws Exception {
-    Options options = new Options();
-    options.parseOptions(args);
+    Options options = CliFactory.parseArguments(Options.class, args);
 
-    List<File> trainFiles = getFilesFromDirectory(options.trainDirectory);
-    List<File> testFiles = getFilesFromDirectory(options.testDirectory);
+    List<File> trainFiles = getFilesFromDirectory(options.getTrainDirectory());
+    List<File> testFiles = getFilesFromDirectory(options.getTestDirectory());
 
     DocumentClassificationEvaluation evaluation = new DocumentClassificationEvaluation(
-        options.modelsDirectory,
-        options.trainingArguments);
+        options.getModelsDirectory(),
+        options.getTrainingArguments());
 
     // Run Cross Validation
     List<AnnotationStatistics<String>> foldStats = evaluation.crossValidation(trainFiles, 2);
@@ -211,28 +215,28 @@ public class DocumentClassificationEvaluation extends
 
     // Collect TF*IDF stats for computing tf*idf values on extracted tokens
     URI tfIdfDataURI = DocumentClassificationAnnotator.createTokenTfIdfDataURI(outputDirectory);
-    TfidfExtractor<String> extractor = new TfidfExtractor<String>(
+    TfidfExtractor<String, DocumentAnnotation> extractor = new TfidfExtractor<String, DocumentAnnotation>(
         DocumentClassificationAnnotator.TFIDF_EXTRACTOR_KEY);
     extractor.train(instances);
     extractor.save(tfIdfDataURI);
 
     // Collect TF*IDF Centroid stats for computing similarity to corpus centroid
     URI tfIdfCentroidSimDataURI = DocumentClassificationAnnotator.createIdfCentroidSimilarityDataURI(outputDirectory);
-    CentroidTfidfSimilarityExtractor<String> simExtractor = new CentroidTfidfSimilarityExtractor<String>(
+    CentroidTfidfSimilarityExtractor<String, DocumentAnnotation> simExtractor = new CentroidTfidfSimilarityExtractor<String, DocumentAnnotation>(
         DocumentClassificationAnnotator.CENTROID_TFIDF_SIM_EXTRACTOR_KEY);
     simExtractor.train(instances);
     simExtractor.save(tfIdfCentroidSimDataURI);
 
     // Collect ZMUS stats for feature normalization
     URI zmusDataURI = DocumentClassificationAnnotator.createZmusDataURI(outputDirectory);
-    ZeroMeanUnitStddevExtractor<String> zmusExtractor = new ZeroMeanUnitStddevExtractor<String>(
+    ZeroMeanUnitStddevExtractor<String, DocumentAnnotation> zmusExtractor = new ZeroMeanUnitStddevExtractor<String, DocumentAnnotation>(
         DocumentClassificationAnnotator.ZMUS_EXTRACTOR_KEY);
     zmusExtractor.train(instances);
     zmusExtractor.save(zmusDataURI);
 
     // Collect MinMax stats for feature normalization
     URI minmaxDataURI = DocumentClassificationAnnotator.createMinMaxDataURI(outputDirectory);
-    MinMaxNormalizationExtractor<String> minmaxExtractor = new MinMaxNormalizationExtractor<String>(
+    MinMaxNormalizationExtractor<String, DocumentAnnotation> minmaxExtractor = new MinMaxNormalizationExtractor<String, DocumentAnnotation>(
         DocumentClassificationAnnotator.MINMAX_EXTRACTOR_KEY);
     minmaxExtractor.train(instances);
     minmaxExtractor.save(minmaxDataURI);

@@ -35,10 +35,12 @@ import junit.framework.Assert;
 
 import org.apache.uima.UimaContext;
 import org.cleartk.classifier.Classifier;
+import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
+
+import com.google.common.collect.Maps;
 
 /**
  * <br>
@@ -157,50 +159,51 @@ public class ViterbiTest {
       previousLabelWeights.put("L", 4);
     }
 
+    @Override
     public String classify(List<Feature> features) {
-      // TODO Auto-generated method stub
       return null;
     }
 
-    public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) {
-      List<ScoredOutcome<String>> scores = new ArrayList<ScoredOutcome<String>>();
+    @Override
+    public Map<String, Double> score(List<Feature> features) throws CleartkProcessingException {
+      Map<String, Double> scores = Maps.newHashMap();
 
       String position = (String) features.get(0).getValue();
       if (features.size() == 1) {
-        scores.add(new ScoredOutcome<String>("A", 1));
-        scores.add(new ScoredOutcome<String>("B", 1));
-        scores.add(new ScoredOutcome<String>("C", 2));
+        scores.put("A", 1.0);
+        scores.put("B", 1.0);
+        scores.put("C", 2.0);
         return scores;
       }
 
       String previousLabel = (String) features.get(1).getValue();
-      int previousLabelWeight = previousLabelWeights.get(previousLabel);
+      double previousLabelWeight = previousLabelWeights.get(previousLabel);
 
       if (position.equals("1")) {
-        scores.add(new ScoredOutcome<String>("D", 2 + previousLabelWeight));
-        scores.add(new ScoredOutcome<String>("E", 3 + previousLabelWeight));
-        scores.add(new ScoredOutcome<String>("F", 3 + previousLabelWeight));
+        scores.put("D", 2 + previousLabelWeight);
+        scores.put("E", 3 + previousLabelWeight);
+        scores.put("F", 3 + previousLabelWeight);
         return scores;
       }
 
       if (position.equals("2")) {
-        scores.add(new ScoredOutcome<String>("G", 4 + previousLabelWeight));
-        scores.add(new ScoredOutcome<String>("H", 4 + previousLabelWeight));
-        scores.add(new ScoredOutcome<String>("I", 5 + previousLabelWeight));
+        scores.put("G", 4 + previousLabelWeight);
+        scores.put("H", 4 + previousLabelWeight);
+        scores.put("I", 5 + previousLabelWeight);
         return scores;
       }
 
       if (position.equals("3")) {
-        scores.add(new ScoredOutcome<String>("J", 5 + previousLabelWeight));
-        scores.add(new ScoredOutcome<String>("K", 6 + previousLabelWeight));
-        scores.add(new ScoredOutcome<String>("L", 6 + previousLabelWeight));
+        scores.put("J", 5 + previousLabelWeight);
+        scores.put("K", 6 + previousLabelWeight);
+        scores.put("L", 6 + previousLabelWeight);
         return scores;
       }
 
       if (position.equals("4")) {
-        scores.add(new ScoredOutcome<String>("M", 7 + previousLabelWeight));
-        scores.add(new ScoredOutcome<String>("N", 7 + previousLabelWeight));
-        scores.add(new ScoredOutcome<String>("O", 8 + previousLabelWeight));
+        scores.put("M", 7 + previousLabelWeight);
+        scores.put("N", 7 + previousLabelWeight);
+        scores.put("O", 8 + previousLabelWeight);
         return scores;
       }
 
@@ -259,19 +262,21 @@ public class ViterbiTest {
     public Test2Classifier() {
     }
 
+    @Override
     public String classify(List<Feature> features) {
       return null;
     }
 
-    public List<ScoredOutcome<String>> score(List<Feature> features, int maxResults) {
-      List<ScoredOutcome<String>> scores = new ArrayList<ScoredOutcome<String>>();
+    @Override
+    public Map<String, Double> score(List<Feature> features) throws CleartkProcessingException {
+      Map<String, Double> scores = Maps.newHashMap();
 
       String position = (String) features.get(0).getValue();
       if (features.size() == 1) {
         // if I am at position 1 then the label "1" corresponds to the
         // 1st assembly line and the score is 2+7.
-        scores.add(new ScoredOutcome<String>("1", 9));
-        scores.add(new ScoredOutcome<String>("2", 12));
+        scores.put("1", 9.0);
+        scores.put("2", 12.0);
         return scores;
       }
 
@@ -280,53 +285,55 @@ public class ViterbiTest {
         if (previousLabel.equals("1")) {
           // if I am at position 2, and I was previously on the 1st
           // assembly then cost to stay in the 1st assembly is 9
-          scores.add(new ScoredOutcome<String>("1", 9));
+          scores.put("1", 9.0);
           // if I am at position 2, and I was previously on the 2nd
           // assembly then cost to move to the 1st assembly is 5 + 2
-          scores.add(new ScoredOutcome<String>("2", 5 + 2));
+          scores.put("2", 5.0 + 2.0);
         } else if (previousLabel.equals("2")) {
-          scores.add(new ScoredOutcome<String>("1", 9 + 2));
-          scores.add(new ScoredOutcome<String>("2", 5));
+          scores.put("1", 9.0 + 2.0);
+          scores.put("2", 5.0);
         }
       }
 
       if (position.equals("3")) {
         if (previousLabel.equals("1")) {
-          scores.add(new ScoredOutcome<String>("1", 3));
-          scores.add(new ScoredOutcome<String>("2", 6 + 3));
+          scores.put("1", 3.0);
+          scores.put("2", 6.0 + 3.0);
         } else if (previousLabel.equals("2")) {
-          scores.add(new ScoredOutcome<String>("1", 3 + 1));
-          scores.add(new ScoredOutcome<String>("2", 6));
+          scores.put("1", 3.0 + 1.0);
+          scores.put("2", 6.0);
         }
       }
 
       if (position.equals("4")) {
         if (previousLabel.equals("1")) {
-          scores.add(new ScoredOutcome<String>("1", 4));
-          scores.add(new ScoredOutcome<String>("2", 4 + 1));
+          scores.put("1", 4.0);
+          scores.put("2", 4.0 + 1.0);
         } else if (previousLabel.equals("2")) {
-          scores.add(new ScoredOutcome<String>("1", 4 + 2));
-          scores.add(new ScoredOutcome<String>("2", 4));
+          scores.put("1", 4.0 + 2.0);
+          scores.put("2", 4.0);
         }
       }
 
       if (position.equals("5")) {
         if (previousLabel.equals("1")) {
-          scores.add(new ScoredOutcome<String>("1", 8));
-          scores.add(new ScoredOutcome<String>("2", 5 + 3));
+          scores.put("1", 8.0);
+          scores.put("2", 5.0 + 3.0);
         } else if (previousLabel.equals("2")) {
-          scores.add(new ScoredOutcome<String>("1", 8 + 2));
-          scores.add(new ScoredOutcome<String>("2", 5));
+          // this used to be 8.0 + 2.0, but that gives equal values at state 5
+          // and so it was non-deterministic which branch was chosen by viterbi
+          scores.put("1", 8.0 + 1.0);
+          scores.put("2", 5.0);
         }
       }
 
       if (position.equals("6")) {
         if (previousLabel.equals("1")) {
-          scores.add(new ScoredOutcome<String>("1", 4 + 3));
-          scores.add(new ScoredOutcome<String>("2", 7 + 2 + 4));
+          scores.put("1", 4.0 + 3.0);
+          scores.put("2", 7.0 + 2.0 + 4.0);
         } else if (previousLabel.equals("2")) {
-          scores.add(new ScoredOutcome<String>("1", 4 + 3 + 1));
-          scores.add(new ScoredOutcome<String>("2", 7 + 2));
+          scores.put("1", 4.0 + 3.0 + 1.0);
+          scores.put("2", 7.0 + 2.0);
         }
       }
 

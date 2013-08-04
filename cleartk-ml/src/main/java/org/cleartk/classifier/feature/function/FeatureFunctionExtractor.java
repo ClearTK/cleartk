@@ -30,7 +30,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 
 import com.google.common.base.Function;
 
@@ -42,17 +42,16 @@ import com.google.common.base.Function;
  * 
  * @author Steven Bethard
  */
-public class FeatureFunctionExtractor implements SimpleFeatureExtractor {
+public class FeatureFunctionExtractor<T extends Annotation> implements FeatureExtractor1<T> {
 
   public FeatureFunctionExtractor(
-      SimpleFeatureExtractor extractor,
+      FeatureExtractor1<T> extractor,
       FeatureFunction... featureFunctions) {
     this.extractor = extractor;
     this.featureFunctions = featureFunctions;
   }
 
-  public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
-      throws CleartkExtractorException {
+  public List<Feature> extract(JCas jCas, T focusAnnotation) throws CleartkExtractorException {
     List<Feature> features = new ArrayList<Feature>();
     List<Feature> baseFeatures = this.extractor.extract(jCas, focusAnnotation);
     features.addAll(baseFeatures);
@@ -72,7 +71,7 @@ public class FeatureFunctionExtractor implements SimpleFeatureExtractor {
     return returnValues;
   }
 
-  private SimpleFeatureExtractor extractor;
+  private FeatureExtractor1<T> extractor;
 
   private FeatureFunction[] featureFunctions;
 }

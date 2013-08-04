@@ -25,12 +25,12 @@ package org.cleartk.classifier.opennlp;
 
 import static org.cleartk.classifier.util.InstanceFactory.createInstance;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -38,13 +38,13 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
+import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.testing.util.HideOutput;
@@ -126,7 +126,7 @@ public class MaxentStringOutcomeClassifierTest extends DefaultTestBase {
     File trainFile = new MaxentStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     BufferedReader reader = new BufferedReader(new FileReader(trainFile));
     String line = reader.readLine();
-    assertEquals("A hello=1234", line);
+    assertEquals("A hello=1234.0", line);
     reader.close();
 
     HideOutput hider = new HideOutput();
@@ -335,32 +335,13 @@ public class MaxentStringOutcomeClassifierTest extends DefaultTestBase {
     classification = classifier.classify(features2);
     assertEquals("O", classification);
 
-    ScoredOutcome<String> scoredValue = classifier.score(features1, 1).get(0);
-    assertEquals("B-GENE", scoredValue.getOutcome());
-    assertTrue(scoredValue.getScore() <= 1.0f);
-    assertTrue(scoredValue.getScore() >= 0.0f);
-    scoredValue = classifier.score(features2, 1).get(0);
-    assertEquals("O", scoredValue.getOutcome());
-    assertTrue(scoredValue.getScore() <= 1.0f);
-    assertTrue(scoredValue.getScore() >= 0.0f);
+    Map<String, Double> scoredOutcomes1 = classifier.score(features1);
+    Assert.assertTrue(scoredOutcomes1.get("B-GENE") > scoredOutcomes1.get("O"));
+    Assert.assertTrue(scoredOutcomes1.get("B-GENE") > scoredOutcomes1.get("I-GENE"));
 
-    List<ScoredOutcome<String>> scoredValues = classifier.score(features1, 4);
-    assertEquals(3, scoredValues.size());
-    scoredValue = scoredValues.get(0);
-    assertEquals("B-GENE", scoredValue.getOutcome());
-    assertTrue(scoredValue.getScore() <= 1.0f);
-    assertTrue(scoredValue.getScore() >= 0.0f);
-    scoredValue = scoredValues.get(1);
-    assertEquals("O", scoredValue.getOutcome());
-    assertTrue(scoredValue.getScore() <= 1.0f);
-    assertTrue(scoredValue.getScore() >= 0.0f);
-    scoredValue = scoredValues.get(2);
-    assertEquals("I-GENE", scoredValue.getOutcome());
-    assertTrue(scoredValue.getScore() <= 1.0f);
-    assertTrue(scoredValue.getScore() >= 0.0f);
-
-    scoredValues = classifier.score(features1, 2);
-    assertEquals(2, scoredValues.size());
+    Map<String, Double> scoredOutcomes2 = classifier.score(features2);
+    Assert.assertTrue(scoredOutcomes2.get("O") > scoredOutcomes2.get("B-GENE"));
+    Assert.assertTrue(scoredOutcomes2.get("O") > scoredOutcomes2.get("I-GENE"));
 
     AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
         Test2Annotator.class,

@@ -29,7 +29,6 @@ import junit.framework.Assert;
 
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Test;
@@ -47,7 +46,7 @@ public class CoveredTextExtractorTest extends DefaultTestBase {
   public void testSameJCas() {
     this.jCas.setDocumentText("abcdefg");
     Token token = new Token(this.jCas, 1, 3);
-    CoveredTextExtractor extractor = new CoveredTextExtractor();
+    CoveredTextExtractor<Token> extractor = new CoveredTextExtractor<Token>();
     Assert.assertEquals(Arrays.asList(new Feature("bc")), extractor.extract(this.jCas, token));
   }
 
@@ -57,7 +56,7 @@ public class CoveredTextExtractorTest extends DefaultTestBase {
     JCas fooJCas = this.jCas.createView("foo");
     fooJCas.setDocumentText("zyxwvut");
     Token token = new Token(this.jCas, 1, 3);
-    CoveredTextExtractor extractor = new CoveredTextExtractor();
+    CoveredTextExtractor<Token> extractor = new CoveredTextExtractor<Token>();
     Assert.assertEquals(Arrays.asList(new Feature("yx")), extractor.extract(fooJCas, token));
   }
 

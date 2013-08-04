@@ -34,13 +34,14 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.mallet.MalletCRFStringOutcomeDataWriter;
 import org.cleartk.examples.chunking.util.MASCGoldAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
-import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.kohsuke.args4j.Option;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
+
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.Option;
 
 /**
  * This class provides a main method that demonstrates how to train a {@link NamedEntityChunker} on
@@ -54,21 +55,26 @@ import org.uimafit.pipeline.SimplePipeline;
  */
 public class TrainNamedEntityChunker {
 
-  public static class Options extends Options_ImplBase {
-    @Option(name = "--train-dir", usage = "The directory containing MASC-annotated files")
-    public File trainDirectory = new File("data/MASC-1.0.3/data/written");
+  public interface Options {
+    @Option(
+        longName = "train-dir",
+        description = "The directory containing MASC-annotated files",
+        defaultValue = "data/MASC-1.0.3/data/written")
+    public File getTrainDirectory();
 
-    @Option(name = "--model-dir", usage = "The directory where the model should be written")
-    public File modelDirectory = new File("target/chunking/ne-model");
+    @Option(
+        longName = "model-dir",
+        description = "The directory where the model should be written",
+        defaultValue = "target/chunking/ne-model")
+    public File getModelDirectory();
   }
 
   public static void main(String[] args) throws Exception {
-    Options options = new Options();
-    options.parseOptions(args);
+    Options options = CliFactory.parseArguments(Options.class, args);
 
     // a reader that loads the URIs of the training files
     CollectionReaderDescription reader = UriCollectionReader.getDescriptionFromDirectory(
-        options.trainDirectory,
+        options.getTrainDirectory(),
         MASCTextFileFilter.class,
         null);
 
@@ -90,7 +96,7 @@ public class TrainNamedEntityChunker {
         CleartkSequenceAnnotator.PARAM_IS_TRAINING,
         true,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        options.modelDirectory,
+        options.getModelDirectory(),
         DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         MalletCRFStringOutcomeDataWriter.class));
 
@@ -98,7 +104,7 @@ public class TrainNamedEntityChunker {
     SimplePipeline.runPipeline(reader, aggregate.createAggregateDescription());
 
     // train a Mallet CRF model on the training data
-    Train.main(options.modelDirectory);
+    Train.main(options.getModelDirectory());
   }
 
   /**

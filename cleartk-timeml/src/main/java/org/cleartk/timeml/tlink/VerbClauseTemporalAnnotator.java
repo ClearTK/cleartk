@@ -40,13 +40,13 @@ import org.apache.uima.util.Level;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
+import org.cleartk.classifier.feature.extractor.NamingExtractor1;
+import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.feature.syntax.TargetPathExtractor;
 import org.cleartk.feature.token.TokenTextForSelectedPOSExtractor;
@@ -63,6 +63,8 @@ import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.TypeCapability;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
+
+import com.google.common.collect.Lists;
 
 /**
  * <br>
@@ -108,11 +110,11 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
   private static final Set<String> stopWords = new HashSet<String>(
       Arrays.asList("be been is 's am are was were has had have".split(" ")));
 
-  private List<SimpleFeatureExtractor> sourceFeatureExtractors;
+  private List<FeatureExtractor1<Token>> sourceFeatureExtractors;
 
-  private List<SimpleFeatureExtractor> targetFeatureExtractors;
+  private List<FeatureExtractor1<Token>> targetFeatureExtractors;
 
-  private List<SimpleFeatureExtractor> betweenAnchorsFeatureExtractors;
+  private List<FeatureExtractor1<Annotation>> betweenAnchorsFeatureExtractors;
 
   private TargetPathExtractor pathExtractor;
 
@@ -130,29 +132,29 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
   public VerbClauseTemporalAnnotator() {
     this.eventID = 1;
 
-    SimpleFeatureExtractor precedingAuxiliaries = new CleartkExtractor(
+    FeatureExtractor1<Token> precedingAuxiliaries = new CleartkExtractor<Token, Token>(
         Token.class,
         new TokenTextForSelectedPOSExtractor("MD", "TO", "IN", "VB", "RB"),
         new Preceding(3));
-    SimpleFeatureExtractor tokenStemExtractor = new TypePathExtractor(Token.class, "stem");
-    SimpleFeatureExtractor tokenPOSExtractor = new TypePathExtractor(Token.class, "pos");
+    FeatureExtractor1<Token> tokenStemExtractor = new TypePathExtractor<Token>(Token.class, "stem");
+    FeatureExtractor1<Token> tokenPOSExtractor = new TypePathExtractor<Token>(Token.class, "pos");
 
-    this.sourceFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-    this.sourceFeatureExtractors.add(new NamingExtractor("Source", new CoveredTextExtractor()));
-    this.sourceFeatureExtractors.add(new NamingExtractor("Source", tokenPOSExtractor));
-    this.sourceFeatureExtractors.add(new NamingExtractor("Source", tokenStemExtractor));
-    this.sourceFeatureExtractors.add(new NamingExtractor("Source", precedingAuxiliaries));
+    this.sourceFeatureExtractors = Lists.newArrayList();
+    this.sourceFeatureExtractors.add(new NamingExtractor1<Token>("Source", new CoveredTextExtractor<Token>()));
+    this.sourceFeatureExtractors.add(new NamingExtractor1<Token>("Source", tokenPOSExtractor));
+    this.sourceFeatureExtractors.add(new NamingExtractor1<Token>("Source", tokenStemExtractor));
+    this.sourceFeatureExtractors.add(new NamingExtractor1<Token>("Source", precedingAuxiliaries));
 
-    this.targetFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-    this.targetFeatureExtractors.add(new NamingExtractor("Target", new CoveredTextExtractor()));
-    this.targetFeatureExtractors.add(new NamingExtractor("Target", tokenPOSExtractor));
-    this.targetFeatureExtractors.add(new NamingExtractor("Target", tokenStemExtractor));
-    this.targetFeatureExtractors.add(new NamingExtractor("Target", precedingAuxiliaries));
+    this.targetFeatureExtractors = Lists.newArrayList();
+    this.targetFeatureExtractors.add(new NamingExtractor1<Token>("Target", new CoveredTextExtractor<Token>()));
+    this.targetFeatureExtractors.add(new NamingExtractor1<Token>("Target", tokenPOSExtractor));
+    this.targetFeatureExtractors.add(new NamingExtractor1<Token>("Target", tokenStemExtractor));
+    this.targetFeatureExtractors.add(new NamingExtractor1<Token>("Target", precedingAuxiliaries));
 
-    this.betweenAnchorsFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-    this.betweenAnchorsFeatureExtractors.add(new NamingExtractor(
+    this.betweenAnchorsFeatureExtractors = new ArrayList<FeatureExtractor1<Annotation>>();
+    this.betweenAnchorsFeatureExtractors.add(new NamingExtractor1<Annotation>(
         "WordsBetween",
-        new CleartkExtractor(Token.class, new CoveredTextExtractor(), new Bag(new Covered()))));
+        new CleartkExtractor<Annotation, Token>(Token.class, new CoveredTextExtractor<Token>(), new Bag(new Covered()))));
     this.pathExtractor = new TargetPathExtractor();
   }
 
@@ -190,14 +192,14 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
         // create an instance and populate it with features
         Instance<String> instance = new Instance<String>();
-        for (SimpleFeatureExtractor extractor : this.sourceFeatureExtractors) {
+        for (FeatureExtractor1<Token> extractor : this.sourceFeatureExtractors) {
           instance.addAll(extractor.extract(jCas, sourceToken));
         }
-        for (SimpleFeatureExtractor extractor : this.targetFeatureExtractors) {
+        for (FeatureExtractor1<Token> extractor : this.targetFeatureExtractors) {
           instance.addAll(extractor.extract(jCas, targetToken));
         }
         Annotation windowAnnotation = new Annotation(jCas, firstEnd, lastBegin);
-        for (SimpleFeatureExtractor extractor : this.betweenAnchorsFeatureExtractors) {
+        for (FeatureExtractor1<Annotation> extractor : this.betweenAnchorsFeatureExtractors) {
           instance.addAll(extractor.extract(jCas, windowAnnotation));
         }
         instance.addAll(this.pathExtractor.extract(jCas, link.source, link.target));

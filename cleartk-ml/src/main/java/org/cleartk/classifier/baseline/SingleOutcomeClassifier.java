@@ -31,7 +31,6 @@ import java.util.Map;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 
 /**
@@ -57,10 +56,8 @@ public class SingleOutcomeClassifier<OUTCOME_TYPE> implements Classifier<OUTCOME
   }
 
   @Override
-  public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-      throws CleartkProcessingException {
+  public Map<OUTCOME_TYPE, Double> score(List<Feature> features) {
     throw new UnsupportedOperationException("no scores available from a single value classifier");
-
   }
 
   @Override

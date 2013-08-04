@@ -38,7 +38,6 @@ import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.TypePathFeature;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.DependencyRelation;
 import org.cleartk.type.test.Header;
@@ -137,7 +136,9 @@ public class TypePathExtractorTest extends DefaultTestBase {
     targetToken.setEnd(8);
     Token token1 = (Token) fsIndex.find(targetToken);
 
-    TypePathExtractor typePathExtractor = new TypePathExtractor(Token.class, "lemma/value");
+    TypePathExtractor<Token> typePathExtractor = new TypePathExtractor<Token>(
+        Token.class,
+        "lemma/value");
     List<Feature> features = typePathExtractor.extract(jCas, token1);
     assertEquals(features.size(), 1);
     TypePathFeature feature = (TypePathFeature) features.get(0);
@@ -146,7 +147,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
 
     // test the covered text of the last member of a path (lemma is not a
     // primitive value);
-    typePathExtractor = new TypePathExtractor(Token.class, "lemma");
+    typePathExtractor = new TypePathExtractor<Token>(Token.class, "lemma");
     features = typePathExtractor.extract(jCas, token1);
     assertEquals(features.size(), 1);
     feature = (TypePathFeature) features.get(0);
@@ -157,60 +158,70 @@ public class TypePathExtractorTest extends DefaultTestBase {
     targetToken.setEnd(14);
     Token token3 = (Token) fsIndex.find(targetToken);
 
-    typePathExtractor = new TypePathExtractor(Token.class, "lemma/begin");
+    typePathExtractor = new TypePathExtractor<Token>(Token.class, "lemma/begin");
     features = typePathExtractor.extract(jCas, token1);
     assertEquals(features.size(), 1);
     feature = (TypePathFeature) features.get(0);
     assertEquals(feature.getValue(), 1);
     assertEquals(feature.getTypePath(), "lemma/begin");
 
-    typePathExtractor = new TypePathExtractor(Token.class, "posTag", true, true, false);
+    typePathExtractor = new TypePathExtractor<Token>(Token.class, "posTag", true, true, false);
     features = typePathExtractor.extract(jCas, token1);
     assertEquals(features.size(), 2);
     assertEquals(features.get(0).getValue().toString(), "Wwwwwwww");
     assertEquals(features.get(1).getValue().toString(), "Wwwwwwww");
 
-    typePathExtractor = new TypePathExtractor(Token.class, "posTag", true, true, true);
+    typePathExtractor = new TypePathExtractor<Token>(Token.class, "posTag", true, true, true);
     features = typePathExtractor.extract(jCas, token1);
     assertEquals(features.size(), 1);
     assertEquals(features.get(0).getValue().toString(), "Wwwwwwww");
 
-    typePathExtractor = new TypePathExtractor(Token.class, "posTag", true, false, false);
+    typePathExtractor = new TypePathExtractor<Token>(Token.class, "posTag", true, false, false);
     features = typePathExtractor.extract(jCas, token1);
     assertEquals(features.size(), 1);
     assertEquals(features.get(0).getValue().toString(), "Wwwwwwww");
 
-    typePathExtractor = new TypePathExtractor(Token.class, "posTag", false, false, false);
+    typePathExtractor = new TypePathExtractor<Token>(Token.class, "posTag", false, false, false);
     features = typePathExtractor.extract(jCas, token1);
     assertEquals(features.size(), 1);
     assertEquals(features.get(0).getValue().toString(), "Wwwwwwww");
 
-    typePathExtractor = new TypePathExtractor(Token.class, "lemma/testFS", false, false, false);
+    typePathExtractor = new TypePathExtractor<Token>(
+        Token.class,
+        "lemma/testFS",
+        false,
+        false,
+        false);
     features = typePathExtractor.extract(jCas, token1);
     assertEquals(features.size(), 1);
     assertEquals(features.get(0).getValue().toString(), "A");
 
-    typePathExtractor = new TypePathExtractor(Token.class, "lemma/testFS", false, true, false);
+    typePathExtractor = new TypePathExtractor<Token>(
+        Token.class,
+        "lemma/testFS",
+        false,
+        true,
+        false);
     features = typePathExtractor.extract(jCas, token1);
     assertEquals(features.size(), 3);
     assertEquals(features.get(0).getValue().toString(), "A");
     assertEquals(features.get(1).getValue().toString(), "B");
     assertEquals(features.get(2).getValue().toString(), "A");
 
-    typePathExtractor = new TypePathExtractor(Token.class, "lemma/testFS", false, true, true);
+    typePathExtractor = new TypePathExtractor<Token>(Token.class, "lemma/testFS", false, true, true);
     features = typePathExtractor.extract(jCas, token1);
     assertEquals(features.size(), 2);
     assertEquals(features.get(0).getValue().toString(), "A");
     assertEquals(features.get(1).getValue().toString(), "B");
 
-    typePathExtractor = new TypePathExtractor(Token.class, "depRel/head");
+    typePathExtractor = new TypePathExtractor<Token>(Token.class, "depRel/head");
     features = typePathExtractor.extract(jCas, token3);
     assertEquals(features.size(), 1);
     feature = (TypePathFeature) features.get(0);
     assertEquals(feature.getValue().toString(), "Wwwwwwww");
     assertEquals(feature.getTypePath(), "depRel/head");
 
-    typePathExtractor = new TypePathExtractor(Token.class, "depRel/head", true, true, true);
+    typePathExtractor = new TypePathExtractor<Token>(Token.class, "depRel/head", true, true, true);
     features = typePathExtractor.extract(jCas, token3);
     assertEquals(features.size(), 2);
     feature = (TypePathFeature) features.get(0);
@@ -220,7 +231,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
     assertEquals(feature.getTypePath(), "depRel/head");
     assertEquals(feature.getValue().toString(), "ii");
 
-    typePathExtractor = new TypePathExtractor(
+    typePathExtractor = new TypePathExtractor<Token>(
         Token.class,
         "depRel/head/posTag/value",
         true,
@@ -236,7 +247,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
     // will return all values for every POSTag even though
     // the posTag of Token is an FSArray. (I was hoping this extractor would
     // return two values pos1 and pos3
-    typePathExtractor = new TypePathExtractor(
+    typePathExtractor = new TypePathExtractor<Token>(
         Token.class,
         "depRel/head/posTag/value",
         true,
@@ -248,7 +259,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
     assertEquals(features.get(1).getValue().toString(), "pos2");
     assertEquals(features.get(2).getValue().toString(), "pos3");
 
-    typePathExtractor = new TypePathExtractor(
+    typePathExtractor = new TypePathExtractor<Token>(
         Token.class,
         "depRel/head/posTag/value",
         false,
@@ -258,7 +269,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
     assertEquals(features.size(), 1);
     assertEquals(features.get(0).getValue().toString(), "pos1");
 
-    typePathExtractor = new TypePathExtractor(
+    typePathExtractor = new TypePathExtractor<Token>(
         Token.class,
         "depRel/head/posTag/value",
         false,
@@ -328,7 +339,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
     Token tokenL0 = JCasUtil.selectByIndex(jCas, Token.class, 2);
     tokenL0.setPos("B");
 
-    TypePathExtractor posExtractor = new TypePathExtractor(Token.class, "pos");
+    TypePathExtractor<Token> posExtractor = new TypePathExtractor<Token>(Token.class, "pos");
 
     Feature feature = posExtractor.extract(jCas, token).get(0);
     assertEquals("A", feature.getValue().toString());

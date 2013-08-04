@@ -30,8 +30,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.NamingExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
+import org.cleartk.classifier.feature.extractor.NamingExtractor1;
 
 /**
  * <br>
@@ -40,24 +40,24 @@ import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
  * 
  * @author Steven Bethard
  */
-public abstract class FilteringExtractor<T extends Annotation> implements SimpleFeatureExtractor {
+public abstract class FilteringExtractor<T extends Annotation> implements FeatureExtractor1<T> {
 
   private Class<T> annotationClass;
 
-  private SimpleFeatureExtractor extractor;
+  private FeatureExtractor1<T> extractor;
 
-  public FilteringExtractor(Class<T> annotationClass, SimpleFeatureExtractor extractor) {
+  public FilteringExtractor(Class<T> annotationClass, FeatureExtractor1<T> extractor) {
     this.annotationClass = annotationClass;
     this.extractor = extractor;
   }
 
-  public FilteringExtractor(Class<T> annotationClass, String name, SimpleFeatureExtractor extractor) {
+  public FilteringExtractor(Class<T> annotationClass, String name, FeatureExtractor1<T> extractor) {
     this.annotationClass = annotationClass;
-    this.extractor = new NamingExtractor(name, extractor);
+    this.extractor = new NamingExtractor1<T>(name, extractor);
   }
 
   @Override
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
+  public List<Feature> extract(JCas view, T focusAnnotation)
       throws CleartkExtractorException {
     if (this.accept(annotationClass.cast(focusAnnotation))) {
       return this.extractor.extract(view, focusAnnotation);

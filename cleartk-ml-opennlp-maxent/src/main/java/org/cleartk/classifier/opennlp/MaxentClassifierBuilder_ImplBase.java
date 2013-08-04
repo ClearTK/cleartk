@@ -26,7 +26,6 @@ package org.cleartk.classifier.opennlp;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 import java.util.zip.GZIPInputStream;
@@ -34,10 +33,10 @@ import java.util.zip.GZIPInputStream;
 import opennlp.maxent.io.BinaryGISModelReader;
 import opennlp.model.MaxentModel;
 
-import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
+import org.cleartk.classifier.opennlp.encoder.ContextValues;
 
 /**
  * <br>
@@ -48,7 +47,7 @@ import org.cleartk.classifier.jar.JarStreams;
  * @author Steven Bethard
  */
 public abstract class MaxentClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends MaxentClassifier_ImplBase<OUTCOME_TYPE>, OUTCOME_TYPE>
-    extends ClassifierBuilder_ImplBase<CLASSIFIER_TYPE, List<NameNumber>, OUTCOME_TYPE, String> {
+    extends ClassifierBuilder_ImplBase<CLASSIFIER_TYPE, ContextValues, OUTCOME_TYPE, String> {
 
   private static final String MODEL_NAME = "model.maxent";
 

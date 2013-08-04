@@ -34,9 +34,9 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Count;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.token.type.Token;
 import org.uimafit.util.JCasUtil;
@@ -56,14 +56,16 @@ import org.uimafit.util.JCasUtil;
  */
 public class BasicDocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
-  private CleartkExtractor extractor;
+  private CleartkExtractor<DocumentAnnotation, Token> extractor;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
     // Create an extractor that gives word counts for a document
-    this.extractor = new CleartkExtractor(Token.class, new CoveredTextExtractor(), new Count(
-        new Covered()));
+    this.extractor = new CleartkExtractor<DocumentAnnotation, Token>(
+        Token.class,
+        new CoveredTextExtractor<Token>(),
+        new Count(new Covered()));
   }
 
   public void process(JCas jCas) throws AnalysisEngineProcessException {

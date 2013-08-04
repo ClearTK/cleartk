@@ -33,8 +33,6 @@ import java.util.Map;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Joiner;
@@ -60,11 +58,12 @@ import com.google.common.collect.Multiset;
  * 
  * @author Steven Bethard
  */
-public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotationsFeatureExtractor {
+public class CleartkExtractor<FOCUS_T extends Annotation, SEARCH_T extends Annotation> implements
+    FeatureExtractor1<FOCUS_T>, FeatureExtractor2<FOCUS_T, FOCUS_T> {
 
-  private Class<? extends Annotation> annotationClass;
+  private Class<SEARCH_T> annotationClass;
 
-  private SimpleFeatureExtractor extractor;
+  private FeatureExtractor1<SEARCH_T> extractor;
 
   private Context[] contexts;
 
@@ -80,8 +79,8 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
    *          The contexts where the extractor should look for annotations.
    */
   public CleartkExtractor(
-      Class<? extends Annotation> annotationClass,
-      SimpleFeatureExtractor extractor,
+      Class<SEARCH_T> annotationClass,
+      FeatureExtractor1<SEARCH_T> extractor,
       Context... contexts) {
     this.annotationClass = annotationClass;
     this.extractor = extractor;
@@ -89,8 +88,7 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
   }
 
   @Override
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkExtractorException {
+  public List<Feature> extract(JCas view, FOCUS_T focusAnnotation) throws CleartkExtractorException {
     return this.extract(view, focusAnnotation, new NoBounds());
   }
 
@@ -105,22 +103,25 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
    *          The boundary within which context annotations may be identified.
    * @return The features extracted in the context of the focus annotation.
    */
-  public List<Feature> extractWithin(
-      JCas view,
-      Annotation focusAnnotation,
-      Annotation boundsAnnotation) throws CleartkExtractorException {
+  public List<Feature> extractWithin(JCas view, FOCUS_T focusAnnotation, Annotation boundsAnnotation)
+      throws CleartkExtractorException {
     Bounds bounds = new SpanBounds(boundsAnnotation.getBegin(), boundsAnnotation.getEnd());
     return this.extract(view, focusAnnotation, bounds);
   }
 
-  @Override
-  public List<Feature> extractBetween(JCas view, Annotation annotation1, Annotation annotation2)
+  public List<Feature> extractBetween(JCas view, FOCUS_T annotation1, FOCUS_T annotation2)
       throws CleartkExtractorException {
     int begin = annotation1.getEnd();
     int end = annotation2.getBegin();
     // FIXME: creating a new annotation may leak memory - is there a better approach?
     Annotation focusAnnotation = new Annotation(view, begin, end);
     return this.extract(view, focusAnnotation, new NoBounds());
+  }
+
+  @Override
+  public java.util.List<Feature> extract(JCas view, FOCUS_T annotation1, FOCUS_T annotation2)
+      throws CleartkExtractorException {
+    return this.extractBetween(view, annotation1, annotation2);
   }
 
   private List<Feature> extract(JCas view, Annotation focusAnnotation, Bounds bounds)
@@ -217,12 +218,12 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
      *          context.
      * @return The list of features extracted.
      */
-    public <T extends Annotation> List<Feature> extract(
+    public <SEARCH_T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
         Bounds bounds,
-        Class<T> annotationClass,
-        SimpleFeatureExtractor extractor) throws CleartkExtractorException;
+        Class<SEARCH_T> annotationClass,
+        FeatureExtractor1<SEARCH_T> extractor) throws CleartkExtractorException;
   }
 
   /**
@@ -327,24 +328,24 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
     }
 
     @Override
-    public <T extends Annotation> List<Feature> extract(
+    public <SEARCH_T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
         Bounds bounds,
-        Class<T> annotationClass,
-        SimpleFeatureExtractor extractor) throws CleartkExtractorException {
-      String featureName = extractor instanceof SimpleNamedFeatureExtractor
-          ? ((SimpleNamedFeatureExtractor) extractor).getFeatureName()
+        Class<SEARCH_T> annotationClass,
+        FeatureExtractor1<SEARCH_T> extractor) throws CleartkExtractorException {
+      String featureName = extractor instanceof NamedFeatureExtractor1
+          ? ((NamedFeatureExtractor1<SEARCH_T>) extractor).getFeatureName()
           : null;
 
       // slice the appropriate annotations from the CAS
-      List<T> anns = this.select(jCas, focusAnnotation, annotationClass, this.end);
+      List<SEARCH_T> anns = this.select(jCas, focusAnnotation, annotationClass, this.end);
       int missing = this.end - anns.size();
       anns = anns.subList(0, Math.max(0, anns.size() - this.begin));
 
       // figure out how many items are out of bounds
       int oobPos = missing;
-      for (T ann : anns) {
+      for (SEARCH_T ann : anns) {
         if (!bounds.contains(ann)) {
           oobPos += 1;
         }
@@ -356,7 +357,7 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
 
         // if the annotation at the current position is in bounds, extract features from it
         int adjustedPos = this.end - 1 - pos - missing;
-        T ann = adjustedPos >= 0 ? anns.get(adjustedPos) : null;
+        SEARCH_T ann = adjustedPos >= 0 ? anns.get(adjustedPos) : null;
         if (ann != null && bounds.contains(ann)) {
           for (Feature feature : extractor.extract(jCas, ann)) {
             features.add(new ContextFeature(this.getName(), pos, feature));
@@ -383,28 +384,28 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
     }
 
     @Override
-    public <T extends Annotation> List<Feature> extract(
+    public <SEARCH_T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
         Bounds bounds,
-        Class<T> annotationClass,
-        SimpleFeatureExtractor extractor) throws CleartkExtractorException {
-      String featureName = extractor instanceof SimpleNamedFeatureExtractor
-          ? ((SimpleNamedFeatureExtractor) extractor).getFeatureName()
+        Class<SEARCH_T> annotationClass,
+        FeatureExtractor1<SEARCH_T> extractor) throws CleartkExtractorException {
+      String featureName = extractor instanceof NamedFeatureExtractor1
+          ? ((NamedFeatureExtractor1<SEARCH_T>) extractor).getFeatureName()
           : null;
-      List<T> anns = this.select(jCas, focusAnnotation, annotationClass, this.end);
+      List<SEARCH_T> anns = this.select(jCas, focusAnnotation, annotationClass, this.end);
       int oobStart;
       if (this.begin <= anns.size()) {
         oobStart = 1;
         anns = anns.subList(this.begin, anns.size());
       } else {
         oobStart = this.begin - anns.size() + 1;
-        anns = new ArrayList<T>();
+        anns = new ArrayList<SEARCH_T>();
       }
       List<Feature> features = new ArrayList<Feature>();
-      Iterator<T> iter = anns.iterator();
+      Iterator<SEARCH_T> iter = anns.iterator();
       for (int pos = this.begin, oobPos = oobStart; pos < this.end; pos += 1) {
-        T ann = iter.hasNext() ? iter.next() : null;
+        SEARCH_T ann = iter.hasNext() ? iter.next() : null;
         if (ann != null && bounds.contains(ann)) {
           for (Feature feature : extractor.extract(jCas, ann)) {
             features.add(new ContextFeature(this.getName(), pos, feature));
@@ -440,18 +441,15 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
     }
 
     @Override
-    public <T extends Annotation> List<Feature> extract(
+    public <SEARCH_T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
         Bounds bounds,
-        Class<T> annotationClass,
-        SimpleFeatureExtractor extractor) throws CleartkExtractorException {
-      if (!annotationClass.isInstance(focusAnnotation)) {
-        String message = "%s is not an instance of %s";
-        throw new IllegalArgumentException(String.format(message, focusAnnotation, annotationClass));
-      }
+        Class<SEARCH_T> annotationClass,
+        FeatureExtractor1<SEARCH_T> extractor) throws CleartkExtractorException {
+
       List<Feature> features = new ArrayList<Feature>();
-      for (Feature feature : extractor.extract(jCas, focusAnnotation)) {
+      for (Feature feature : extractor.extract(jCas, annotationClass.cast(focusAnnotation))) {
         features.add(new ContextFeature(this.getName(), feature));
       }
       return features;
@@ -561,15 +559,15 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
     }
 
     @Override
-    public <T extends Annotation> List<Feature> extract(
+    public <SEARCH_T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
         Bounds bounds,
-        Class<T> annotationClass,
-        SimpleFeatureExtractor extractor) throws CleartkExtractorException {
+        Class<SEARCH_T> annotationClass,
+        FeatureExtractor1<SEARCH_T> extractor) throws CleartkExtractorException {
       List<Feature> features = new ArrayList<Feature>();
       int pos = 0;
-      for (T ann : JCasUtil.selectCovered(jCas, annotationClass, focusAnnotation)) {
+      for (SEARCH_T ann : JCasUtil.selectCovered(jCas, annotationClass, focusAnnotation)) {
         for (Feature feature : extractor.extract(jCas, ann)) {
           features.add(new ContextFeature(this.getName(), pos, feature));
         }
@@ -705,12 +703,12 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
     }
 
     @Override
-    public <T extends Annotation> List<Feature> extract(
+    public <SEARCH_T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
         Bounds bounds,
-        Class<T> annotationClass,
-        SimpleFeatureExtractor extractor) throws CleartkExtractorException {
+        Class<SEARCH_T> annotationClass,
+        FeatureExtractor1<SEARCH_T> extractor) throws CleartkExtractorException {
       List<Feature> features = new ArrayList<Feature>();
       for (Context context : this.contexts) {
         for (Feature feature : context.extract(
@@ -762,12 +760,12 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
     }
 
     @Override
-    public <T extends Annotation> List<Feature> extract(
+    public <SEARCH_T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
         Bounds bounds,
-        Class<T> annotationClass,
-        SimpleFeatureExtractor extractor) throws CleartkExtractorException {
+        Class<SEARCH_T> annotationClass,
+        FeatureExtractor1<SEARCH_T> extractor) throws CleartkExtractorException {
       Multiset<String> featureCounts = LinkedHashMultiset.create();
       Map<String, Feature> featureMap = new HashMap<String, Feature>();
       for (Context context : this.contexts) {
@@ -783,8 +781,8 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
             countedFeatureValue = "" + ((NestedCountFeature) feature).countedValue;
           }
 
-          String extractorName = extractor instanceof SimpleNamedFeatureExtractor
-              ? ((SimpleNamedFeatureExtractor) extractor).getFeatureName()
+          String extractorName = extractor instanceof NamedFeatureExtractor1
+              ? ((NamedFeatureExtractor1<SEARCH_T>) extractor).getFeatureName()
               : null;
 
           String featureName = Feature.createName(
@@ -850,14 +848,14 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
     }
 
     @Override
-    public <T extends Annotation> List<Feature> extract(
+    public <SEARCH_T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
         Bounds bounds,
-        Class<T> annotationClass,
-        SimpleFeatureExtractor extractor) throws CleartkExtractorException {
-      String featureName = extractor instanceof SimpleNamedFeatureExtractor
-          ? ((SimpleNamedFeatureExtractor) extractor).getFeatureName()
+        Class<SEARCH_T> annotationClass,
+        FeatureExtractor1<SEARCH_T> extractor) throws CleartkExtractorException {
+      String featureName = extractor instanceof NamedFeatureExtractor1
+          ? ((NamedFeatureExtractor1<SEARCH_T>) extractor).getFeatureName()
           : null;
       List<String> values = new ArrayList<String>();
       for (Context context : this.contexts) {
@@ -918,14 +916,14 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
     }
 
     @Override
-    public <T extends Annotation> List<Feature> extract(
+    public <SEARCH_T extends Annotation> List<Feature> extract(
         JCas jCas,
         Annotation focusAnnotation,
         Bounds bounds,
-        Class<T> annotationClass,
-        SimpleFeatureExtractor extractor) throws CleartkExtractorException {
-      String featureName = extractor instanceof SimpleNamedFeatureExtractor
-          ? ((SimpleNamedFeatureExtractor) extractor).getFeatureName()
+        Class<SEARCH_T> annotationClass,
+        FeatureExtractor1<SEARCH_T> extractor) throws CleartkExtractorException {
+      String featureName = extractor instanceof NamedFeatureExtractor1
+          ? ((NamedFeatureExtractor1<SEARCH_T>) extractor).getFeatureName()
           : null;
       List<Feature> extractedFeatures = new ArrayList<Feature>();
       for (Context context : this.contexts) {

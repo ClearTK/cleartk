@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2007-2009, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,27 +21,49 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier;
+package org.cleartk.classifier.feature.extractor;
 
-import static org.junit.Assert.assertEquals;
+import java.util.List;
 
-import org.cleartk.classifier.ScoredOutcome;
-import org.junit.Test;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.classifier.Feature;
 
 /**
  * <br>
- * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @author Philipp Wetzler
  */
+public class NamingExtractor1<T extends Annotation> implements FeatureExtractor1<T> {
 
-public class ScoredOutcomeTest {
-
-  @Test
-  public void testScoredOutcome() {
-    ScoredOutcome<Integer> so = new ScoredOutcome<Integer>(5, 0.01d);
-    assertEquals("5|0.01", so.toString());
-    ScoredOutcome<String> sso = new ScoredOutcome<String>("outcome", 3.1415d);
-    assertEquals("outcome|3.1415", sso.toString());
-
+  /**
+   * Prepends the name of the features produced by subExtractor with the passed in name. To apply
+   * the name to multiple feature extractors pass in a {@link CombinedExtractor1}
+   * 
+   * @param name
+   *          The name to prepend to extracted feature names
+   * @param subExtractor
+   *          delegated extractor
+   */
+  public NamingExtractor1(String name, FeatureExtractor1<T> subExtractor) {
+    this.name = name;
+    this.subExtractor = subExtractor;
   }
+
+  public List<Feature> extract(JCas view, T focusAnnotation) throws CleartkExtractorException {
+    List<Feature> features = subExtractor.extract(view, focusAnnotation);
+
+    for (Feature feature : features) {
+      feature.setName(Feature.createName(name, feature.getName()));
+    }
+
+    return features;
+  }
+
+  private String name;
+
+  private FeatureExtractor1<T> subExtractor;
+
 }

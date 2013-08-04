@@ -44,7 +44,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.classifier.feature.transform.TransformableFeature;
 
 /**
@@ -55,7 +55,8 @@ import org.cleartk.classifier.feature.transform.TransformableFeature;
  * 
  * @author Lee Becker
  */
-public class CentroidTfidfSimilarityExtractor<OUTCOME_T> extends TfidfExtractor<OUTCOME_T> {
+public class CentroidTfidfSimilarityExtractor<OUTCOME_T, FOCUS_T extends Annotation> extends
+    TfidfExtractor<OUTCOME_T, FOCUS_T> {
 
   private Map<String, Double> centroidMap;
 
@@ -79,7 +80,7 @@ public class CentroidTfidfSimilarityExtractor<OUTCOME_T> extends TfidfExtractor<
     super(name);
   }
 
-  public CentroidTfidfSimilarityExtractor(String name, SimpleFeatureExtractor extractor) {
+  public CentroidTfidfSimilarityExtractor(String name, FeatureExtractor1<FOCUS_T> extractor) {
     super(name);
     this.subExtractor = extractor;
     this.isTrained = false;
@@ -120,8 +121,7 @@ public class CentroidTfidfSimilarityExtractor<OUTCOME_T> extends TfidfExtractor<
   }
 
   @Override
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkExtractorException {
+  public List<Feature> extract(JCas view, FOCUS_T focusAnnotation) throws CleartkExtractorException {
 
     List<Feature> extracted = this.subExtractor.extract(view, focusAnnotation);
     List<Feature> result = new ArrayList<Feature>();

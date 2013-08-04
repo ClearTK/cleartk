@@ -23,16 +23,17 @@
  */
 package org.cleartk.classifier.test;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
+
+import com.google.common.collect.Maps;
 
 /**
  * <br>
@@ -58,11 +59,10 @@ public abstract class TestClassifier_ImplBase<OUTCOME_TYPE> extends
   }
 
   @Override
-  public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-      throws CleartkProcessingException {
-    List<ScoredOutcome<OUTCOME_TYPE>> returnValues = new ArrayList<ScoredOutcome<OUTCOME_TYPE>>();
+  public Map<OUTCOME_TYPE, Double> score(List<Feature> features) throws CleartkProcessingException {
+    Map<OUTCOME_TYPE, Double> returnValues = Maps.newHashMap();
     OUTCOME_TYPE outcome = outcomeEncoder.decode("" + features.size());
-    returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcome, 1.0d));
+    returnValues.put(outcome, 1.0);
     return returnValues;
   }
 

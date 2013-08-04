@@ -51,11 +51,9 @@ import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
-import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.ViewURIUtil;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.kohsuke.args4j.Option;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AggregateBuilder;
@@ -65,6 +63,8 @@ import org.xml.sax.SAXException;
 
 import com.google.common.annotations.Beta;
 import com.google.common.io.Files;
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.Option;
 
 @Beta
 public class SumBasic extends Summarize_ImplBase<File> {
@@ -229,59 +229,81 @@ public class SumBasic extends Summarize_ImplBase<File> {
     this.outputScores = writeScores;
   }
 
-  public static class Options extends Options_ImplBase {
+  public interface Options {
 
     @Option(
-        name = "--max-num-sentences",
-        usage = "Specifies the maximum number of sentences to extract in the summary")
-    public int maxNumSentences = 10;
-
-    @Option(name = "--seen-words-prob", usage = "Specify the probability for seen words.")
-    public double seenWordsProbability = 0.0001;
+        longName = "max-num-sentences",
+        description = "Specifies the maximum number of sentences to extract in the summary",
+        defaultValue = "10")
+    public int getMaxNumSentences();
 
     @Option(
-        name = "--composition-function",
-        usage = "Specifies how word probabilities are combined (AVERAGE|SUM|PRODUCT, default=AVERAGE)")
-    public CompositionFunctionType cfType = CompositionFunctionType.AVERAGE;
+        longName = "seen-words-prob",
+        description = "Specify the probability for seen words.",
+        defaultValue = "0.0001")
+    public double getSeenWordsProbability();
 
     @Option(
-        name = "--token-field",
-        usage = "Specifies what kind of token is used for summarization, (COVERED_TEXT|STEM|LEMMA, default=COVERED_TEXT)")
-    public TokenField tokenField = TokenField.COVERED_TEXT;
-
-    @Option(name = "--stopwords-file", usage = "Path to whitespace delimited stopwords text file")
-    public File stopwordsFile = new File("src/main/resources/stopwords.txt");
-
-    @Option(name = "--documents-dir", usage = "Path to documents to summarize")
-    public File documentsDir = new File("src/test/resources/test_documents");
-
-    @Option(name = "--model-dir", usage = "Path for saving model data")
-    public File modelDir = new File("target/models");
+        longName = "composition-function",
+        description = "Specifies how word probabilities are combined (AVERAGE|SUM|PRODUCT, default=AVERAGE)",
+        defaultValue = "AVERAGE")
+    public CompositionFunctionType getCFType();
 
     @Option(
-        name = "--xmi-dir",
-        usage = "Path for saving intermediate cas xmi files.  Leave unspecified for a temporary directory")
-    public File xmiDir = Files.createTempDir();
+        longName = "token-field",
+        description = "Specifies what kind of token is used for summarization, (COVERED_TEXT|STEM|LEMMA, default=COVERED_TEXT)",
+        defaultValue = "COVERED_TEXT")
+    public TokenField getTokenField();
 
-    @Option(name = "sentencesOutFile", usage = "Path to the output file")
-    public File sentencesOutFile = new File("target/sentences.out");
+    @Option(
+        longName = "stopwords-file",
+        description = "Path to whitespace delimited stopwords text file",
+        defaultValue = "src/main/resources/stopwords.txt")
+    public File getStopwordsFile();
 
-    @Option(name = "outputScores", usage = "Path to the output file")
-    public Boolean outputScores = false;
+    @Option(
+        longName = "documents-dir",
+        description = "Path to documents to summarize",
+        defaultValue = "src/test/resources/test_documents")
+    public File getDocumentsDir();
+
+    @Option(
+        longName = "model-dir",
+        description = "Path for saving model data",
+        defaultValue = "target/models")
+    public File getModelDir();
+
+    @Option(
+        longName = "xmi-dir",
+        description = "Path for saving intermediate cas xmi files.  Leave unspecified for a temporary directory",
+        defaultToNull = true)
+    public File getXMIDir();
+
+    @Option(
+        longName = "sentencesOutFile",
+        description = "Path to the output file",
+        defaultValue = "target/sentences.out")
+    public File getSentencesOutFile();
+
+    @Option(longName = "outputScores", description = "Path to the output file")
+    public boolean getOutputScores();
 
   }
 
   public static void main(String[] args) throws Exception {
-    Options options = new Options();
-    options.parseOptions(args);
+    Options options = CliFactory.parseArguments(Options.class, args);
+    File xmiDir = options.getXMIDir();
+    if (xmiDir == null) {
+      xmiDir = Files.createTempDir();
+    }
 
     SumBasic summarizer = new SumBasic(
-        options.documentsDir,
-        options.modelDir,
-        options.xmiDir,
-        options.stopwordsFile,
+        options.getDocumentsDir(),
+        options.getModelDir(),
+        xmiDir,
+        options.getStopwordsFile(),
         SumBasicAnnotator.TokenField.COVERED_TEXT);
-    summarizer.setSentencesOutFile(options.sentencesOutFile, options.outputScores);
+    summarizer.setSentencesOutFile(options.getSentencesOutFile(), options.getOutputScores());
 
     System.out.println("Training");
     summarizer.train();

@@ -27,7 +27,6 @@ import static org.cleartk.syntax.constituent.type.TreebankNodeUtil.selectHighest
 import static org.cleartk.syntax.constituent.type.TreebankNodeUtil.selectMatchingLeaf;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -35,19 +34,20 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.feature.extractor.BetweenAnnotationsFeatureExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor2;
+import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Ngram;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
+import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
@@ -96,9 +96,9 @@ public class TemporalLinkEventToSameSentenceTimeAnnotator extends
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
-    final SimpleFeatureExtractor prepOrVerbExtractor = new FilteringExtractor<Token>(
+    final FeatureExtractor1<Token> prepOrVerbExtractor = new FilteringExtractor<Token>(
         Token.class,
-        new CoveredTextExtractor()) {
+        new CoveredTextExtractor<Token>()) {
       @Override
       protected boolean accept(Token token) {
         return token.getPos().equals("TO") || token.getPos().equals("IN")
@@ -106,22 +106,33 @@ public class TemporalLinkEventToSameSentenceTimeAnnotator extends
       }
     };
 
-    this.setSourceExtractors(Arrays.asList(
-        new TypePathExtractor(Event.class, "tense"),
-        new TypePathExtractor(Event.class, "eventClass"),
-        new CleartkExtractor(Token.class, prepOrVerbExtractor, new Ngram(new Following(5)))));
+    
+    List<FeatureExtractor1<Event>> srcExtractors = Lists.newArrayList();
+    srcExtractors.add(new TypePathExtractor<Event>(Event.class, "tense"));
+    srcExtractors.add(new TypePathExtractor<Event>(Event.class, "eventClass"));
+    srcExtractors.add(new CleartkExtractor<Event, Token>(Token.class, prepOrVerbExtractor, new Ngram(new Following(5))));
+    this.setSourceExtractors(srcExtractors);
+    
+    List<FeatureExtractor1<Time>> tgtExtractors = Lists.newArrayList();
+    tgtExtractors.add(new CleartkExtractor<Time, Token>(Token.class, new CoveredTextExtractor<Token>(), new Bag(new Covered())));
+    tgtExtractors.add(new TypePathExtractor<Time>(Time.class, "timeType"));
+    tgtExtractors.add(new TypePathExtractor<Time>(Time.class, "value"));
+    tgtExtractors.add(new CleartkExtractor<Time, Token>(Token.class, prepOrVerbExtractor, new Ngram(new Preceding(5))));
+    this.setTargetExtractors(tgtExtractors);
 
-    this.setTargetExtractors(Arrays.asList(
-        new CleartkExtractor(Token.class, new CoveredTextExtractor(), new Bag(new Covered())),
-        new TypePathExtractor(Time.class, "timeType"),
-        new TypePathExtractor(Time.class, "value"),
-        new CleartkExtractor(Token.class, prepOrVerbExtractor, new Ngram(new Preceding(5)))));
+//    this.setTargetExtractors(Arrays.asList(
+//        new CleartkExtractor<Time, Token>(Token.class, new CoveredTextExtractor(), new Bag(new Covered())),
+//        new TypePathExtractor<Time>(Time.class, "timeType"),
+//        new TypePathExtractor<Time>(Time.class, "value"),
+//        new CleartkExtractor<Time, Token>(Token.class, prepOrVerbExtractor, new Ngram(new Preceding(5)))));
 
     // this will probably only extract when the source (Event) precedes the target (Time)
-    this.setBetweenExtractors(Arrays.<BetweenAnnotationsFeatureExtractor> asList(new CleartkExtractor(
+    
+    List<FeatureExtractor2<Anchor, Anchor>> btweenExtractors = Lists.newArrayList();
+    btweenExtractors.add(new CleartkExtractor<Anchor, Token>(
         Token.class,
         prepOrVerbExtractor,
-        new Bag(new Covered()))));
+        new Bag(new Covered())));
   }
 
   @Override

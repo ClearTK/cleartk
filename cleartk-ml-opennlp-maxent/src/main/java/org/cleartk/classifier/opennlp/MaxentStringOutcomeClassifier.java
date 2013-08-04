@@ -23,13 +23,11 @@
  */
 package org.cleartk.classifier.opennlp;
 
-import java.util.List;
-
 import opennlp.model.MaxentModel;
 
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
-import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
+import org.cleartk.classifier.opennlp.encoder.ContextValues;
 
 /**
  * <br>
@@ -42,7 +40,7 @@ import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
  */
 public class MaxentStringOutcomeClassifier extends MaxentClassifier_ImplBase<String> {
   public MaxentStringOutcomeClassifier(
-      FeaturesEncoder<List<NameNumber>> featuresEncoder,
+      FeaturesEncoder<ContextValues> featuresEncoder,
       OutcomeEncoder<String, String> outcomeEncoder,
       MaxentModel model) {
     super(featuresEncoder, outcomeEncoder, model);

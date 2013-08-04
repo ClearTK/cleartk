@@ -27,10 +27,10 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
@@ -70,12 +70,12 @@ public class EventTenseAnnotator extends EventAttributeAnnotator<String> {
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
-    this.eventFeatureExtractors.add(new TextSliceExtractor(-2));
-    this.eventFeatureExtractors.add(new CleartkExtractor(Token.class, new TypePathExtractor(
+    this.eventFeatureExtractors.add(new TextSliceExtractor<Event>(-2));
+    this.eventFeatureExtractors.add(new CleartkExtractor<Event, Token>(Token.class, new TypePathExtractor<Token>(
         Token.class,
         "pos"), new Bag(new Covered())));
 
-    this.contextExtractors.add(new CleartkExtractor(
+    this.contextExtractors.add(new CleartkExtractor<Event, Token>(
         Token.class,
         new TokenTextForSelectedPOSExtractor("MD", "TO", "IN", "VB"),
         new Preceding(3)));

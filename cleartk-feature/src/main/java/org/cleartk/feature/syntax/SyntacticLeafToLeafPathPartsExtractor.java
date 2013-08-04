@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.BetweenAnnotationsFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor2;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil.TreebankNodePath;
@@ -43,9 +43,9 @@ import com.google.common.base.Joiner;
  * 
  * @author Steven Bethard
  */
-public class SyntacticLeafToLeafPathPartsExtractor implements BetweenAnnotationsFeatureExtractor {
+public class SyntacticLeafToLeafPathPartsExtractor<T extends Annotation, U extends Annotation> implements FeatureExtractor2<T, U> {
 
-  public List<Feature> extractBetween(JCas jCas, Annotation source, Annotation target) {
+  public List<Feature> extract(JCas jCas, T source, U target) {
     List<Feature> features = new ArrayList<Feature>();
     TreebankNode sourceNode = TreebankNodeUtil.selectMatchingLeaf(jCas, source);
     TreebankNode targetNode = TreebankNodeUtil.selectMatchingLeaf(jCas, target);

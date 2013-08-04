@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.uima.UimaContext;
@@ -36,12 +36,10 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
-import org.cleartk.classifier.feature.extractor.simple.CombinedExtractor;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
+import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.summarization.type.SummarySentence;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
@@ -83,7 +81,7 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
       description = "provides a URI pointing to a file containing a whitespace separated list of stopwords")
   protected URI stopwordsUri = null;
 
-  CombinedExtractor extractor;
+  FeatureExtractor1<Sentence> extractor;
 
   Set<String> stopwords;
 
@@ -92,7 +90,7 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
 
     try {
       this.stopwords = this.readStopwords();
-      this.extractor = new CombinedExtractor(this.createTokenCountsExtractor());
+      this.extractor = this.createTokenCountsExtractor();
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
     }
@@ -109,16 +107,14 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
       if (this.isTraining()) {
         this.dataWriter.write(instance);
       } else {
-        List<ScoredOutcome<Boolean>> scoredOutcomes = this.classifier.score(
-            instance.getFeatures(),
-            1);
-        if (scoredOutcomes.get(0).getOutcome()) {
-          scoredOutcomes.get(0).getScore();
+        Map<Boolean, Double> scoredOutcomes = this.classifier.score(instance.getFeatures());
+        Double trueScore = scoredOutcomes.get(true);
+        if (trueScore > 0.0) {
           SummarySentence extractedSentence = new SummarySentence(
               jcas,
               sentence.getBegin(),
               sentence.getEnd());
-          extractedSentence.setScore(scoredOutcomes.get(0).getScore());
+          extractedSentence.setScore(trueScore);
           extractedSentence.addToIndexes();
         }
       }
@@ -148,23 +144,23 @@ public class SumBasicAnnotator extends CleartkAnnotator<Boolean> {
     }
   }
 
-  private SimpleFeatureExtractor createTokenCountsExtractor() {
-    SimpleFeatureExtractor tokenFieldExtractor = new CoveredTextExtractor();
+  private FeatureExtractor1<Sentence> createTokenCountsExtractor() {
+    FeatureExtractor1<Token> tokenFieldExtractor = new CoveredTextExtractor<Token>();
     switch (this.tokenField) {
       case COVERED_TEXT:
-        tokenFieldExtractor = new CoveredTextExtractor();
+        tokenFieldExtractor = new CoveredTextExtractor<Token>();
         break;
       case STEM:
-        tokenFieldExtractor = new TypePathExtractor(Token.class, "stem");
+        tokenFieldExtractor = new TypePathExtractor<Token>(Token.class, "stem");
         break;
       case LEMMA:
-        tokenFieldExtractor = new TypePathExtractor(Token.class, "lemma");
+        tokenFieldExtractor = new TypePathExtractor<Token>(Token.class, "lemma");
         break;
     }
 
-    CleartkExtractor countsExtractor = new CleartkExtractor(
+    CleartkExtractor<Sentence, Token> countsExtractor = new CleartkExtractor<Sentence, Token>(
         Token.class,
-        new StopwordRemovingExtractor(this.stopwords, tokenFieldExtractor),
+        new StopwordRemovingExtractor<Token>(this.stopwords, tokenFieldExtractor),
         new CleartkExtractor.Count(new CleartkExtractor.Covered()));
 
     return countsExtractor;

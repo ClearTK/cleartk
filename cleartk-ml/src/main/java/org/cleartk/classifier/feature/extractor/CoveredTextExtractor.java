@@ -21,47 +21,43 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier;
+package org.cleartk.classifier.feature.extractor;
+
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
+import org.cleartk.classifier.Feature;
 
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * Associates the outcome (classification) of a classifier with a score. This score conceptually
- * could be almost anything but is often something similar to a probability. The only expectation is
- * that a higher score should correspond to a better classification.
+ * <p>
+ * 
+ * @author Philip Ogren
+ * 
  */
-public class ScoredOutcome<OUTCOME_TYPE> implements Comparable<ScoredOutcome<OUTCOME_TYPE>> {
 
-  private OUTCOME_TYPE outcome;
+public class CoveredTextExtractor<T extends Annotation> implements NamedFeatureExtractor1<T> {
 
-  private double score;
-
-  public ScoredOutcome(OUTCOME_TYPE outcome, double score) {
-    super();
-    this.outcome = outcome;
-    this.score = score;
-  }
-
-  public double getScore() {
-    return score;
-  }
-
-  public OUTCOME_TYPE getOutcome() {
-    return outcome;
+  @Override
+  public String getFeatureName() {
+    return null;
   }
 
   @Override
-  public String toString() {
-    return outcome.toString() + "|" + score;
-  }
+  public List<Feature> extract(JCas jCas, Annotation focusAnnotation) {
+    // inline Annotation.getCoveredText() here, but use the right JCas instead
+    String jCasText = jCas.getDocumentText();
+    int begin = focusAnnotation.getBegin();
+    int end = focusAnnotation.getEnd();
+    String spannedText = jCasText == null ? null : jCasText.substring(begin, end);
 
-  /**
-   * We want to sort in descending order
-   */
-  public int compareTo(ScoredOutcome<OUTCOME_TYPE> arg0) {
-    return Double.compare(arg0.getScore(), this.getScore());
+    // create a single feature from the text
+    Feature feature = new Feature(spannedText);
+    return Collections.singletonList(feature);
   }
-
 }

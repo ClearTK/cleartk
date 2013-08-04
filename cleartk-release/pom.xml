@@ -215,9 +215,6 @@
 
 									<!-- Links to all dependency javadocs -->
 									<links>
-										<!-- args4j -->
-										<link>http://args4j.kohsuke.org/args4j/apidocs/</link>
-
 										<!-- berkeley parser -->
 										<!-- (none available) -->
 
@@ -241,9 +238,6 @@
 
 										<!-- hamcrest -->
 										<!-- (none available) -->
-
-										<!-- hppc -->
-										<link>http://labs.carrotsearch.com/download/hppc/0.4.1/api/</link>
 
 										<!-- jVinci, uima-* -->
 										<link>http://uima.apache.org/d/uimaj-2.3.1/api/</link>

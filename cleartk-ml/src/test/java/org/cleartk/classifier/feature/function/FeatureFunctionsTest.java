@@ -26,14 +26,8 @@ package org.cleartk.classifier.feature.function;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.function.CapitalTypeFeatureFunction;
-import org.cleartk.classifier.feature.function.CharacterNGramFeatureFunction;
-import org.cleartk.classifier.feature.function.FeatureFunction;
-import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
-import org.cleartk.classifier.feature.function.LowerCaseFeatureFunction;
-import org.cleartk.classifier.feature.function.NumericTypeFeatureFunction;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;
@@ -272,8 +266,8 @@ public class FeatureFunctionsTest extends DefaultTestBase {
     Token hello = new Token(jCas, 0, 5);
     Token year = new Token(jCas, 12, 16);
 
-    SimpleFeatureExtractor textAndLower = new FeatureFunctionExtractor(
-        new CoveredTextExtractor(),
+    FeatureExtractor1<Token> textAndLower = new FeatureFunctionExtractor<Token>(
+        new CoveredTextExtractor<Token>(),
         new LowerCaseFeatureFunction());
     List<Feature> features = textAndLower.extract(jCas, hello);
     Assert.assertEquals(2, features.size());
@@ -283,8 +277,8 @@ public class FeatureFunctionsTest extends DefaultTestBase {
     Assert.assertEquals("hello", features.get(1).getValue());
 
     String yearDigits = NumericTypeFeatureFunction.NumericType.YEAR_DIGITS.toString();
-    SimpleFeatureExtractor textAndCapsAndNums = new FeatureFunctionExtractor(
-        new CoveredTextExtractor(),
+    FeatureExtractor1<Token> textAndCapsAndNums = new FeatureFunctionExtractor<Token>(
+        new CoveredTextExtractor<Token>(),
         new CapitalTypeFeatureFunction(),
         new NumericTypeFeatureFunction());
     features = textAndCapsAndNums.extract(jCas, year);
@@ -295,8 +289,8 @@ public class FeatureFunctionsTest extends DefaultTestBase {
     Assert.assertEquals(yearDigits, features.get(1).getValue());
 
     String initialUpper = CapitalTypeFeatureFunction.CapitalType.INITIAL_UPPERCASE.toString();
-    SimpleFeatureExtractor textAndCapsAndLower = new FeatureFunctionExtractor(
-        new CoveredTextExtractor(),
+    FeatureExtractor1<Token> textAndCapsAndLower = new FeatureFunctionExtractor<Token>(
+        new CoveredTextExtractor<Token>(),
         new CapitalTypeFeatureFunction(),
         new LowerCaseFeatureFunction());
     features = textAndCapsAndLower.extract(jCas, hello);

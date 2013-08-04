@@ -24,7 +24,7 @@
 package org.cleartk.classifier.feature;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
+import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 
 /**
  * <br>

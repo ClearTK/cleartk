@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2009, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,50 +21,60 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor.annotationpair;
-
-import java.util.List;
-
-import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
+package org.cleartk.classifier.opennlp.encoder;
 
 /**
+ * A class that holds the String[] and float[] that represent features in OpenNLP Maxent.
+ * 
  * <br>
- * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2013, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * @author Philipp Wetzler
+ * @author Steven Bethard
  */
-public class NamingAnnotationPairFeatureExtractor implements AnnotationPairFeatureExtractor {
+public class ContextValues {
 
-  public NamingAnnotationPairFeatureExtractor(
-      String name,
-      AnnotationPairFeatureExtractor subExtractor) {
-    this.name = name;
-    this.subExtractor = subExtractor;
-  }
+  private int size;
 
-  public NamingAnnotationPairFeatureExtractor(
-      String name,
-      AnnotationPairFeatureExtractor... subExtractors) {
-    this(name, new CombinedAnnotationPairFeatureExtractor(subExtractors));
-  }
+  private String[] context;
 
-  public List<Feature> extract(JCas view, Annotation leftAnnotation, Annotation rightAnnotation)
-      throws CleartkExtractorException {
-    List<Feature> features = subExtractor.extract(view, leftAnnotation, rightAnnotation);
+  private float[] values;
 
-    for (Feature feature : features) {
-      feature.setName(Feature.createName(name, feature.getName()));
+  public ContextValues(String[] context, float[] values) {
+    if (context.length != values.length) {
+      throw new IllegalArgumentException(String.format(
+          "invalid lengths: %s != %s",
+          context.length,
+          values.length));
     }
-
-    return features;
+    this.size = context.length;
+    this.context = context;
+    this.values = values;
   }
 
-  private String name;
+  public String[] getContext() {
+    return context;
+  }
 
-  private AnnotationPairFeatureExtractor subExtractor;
+  public float[] getValues() {
+    return values;
+  }
 
+  public String toMaxentString() {
+    StringBuilder builder = new StringBuilder();
+    if (this.size == 0) {
+      builder.append("null=0.0");
+    }
+    for (int i = 0; i < this.size; ++i) {
+      if (i > 0) {
+        builder.append(' ');
+      }
+      if (this.values[i] == 1.0f) {
+        builder.append(this.context[i]);
+      } else {
+        builder.append(this.context[i]).append('=').append(this.values[i]);
+      }
+    }
+    return builder.toString();
+  }
 }

@@ -97,8 +97,8 @@ public class MaxentBooleanOutcomeDataWriterTest extends DefaultTestBase {
     File trainFile = new MaxentBooleanOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     String[] lines = FileUtil.loadListOfStrings(trainFile);
     assertEquals("true pos_NN distance=3.0 precision=1.234", lines[0]);
-    assertEquals("false name_2PO p's=2", lines[1]);
-    assertEquals("true null=0", lines[2]);
+    assertEquals("false name_2PO p's=2.0", lines[1]);
+    assertEquals("true null=0.0", lines[2]);
     assertEquals("false A_B_AB", lines[3]);
 
     // simply train four different models where each one writes over the previous

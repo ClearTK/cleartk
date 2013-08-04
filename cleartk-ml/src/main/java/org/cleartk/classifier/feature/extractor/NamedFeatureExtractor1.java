@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2007-2009, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,52 +21,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor.simple;
+package org.cleartk.classifier.feature.extractor;
 
-import java.util.List;
-
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.util.AnnotationUtil;
 
 /**
+ * A {@link FeatureExtractor1} that provides the name used for the features it creates.
+ * 
  * <br>
- * Copyright (c) 2007-2009, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * @author Philipp Wetzler
+ * @author Steven Bethard
  */
-public class MatchingAnnotationExtractor implements SimpleFeatureExtractor {
+public interface NamedFeatureExtractor1<T extends Annotation> extends
+    FeatureExtractor1<T> {
 
-  public MatchingAnnotationExtractor(
-      Class<? extends Annotation> annotationType,
-      SimpleFeatureExtractor subExtractor) {
-    this.annotationType = annotationType;
-    this.subExtractor = subExtractor;
-  }
-
-  public MatchingAnnotationExtractor(
-      Class<? extends Annotation> annotationType,
-      SimpleFeatureExtractor... subExtractors) {
-    this(annotationType, new CombinedExtractor(subExtractors));
-  }
-
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkExtractorException {
-
-    if (!annotationType.isInstance(focusAnnotation)) {
-      focusAnnotation = AnnotationUtil.selectFirstMatching(view, annotationType, focusAnnotation);
-      if (focusAnnotation == null) {
-        throw CleartkExtractorException.noAnnotationMatchingWindow(annotationType, focusAnnotation);
-      }
-    }
-
-    return subExtractor.extract(view, focusAnnotation);
-  }
-
-  private Class<? extends Annotation> annotationType;
-
-  private SimpleFeatureExtractor subExtractor;
+  /**
+   * Gets the name that will be used for all features created by this feature extractor.
+   * 
+   * @return The feature name
+   */
+  public String getFeatureName();
 }

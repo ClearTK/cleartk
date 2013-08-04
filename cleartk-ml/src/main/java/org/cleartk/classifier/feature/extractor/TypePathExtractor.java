@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor.simple;
+package org.cleartk.classifier.feature.extractor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +49,6 @@ import org.apache.uima.jcas.cas.ShortArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.feature.TypePathFeature;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.uimafit.util.JCasUtil;
 
 /**
@@ -65,7 +64,7 @@ import org.uimafit.util.JCasUtil;
  *         converted to strings
  */
 
-public class TypePathExtractor implements SimpleNamedFeatureExtractor {
+public class TypePathExtractor<T extends Annotation> implements NamedFeatureExtractor1<T> {
 
   String featureName;
 
@@ -123,7 +122,7 @@ public class TypePathExtractor implements SimpleNamedFeatureExtractor {
    */
 
   public TypePathExtractor(
-      Class<? extends Annotation> focusClass,
+      Class<T> focusClass,
       String typePath,
       boolean traverseAllPaths,
       boolean returnAllValues,
@@ -171,7 +170,7 @@ public class TypePathExtractor implements SimpleNamedFeatureExtractor {
   /**
    * calls this(type, typePath, false, false, true, jCas)
    */
-  public TypePathExtractor(Class<? extends Annotation> focusClass, String typePath) {
+  public TypePathExtractor(Class<T> focusClass, String typePath) {
     this(focusClass, typePath, false, false, true);
   }
 

@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor2;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 
 /**
@@ -38,7 +39,7 @@ import org.cleartk.syntax.constituent.type.TreebankNode;
  * 
  * @author Steven Bethard
  */
-public class TargetPathExtractor {
+public class TargetPathExtractor implements FeatureExtractor2<TreebankNode, TreebankNode>  {
   public List<Feature> extract(JCas jCas, TreebankNode source, TreebankNode target) {
     List<TreebankNode> sourceToRoot = this.pathToRoot(source);
     List<TreebankNode> targetToRoot = this.pathToRoot(target);

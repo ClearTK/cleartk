@@ -24,7 +24,6 @@
 package org.cleartk.timeml.event;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,18 +32,17 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
+import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
@@ -54,6 +52,8 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
+
+import com.google.common.collect.Lists;
 
 /**
  * <br>
@@ -84,27 +84,26 @@ public class EventAnnotator extends CleartkAnnotator<String> {
     }
   };
 
-  protected List<SimpleFeatureExtractor> tokenFeatureExtractors;
+  protected List<FeatureExtractor1<Token>> tokenFeatureExtractors;
 
-  protected List<CleartkExtractor> contextExtractors;
+  protected List<CleartkExtractor<Token, Token>> contextExtractors;
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
     // add features: word, stem, pos
-    this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
-    this.tokenFeatureExtractors.addAll(Arrays.asList(
-        new CoveredTextExtractor(),
-        new TypePathExtractor(Token.class, "stem"),
-        new TypePathExtractor(Token.class, "pos"),
-        new ParentNodeFeaturesExtractor()));
+    this.tokenFeatureExtractors = Lists.newArrayList();
+    this.tokenFeatureExtractors.add(new CoveredTextExtractor<Token>());
+    this.tokenFeatureExtractors.add(new TypePathExtractor<Token>(Token.class, "stem"));
+    this.tokenFeatureExtractors.add(new TypePathExtractor<Token>(Token.class, "pos"));
+    this.tokenFeatureExtractors.add(new ParentNodeFeaturesExtractor());
 
     // add window of features before and after
-    this.contextExtractors = new ArrayList<CleartkExtractor>();
-    this.contextExtractors.add(new CleartkExtractor(
+    this.contextExtractors = Lists.newArrayList();
+    this.contextExtractors.add(new CleartkExtractor<Token, Token>(
         Token.class,
-        new CoveredTextExtractor(),
+        new CoveredTextExtractor<Token>(),
         new Preceding(3),
         new Following(3)));
   }
@@ -124,10 +123,10 @@ public class EventAnnotator extends CleartkAnnotator<String> {
     for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {
       for (Token token : JCasUtil.selectCovered(jCas, Token.class, sentence)) {
         List<Feature> features = new ArrayList<Feature>();
-        for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
+        for (FeatureExtractor1<Token> extractor : this.tokenFeatureExtractors) {
           features.addAll(extractor.extract(jCas, token));
         }
-        for (CleartkExtractor extractor : this.contextExtractors) {
+        for (CleartkExtractor<Token, Token> extractor : this.contextExtractors) {
           features.addAll(extractor.extractWithin(jCas, token, sentence));
         }
         if (this.isTraining()) {
@@ -146,14 +145,14 @@ public class EventAnnotator extends CleartkAnnotator<String> {
     }
   }
 
-  private static class ParentNodeFeaturesExtractor implements SimpleFeatureExtractor {
+  private static class ParentNodeFeaturesExtractor implements FeatureExtractor1<Token> {
     public ParentNodeFeaturesExtractor() {
     }
 
     @Override
-    public List<Feature> extract(JCas view, Annotation focusAnnotation)
+    public List<Feature> extract(JCas view, Token token)
         throws CleartkExtractorException {
-      TreebankNode node = TreebankNodeUtil.selectMatchingLeaf(view, focusAnnotation);
+      TreebankNode node = TreebankNodeUtil.selectMatchingLeaf(view, token);
       List<Feature> features = new ArrayList<Feature>();
       if (node != null) {
         TreebankNode parent = node.getParent();

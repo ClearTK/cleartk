@@ -51,10 +51,8 @@ import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
-import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.kohsuke.args4j.Option;
 import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -64,6 +62,8 @@ import org.uimafit.pipeline.SimplePipeline;
 import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Function;
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.Option;
 
 /**
  * <p>
@@ -83,31 +83,33 @@ import com.google.common.base.Function;
 public class EvaluateNamedEntityChunker extends
     Evaluation_ImplBase<File, AnnotationStatistics<String>> {
 
-  public static class Options extends Options_ImplBase {
+  public interface Options {
     @Option(
-        name = "--train-dir",
-        usage = "Specify the directory containing the training documents.  This is used for cross-validation and for training in a holdout set evaluator. "
-            + "When we run this example we point to a directory containing training data from the MASC-1.0.3 corpus - i.e. a directory called 'MASC-1.0.3/data/written'")
-    public File trainDirectory = new File("data/MASC-1.0.3/data/written");
+        longName = "train-dir",
+        description = "Specify the directory containing the training documents.  This is used for cross-validation and for training in a holdout set evaluator. "
+            + "When we run this example we point to a directory containing training data from the MASC-1.0.3 corpus - i.e. a directory called 'MASC-1.0.3/data/written'",
+        defaultValue = "data/MASC-1.0.3/data/written")
+    public File getTrainDirectory();
 
     @Option(
-        name = "--models-dir",
-        usage = "specify the directory in which to write out the trained model files")
-    public File modelsDirectory = new File("target/chunking/ne-model");
+        longName = "models-dir",
+        description = "specify the directory in which to write out the trained model files",
+        defaultValue = "target/chunking/ne-model")
+    public File getModelsDirectory();
   }
 
   public static void main(String[] args) throws Exception {
-    Options options = new Options();
-    options.parseOptions(args);
+    Options options = CliFactory.parseArguments(Options.class, args);
 
     // find training files
     List<File> trainFiles = new ArrayList<File>(FileUtils.listFiles(
-        options.trainDirectory,
+        options.getTrainDirectory(),
         new MASCTextFileFilter(),
         FileFilterUtils.falseFileFilter()));
 
     // run cross validation
-    EvaluateNamedEntityChunker evaluator = new EvaluateNamedEntityChunker(options.modelsDirectory);
+    EvaluateNamedEntityChunker evaluator = new EvaluateNamedEntityChunker(
+        options.getModelsDirectory());
     List<AnnotationStatistics<String>> foldStats = evaluator.crossValidation(trainFiles, 2);
     AnnotationStatistics<String> crossValidationStats = AnnotationStatistics.addAll(foldStats);
 

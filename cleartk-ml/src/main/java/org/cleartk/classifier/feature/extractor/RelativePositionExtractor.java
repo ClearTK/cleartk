@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor.annotationpair;
+package org.cleartk.classifier.feature.extractor;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +29,6 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -41,40 +40,57 @@ import org.uimafit.util.JCasUtil;
  * 
  */
 
-public class DistanceExtractor implements AnnotationPairFeatureExtractor {
-  String name;
+public class RelativePositionExtractor<T extends Annotation, U extends Annotation> implements
+    FeatureExtractor2<T, U> {
 
-  Class<? extends Annotation> unitClass;
+  public static final String EQUALS = "EQUALS";
 
-  public DistanceExtractor(String name, Class<? extends Annotation> unitClass) {
-    this.name = name;
-    this.unitClass = unitClass;
+  public static final String CONTAINS = "CONTAINS";
+
+  public static final String CONTAINEDBY = "CONTAINEDBY";
+
+  public static final String OVERLAPS_LEFT = "OVERLAPS_LEFT";
+
+  public static final String OVERLAPS_RIGHT = "OVERLAPS_RIGHT";
+
+  public static final String LEFTOF = "LEFTOF";
+
+  public static final String RIGHTOF = "RIGHTOF";
+
+  public List<Feature> extract(JCas view, T annotation1, U annotation2) {
+    String result;
+    if (equals(annotation1, annotation2)) {
+      result = EQUALS;
+    } else if (contains(annotation1, annotation2)) {
+      result = CONTAINS;
+    } else if (contains(annotation2, annotation1)) {
+      result = CONTAINEDBY;
+    } else if (overlaps(annotation1, annotation2) && beginsFirst(annotation1, annotation2)) {
+      result = OVERLAPS_LEFT;
+    } else if (overlaps(annotation1, annotation2)) {
+      result = OVERLAPS_RIGHT;
+    } else if (beginsFirst(annotation1, annotation2)) {
+      result = LEFTOF;
+    } else {
+      result = RIGHTOF;
+    }
+
+    return Collections.singletonList(new Feature("RelativePosition", result));
   }
 
-  public List<Feature> extract(JCas jCas, Annotation annotation1, Annotation annotation2) {
-    Annotation firstAnnotation, secondAnnotation;
+  private boolean equals(Annotation a1, Annotation a2) {
+    return a1.getBegin() == a2.getBegin() && a1.getEnd() == a2.getEnd();
+  }
 
-    if (annotation1.getBegin() <= annotation2.getBegin()) {
-      firstAnnotation = annotation1;
-      secondAnnotation = annotation2;
-    } else {
-      firstAnnotation = annotation2;
-      secondAnnotation = annotation1;
-    }
+  private boolean contains(Annotation a1, Annotation a2) {
+    return a1.getBegin() <= a2.getBegin() && a1.getEnd() >= a2.getEnd();
+  }
 
-    String featureName = Feature.createName(this.name, "Distance", this.unitClass.getSimpleName());
-    int featureValue;
-    if (secondAnnotation.getBegin() <= firstAnnotation.getEnd()) {
-      featureValue = 0;
-    } else {
-      List<? extends Annotation> annotations = JCasUtil.selectCovered(
-          jCas,
-          unitClass,
-          firstAnnotation.getEnd(),
-          secondAnnotation.getBegin());
-      featureValue = annotations.size();
-    }
+  private boolean overlaps(Annotation a1, Annotation a2) {
+    return !(a1.getBegin() >= a2.getEnd() || a1.getEnd() <= a2.getBegin());
+  }
 
-    return Collections.singletonList(new Feature(featureName, featureValue));
+  private boolean beginsFirst(Annotation a1, Annotation a2) {
+    return a1.getBegin() < a2.getBegin();
   }
 }

@@ -36,10 +36,10 @@ import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instances;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
 import org.cleartk.classifier.feature.function.CapitalTypeFeatureFunction;
 import org.cleartk.classifier.feature.function.CharacterNGramFeatureFunction;
 import org.cleartk.classifier.feature.function.CharacterNGramFeatureFunction.Orientation;
@@ -71,9 +71,9 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
 
   public static final String DEFAULT_OUTPUT_DIRECTORY = "target/examples/pos";
 
-  private SimpleFeatureExtractor tokenFeatureExtractor;
+  private FeatureExtractor1<Token> tokenFeatureExtractor;
 
-  private CleartkExtractor contextFeatureExtractor;
+  private CleartkExtractor<Token, Token> contextFeatureExtractor;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
@@ -81,8 +81,8 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
     // a feature extractor that creates features corresponding to the word, the word lower cased
     // the capitalization of the word, the numeric characterization of the word, and character ngram
     // suffixes of length 2 and 3.
-    this.tokenFeatureExtractor = new FeatureFunctionExtractor(
-        new CoveredTextExtractor(),
+    this.tokenFeatureExtractor = new FeatureFunctionExtractor<Token>(
+        new CoveredTextExtractor<Token>(),
         new LowerCaseFeatureFunction(),
         new CapitalTypeFeatureFunction(),
         new NumericTypeFeatureFunction(),
@@ -90,9 +90,9 @@ public class ExamplePOSAnnotator extends CleartkSequenceAnnotator<String> {
         new CharacterNGramFeatureFunction(Orientation.RIGHT_TO_LEFT, 0, 3));
 
     // a feature extractor that extracts the surrounding token texts (within the same sentence)
-    this.contextFeatureExtractor = new CleartkExtractor(
+    this.contextFeatureExtractor = new CleartkExtractor<Token, Token>(
         Token.class,
-        new CoveredTextExtractor(),
+        new CoveredTextExtractor<Token>(),
         new Preceding(2),
         new Following(2));
   }

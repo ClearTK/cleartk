@@ -21,14 +21,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor.simple;
+package org.cleartk.classifier.feature.extractor;
 
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 
 /**
  * <br>
@@ -37,30 +36,9 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
  * 
  * @author Philipp Wetzler
  */
-public class NamingExtractor implements SimpleFeatureExtractor {
+public interface FeatureExtractor2<T extends Annotation, U extends Annotation> {
 
-  public NamingExtractor(String name, SimpleFeatureExtractor subExtractor) {
-    this.name = name;
-    this.subExtractor = subExtractor;
-  }
-
-  public NamingExtractor(String name, SimpleFeatureExtractor... subExtractors) {
-    this(name, new CombinedExtractor(subExtractors));
-  }
-
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkExtractorException {
-    List<Feature> features = subExtractor.extract(view, focusAnnotation);
-
-    for (Feature feature : features) {
-      feature.setName(Feature.createName(name, feature.getName()));
-    }
-
-    return features;
-  }
-
-  private String name;
-
-  private SimpleFeatureExtractor subExtractor;
+  public List<Feature> extract(JCas view, T annotation1, U annotation2)
+      throws CleartkExtractorException;
 
 }

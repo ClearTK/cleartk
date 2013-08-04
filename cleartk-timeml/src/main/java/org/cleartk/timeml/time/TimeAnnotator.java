@@ -24,7 +24,6 @@
 package org.cleartk.timeml.time;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
@@ -36,15 +35,14 @@ import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instances;
 import org.cleartk.classifier.chunking.BIOChunking;
+import org.cleartk.classifier.feature.extractor.CharacterCategoryPatternExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
+import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
+import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
-import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor;
-import org.cleartk.classifier.feature.extractor.simple.CharacterCategoryPatternExtractor.PatternType;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleNamedFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
@@ -53,6 +51,8 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.util.JCasUtil;
+
+import com.google.common.collect.Lists;
 
 /**
  * <br>
@@ -81,9 +81,9 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
     }
   };
 
-  private List<SimpleNamedFeatureExtractor> tokenFeatureExtractors;
+  private List<NamedFeatureExtractor1<Token>> tokenFeatureExtractors;
 
-  private List<CleartkExtractor> contextFeatureExtractors;
+  private List<CleartkExtractor<Token, Token>> contextFeatureExtractors;
 
   private BIOChunking<Token, Time> chunking;
 
@@ -95,17 +95,17 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
     this.chunking = new BIOChunking<Token, Time>(Token.class, Time.class);
 
     // add features: word, character pattern, stem, pos
-    this.tokenFeatureExtractors = Arrays.asList(
-        new CoveredTextExtractor(),
-        new CharacterCategoryPatternExtractor(PatternType.REPEATS_MERGED),
-        new TimeWordsExtractor(),
-        new TypePathExtractor(Token.class, "stem"),
-        new TypePathExtractor(Token.class, "pos"));
-
+    this.tokenFeatureExtractors = Lists.newArrayList();
+    this.tokenFeatureExtractors.add(new CoveredTextExtractor<Token>());
+    this.tokenFeatureExtractors.add(new CharacterCategoryPatternExtractor<Token>());
+    this.tokenFeatureExtractors.add(new TimeWordsExtractor<Token>());
+    this.tokenFeatureExtractors.add(new TypePathExtractor<Token>(Token.class, "stem"));
+    this.tokenFeatureExtractors.add(new TypePathExtractor<Token>(Token.class, "pos"));
+        
     // add window of features before and after
-    this.contextFeatureExtractors = new ArrayList<CleartkExtractor>();
-    for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
-      this.contextFeatureExtractors.add(new CleartkExtractor(Token.class, extractor, new Preceding(
+    this.contextFeatureExtractors = Lists.newArrayList();
+    for (FeatureExtractor1<Token> extractor : this.tokenFeatureExtractors) {
+      this.contextFeatureExtractors.add(new CleartkExtractor<Token, Token>(Token.class, extractor, new Preceding(
           3), new Following(3)));
     }
   }
@@ -121,10 +121,10 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
       List<List<Feature>> featureLists = new ArrayList<List<Feature>>();
       for (Token token : tokens) {
         List<Feature> features = new ArrayList<Feature>();
-        for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
+        for (FeatureExtractor1<Token> extractor : this.tokenFeatureExtractors) {
           features.addAll(extractor.extract(jCas, token));
         }
-        for (CleartkExtractor extractor : this.contextFeatureExtractors) {
+        for (CleartkExtractor<Token, Token> extractor : this.contextFeatureExtractors) {
           features.addAll(extractor.extractWithin(jCas, token, sentence));
         }
         featureLists.add(features);

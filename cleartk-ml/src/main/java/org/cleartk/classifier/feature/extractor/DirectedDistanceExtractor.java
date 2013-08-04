@@ -21,72 +21,73 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor.simple;
+package org.cleartk.classifier.feature.extractor;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
+import org.cleartk.util.AnnotationUtil;
+import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * 
+ * @author Philip Ogren This class was initially copied from DistanceExtractor and was modified in
+ *         two ways:
+ *         <ul>
+ *         <li>the distance between annotations will be negative if the first annotation comes after
+ *         the second</li>
+ *         <li>zero will only be returned if the two annotations overlap. Adjacent annotations will
+ *         have a distance of |1|.</li>
+ *         </ul>
  */
 
-public class WhiteSpaceExtractor implements SimpleNamedFeatureExtractor {
+public class DirectedDistanceExtractor<T extends Annotation, U extends Annotation> implements
+    FeatureExtractor2<T, U> {
+  String name;
 
-  private static final String FEATURE_NAME = "whitespace";
+  Class<? extends Annotation> unitClass;
 
-  public static final String WhiteSpaceRegex = "\\s";
-
-  public static final Pattern WhiteSpacePattern = Pattern.compile(WhiteSpaceRegex);
-
-  public static final String ORIENTATION_LEFT = "L";
-
-  public static final String ORIENTATION_RIGHT = "R";
-
-  @Override
-  public String getFeatureName() {
-    return FEATURE_NAME;
+  public DirectedDistanceExtractor(String name, Class<? extends Annotation> unitClass) {
+    this.name = name;
+    this.unitClass = unitClass;
   }
 
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkExtractorException {
-    List<Feature> features = new ArrayList<Feature>();
+  public List<Feature> extract(JCas jCas, Annotation annotation1, Annotation annotation2) {
+    String featureName = Feature.createName(this.name, "DDistance", this.unitClass.getSimpleName());
 
-    String text = view.getDocumentText();
-    int begin = focusAnnotation.getBegin();
-    int end = focusAnnotation.getEnd();
-
-    // white space to the left of the focusAnnotation
-    if (begin == 0) {
-      Feature feature = new Feature(FEATURE_NAME, ORIENTATION_LEFT);
-      features.add(feature);
+    Annotation firstAnnotation, secondAnnotation;
+    boolean negate = false;
+    if (annotation1.getBegin() <= annotation2.getBegin()) {
+      firstAnnotation = annotation1;
+      secondAnnotation = annotation2;
     } else {
-      char leftChar = text.charAt(begin - 1);
-      if (Character.isWhitespace(leftChar)) {
-        Feature feature = new Feature(FEATURE_NAME, ORIENTATION_LEFT);
-        features.add(feature);
-      }
+      firstAnnotation = annotation2;
+      secondAnnotation = annotation1;
+      negate = true;
     }
 
-    // white space to the right of the focusAnnotation
-    if (end == text.length()) {
-      Feature feature = new Feature(FEATURE_NAME, ORIENTATION_RIGHT);
-      features.add(feature);
+    int featureValue = 0;
+
+    if (AnnotationUtil.overlaps(annotation1, annotation2)) {
+      featureValue = 0;
     } else {
-      char rightChar = text.charAt(end);
-      if (Character.isWhitespace(rightChar)) {
-        Feature feature = new Feature(FEATURE_NAME, ORIENTATION_RIGHT);
-        features.add(feature);
-      }
+      List<? extends Annotation> annotations = JCasUtil.selectCovered(
+          jCas,
+          unitClass,
+          firstAnnotation.getEnd(),
+          secondAnnotation.getBegin());
+      featureValue = annotations.size() + 1;
     }
-    return features;
+    if (negate)
+      featureValue = -featureValue;
+
+    return Collections.singletonList(new Feature(featureName, featureValue));
   }
-
 }

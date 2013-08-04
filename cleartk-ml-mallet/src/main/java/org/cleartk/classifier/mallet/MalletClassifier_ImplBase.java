@@ -23,14 +23,12 @@
  */
 package org.cleartk.classifier.mallet;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
@@ -43,6 +41,8 @@ import cc.mallet.types.Alphabet;
 import cc.mallet.types.FeatureVector;
 import cc.mallet.types.Instance;
 import cc.mallet.types.Labeling;
+
+import com.google.common.collect.Maps;
 
 /**
  * <br>
@@ -77,35 +77,18 @@ public abstract class MalletClassifier_ImplBase<OUTCOME_TYPE> extends
   }
 
   @Override
-  public List<ScoredOutcome<OUTCOME_TYPE>> score(List<Feature> features, int maxResults)
-      throws CleartkProcessingException {
+  public Map<OUTCOME_TYPE, Double> score(List<Feature> features) throws CleartkProcessingException {
     Classification classification = classifier.classify(toInstance(features));
-    List<ScoredOutcome<OUTCOME_TYPE>> returnValues = new ArrayList<ScoredOutcome<OUTCOME_TYPE>>(
-        maxResults);
     Labeling labeling = classification.getLabeling();
 
-    if (maxResults == 1) {
-      String bestOutcome = labeling.getBestLabel().toString();
-      OUTCOME_TYPE outcome = outcomeEncoder.decode(bestOutcome);
-      double score = labeling.getBestValue();
-      returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcome, score));
-      return returnValues;
-    }
-
+    Map<OUTCOME_TYPE, Double> returnValues = Maps.newHashMap();
     for (int i = 0; i < labeling.numLocations(); i++) {
       String label = labeling.getLabelAtRank(i).toString();
       OUTCOME_TYPE outcome = outcomeEncoder.decode(label);
       double score = labeling.getValueAtRank(i);
-      returnValues.add(new ScoredOutcome<OUTCOME_TYPE>(outcome, score));
+      returnValues.put(outcome, score);
     }
-
-    Collections.sort(returnValues);
-    if (returnValues.size() > maxResults) {
-      return returnValues.subList(0, maxResults);
-    } else {
-      return returnValues;
-    }
-
+    return returnValues;
   }
 
   public Instance[] toInstances(List<List<Feature>> features) throws CleartkEncoderException {

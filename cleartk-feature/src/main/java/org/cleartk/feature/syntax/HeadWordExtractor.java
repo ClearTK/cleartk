@@ -32,10 +32,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.uimafit.util.JCasUtil;
 
@@ -64,7 +63,7 @@ import com.google.common.collect.Lists;
  * 
  */
 
-public class HeadWordExtractor implements SimpleFeatureExtractor {
+public class HeadWordExtractor implements FeatureExtractor1<TreebankNode> {
 
   static final String[] head1 = {
       "ADJP JJ",
@@ -228,26 +227,22 @@ public class HeadWordExtractor implements SimpleFeatureExtractor {
     }
   }
 
-  SimpleFeatureExtractor subExtractor;
+  FeatureExtractor1<TreebankNode> subExtractor;
 
   boolean includePPHead;
 
-  public HeadWordExtractor(SimpleFeatureExtractor subExtractor, boolean includePPHead) {
+  public HeadWordExtractor(FeatureExtractor1<TreebankNode> subExtractor, boolean includePPHead) {
     this.subExtractor = subExtractor;
     this.includePPHead = includePPHead;
     HeadWordExtractor.buildSets();
   }
 
-  public HeadWordExtractor(SimpleFeatureExtractor subExtractor) {
+  public HeadWordExtractor(FeatureExtractor1<TreebankNode> subExtractor) {
     this(subExtractor, false);
   }
 
-  public List<Feature> extract(JCas jCas, Annotation focusAnnotation)
+  public List<Feature> extract(JCas jCas, TreebankNode constituent)
       throws CleartkExtractorException {
-    if (!(focusAnnotation instanceof TreebankNode))
-      return new ArrayList<Feature>();
-
-    TreebankNode constituent = (TreebankNode) focusAnnotation;
 
     TreebankNode headNode = findHead(constituent);
     List<Feature> features = new ArrayList<Feature>(extractNode(jCas, headNode, false));

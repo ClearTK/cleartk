@@ -23,7 +23,6 @@
  */
 package org.cleartk.examples.pos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
@@ -33,11 +32,11 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
+import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.simple.SimpleFeatureExtractor;
-import org.cleartk.classifier.feature.extractor.simple.TypePathExtractor;
 import org.cleartk.classifier.feature.function.CapitalTypeFeatureFunction;
 import org.cleartk.classifier.feature.function.CharacterNGramFeatureFunction;
 import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
@@ -47,6 +46,8 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.initializable.Initializable;
 import org.uimafit.util.JCasUtil;
+
+import com.google.common.collect.Lists;
 
 /**
  * <br>
@@ -61,30 +62,30 @@ public class NonSequenceExamplePOSAnnotator extends CleartkAnnotator<String> imp
 
   public static final String DEFAULT_OUTPUT_DIRECTORY = "example/model";
 
-  private List<SimpleFeatureExtractor> tokenFeatureExtractors;
+  private List<FeatureExtractor1<Token>> tokenFeatureExtractors;
 
-  private List<CleartkExtractor> tokenSentenceFeatureExtractors;
+  private List<CleartkExtractor<Token, Token>> tokenSentenceFeatureExtractors;
 
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
     // a list of feature extractors that require only the token
-    this.tokenFeatureExtractors = new ArrayList<SimpleFeatureExtractor>();
+    this.tokenFeatureExtractors = Lists.newArrayList();
 
     // a list of feature extractors that require the token and the sentence
-    this.tokenSentenceFeatureExtractors = new ArrayList<CleartkExtractor>();
+    this.tokenSentenceFeatureExtractors = Lists.newArrayList();
 
     // basic feature extractors for word, stem and part-of-speech
-    SimpleFeatureExtractor wordExtractor, stemExtractor;
-    wordExtractor = new CoveredTextExtractor();
-    stemExtractor = new TypePathExtractor(Token.class, "stem");
+    FeatureExtractor1<Token> wordExtractor, stemExtractor;
+    wordExtractor = new CoveredTextExtractor<Token>();
+    stemExtractor = new TypePathExtractor<Token>(Token.class, "stem");
 
     // aliases for NGram feature parameters
     CharacterNGramFeatureFunction.Orientation fromRight = CharacterNGramFeatureFunction.Orientation.RIGHT_TO_LEFT;
 
     // add the feature extractor for the word itself
     // also add proliferators which create new features from the word text
-    this.tokenFeatureExtractors.add(new FeatureFunctionExtractor(
+    this.tokenFeatureExtractors.add(new FeatureFunctionExtractor<Token>(
         wordExtractor,
         new LowerCaseFeatureFunction(),
         new CapitalTypeFeatureFunction(),
@@ -96,7 +97,7 @@ public class NonSequenceExamplePOSAnnotator extends CleartkAnnotator<String> imp
     this.tokenFeatureExtractors.add(stemExtractor);
 
     // add 2 stems to the left and right
-    this.tokenSentenceFeatureExtractors.add(new CleartkExtractor(
+    this.tokenSentenceFeatureExtractors.add(new CleartkExtractor<Token, Token>(
         Token.class,
         stemExtractor,
         new Preceding(2),
@@ -114,12 +115,12 @@ public class NonSequenceExamplePOSAnnotator extends CleartkAnnotator<String> imp
         Instance<String> instance = new Instance<String>();
 
         // extract all features that require only the token annotation
-        for (SimpleFeatureExtractor extractor : this.tokenFeatureExtractors) {
+        for (FeatureExtractor1<Token> extractor : this.tokenFeatureExtractors) {
           instance.addAll(extractor.extract(jCas, token));
         }
 
         // extract all features that require the token and sentence annotations
-        for (CleartkExtractor extractor : this.tokenSentenceFeatureExtractors) {
+        for (CleartkExtractor<Token, Token> extractor : this.tokenSentenceFeatureExtractors) {
           instance.addAll(extractor.extractWithin(jCas, token, sentence));
         }
 

@@ -35,9 +35,9 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
-import org.cleartk.classifier.feature.extractor.simple.CoveredTextExtractor;
 import org.cleartk.classifier.feature.selection.MutualInformationFeatureSelectionExtractor.MutualInformationStats;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Sentence;
@@ -94,12 +94,12 @@ public class MutualInformationTest extends DefaultTestBase {
   @Test
   public void testMutualInformationFeatureSelection() throws UIMAException, IOException {
 
-    CleartkExtractor extractor = new CleartkExtractor(
+    CleartkExtractor<Sentence, Token> extractor = new CleartkExtractor<Sentence, Token>(
         Token.class,
-        new CoveredTextExtractor(),
+        new CoveredTextExtractor<Token>(),
         new Bag(new Covered()));
 
-    MutualInformationFeatureSelectionExtractor<String> miExtractor = new MutualInformationFeatureSelectionExtractor<String>(
+    MutualInformationFeatureSelectionExtractor<String, Sentence> miExtractor = new MutualInformationFeatureSelectionExtractor<String, Sentence>(
         "miExtractor",
         extractor,
         5);

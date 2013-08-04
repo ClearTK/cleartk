@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.annotationpair.RelativePositionExtractor;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -87,16 +86,16 @@ public class RelativePositionExtractorTest extends DefaultTestBase {
   private void testOne(int begin1, int end1, int begin2, int end2, String expected) {
     Annotation annotation1 = new Annotation(jCas, begin1, end1);
     Annotation annotation2 = new Annotation(jCas, begin2, end2);
-    RelativePositionExtractor extractor;
+    RelativePositionExtractor<Annotation, Annotation> extractor;
     List<Feature> features;
 
-    extractor = new RelativePositionExtractor();
+    extractor = new RelativePositionExtractor<Annotation, Annotation>();
     features = extractor.extract(jCas, annotation1, annotation2);
     Assert.assertEquals(1, features.size());
     Assert.assertEquals("RelativePosition", features.get(0).getName());
     Assert.assertEquals(expected, features.get(0).getValue());
 
-    extractor = new RelativePositionExtractor();
+    extractor = new RelativePositionExtractor<Annotation, Annotation>();
     features = extractor.extract(jCas, annotation1, annotation2);
     Assert.assertEquals(1, features.size());
     Assert.assertEquals("RelativePosition", features.get(0).getName());

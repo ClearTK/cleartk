@@ -36,15 +36,16 @@ import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
-import org.cleartk.util.Options_ImplBase;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.kohsuke.args4j.Option;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.factory.AggregateBuilder;
 import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.pipeline.SimplePipeline;
 import org.uimafit.util.JCasUtil;
+
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.Option;
 
 /**
  * This class provides a main method that demonstrates how to run a trained
@@ -58,20 +59,25 @@ import org.uimafit.util.JCasUtil;
  */
 public class RunNamedEntityChunker {
 
-  public static class Options extends Options_ImplBase {
-    @Option(name = "--model-dir", usage = "The directory where the model was trained")
-    public File modelDirectory = new File("target/chunking/ne-model");
+  public interface Options {
+    @Option(
+        longName = "model-dir",
+        description = "The directory where the model was trained",
+        defaultValue = "target/chunking/ne-model")
+    public File getModelDirectory();
 
-    @Option(name = "--text-file", usage = "The file to label with named entities.")
-    public File textFile = new File("data/sample/2008_Sichuan_earthquake.txt");
+    @Option(
+        longName = "text-file",
+        description = "The file to label with named entities.",
+        defaultValue = "data/sample/2008_Sichuan_earthquake.txt")
+    public File getTextFile();
   }
 
   public static void main(String[] args) throws Exception {
-    Options options = new Options();
-    options.parseOptions(args);
+    Options options = CliFactory.parseArguments(Options.class, args);
 
     // a reader that loads the URIs of the text file
-    CollectionReader reader = UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(options.textFile));
+    CollectionReader reader = UriCollectionReader.getCollectionReaderFromFiles(Arrays.asList(options.getTextFile()));
 
     // assemble the classification pipeline
     AggregateBuilder aggregate = new AggregateBuilder();
@@ -90,7 +96,7 @@ public class RunNamedEntityChunker {
         CleartkSequenceAnnotator.PARAM_IS_TRAINING,
         false,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
-        JarClassifierBuilder.getModelJarFile(options.modelDirectory)));
+        JarClassifierBuilder.getModelJarFile(options.getModelDirectory())));
 
     // a very simple annotator that just prints out any named entities we found
     aggregate.add(AnalysisEngineFactory.createPrimitiveDescription(PrintNamedEntityMentions.class));

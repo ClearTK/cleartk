@@ -28,18 +28,17 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.ScoredOutcome;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.classifier.liblinear.encoder.FeatureNodeArrayEncoder;
-import org.cleartk.classifier.liblinear.ExampleInstanceFactory;
 import org.cleartk.classifier.liblinear.ExampleInstanceFactory.BooleanAnnotator;
 import org.cleartk.classifier.liblinear.ExampleInstanceFactory.StringAnnotator;
+import org.cleartk.classifier.liblinear.encoder.FeatureNodeArrayEncoder;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -96,9 +95,8 @@ public class LIBLINEARTest extends DefaultTestBase {
       List<Feature> features = instance.getFeatures();
       Boolean outcome = instance.getOutcome();
       Assert.assertEquals(outcome, classifier.classify(features));
-      ScoredOutcome<Boolean> scoredOutcome = classifier.score(features, 2).get(0);
-      Assert.assertEquals(outcome, scoredOutcome.getOutcome());
-      Assert.assertTrue(scoredOutcome.getScore() > 0.0d);
+      Map<Boolean, Double> scoredOutcomes = classifier.score(features);
+      Assert.assertTrue(scoredOutcomes.get(outcome) > scoredOutcomes.get(!outcome));
     }
   }
   
@@ -139,13 +137,12 @@ public class LIBLINEARTest extends DefaultTestBase {
       String outcome = instance.getOutcome();
       Assert.assertEquals(outcome, classifier.classify(features));
 
-      List<ScoredOutcome<String>> scoredOutcomes = classifier.score(features, 1);
-      Assert.assertEquals(1, scoredOutcomes.size());
-      Assert.assertEquals(outcome, scoredOutcomes.get(0).getOutcome());
-      scoredOutcomes = classifier.score(features, 2);
-      Assert.assertEquals(2, scoredOutcomes.size());
-      Assert.assertTrue(scoredOutcomes.get(0).getScore() > scoredOutcomes.get(1).getScore());
-      scoredOutcomes = classifier.score(features, Integer.MAX_VALUE);
+      Map<String, Double> scoredOutcomes = classifier.score(features);
+      for (String otherOutcome : Arrays.asList("A", "B", "C")) {
+        if (!otherOutcome.equals(outcome)) {
+          Assert.assertTrue(scoredOutcomes.get(outcome) > scoredOutcomes.get(otherOutcome));
+        }
+      }
     }
   }
   
