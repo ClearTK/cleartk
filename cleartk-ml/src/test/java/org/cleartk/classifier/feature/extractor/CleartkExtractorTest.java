@@ -117,7 +117,7 @@ public class CleartkExtractorTest extends DefaultTestBase {
         new FirstCovered(1),
         new LastCovered(1)), new Bag(new Following(1, 3)), new Bag(new Following(3, 5)), new Bag(
         new Preceding(1),
-        new Following(1)));
+        new Following(1)), new Bag(new Bag(new Bag(new Following(1, 3)))));
 
     this.tokenBuilder.buildTokens(
         this.jCas,
@@ -129,7 +129,7 @@ public class CleartkExtractorTest extends DefaultTestBase {
     Assert.assertEquals("jumped over", chunk.getCoveredText());
 
     List<Feature> features = extractor.extract(this.jCas, chunk);
-    Assert.assertEquals(13, features.size());
+    Assert.assertEquals(15, features.size());
     Iterator<Feature> iter = features.iterator();
     this.assertFeature("Bag_Preceding_0_2_TypePath(Pos)", "JJ", iter.next());
     this.assertFeature("Bag_Preceding_0_2_TypePath(Pos)", "NN", iter.next());
@@ -144,6 +144,8 @@ public class CleartkExtractorTest extends DefaultTestBase {
     this.assertFeature("Bag_Following_3_5_TypePath(Pos)", "OOB1", iter.next());
     this.assertFeature("Bag_Preceding_0_1_Following_0_1_TypePath(Pos)", "NN", iter.next());
     this.assertFeature("Bag_Preceding_0_1_Following_0_1_TypePath(Pos)", "DT", iter.next());
+    this.assertFeature("Bag_Bag_Bag_Following_1_3_TypePath(Pos)", "JJ", iter.next());
+    this.assertFeature("Bag_Bag_Bag_Following_1_3_TypePath(Pos)", "NN", iter.next());
   }
 
   @Test

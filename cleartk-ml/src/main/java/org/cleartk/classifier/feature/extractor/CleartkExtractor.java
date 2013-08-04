@@ -256,13 +256,12 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
   }
 
   public static class NestedCountFeature extends ContextFeature {
-    public int count;
+    private static final long serialVersionUID = 1L;
 
-    public Object countedValue;
+    public final Object countedValue;
 
-    public NestedCountFeature(String baseName, Feature feature, int count, Object countedValue) {
+    public NestedCountFeature(String baseName, Feature feature, Object countedValue) {
       super(baseName, feature);
-      this.count = count;
       this.countedValue = countedValue;
     }
 
@@ -793,11 +792,6 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
               extractorName,
               countedFeatureValue,
               String.valueOf(feature.getValue()));
-          System.out.println("this.name = " + this.name);
-          System.out.println("extractor name = " + extractorName);
-          System.out.println("countedFeature Value= " + countedFeatureValue);
-          System.out.println("String.valueOf(feature.getValue()) = " + feature.getValue());
-          System.out.println("feature name = " + featureName + "\n");
           featureCounts.add(featureName);
           featureMap.put(featureName, feature);
         }
@@ -810,11 +804,8 @@ public class CleartkExtractor implements SimpleFeatureExtractor, BetweenAnnotati
           countedFeatureValue = ((NestedCountFeature) feature).countedValue + "_"
               + countedFeatureValue;
         }
-        features.add(new NestedCountFeature(
-            featureName,
-            new Feature(featureCounts.count(featureName)),
-            featureCounts.count(featureName),
-            countedFeatureValue));
+        features.add(new NestedCountFeature(featureName, new Feature(
+            featureCounts.count(featureName)), countedFeatureValue));
       }
       return features;
     }
