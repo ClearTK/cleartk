@@ -162,7 +162,7 @@ public class CleartkExtractorTest extends DefaultTestBase {
         new Count(new Ngram(new Preceding(2), new Following(2))), // silly!
         new Count(new Bag(new Preceding(2))), // weird!
         new Count(new Count(new Preceding(2))), // weird & silly!
-        new Count(new Count(new Count(new Preceding(2))))); // weird & silly!
+        new Count(new Count(new Count(new Preceding(2))))); // more craziness
 
     this.tokenBuilder.buildTokens(this.jCas, "aa bb cc bb aa cc bb cc aa");
     Chunk chunk = new Chunk(this.jCas, 9, 11);

@@ -759,6 +759,13 @@ public class CleartkExtractor<FOCUS_T extends Annotation, SEARCH_T extends Annot
       return this.name;
     }
 
+    /**
+     * This method got a bit gnarly in order to support nested Count contexts. It isn't clear why
+     * someone would want to do this but we figured that it should just work even if it may be
+     * contrived to set up a CleartkExtractor this way. The problems comes up if there are multiple
+     * nested count contexts and keeping track of what exactly is being counted. The class
+     * NestedContextFeature does this for us.
+     */
     @Override
     public <SEARCH_T extends Annotation> List<Feature> extract(
         JCas jCas,
