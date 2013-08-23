@@ -56,7 +56,7 @@ import com.google.common.annotations.Beta;
  * All rights reserved.
  */
 @Beta
-public class TKSVMlightModel {
+public class TreeKernelSVMModel {
   String version;
 
   CompositeKernel kernel = null;
@@ -75,15 +75,15 @@ public class TKSVMlightModel {
     return result;
   }
 
-  public static TKSVMlightModel fromFile(File modelFile) throws IOException {
+  public static TreeKernelSVMModel fromFile(File modelFile) throws IOException {
     InputStream modelStream = new FileInputStream(modelFile);
-    TKSVMlightModel model = fromInputStream(modelStream);
+    TreeKernelSVMModel model = fromInputStream(modelStream);
     modelStream.close();
     return model;
   }
 
-  public static TKSVMlightModel fromInputStream(InputStream modelStream) throws IOException {
-    TKSVMlightModel model = new TKSVMlightModel();
+  public static TreeKernelSVMModel fromInputStream(InputStream modelStream) throws IOException {
+    TreeKernelSVMModel model = new TreeKernelSVMModel();
     TKSVMlightReader in = new TKSVMlightReader(modelStream);
     Kernel featKernel = null;
     TreeKernel treeKernel = null;
@@ -107,9 +107,11 @@ public class TKSVMlightModel {
     in.readLine();
     // kernel parameter -L (decay factor in tree kernel)
     double lambda = Double.parseDouble(in.readLine());
-    // kernel parameter -T (multiplicative constant for the contribution of tree kernels when -C = '+')
+    // kernel parameter -T (multiplicative constant for the contribution of tree kernels when -C =
+    // '+')
     double multiplier = Double.parseDouble(in.readLine());
-    // kernel parameter -C (combine kernel types: {+, *, T, V} for add, mult, tree only, vector only)
+    // kernel parameter -C (combine kernel types: {+, *, T, V} for add, mult, tree only, vector
+    // only)
     String comboOperator = in.readLine();
     // kernel parameter -F (???)
     in.readLine();

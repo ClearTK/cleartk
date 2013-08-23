@@ -32,7 +32,7 @@ import java.util.jar.JarOutputStream;
 
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
-import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
+import org.cleartk.classifier.tksvmlight.model.TreeKernelSVMModel;
 
 import com.google.common.annotations.Beta;
 
@@ -111,7 +111,7 @@ public class TKSVMlightStringOutcomeClassifierBuilder
     }
   }
 
-  private TreeMap<Integer, TKSVMlightModel> models;
+  private TreeMap<Integer, TreeKernelSVMModel> models;
 
   /**
    * Unpackage the classifier out of a JarInputStream.
@@ -119,9 +119,9 @@ public class TKSVMlightStringOutcomeClassifierBuilder
   @Override
   protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
     super.unpackageClassifier(modelStream);
-    this.models = new TreeMap<Integer, TKSVMlightModel>();
+    this.models = new TreeMap<Integer, TreeKernelSVMModel>();
     // File model;
-    TKSVMlightModel model;
+    TreeKernelSVMModel model;
 
     int label = 1;
     while ((model = getNextModel(modelStream, label)) != null) {
@@ -145,7 +145,7 @@ public class TKSVMlightStringOutcomeClassifierBuilder
         this.models);
   }
 
-  private static TKSVMlightModel getNextModel(JarInputStream modelStream, int label)
+  private static TreeKernelSVMModel getNextModel(JarInputStream modelStream, int label)
       throws IOException {
     // look for a next entry or return null if there isn't one
     JarEntry entry = modelStream.getNextJarEntry();
@@ -161,7 +161,7 @@ public class TKSVMlightStringOutcomeClassifierBuilder
           expectedName,
           entry.getName()));
     }
-    TKSVMlightModel model = TKSVMlightModel.fromInputStream(modelStream);
+    TreeKernelSVMModel model = TreeKernelSVMModel.fromInputStream(modelStream);
     return model;
   }
 }

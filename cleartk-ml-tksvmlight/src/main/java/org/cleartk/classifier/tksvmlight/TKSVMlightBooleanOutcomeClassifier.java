@@ -33,7 +33,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
-import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
+import org.cleartk.classifier.tksvmlight.model.TreeKernelSVMModel;
 
 import com.google.common.annotations.Beta;
 import com.google.common.collect.Maps;
@@ -55,7 +55,7 @@ public class TKSVMlightBooleanOutcomeClassifier extends
 
   static Logger logger = UIMAFramework.getLogger(TKSVMlightBooleanOutcomeClassifier.class);
 
-  TKSVMlightModel model = null;
+  TreeKernelSVMModel model = null;
 
   /**
    * Constructor
@@ -70,7 +70,7 @@ public class TKSVMlightBooleanOutcomeClassifier extends
   public TKSVMlightBooleanOutcomeClassifier(
       FeaturesEncoder<TreeFeatureVector> featuresEncoder,
       OutcomeEncoder<Boolean, Boolean> outcomeEncoder,
-      TKSVMlightModel model) {
+      TreeKernelSVMModel model) {
     super(featuresEncoder, outcomeEncoder);
     this.model = model;
   }

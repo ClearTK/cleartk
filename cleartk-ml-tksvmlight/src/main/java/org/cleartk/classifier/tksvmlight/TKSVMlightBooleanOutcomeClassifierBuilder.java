@@ -33,7 +33,7 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
-import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
+import org.cleartk.classifier.tksvmlight.model.TreeKernelSVMModel;
 
 import com.google.common.annotations.Beta;
 import com.google.common.base.Joiner;
@@ -122,7 +122,7 @@ public class TKSVMlightBooleanOutcomeClassifierBuilder
     JarStreams.putNextJarEntry(modelStream, "model.svmlight", getModelFile(dir));
   }
 
-  private TKSVMlightModel model;
+  private TreeKernelSVMModel model;
 
   /**
    * unpackage the model files found in a JarInputStream.
@@ -131,7 +131,7 @@ public class TKSVMlightBooleanOutcomeClassifierBuilder
   protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
     super.unpackageClassifier(modelStream);
     JarStreams.getNextJarEntry(modelStream, "model.svmlight");
-    model = TKSVMlightModel.fromInputStream(modelStream);
+    model = TreeKernelSVMModel.fromInputStream(modelStream);
   }
 
   /**

@@ -31,7 +31,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.classifier.jar.Classifier_ImplBase;
-import org.cleartk.classifier.tksvmlight.model.TKSVMlightModel;
+import org.cleartk.classifier.tksvmlight.model.TreeKernelSVMModel;
 
 import com.google.common.annotations.Beta;
 import com.google.common.base.Functions;
@@ -53,7 +53,7 @@ import com.google.common.collect.Ordering;
 public class TKSVMlightStringOutcomeClassifier extends
     Classifier_ImplBase<TreeFeatureVector, String, Integer> {
 
-  Map<Integer, TKSVMlightModel> models;
+  Map<Integer, TreeKernelSVMModel> models;
 
   /**
    * Constructor
@@ -68,7 +68,7 @@ public class TKSVMlightStringOutcomeClassifier extends
   public TKSVMlightStringOutcomeClassifier(
       FeaturesEncoder<TreeFeatureVector> featuresEncoder,
       OutcomeEncoder<String, Integer> outcomeEncoder,
-      Map<Integer, TKSVMlightModel> models) {
+      Map<Integer, TreeKernelSVMModel> models) {
     super(featuresEncoder, outcomeEncoder);
     this.models = models;
   }

@@ -25,6 +25,7 @@
 package org.cleartk.classifier.tksvmlight;
 
 import java.util.LinkedHashMap;
+
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
 import com.google.common.annotations.Beta;
