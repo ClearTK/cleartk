@@ -108,7 +108,7 @@ public class TKSVMlightBooleanOutcomeClassifierBuilder
    *          the use of Tree Kernels.
    */
   public void trainClassifier(File dir, String... args) throws Exception {
-    File trainingDataFile = getTrainingDataFile(dir);
+    File trainingDataFile = (dir.isDirectory() ? getTrainingDataFile(dir) : dir);
     train(trainingDataFile.getPath(), args);
   }
 
