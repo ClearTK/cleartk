@@ -17,6 +17,7 @@
 		<module>cleartk-ml-tksvmlight</module>
 		<module>cleartk-ml-liblinear</module>
 		<module>cleartk-ml-libsvm</module>
+    <module>cleartk-ml-libsvm-tk</module>
 		<module>cleartk-ml-mallet</module>
 		<module>cleartk-ml-crfsuite</module>
 		<module>cleartk-ml-weka</module>
@@ -140,6 +141,11 @@
 				<artifactId>cleartk-ml-libsvm</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-ml-libsvm-tk</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-mallet</artifactId>
