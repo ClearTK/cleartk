@@ -177,7 +177,7 @@ public class RunTKSVMlightTest extends DefaultTestBase {
 
     // read in the classifier and test it on new instances
     TKSVMlightBooleanOutcomeClassifierBuilder builder = new TKSVMlightBooleanOutcomeClassifierBuilder();
-    TKSVMlightBooleanOutcomeClassifier classifier;
+    TreeKernelSVMBooleanOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<Boolean> instance : generateBooleanInstances(20)) {
       List<Feature> features = instance.getFeatures();
@@ -227,7 +227,7 @@ public class RunTKSVMlightTest extends DefaultTestBase {
 
     // read in the classifier and test it on new instances
     TKSVMlightStringOutcomeClassifierBuilder builder = new TKSVMlightStringOutcomeClassifierBuilder();
-    TKSVMlightStringOutcomeClassifier classifier;
+    TreeKernelSVMStringOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<String> instance : generateStringInstances(20)) {
       List<Feature> features = instance.getFeatures();

@@ -23,13 +23,12 @@
  */
 package org.cleartk.ml.libsvm.tk;
 
-import java.io.File;
-
+import org.cleartk.classifier.tksvmlight.TreeKernelSVMStringOutcomeClassifier;
 import org.cleartk.classifier.tksvmlight.TreeKernelSVMStringOutcomeClassifierBuilder;
 
 /**
  * A class that provided interfaces to package and unpackage a
- * {@link TKLIBSVMStringOutcomeClassifier} into a jar file.
+ * {@link TreeKernelSVMStringOutcomeClassifier} into a jar file.
  * 
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -41,27 +40,11 @@ import org.cleartk.classifier.tksvmlight.TreeKernelSVMStringOutcomeClassifierBui
 public class TKLIBSVMStringOutcomeClassifierBuilder
     extends
     TreeKernelSVMStringOutcomeClassifierBuilder {
-
-  TKLIBSVMBooleanOutcomeClassifierBuilder builder = new TKLIBSVMBooleanOutcomeClassifierBuilder();
-  
-  /**
-   * Train the classifier.
-   * 
-   * @param dir
-   *          The directory where the training data has been written.
-   * @param args
-   *          The arguments to be used by the tk_svm_classify command. Note: -t 5 is used to specify
-   *          the use of Tree Kernels.
-   */
-  @Override
-  public void trainClassifier(File dir, String... args) throws Exception {
-    for (File file : dir.listFiles()) {
-      if (file.getName().matches("training-data-\\d+.libsvm")) {
-        builder.trainClassifier(file, args);
-      }
-    }
+ 
+  public TKLIBSVMStringOutcomeClassifierBuilder(){
+    builder = new TKLIBSVMBooleanOutcomeClassifierBuilder();
   }
-  
+    
   @Override
   public String getPackageName() {
     return "libsvm";

@@ -20,26 +20,26 @@ import org.chboston.cnlp.libsvm.svm_node;
 import org.chboston.cnlp.libsvm.svm_parameter;
 import org.chboston.cnlp.libsvm.ex.Instance;
 import org.chboston.cnlp.libsvm.ex.SVMTrainer;
-import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.svmlight.model.Kernel;
 import org.cleartk.classifier.svmlight.model.LinearKernel;
 import org.cleartk.classifier.svmlight.model.PolynomialKernel;
 import org.cleartk.classifier.svmlight.model.RBFKernel;
 import org.cleartk.classifier.tksvmlight.TreeFeatureVector;
-import org.cleartk.classifier.tksvmlight.model.CompositeKernel;
-import org.cleartk.classifier.tksvmlight.model.TreeKernel;
-import org.cleartk.classifier.tksvmlight.model.TreeKernelSVMModel;
+import org.cleartk.classifier.tksvmlight.TreeKernelSVMBooleanOutcomeClassifier;
+import org.cleartk.classifier.tksvmlight.TreeKernelSVMBooleanOutcomeClassifierBuilder;
 import org.cleartk.classifier.tksvmlight.model.CompositeKernel.ComboOperator;
 import org.cleartk.classifier.tksvmlight.model.CompositeKernel.Normalize;
+import org.cleartk.classifier.tksvmlight.model.TreeKernel;
 import org.cleartk.classifier.tksvmlight.model.TreeKernel.ForestSumMethod;
 import org.cleartk.classifier.tksvmlight.model.TreeKernel.KernelType;
+import org.cleartk.classifier.tksvmlight.model.TreeKernelSVMModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.InvalidFeatureVectorValueException;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 
 
 public class TKLIBSVMBooleanOutcomeClassifierBuilder extends
-    ClassifierBuilder_ImplBase<TKLIBSVMBooleanOutcomeClassifier, TreeFeatureVector, Boolean, Boolean> {
+  TreeKernelSVMBooleanOutcomeClassifierBuilder<TreeKernelSVMBooleanOutcomeClassifier> {
 
   private TreeKernelSVMModel model;
   
@@ -138,8 +138,6 @@ public class TKLIBSVMBooleanOutcomeClassifierBuilder extends
     param.shrinking = 0;
     String modelFilename = filePath.getPath() + ".model";
     svm_model<TreeFeatureVector> model = SVMTrainer.train(instances, param);
-    int swap = 1;
-    if(model.label[0] == 1) swap = -1;
     
     PrintWriter out = new PrintWriter(modelFilename);
     out.println("cleartk-ml-libsvm-tk wrapper and bridge for svmlight/libsvm tree kernel libraries");
@@ -252,7 +250,7 @@ public class TKLIBSVMBooleanOutcomeClassifierBuilder extends
   }
 
   @Override
-  protected TKLIBSVMBooleanOutcomeClassifier newClassifier() {
-    return new TKLIBSVMBooleanOutcomeClassifier(this.featuresEncoder, this.outcomeEncoder, this.model);
+  protected TreeKernelSVMBooleanOutcomeClassifier newClassifier() {
+    return new TreeKernelSVMBooleanOutcomeClassifier(this.featuresEncoder, this.outcomeEncoder, this.model);
   }
 }

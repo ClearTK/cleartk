@@ -19,10 +19,17 @@ import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToIntegerOutcomeEncoder;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 
+/**
+ * <br>
+ * Copyright (c) 2009, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * @author Daryl Lonnon
+ * @author Tim Miller
+ */
+
 public abstract class TreeKernelSVMStringOutcomeDataWriter<CLASSIFIER_BUILDER_TYPE extends TreeKernelSVMStringOutcomeClassifierBuilder>
     extends
-    // <CLASSIFIER_BUILDER_TYPE extends EncodingJarClassifierBuilder<? extends Classifier<String>,
-    // TreeFeatureVector, String, Integer>> extends
     DataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE, TreeFeatureVector, String, Integer> {
 
   protected File allFalseFile;
@@ -60,7 +67,7 @@ public abstract class TreeKernelSVMStringOutcomeDataWriter<CLASSIFIER_BUILDER_TY
     }
 
     StringBuffer featureString = new StringBuffer();
-    featureString.append(TKSVMlightBooleanOutcomeDataWriter.createString(features));
+    featureString.append(TreeKernelSVMBooleanOutcomeDataWriter.createString(features));
 
     StringBuffer output = new StringBuffer();
     if (outcome == null)

@@ -16,7 +16,8 @@ public abstract class TreeKernelSVMStringOutcomeClassifierBuilder
     ClassifierBuilder_ImplBase<TreeKernelSVMStringOutcomeClassifier, TreeFeatureVector, String, Integer> {
 
   protected TreeMap<Integer, TreeKernelSVMModel> models;
-
+  protected TreeKernelSVMBooleanOutcomeClassifierBuilder<?> builder = null;
+  
   public abstract String getPackageName();
 
   /**
@@ -39,6 +40,24 @@ public abstract class TreeKernelSVMStringOutcomeClassifierBuilder
    */
   public File getTrainingDataFile(File dir, int label) {
     return new File(dir, String.format("training-data-%d.%s", label, this.getPackageName()));
+  }
+
+  /**
+   * Train the classifier.
+   * 
+   * @param dir
+   *          The directory where the training data has been written.
+   * @param args
+   *          The arguments to be used by the tk_svm_classify command. Note: -t 5 is used to specify
+   *          the use of Tree Kernels.
+   */
+  @Override
+  public void trainClassifier(File dir, String... args) throws Exception {
+    for (File file : dir.listFiles()) {
+      if (file.getName().matches(String.format("training-data-\\d+.%s", this.getPackageName()))){
+        builder.trainClassifier(file, args);
+      }
+    }
   }
 
   /**

@@ -31,7 +31,6 @@ import java.util.jar.JarOutputStream;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
-import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.tksvmlight.model.TreeKernelSVMModel;
 
@@ -41,7 +40,7 @@ import com.google.common.io.ByteStreams;
 
 /**
  * A class that provided interfaces to train, package and unpackage a
- * {@link TKSVMlightBooleanOutcomeClassifier} into a jar file.
+ * {@link TreeKernelSVMBooleanOutcomeClassifier} into a jar file.
  * 
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -52,7 +51,7 @@ import com.google.common.io.ByteStreams;
 @Beta
 public class TKSVMlightBooleanOutcomeClassifierBuilder
     extends
-    ClassifierBuilder_ImplBase<TKSVMlightBooleanOutcomeClassifier, TreeFeatureVector, Boolean, Boolean> {
+    TreeKernelSVMBooleanOutcomeClassifierBuilder<TreeKernelSVMBooleanOutcomeClassifier>{
 
   static Logger logger = UIMAFramework.getLogger(TKSVMlightBooleanOutcomeClassifierBuilder.class);
 
@@ -138,8 +137,8 @@ public class TKSVMlightBooleanOutcomeClassifierBuilder
    * Create a TKSVMlightClassifier.
    */
   @Override
-  protected TKSVMlightBooleanOutcomeClassifier newClassifier() {
-    return new TKSVMlightBooleanOutcomeClassifier(
+  protected TreeKernelSVMBooleanOutcomeClassifier newClassifier() {
+    return new TreeKernelSVMBooleanOutcomeClassifier(
         this.featuresEncoder,
         this.outcomeEncoder,
         this.model);
