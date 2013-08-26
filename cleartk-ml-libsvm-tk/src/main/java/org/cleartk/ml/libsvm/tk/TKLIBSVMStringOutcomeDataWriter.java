@@ -26,8 +26,19 @@ package org.cleartk.ml.libsvm.tk;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import org.cleartk.classifier.tksvmlight.TreeKernelSVMBooleanOutcomeClassifier;
 import org.cleartk.classifier.tksvmlight.TreeKernelSVMStringOutcomeDataWriter;
 
+/**
+ * A class that provided interfaces to train, package and unpackage a
+ * {@link TreeKernelSVMBooleanOutcomeClassifier} into a jar file.
+ * 
+ * <br>
+ * Copyright (c) 2013, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * @author Tim Miller
+ */
 
 public class TKLIBSVMStringOutcomeDataWriter extends
 TreeKernelSVMStringOutcomeDataWriter<TKLIBSVMStringOutcomeClassifierBuilder>{
