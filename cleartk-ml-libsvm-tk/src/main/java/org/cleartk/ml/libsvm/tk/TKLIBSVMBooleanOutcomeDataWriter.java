@@ -50,4 +50,9 @@ public class TKLIBSVMBooleanOutcomeDataWriter extends
       throws FileNotFoundException {
     super(outputDirectory);
   }
+  
+  @Override
+  protected TKLIBSVMBooleanOutcomeClassifierBuilder newClassifierBuilder() {
+    return new TKLIBSVMBooleanOutcomeClassifierBuilder();
+  }
 }

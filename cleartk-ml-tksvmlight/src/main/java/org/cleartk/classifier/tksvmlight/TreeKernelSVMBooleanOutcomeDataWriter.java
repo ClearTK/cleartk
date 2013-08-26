@@ -44,7 +44,7 @@ import org.cleartk.classifier.util.featurevector.FeatureVector;
  * @author Daryl Lonnon
  * @author Tim Miller
  */
-public class TreeKernelSVMBooleanOutcomeDataWriter extends 
+public abstract class TreeKernelSVMBooleanOutcomeDataWriter extends 
   DataWriter_ImplBase<TreeKernelSVMBooleanOutcomeClassifierBuilder<TreeKernelSVMBooleanOutcomeClassifier>, TreeFeatureVector, Boolean,Boolean>{
 
   public TreeKernelSVMBooleanOutcomeDataWriter(File outputDirectory) throws FileNotFoundException {
@@ -109,10 +109,5 @@ public class TreeKernelSVMBooleanOutcomeDataWriter extends
     output.append(createString(features));
 
     this.trainingDataWriter.println(output);
-  }
-
-  @Override
-  protected TKSVMlightBooleanOutcomeClassifierBuilder newClassifierBuilder() {
-    return new TKSVMlightBooleanOutcomeClassifierBuilder();
   }
 }

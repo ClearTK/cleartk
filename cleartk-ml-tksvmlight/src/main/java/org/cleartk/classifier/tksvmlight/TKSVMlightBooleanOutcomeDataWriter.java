@@ -45,4 +45,9 @@ public class TKSVMlightBooleanOutcomeDataWriter
   public TKSVMlightBooleanOutcomeDataWriter(File outputDirectory) throws FileNotFoundException {
     super(outputDirectory);
   }
+  
+  @Override
+  protected TKSVMlightBooleanOutcomeClassifierBuilder newClassifierBuilder() {
+    return new TKSVMlightBooleanOutcomeClassifierBuilder();
+  }
 }

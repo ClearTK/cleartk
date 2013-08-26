@@ -31,6 +31,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -43,6 +45,7 @@ import org.chboston.cnlp.libsvm.svm_node;
 import org.chboston.cnlp.libsvm.svm_parameter;
 import org.chboston.cnlp.libsvm.ex.Instance;
 import org.chboston.cnlp.libsvm.ex.SVMTrainer;
+import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.svmlight.model.Kernel;
 import org.cleartk.classifier.svmlight.model.LinearKernel;
 import org.cleartk.classifier.svmlight.model.PolynomialKernel;
@@ -100,12 +103,18 @@ public class TKLIBSVMBooleanOutcomeClassifierBuilder extends
     return new File(dir, "training-data.libsvm");
   }
 
+  private File getModelFile(File dir){
+    return new File(dir, "training-data.libsvm.model");  
+  }
+  
   @Override
   public void trainClassifier(File filePath, String... args) throws Exception {
+    File inputFile = filePath.isDirectory() ? getTrainingDataFile(filePath) : filePath;
+    
     // read and parse options
     CommandLineParser parser = new PosixParser();
     CommandLine cmd = parser.parse(options, args);
-    
+     
     // set parameters
     Kernel fk = null;
     
@@ -153,7 +162,7 @@ public class TKLIBSVMBooleanOutcomeClassifierBuilder extends
     }
         
     // read in file into Instance array
-    List<Instance<TreeFeatureVector>> instances = readInstances(filePath);
+    List<Instance<TreeFeatureVector>> instances = readInstances(inputFile);
     
     int highestIndex = 0;
     for(Instance<TreeFeatureVector> inst : instances){
@@ -170,7 +179,7 @@ public class TKLIBSVMBooleanOutcomeClassifierBuilder extends
     param.svm_type = svm_parameter.C_SVC;
     param.C = cost;
     param.shrinking = 0;
-    String modelFilename = filePath.getPath() + ".model";
+    String modelFilename = inputFile.getPath() + ".model";
     svm_model<TreeFeatureVector> model = SVMTrainer.train(instances, param);
     
     PrintWriter out = new PrintWriter(modelFilename);
@@ -281,6 +290,25 @@ public class TKLIBSVMBooleanOutcomeClassifierBuilder extends
     treeVector.setFeatures(vec);
         
     return new Instance<TreeFeatureVector>(Double.parseDouble(label), treeVector);
+  }
+
+  /**
+   * package the classifier found in dir into the a Jar file.
+   */
+  @Override
+  protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
+    super.packageClassifier(dir, modelStream);
+    JarStreams.putNextJarEntry(modelStream, "model.libsvm", getModelFile(dir));
+  }
+
+  /**
+   * unpackage the model files found in a JarInputStream.
+   */
+  @Override
+  protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
+    super.unpackageClassifier(modelStream);
+    JarStreams.getNextJarEntry(modelStream, "model.libsvm");
+    model = TreeKernelSVMModel.fromInputStream(modelStream);
   }
 
   @Override
