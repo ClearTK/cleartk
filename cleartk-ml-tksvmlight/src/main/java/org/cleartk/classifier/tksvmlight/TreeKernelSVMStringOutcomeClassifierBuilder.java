@@ -34,6 +34,14 @@ import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.classifier.jar.JarStreams;
 import org.cleartk.classifier.tksvmlight.model.TreeKernelSVMModel;
 
+/**
+ * <br>
+ * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * @author Daryl Lonnon
+ * @author Tim Miller
+ */
 public abstract class TreeKernelSVMStringOutcomeClassifierBuilder
     extends
     ClassifierBuilder_ImplBase<TreeKernelSVMStringOutcomeClassifier, TreeFeatureVector, String, Integer> {
@@ -77,7 +85,7 @@ public abstract class TreeKernelSVMStringOutcomeClassifierBuilder
   @Override
   public void trainClassifier(File dir, String... args) throws Exception {
     for (File file : dir.listFiles()) {
-      if (file.getName().matches(String.format("training-data-\\d+.%s", this.getPackageName()))){
+      if (file.getName().matches("training-data-\\d+." + this.getPackageName())){
         builder.trainClassifier(file, args);
       }
     }

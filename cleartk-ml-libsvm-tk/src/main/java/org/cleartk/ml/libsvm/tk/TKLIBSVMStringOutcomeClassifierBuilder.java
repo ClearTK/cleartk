@@ -31,10 +31,9 @@ import org.cleartk.classifier.tksvmlight.TreeKernelSVMStringOutcomeClassifierBui
  * {@link TreeKernelSVMStringOutcomeClassifier} into a jar file.
  * 
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2013, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * @author Daryl Lonnon
  * @author Tim Miller
  */
 public class TKLIBSVMStringOutcomeClassifierBuilder

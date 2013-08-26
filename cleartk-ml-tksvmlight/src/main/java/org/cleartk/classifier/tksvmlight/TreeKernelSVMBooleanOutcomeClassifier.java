@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2007-2013, Regents of the University of Colorado 
+ * Copyright (c) 2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -35,6 +35,14 @@ import org.cleartk.classifier.tksvmlight.model.TreeKernelSVMModel;
 
 import com.google.common.collect.Maps;
 
+/**
+ * <br>
+ * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * @author Daryl Lonnon
+ * @author Tim Miller
+ */
 public class TreeKernelSVMBooleanOutcomeClassifier 
   extends
   Classifier_ImplBase<TreeFeatureVector, Boolean, Boolean> {

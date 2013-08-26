@@ -35,7 +35,6 @@ import org.cleartk.classifier.tksvmlight.TreeKernelSVMBooleanOutcomeDataWriter;
  * Copyright (c) 2009, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * @author Daryl Lonnon
  * @author Tim Miller
  */
 public class TKLIBSVMBooleanOutcomeDataWriter extends 

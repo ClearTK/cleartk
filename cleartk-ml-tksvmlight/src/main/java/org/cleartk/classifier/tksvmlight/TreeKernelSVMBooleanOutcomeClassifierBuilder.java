@@ -26,6 +26,13 @@ package org.cleartk.classifier.tksvmlight;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.jar.ClassifierBuilder_ImplBase;
 
+/**
+ * <br>
+ * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * @author Tim Miller
+ */
 public abstract class TreeKernelSVMBooleanOutcomeClassifierBuilder<CLASSIFIER_TYPE extends Classifier<Boolean>> 
   extends ClassifierBuilder_ImplBase<CLASSIFIER_TYPE,TreeFeatureVector,Boolean,Boolean> {
 }

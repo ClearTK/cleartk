@@ -37,6 +37,14 @@ import com.google.common.base.Functions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
+/**
+ * <br>
+ * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * @author Daryl Lonnon
+ * @author Tim Miller
+ */
 public class TreeKernelSVMStringOutcomeClassifier extends
     Classifier_ImplBase<TreeFeatureVector, String, Integer> {
 

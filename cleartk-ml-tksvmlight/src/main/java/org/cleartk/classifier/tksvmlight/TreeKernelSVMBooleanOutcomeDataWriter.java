@@ -36,6 +36,14 @@ import org.cleartk.classifier.encoder.outcome.BooleanToBooleanOutcomeEncoder;
 import org.cleartk.classifier.jar.DataWriter_ImplBase;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
+/**
+ * <br>
+ * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * @author Daryl Lonnon
+ * @author Tim Miller
+ */
 public class TreeKernelSVMBooleanOutcomeDataWriter extends 
   DataWriter_ImplBase<TreeKernelSVMBooleanOutcomeClassifierBuilder<TreeKernelSVMBooleanOutcomeClassifier>, TreeFeatureVector, Boolean,Boolean>{
 

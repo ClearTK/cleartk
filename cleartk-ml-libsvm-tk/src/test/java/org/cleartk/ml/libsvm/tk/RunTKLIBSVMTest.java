@@ -68,25 +68,11 @@ import org.uimafit.testing.util.HideOutput;
  * All rights reserved.
  * 
  * @author Daryl Lonnon
+ * @author Tim Miller
  */
 public class RunTKLIBSVMTest extends DefaultTestBase {
 
-  /**
-   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring the TK
-   * SvmLight executables to be installed on your system's path should be disabled. Current value:
-   * {@value #TK_SVMLIGHT_TESTS_PROPERTY_VALUE}.
-   */
-  public static final String TK_LIBSVM_TESTS_PROPERTY_VALUE = "tklibsvm";
-
-  /**
-   * Message that will be logged at the beginning of each test that requires the tree-kernel
-   * SVMlight executables.
-   */
-  public static final String TK_SVMLIGHT_TESTS_ENABLED_MESSAGE = createTestEnabledMessage(
-      TK_LIBSVM_TESTS_PROPERTY_VALUE,
-      "This test does not require any external libsvm-related dependencies.");
-
-  protected String dataDirectory = "src/test/resources/data/svmlight/tk";
+  protected String dataDirectory = "src/test/resources/data/libsvm-tk";
 
   @Override
   @Before
@@ -108,55 +94,7 @@ public class RunTKLIBSVMTest extends DefaultTestBase {
   }
 
   @Test
-  public void testTKSim(){
-    TreeKernel tk = new TreeKernel(TreeKernel.LAMBDA_DEFAULT, ForestSumMethod.SEQUENTIAL, KernelType.SUBSET, false);
-    
-    TreeFeatureVector tf1 = new TreeFeatureVector();
-    String tree1 = "(S (NP i) (VP (VB eat) (NN cake)))";
-    LinkedHashMap<String,String> tree1map = new LinkedHashMap<String,String>();
-    tree1map.put("TK_1", tree1);
-    tf1.setTrees(tree1map);
-    
-    TreeFeatureVector tf2 = new TreeFeatureVector();
-    LinkedHashMap<String,String> tree2map = new LinkedHashMap<String,String>();
-    tree2map.put("TK_1", tree1);
-    tf2.setTrees(tree2map);
-    
-    double sim = tk.evaluate(tf1, tf2);
-    
-    Assert.assertEquals(2.983040, sim, 0.01);
-    
-    String tree2 = "(S (NP i) (VP (VBD ran) (NN home)))";
-    tree2map.clear();
-    tree2map.put("TK_1", tree2);
-    tf2.setTrees(tree2map);
-    
-    sim = tk.evaluate(tf1, tf2);
-    Assert.assertEquals(0.96, sim, 0.01);
-    
-    
-  }
-  
-  @Test
-  public void testTreeFeatures() throws Exception {
-    TreeFeatureVectorFeaturesEncoder encoder = new TreeFeatureVectorFeaturesEncoder();
-    encoder.addEncoder(new NumberEncoder());
-    encoder.addEncoder(new BooleanEncoder());
-    encoder.addEncoder(new StringEncoder());
-    
-    List<Instance<Boolean>> instances = generateTreeFeatureInstances(100);
-    for(Instance<Boolean> instance : instances){
-      TreeFeatureVector features = encoder.encodeAll(instance.getFeatures());
-      Map<String,String> treeFeatures = features.getTrees();
-      Assert.assertTrue(treeFeatures.size() > 0);
-    }
-  }
-  
-  @Test
-  public void testTKSVMlight() throws Exception {
-    this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, TK_LIBSVM_TESTS_PROPERTY_VALUE);
-    this.logger.info(TK_SVMLIGHT_TESTS_ENABLED_MESSAGE);
-
+  public void testTKLIBSVM() throws Exception {
     // create the data writer
     EmptyAnnotator<Boolean> annotator = new EmptyAnnotator<Boolean>();
     annotator.initialize(UimaContextFactory.createUimaContext(
@@ -199,9 +137,6 @@ public class RunTKLIBSVMTest extends DefaultTestBase {
 
   @Test
   public void testOVATKSVMlight() throws Exception {
-    this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, TK_LIBSVM_TESTS_PROPERTY_VALUE);
-    this.logger.info(TK_SVMLIGHT_TESTS_ENABLED_MESSAGE);
-
     // create the data writer
     EmptyAnnotator<String> annotator = new EmptyAnnotator<String>();
     annotator.initialize(UimaContextFactory.createUimaContext(
