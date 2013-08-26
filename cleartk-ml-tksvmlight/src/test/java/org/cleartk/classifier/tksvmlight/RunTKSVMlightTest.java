@@ -54,6 +54,8 @@ import org.junit.Test;
 import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.testing.util.HideOutput;
 
+import com.google.common.collect.Lists;
+
 /**
  * <br>
  * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
@@ -135,6 +137,17 @@ public class RunTKSVMlightTest extends DefaultTestBase {
     encoder.addEncoder(new NumberEncoder());
     encoder.addEncoder(new BooleanEncoder());
     encoder.addEncoder(new StringEncoder());
+    
+    Feature feat = new Feature("Feature1");
+    List<Feature> singletonList = Lists.newArrayList();
+    singletonList.add(feat);
+    
+    // test that the encoder can handle features without names
+    try{
+      TreeFeatureVector features = encoder.encodeAll(singletonList);
+    }catch(Exception e){
+        Assert.assertTrue(false);
+    }
     
     List<Instance<Boolean>> instances = generateTreeFeatureInstances(100);
     for(Instance<Boolean> instance : instances){

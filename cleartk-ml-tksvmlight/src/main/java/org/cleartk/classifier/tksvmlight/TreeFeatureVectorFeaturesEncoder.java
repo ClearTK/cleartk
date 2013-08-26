@@ -81,7 +81,7 @@ public class TreeFeatureVectorFeaturesEncoder implements FeaturesEncoder<TreeFea
     List<Feature> fves = new ArrayList<Feature>();
     LinkedHashMap<String, String> trs = new LinkedHashMap<String, String>();
     for (Feature feature : features) {
-      if (feature instanceof TreeFeature || feature.getName().matches("^TK.*")) {
+      if (feature instanceof TreeFeature || (feature.getName() != null && feature.getName().matches("^TK.*"))) {
         trs.put(feature.getName(), feature.getValue().toString());
       } else {
         fves.add(feature);
