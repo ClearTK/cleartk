@@ -27,9 +27,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import org.apache.uima.jcas.JCas;
@@ -38,23 +36,11 @@ import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.TreeFeature;
-import org.cleartk.classifier.encoder.features.BooleanEncoder;
-import org.cleartk.classifier.encoder.features.NumberEncoder;
-import org.cleartk.classifier.encoder.features.StringEncoder;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.classifier.tksvmlight.TKSVMlightBooleanOutcomeClassifierBuilder;
-import org.cleartk.classifier.tksvmlight.TKSVMlightBooleanOutcomeDataWriter;
-import org.cleartk.classifier.tksvmlight.TKSVMlightStringOutcomeClassifierBuilder;
-import org.cleartk.classifier.tksvmlight.TKSVMlightStringOutcomeDataWriter;
-import org.cleartk.classifier.tksvmlight.TreeFeatureVector;
-import org.cleartk.classifier.tksvmlight.TreeFeatureVectorFeaturesEncoder;
 import org.cleartk.classifier.tksvmlight.TreeKernelSVMBooleanOutcomeClassifier;
 import org.cleartk.classifier.tksvmlight.TreeKernelSVMStringOutcomeClassifier;
-import org.cleartk.classifier.tksvmlight.model.TreeKernel;
-import org.cleartk.classifier.tksvmlight.model.TreeKernel.ForestSumMethod;
-import org.cleartk.classifier.tksvmlight.model.TreeKernel.KernelType;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Before;
@@ -101,7 +87,7 @@ public class RunTKLIBSVMTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        TKSVMlightBooleanOutcomeDataWriter.class.getName()));
+        TKLIBSVMBooleanOutcomeDataWriter.class.getName()));
 
     // add a bunch of instances
     for (Instance<Boolean> instance : generateBooleanInstances(20)) {
@@ -112,7 +98,7 @@ public class RunTKLIBSVMTest extends DefaultTestBase {
     // check that the output file was written and is not empty
     BufferedReader reader = new BufferedReader(new FileReader(new File(
         this.outputDirectoryName,
-        "training-data.svmlight")));
+        "training-data.libsvm")));
     Assert.assertTrue(reader.readLine().length() > 0);
     reader.close();
 
@@ -122,7 +108,7 @@ public class RunTKLIBSVMTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
-    TKSVMlightBooleanOutcomeClassifierBuilder builder = new TKSVMlightBooleanOutcomeClassifierBuilder();
+    TKLIBSVMBooleanOutcomeClassifierBuilder builder = new TKLIBSVMBooleanOutcomeClassifierBuilder();
     TreeKernelSVMBooleanOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<Boolean> instance : generateBooleanInstances(20)) {
@@ -136,14 +122,14 @@ public class RunTKLIBSVMTest extends DefaultTestBase {
   }
 
   @Test
-  public void testOVATKSVMlight() throws Exception {
+  public void testOVATKLIBSVM() throws Exception {
     // create the data writer
     EmptyAnnotator<String> annotator = new EmptyAnnotator<String>();
     annotator.initialize(UimaContextFactory.createUimaContext(
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         this.outputDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        TKSVMlightStringOutcomeDataWriter.class.getName()));
+        TKLIBSVMStringOutcomeDataWriter.class.getName()));
 
     // add a bunch of instances
     for (Instance<String> instance : generateStringInstances(20)) {
@@ -153,9 +139,9 @@ public class RunTKLIBSVMTest extends DefaultTestBase {
 
     // check that the output files were written for each class
     for (String fileName : new String[] {
-        "training-data-1.svmlight",
-        "training-data-2.svmlight",
-        "training-data-3.svmlight" }) {
+        "training-data-1.libsvm",
+        "training-data-2.libsvm",
+        "training-data-3.libsvm" }) {
       BufferedReader reader = new BufferedReader(new FileReader(new File(
           this.outputDirectoryName,
           fileName)));
@@ -169,7 +155,7 @@ public class RunTKLIBSVMTest extends DefaultTestBase {
     hider.restoreOutput();
 
     // read in the classifier and test it on new instances
-    TKSVMlightStringOutcomeClassifierBuilder builder = new TKSVMlightStringOutcomeClassifierBuilder();
+    TKLIBSVMStringOutcomeClassifierBuilder builder = new TKLIBSVMStringOutcomeClassifierBuilder();
     TreeKernelSVMStringOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
     for (Instance<String> instance : generateStringInstances(20)) {
@@ -193,27 +179,6 @@ public class RunTKLIBSVMTest extends DefaultTestBase {
       } else {
         instance.setOutcome(false);
         instance.add(new Feature("TK_tree", "(S (VB I) (NP ran) (. .))"));
-        instance.add(new Feature("hello", random.nextInt(100)));
-        instance.add(new Feature("goodbye", 500));
-      }
-      instances.add(instance);
-    }
-    return instances;
-  }
-
-  private static List<Instance<Boolean>> generateTreeFeatureInstances(int n) {
-    Random random = new Random(42);
-    List<Instance<Boolean>> instances = new ArrayList<Instance<Boolean>>();
-    for (int i = 0; i < n; i++) {
-      Instance<Boolean> instance = new Instance<Boolean>();
-      if (random.nextInt(2) == 0) {
-        instance.setOutcome(true);
-        instance.add(new TreeFeature("Tree", "(S (NP I) (VB ran) (. .))"));
-        instance.add(new Feature("hello", random.nextInt(100) + 1000));
-        instance.add(new Feature("goodbye", 500));
-      } else {
-        instance.setOutcome(false);
-        instance.add(new TreeFeature("Tree", "(S (VB I) (NP ran) (. .))"));
         instance.add(new Feature("hello", random.nextInt(100)));
         instance.add(new Feature("goodbye", 500));
       }
