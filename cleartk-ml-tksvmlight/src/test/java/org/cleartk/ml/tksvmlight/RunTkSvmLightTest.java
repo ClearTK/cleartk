@@ -111,7 +111,7 @@ public class RunTkSvmLightTest extends DefaultTestBase {
 
   @Test
   public void testTKSim(){
-    TreeKernel tk = new TreeKernel(TreeKernel.LAMBDA_DEFAULT, ForestSumMethod.SEQUENTIAL, KernelType.SUBSET, false);
+    TreeKernel sst = new TreeKernel(TreeKernel.LAMBDA_DEFAULT, ForestSumMethod.SEQUENTIAL, KernelType.SUBSET, false);
     
     TreeFeatureVector tf1 = new TreeFeatureVector();
     String tree1 = "(S (NP i) (VP (VB eat) (NN cake)))";
@@ -124,7 +124,7 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     tree2map.put("TK_1", tree1);
     tf2.setTrees(tree2map);
     
-    double sim = tk.evaluate(tf1, tf2);
+    double sim = sst.evaluate(tf1, tf2);
     
     Assert.assertEquals(2.983040, sim, 0.01);
     
@@ -133,10 +133,29 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     tree2map.put("TK_1", tree2);
     tf2.setTrees(tree2map);
     
-    sim = tk.evaluate(tf1, tf2);
+    sim = sst.evaluate(tf1, tf2);
     Assert.assertEquals(0.96, sim, 0.01);
     
+    TreeKernel ptk = new TreeKernel(TreeKernel.LAMBDA_DEFAULT, ForestSumMethod.SEQUENTIAL, KernelType.PARTIAL, false);
+    tree1 = "(NP (DT the) (NN dog))";
+    tree2 = "(NP (DT the) (JJ big) (NN dog))";
+    tree1map.clear();
+    tree1map.put("TK1", tree1);
+    tree2map.clear();
+    tree2map.put("TK1", tree2);
+    tf1.setTrees(tree1map);
+    tf2.setTrees(tree2map);
+    sim = ptk.evaluate(tf1, tf2);
+    double expected = 0.337027; // output of moschitti's code
+    Assert.assertEquals(expected, sim, 0.01);
+   
+    sim = ptk.evaluate(tf1, tf1);
+    expected = 0.337205;
+    Assert.assertEquals(expected, sim, 0.01);
     
+    sim = ptk.evaluate(tf2, tf2);
+    expected = 0.474024;
+    Assert.assertEquals(expected, sim, 0.01);
   }
   
   @Test
