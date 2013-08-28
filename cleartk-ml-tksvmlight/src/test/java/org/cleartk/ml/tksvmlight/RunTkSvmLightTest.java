@@ -137,12 +137,12 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     Assert.assertEquals(0.96, sim, 0.01);
     
     TreeKernel ptk = new TreeKernel(TreeKernel.LAMBDA_DEFAULT, ForestSumMethod.SEQUENTIAL, KernelType.PARTIAL, false);
-    tree1 = "(NP (DT the) (NN dog))";
-    tree2 = "(NP (DT the) (JJ big) (NN dog))";
+    String tree3 = "(NP (DT the) (NN dog))";
+    String tree4 = "(NP (DT the) (JJ big) (NN dog))";
     tree1map.clear();
-    tree1map.put("TK1", tree1);
+    tree1map.put("TK1", tree3);
     tree2map.clear();
-    tree2map.put("TK1", tree2);
+    tree2map.put("TK1", tree4);
     tf1.setTrees(tree1map);
     tf2.setTrees(tree2map);
     sim = ptk.evaluate(tf1, tf2);
@@ -156,6 +156,13 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     sim = ptk.evaluate(tf2, tf2);
     expected = 0.474024;
     Assert.assertEquals(expected, sim, 0.01);
+    
+    tree2map.clear();
+    tree2map.put("TK1", tree2);
+    tf2.setTrees(tree2map);
+    sim = ptk.evaluate(tf1, tf2);
+    expected = 0.128;
+    Assert.assertEquals(expected, sim, 0.01); 
   }
   
   @Test
