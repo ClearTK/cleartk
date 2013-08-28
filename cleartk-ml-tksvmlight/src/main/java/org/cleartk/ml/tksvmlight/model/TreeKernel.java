@@ -48,7 +48,12 @@ public class TreeKernel {
   public static final double LAMBDA_DEFAULT = 0.4;
 
   private double lambda = LAMBDA_DEFAULT;
-
+  private double lambdaSquared = lambda * lambda;
+  
+  public static final double MU_DEFAULT = 0.4;
+  
+  private double mu = MU_DEFAULT;
+  
   private boolean normalize = false;
 
   private ConcurrentHashMap<String, Double> normalizers = new ConcurrentHashMap<String, Double>();
@@ -73,6 +78,7 @@ public class TreeKernel {
       KernelType kernelType,
       boolean normalize) {
     this.lambda = lambda;
+    this.lambdaSquared = lambda * lambda;
     this.sumMethod = sumMethod;
     this.kernelType = kernelType;
     this.normalize = normalize;
@@ -89,6 +95,8 @@ public class TreeKernel {
         String tree2Str = fv2Trees.get(i);
         if (kernelType == KernelType.SUBSET) {
           sim += sst(tree1Str, tree2Str);
+        } else if (kernelType == KernelType.PARTIAL) {
+          sim += ptk(tree1Str, tree2Str);
         } else {
           throw new NotImplementedException("The only kernel type implemented is SUBSET!");
         }
@@ -196,6 +204,104 @@ public class TreeKernel {
     return retVal;
   }
 
+  private double ptk(String tree1Str, String tree2Str){
+    TopTreebankNode node1 = null;
+    if (!trees.containsKey(tree1Str)) {
+      node1 = TreebankFormatParser.parse(tree1Str);
+      trees.put(tree1Str, node1);
+    } else
+      node1 = trees.get(tree1Str);
+
+    TopTreebankNode node2 = null;
+    if (!trees.containsKey(tree2Str)) {
+      node2 = TreebankFormatParser.parse(tree2Str);
+      trees.put(tree2Str, node2);
+    } else
+      node2 = trees.get(tree2Str);
+    
+    double norm1 = 0.0;
+    double norm2 = 0.0;
+    if (normalize) {
+      if (!normalizers.containsKey(tree1Str)) {
+        double norm = ptkSim(node1, node1);
+        normalizers.put(tree1Str, norm);
+      }
+      if (!normalizers.containsKey(tree2Str)) {
+        double norm = ptkSim(node2, node2);
+        normalizers.put(tree2Str, norm);
+      }
+
+      norm1 = normalizers.get(tree1Str);
+      norm2 = normalizers.get(tree2Str);
+      return (ptkSim(node1, node2) / Math.sqrt(norm1 * norm2));
+    } else {
+      return ptkSim(node1, node2);
+    }
+  }
+  
+  private double ptkSim(TopTreebankNode t1, TopTreebankNode t2){
+    double sim = 0.0;
+    
+    List<TreebankNode> t1Nodes = getNodeList(t1);
+    List<TreebankNode> t2Nodes = getNodeList(t2);
+    
+    for(TreebankNode t1Node : t1Nodes){
+      for(TreebankNode t2Node : t2Nodes){
+        if(t1Node.getType().equals(t2Node.getType())){
+          double nodeSim = ptkDelta(t1Node, t2Node);
+          if(t1Node.isLeaf()){  // && t2Node.isLeaf() is unnecessary since we already know they are the same category
+            if(t1Node.getText().equals(t2Node.getText())){
+              nodeSim += mu * lambdaSquared;
+            }
+          }
+          sim += nodeSim;        
+        }
+      }
+    }
+    
+    return sim;
+  }
+  
+  private double ptkDelta(TreebankNode node1, TreebankNode node2){
+    double delta = 0.0;// lambdaSquared;
+    
+    if(!node1.getType().equals(node2.getType())) return 0.0;
+    
+    int l1 = node1.getChildren().size();
+    int l2 = node2.getChildren().size();
+    
+    if(l1 == 0 || l2 == 0){
+      delta = 1.0;
+      if(l1 == l2 && node1.getText().equals(node2.getText())) delta += mu*lambdaSquared;
+    }
+    else{
+      delta = 1.0;
+      for(int p = 1; p <= Math.min(l1,  l2); p++){
+        
+        double contrP = ptkDeltaP(node1.getChildren(), node2.getChildren(), p);
+        delta += contrP;
+      }
+    }
+    
+    return mu * lambdaSquared * (delta);
+  }
+
+  private double ptkDeltaP(List<TreebankNode> c1, List<TreebankNode> c2, int p){
+    int s1len = c1.size()-1;
+    int s2len = c2.size()-1;
+    double delta = ptkDelta(c1.get(c1.size()-1), c2.get(c2.size()-1));
+        
+    for(int i = 0; i < s1len; i++){
+      for(int r = 0; r < s2len; r++){
+        // FYI -- sublist second argument is exclusive -- so sublist (i, i) gets you 0 elements,
+        // sublist(i, i+1) gets you 1 element.
+        double lambdaPow = Math.pow(lambda, s1len-i+s2len-r);
+        delta +=  lambdaPow * ptkDeltaP(c1.subList(0, i+1), c2.subList(0, r+1), p-1);
+      }
+    }
+    return delta;
+  }
+  
   private static final List<TreebankNode> getNodeList(TreebankNode tree) {
     ArrayList<TreebankNode> list = new ArrayList<TreebankNode>();
     list.add(tree);
