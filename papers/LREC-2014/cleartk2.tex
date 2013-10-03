@@ -1,0 +1,76 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage{lrec2006}
+\usepackage{graphicx}
+
+\title{ClearTK 2.0:\\ Lessons learned developing a machine learning framework for UIMA}
+
+\name{Steven Bethard$^1$, Philip Ogren$^2$, Lee Becker$^3$}
+
+\address{%
+$^1$University of Alabama at Birmingham, Birmingham, AL, USA, \texttt{bethard@cis.uab.edu}\\
+$^2$Oracle America, Broomfield, CO, USA, \texttt{philip@ogren.info}\\
+$^3$???}
+
+
+\abstract{}
+
+
+\begin{document}
+
+\maketitleabstract
+
+\section{Introduction}
+
+
+\section{Annotators should look like annotators}
+
+CleartkAnnotator is just a JCasAnnotator
+
+Chunking is just a utility object for use in a JCasAnnotator
+
+Features like TF-IDF are in the Annotator, not in the encoder
+
+
+\section{Pipelines should look like pipelines}
+
+New evaluation's train and test methods
+
+Trainable extractors for TF-IDF etc. (not encoders)
+
+
+\section{CollectionReaders should do almost nothing}
+
+URICollectionReader
+
+
+\section{Modules should group classes by function}
+not organized by type system
+
+cleartk-type-system
+
+cleartk-corpus
+
+cleartk-feature
+
+
+\section{Type-system-agnostic code requires interfaces}
+
+Philip's blog post
+
+weaknesses of OpenNLP approach (e.g., assumes pos is an attribute of token)
+
+ClearNLP work
+
+
+\section{Users need help past the UIMA overhead}
+
+Write the reader and eval, let the student feature-engineer
+
+
+\section{Discussion}
+
+\bibliographystyle{lrec2006}
+\bibliography{lrec2014}
+
+\end{document}
+
