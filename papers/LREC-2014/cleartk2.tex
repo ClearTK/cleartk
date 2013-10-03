@@ -20,9 +20,20 @@ $^3$???}
 \maketitleabstract
 
 \section{Introduction}
+The Unstructured Information Management Architecture (UIMA) framework for developing natural language processing pipelines grew in popularity since it was open-sourced by IBM in 2005.
+The framework gained recognition recently for being the underlying architecture of the IBM Watson system that defeated human champions in the game show Jeopardy! \cite{ferrucci_building_2010}.
+However, the framework only establishes an architecture for plugging together processing components that agree upon a common type system.
+Within the components, there is no support for standard patterns like constructing machine learning classifiers based on sets of features.
 
-\cite{ogren-etal:2008:UIMA-LREC}
-\cite{ogren-etal:2009:UIMA-GSCL}
+The ClearTK framework was introduced to address this gap \cite{ogren-etal:2008:UIMA-LREC,ogren-etal:2009:UIMA-GSCL} by providing:
+\begin{itemize}
+\item A common interface and wrappers for popular machine learning libraries such as SVMlight, LIBSVM, OpenNLP MaxEnt, and Mallet.
+\item A rich feature extraction library that can be used with any of the machine learning classifiers. Under the covers, ClearTK understands each of the native machine learning libraries and translates features into a format appropriate to whatever model is being used.
+\item Infrastructure for using and evaluating machine learning classifiers within the UIMA framework.
+\end{itemize}
+
+Since its inception in 2008, ClearTK has undergone a large number of changes based on feedback from users and developers.
+In this paper, we reflect on key lessons learned over the last 5 years, and how they reflect generally on the development of natural language processing frameworks.
 
 \section{Annotators should look like annotators}
 
