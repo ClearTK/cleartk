@@ -85,13 +85,14 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
   public TkLibSvmBooleanOutcomeClassifierBuilder(){
     options.addOption("c", true, "Cost parameter");
     options.addOption("t", true, "Kernel type");
-    options.addOption("W", true, "Tree sequence comparision method (S sequential or A for all vs. all)");
+    options.addOption("W", true, "Tree sequence comparision method (S sequential (default) or A for all vs. all)");
     options.addOption("V", true, "Vector sequence comparison method");
     options.addOption("S", true, "Secondary kernel for composite kernels");
     options.addOption("C", true, "Combination operator for composite/tree kernels");
     options.addOption("L", true, "Decay rate for tree kernels (lambda in Collins & Duffy");
     options.addOption("T", true, "Multiplicative constant for tree kernel in composite kernel");
     options.addOption("N", true, "Normalization parameter for composite kernels");
+    options.addOption("D", true, "Tree kernel similarity function (0 = Subtree, 1 = Subset Tree (default), 2 = Partial tree kernel");
     options.addOption("d", true, "Degree of polynomial kernel");
     options.addOption("r", true, "Parameter c in poly kernel");
     options.addOption("s", true, "Parameter s in poly kernel");
@@ -132,6 +133,8 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
     String sumMethod = cmd.getOptionValue("W", "S");
     int normalize = Integer.parseInt(cmd.getOptionValue("N", "3"));
     double tkWeight = Double.parseDouble(cmd.getOptionValue("T", "1.0"));
+    KernelType kType = null;
+    int treeComparisonMethod = Integer.parseInt(cmd.getOptionValue("D", "1"));
     
     if(kernelType == 5){
       
@@ -142,7 +145,13 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
       case 2:
         fk = new RbfKernel(gamma); break;
       }
-      TreeKernel tk = new TreeKernel(lambda, sumMethod.equals("S") ? ForestSumMethod.SEQUENTIAL : ForestSumMethod.ALL_PAIRS, KernelType.SUBSET, normalize % 2 > 0);
+      switch(treeComparisonMethod){
+      case 0: kType = KernelType.SUBTREE; break;
+      case 1: kType = KernelType.SUBSET; break;
+      case 2: kType = KernelType.SUBSET_BOW; break;
+      case 3: kType = KernelType.PARTIAL; break;
+      }
+      TreeKernel tk = new TreeKernel(lambda, sumMethod.equals("S") ? ForestSumMethod.SEQUENTIAL : ForestSumMethod.ALL_PAIRS, kType, normalize % 2 > 0);
       ComboOperator op = null;
       if(comboOperator.equals("+")) op = ComboOperator.SUM;
       else if(comboOperator.equals("*")) op = ComboOperator.PRODUCT;
@@ -195,7 +204,7 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
     out.print(comboOperator); out.println(" # kernel parameter -C");
     out.println("1 # Kernel paramter -F -- don't know what this does");
     out.print(secondaryKernel); out.println(" # kernel parameter -S (secondary kernel)");
-    out.println("1 # kernel parameter -D");
+    out.print(kType); out.println(" # kernel parameter -D");
     out.print(normalize); out.println(" # kernel parameter -N");
     out.print("S"); out.println(" # kernel parameter -V");
     out.print("S"); out.println(" # kernel parameter -W");

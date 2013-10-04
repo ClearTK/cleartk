@@ -162,9 +162,57 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     tf2.setTrees(tree2map);
     sim = ptk.evaluate(tf1, tf2);
     expected = 0.128;
-    Assert.assertEquals(expected, sim, 0.01); 
+    Assert.assertEquals(expected, sim, 0.01);
+    
+    ptk.setUseCache(true);
+    sim = ptk.evaluate(tf1, tf2);
+    Assert.assertEquals(expected, sim, 0.01);
   }
   
+  @Test
+  public void testPTKSpeed() {
+    TreeKernel sst = new TreeKernel(TreeKernel.LAMBDA_DEFAULT, ForestSumMethod.SEQUENTIAL, KernelType.SUBSET, false);
+    TreeKernel ptk = new TreeKernel(TreeKernel.LAMBDA_DEFAULT, ForestSumMethod.SEQUENTIAL, KernelType.PARTIAL, false);
+    
+    TreeFeatureVector tf1 = new TreeFeatureVector();
+    String tree1 = "(S (NP i) (VP (VB eat) (NN cake)))";
+    LinkedHashMap<String,String> tree1map = new LinkedHashMap<String,String>();
+    tree1map.put("TK_1", tree1);
+    tf1.setTrees(tree1map);
+    
+    TreeFeatureVector tf2 = new TreeFeatureVector();
+    LinkedHashMap<String,String> tree2map = new LinkedHashMap<String,String>();
+    tree2map.put("TK_1", tree1);
+    tf2.setTrees(tree2map);
+
+    long start = System.currentTimeMillis();
+    final int NUM_ITERATIONS = 1000000;
+    double sim = 0.0;
+    for(int i = 0; i < NUM_ITERATIONS; i++){
+      sim += sst.evaluate(tf1, tf2);
+    }
+    long end = System.currentTimeMillis();
+    System.out.println("Test on sst takes: " + (end-start) + " ms");
+    
+    ptk.setUseCache(true);
+    start = System.currentTimeMillis();
+    sim = 0.0;
+    for(int i = 0; i < NUM_ITERATIONS; i++){
+      sim += ptk.evaluate(tf1, tf2);
+    }
+    end = System.currentTimeMillis();
+    System.out.println("Test on ptk takes: " + (end - start) + " ms");
+    
+    ptk.setUseCache(false);
+    start = System.currentTimeMillis();
+    sim = 0.0;
+    for(int i = 0; i < NUM_ITERATIONS; i++){
+      sim += ptk.evaluate(tf1, tf2);
+    }
+    end = System.currentTimeMillis();
+    System.out.println("Test on cached ptk takes: " + (end - start) + " ms");    
+  }
+
   @Test
   public void testTreeFeatures() throws Exception {
     TreeFeatureVectorFeaturesEncoder encoder = new TreeFeatureVectorFeaturesEncoder();

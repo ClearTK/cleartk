@@ -62,7 +62,7 @@ public abstract class TreeKernelSvmBooleanOutcomeDataWriter extends
    * that the one versus all data writer may use it, not for casual use.
    * 
    * @param features
-   *          The featuers to write into a string format.
+   *          The features to write into a string format.
    * @return The string that represents the features in a format that tk_svm_classify can utilize.
    */
   public static String createString(TreeFeatureVector features) throws CleartkProcessingException {
