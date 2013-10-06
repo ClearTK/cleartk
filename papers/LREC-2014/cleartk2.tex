@@ -94,20 +94,16 @@ During classification, TrainableFeatureExtractors load a configuration file and 
 
 \textbf{Struggling to succinctly wrap this up}.  This approach to feature scaling provides a means of wrangling a complex process into the paradigms already employed by users of ClearTK and UIMAFit.
 
-%Two examples of require modification and coordination 
-%
-%
-%New evaluation's train and test methods
-%
-%Trainable extractors for TF-IDF etc. (not encoders)
-%
-%By following these principles, on could imagine wrappers to facilitate semi-supervised 
-%learning 
-
 
 \section{CollectionReaders should be minimal}
 
-URICollectionReader
+While CollectionReaders often serve a critical role in populating the UIMA CAS with the text, annotations and data necessary for processing, they are tedious to write, and they are not well suited for more scalable environments like UIMA-AS.  They are also not well suited for corpora where annotations are distributed across multiple documents such as OntoNotes.
+
+As we have developed more support in ClearTK for importing various corpora, we have found that role of CollectionReaders should be minimal as possible.  Instead of creating a CollectionReader for each corpus, we have pushed the work of parsing data formats and reading files to Annotators while making use of the lighter-weight URICollectionReader.  The URICollectionReader does nothing more than populate the CAS's URI view with a Uniform Resource Identifier (URI).  
+
+Perhaps the simplest example of an Annotator as a reader is the UriToDocumentTextAnnotor. It simply reads the URI from the CAS's URI view and populates the target view with contents of the document pointed to by the URI.  In more complex cases, the URI may point to an XML or JSON configuration file or even to byte offsets within a file.  This decoupling of CollectionReader and import even allows for easier processing of collections of mixed document type as Annotators can choose to process only the views relevant to the them.
+
+Beyond the added flexibility, the most compelling reason for minimizing the use of CollectionReaders comes down to implementation time.  We have found users of ClearTK are more adept at creating custom Annotators than CollectionReaders, as the Annotator convention of overriding the process() method is well understood.
 
 
 \section{Modules should group classes by function}
