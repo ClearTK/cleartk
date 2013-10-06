@@ -5,4 +5,5 @@
 *.fls
 *.log
 *.synctex.gz
+*.sw*
 cleartk2.pdf
