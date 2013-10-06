@@ -1,6 +1,7 @@
 \documentclass[10pt, a4paper]{article}
 \usepackage{lrec2006}
 \usepackage{graphicx}
+\usepackage{listings}
 
 \title{ClearTK 2.0:\\ Lessons learned developing a machine learning framework for UIMA}
 
@@ -49,9 +50,9 @@ Features like TF-IDF are in the Annotator, not in the encoder
 
 (Is it that pipelines should look like pipelines or is it that tightly coupled operations should be left together?)
 
-Though most deployed natural language processing systems follow a linear flow (e.g. tokenization, POS-tagging, parsing, \ldots), many tasks require multiple passes through the data.  Common examples of these multi-pass scenarios include model training and evaluation as well as feature normalization.  In developing ClearTK components for more complex flows, we have opted to stucture these abstractions at the granularity of the pipeline.  This in turn makes the programmer's job easier by organizing around an already familiar construct.
+Though most deployed natural language processing systems follow a linear flow (e.g. tokenization, POS-tagging, parsing, \ldots), many tasks require multiple passes through the data.  Common examples of these multi-pass scenarios include model training and evaluation as well as feature normalization.  In developing ClearTK components for more complex flows, we have opted to stucture these abstractions at the granularity of the pipeline.  This in turn makes the programmer's job easier by organizing around an already familiar construct, and reduces the barrier to adoption of new frameworks.
 
-\subsection{Case Study: Model Training and Evaluation}
+\subsection{Model Training and Evaluation}
 Consider the case of model training and evaluation.  Someone writing an evaluation for a new NLP component is best served by thinking of this in terms of three tasks:
 
 \begin{enumerate}
@@ -60,26 +61,48 @@ Consider the case of model training and evaluation.  Someone writing an evaluati
 \item Testing a model given a CollectionReader
 \end{enumerate}
 
-This abstraction preserves relationships between tightly coupled operations, while providing the programmer with the freedom to make each task as simple or complex as necessary.  If preprocessing is needed it is simply added to to the training and testing methods.  Even multipass situations like semi-supervised models are permitted with this abstraction.
 
-
+This abstraction preserves relationships between tightly coupled operations, while providing the programmer with the freedom to make each task as simple or complex as necessary.  If preprocessing is needed it is simply added to to the training and testing methods.  Even multipass situations like semi-supervised models are permitted with this abstraction.  Most importantly, an existing pipeline can be dropped in place into the evaluation framework without need for refactoring or alteration.
 
 \textbf{(HELP!!!: I need a way to contrast this with other approaches without dragging everyone into discussion about pipeline providers)}
 
+% this is probably not necessary
+\lstinputlisting[language=Java]{eval.java}
 
-While it is possible to abstract (HELP: what can I contrast this with?) away the role of the pipeline in these scenarios, we have found that creating interfaces that encourage programmers to think of the subtasks as pipelines
+\subsection{Feature Transformation}
 
+Feature normalization is a common prerequisite for many machine learning algorithms.  For information retrieval tasks it is common to scale term counts by inverse document frequency or to transform it into a z-score (zero mean, unit standard deviation).
 
+At its core feature transformation consists of:
+\begin{enumerate}
+\item Extracting features
+\item Identifying features in need of transformation
+\item Computing sufficient statistics for transformation
+\item Transforming the features
+\end{enumerate}
 
-Two examples of require modification and coordination 
+When dealing solely with a dataset, these steps are simply a matter of selecting and transforming column values.  However, in processing and pipeline oriented environments, this is not possible.  One workaround to this limitation involves extracting the statistics independently of the pipeline, and then configuring analysis engines to accept these statistics as parameters for scaling during feature extraction.
 
+It has been our experience that this decoupling is error prone and leads to long-term maintenance issues, especially when dealing with ever changing corpora or evaluation parameters.  Although there is no way to avoid performing feature scaling in two passes, the ClearTK approach makes feature transformation more accessible by making it interoperable with the existing ClearTK extraction, training, and classification operations.
 
-New evaluation's train and test methods
+To facilitate this, ClearTK introduces the \emph{TransformableFeatures} and \emph{TrainableFeatureExtractors} and {\emph InstanceDataWriter} classes.  Like all other feature extractors in ClearTK, a TrainableFeaturesExtractor accepts a JCas and an Annotation and returns a list of features.  In practice most TrainableFeatureExtractors delegate extraction to a sub-extractor, and instead of returning standard features it returns a list of TransformableFeatures.  ClearTK includes TrainableFeatureExtractors for common transformations such as z-score, tf*idf, min-max normalization and cosine similarity.
 
-Trainable extractors for TF-IDF etc. (not encoders)
+Typically when training a CleartkAnnotator, the extracted feature vectors are written directly to a data file for consumption by the learning algorithm.  When using TrainableFeatureExtractors, the feature vectors are instead serialized using the InstanceDataWriter.  This enables the TrainableFeatureExtractors to iterate over the instances as a collection and compute the necessary statistics for direct transformation.
 
-By following these principles, on could imagine wrappers to facilitate semi-supervised 
-learning 
+After training each TrainableFeatureExtractor, the TransformableFeatures within the instances are transformed and then written out to the data file for training of the classifier.
+During classification, TrainableFeatureExtractors load a configuration file and directly transform the features for use by the classifier.
+
+\textbf{Struggling to succinctly wrap this up}.  This approach to feature scaling provides a means of wrangling a complex process into the paradigms already employed by users of ClearTK and UIMAFit.
+
+%Two examples of require modification and coordination 
+%
+%
+%New evaluation's train and test methods
+%
+%Trainable extractors for TF-IDF etc. (not encoders)
+%
+%By following these principles, on could imagine wrappers to facilitate semi-supervised 
+%learning 
 
 
 \section{CollectionReaders should be minimal}
