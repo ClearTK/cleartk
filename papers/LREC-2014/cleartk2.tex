@@ -47,7 +47,12 @@ Because of its callback-like nature, the \texttt{AnnotationHandler} no longer lo
 In the next version of ClearTK, we replaced \texttt{AnnotationHandler} with \texttt{ClassifierAnnotator}, a simple subclass of the standard UIMA annotator, that required a bit more code to handle the differences between training and prediction, but that leveraged users' existing knowledge about annotators and the \texttt{process(JCas)} method.
 Feedback from users on the redesign made the lesson clear: reducing boilerplate is great, but only if you can maintain familiar APIs.
 
-Chunking is just a utility object for use in a JCasAnnotator
+We learned a similar lesson in designing an API for Begin-Inside-Outside (BIO) style chunking classification.
+Our original chunker framework defined a chunker as a subtype of \texttt{ClassifierAnnotator} that split labels into BIO tags on tokens and then delegated to a \texttt{ChunkerFeatureExtractor} to extract the token-level features.
+Most user code was then written within a \texttt{ChunkerFeatureExtractor}.
+This had the problem again that the \texttt{ChunkerFeatureExtractor} interface was not the standard \texttt{process(JCas)} method, so there was a fairly high barrier to entry.
+In ClearTK 1.2.0 we replaced this architecture with a set of utility objects for converting chunk labels into token labels (and vice versa) that could be used directly in a standard annotator with a standard \texttt{process(JCas)} method.
+Again, removing the indirection through code delegation allowed our users to leverage their existing UIMA knowledge when working with ClearTK.
 
 Features like TF-IDF are in the Annotator, not in the encoder
 
