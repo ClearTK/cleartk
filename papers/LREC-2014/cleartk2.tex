@@ -2,6 +2,7 @@
 \usepackage{lrec2006}
 \usepackage{graphicx}
 \usepackage{listings}
+\usepackage{microtype}
 
 \title{ClearTK 2.0:\\ Lessons learned developing a machine learning framework for UIMA}
 
@@ -24,7 +25,7 @@ $^3$Hapara Inc., Boulder, CO, USA \texttt{lee@leebecker.com}
 \section{Introduction}
 The Unstructured Information Management Architecture (UIMA) framework for developing natural language processing pipelines grew in popularity since it was open-sourced by IBM in 2005.
 The framework gained recognition recently for being the underlying architecture of the IBM Watson system that defeated human champions in the game show Jeopardy! \cite{ferrucci_building_2010}.
-However, the framework only establishes an architecture for plugging together processing components that agree upon a common type system.
+However, the framework only establishes an architecture for plugging together processing components.
 Within the components, there is no support for standard patterns like constructing machine learning classifiers based on sets of features.
 
 The ClearTK framework was introduced to address this gap \cite{ogren-etal:2008:UIMA-LREC,ogren-etal:2009:UIMA-GSCL} by providing:
@@ -38,8 +39,13 @@ Since its inception in 2008, ClearTK has undergone a large number of changes bas
 In this paper, we reflect on key lessons learned over the last 5 years, and how they reflect generally on the development of natural language processing frameworks.
 
 \section{Annotators should look like annotators}
-
-CleartkAnnotator is just a JCasAnnotator
+Since ClearTK was designed to reduce some of the boilerplate necessary when building machine learning components within UIMA, early versions of ClearTK worked very hard on eliminating code repetition.
+For example, in the first versions of ClearTK, the main feature extraction code was performed by an \texttt{AnnotationHandler}, which was created by a UIMA annotator, and which passed extracted features back to the annotator.
+This reduced boilerplate by unifying feature extraction for training classifiers and making predictions.
+However, there was a significant drawback to this approach.
+Because of its callback-like nature, the \texttt{AnnotationHandler} no longer looked familiar to UIMA users, who were used to defining their UIMA annotators in terms of a \texttt{process(JCas)} method.
+In the next version of ClearTK, we replaced \texttt{AnnotationHandler} with \texttt{ClassifierAnnotator}, a simple subclass of the standard UIMA annotator, that required a bit more code to handle the differences between training and prediction, but that leveraged users' existing knowledge about annotators and the \texttt{process(JCas)} method.
+Feedback from users on the redesign made the lesson clear: reducing boilerplate is great, but only if you can maintain familiar APIs.
 
 Chunking is just a utility object for use in a JCasAnnotator
 
