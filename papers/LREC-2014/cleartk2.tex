@@ -139,9 +139,20 @@ ClearNLP work
 
 
 \section{Users need help past the UIMA overhead}
-
-Write the reader and eval, let the student feature-engineer
-
+After the many improvements to ClearTK interfaces and usability over the years, we've now reached a point where much of the overhead of learning ClearTK is actually the overhead of learning UIMA.
+To understand the UIMA framework, you need to understand not just how to write an annotator with a \code{process(JCas)} method -- which is what's really at the heart of the framework -- but also how to:
+\begin{itemize}
+\item Declare a type system that describes the annotations you want your annotator to create
+\item Configure your build system to generate Java classes from the type system
+\item Create code to read your training data into \code{JCas} objects
+\item Declare (using XML files or Java annotations) any parameters needed to initialize your annotator
+\item Create an \code{AnalysisEngine} object from your annotator and the initialization parameters
+\item \ldots
+\end{itemize}
+These tasks are fairly easy for a UIMA expert, but are often challenging and overwhelming for a new UIMA user.
+Thus, to get new potential users of ClearTK up to speed, we've found that it can be quite helpful to have a UIMA expert put the above items together.
+Then, the new users can focus on the core problems that ClearTK is designed for: extracting features and using the classifier in the \code{process(JCas)} method of the annotator.
+We applied exactly this approach with new users of ClearTK, and successfully developed both a student response analysis system for SemEval-2013 \cite{okoye-bethard-sumner:2013:SemEval-2013}, and a relation extraction system for Apache cTAKES \cite{dligach2013discovering}.
 
 \section{Discussion}
 
