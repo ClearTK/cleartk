@@ -57,7 +57,7 @@ We learned a similar lesson in designing an API for Begin-Inside-Outside (BIO) s
 Our original chunker framework defined a chunker as a subtype of \code{ClassifierAnnotator} that split labels into BIO tags on tokens and then delegated to a \code{ChunkerFeatureExtractor} where the user would write code to extract the token-level features.
 This delegation had the problem again that the \code{ChunkerFeatureExtractor} interface was not the standard \code{process(JCas)} method, so there was a fairly high barrier to entry.
 In ClearTK 1.2 we replaced this architecture with a set of utility objects for converting chunk labels into token labels (and vice versa) that could be used directly in a standard annotator with a standard \code{process(JCas)} method.
-Removing the delegation again allowed our users to leverage their knowledge or UIMA annotators when working with ClearTK.
+Removing the delegation again allowed our users to leverage their knowledge of UIMA annotators when working with ClearTK.
 
 % Features like TF-IDF are in the Annotator, not in the encoder
 % I decided to skip this; is seemed too complicated to explain 
