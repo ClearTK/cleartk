@@ -4,6 +4,8 @@
 \usepackage{listings}
 \usepackage{microtype}
 
+\newcommand{\code}[1]{\texttt{\small #1}}
+
 \title{ClearTK 2.0:\\ Lessons learned developing a machine learning framework for UIMA}
 
 \name{Steven Bethard$^1$, Philip Ogren$^2$, Lee Becker$^3$}
@@ -14,6 +16,7 @@ $^2$Oracle America, Broomfield, CO, USA, \texttt{philip@ogren.info}\\
 $^3$Hapara Inc., Boulder, CO, USA \texttt{lee@leebecker.com}
 }
 
+\hyphenation{Annotation-Handler Classifier-Annotator Chunker-Feature-Extractor}
 
 \abstract{}
 
@@ -40,22 +43,21 @@ In this paper, we reflect on key lessons learned over the last 5 years, and how 
 
 \section{Annotators should look like annotators}
 Since ClearTK was designed to reduce some of the boilerplate necessary when building machine learning components within UIMA, early versions of ClearTK worked very hard on eliminating code repetition.
-For example, in the first versions of ClearTK, the main feature extraction code was performed by an \texttt{AnnotationHandler}, which was created by a UIMA annotator, and which passed extracted features back to the annotator.
+For example, in the first versions of ClearTK, the main feature extraction code was performed by an \code{AnnotationHandler}, which was created by a UIMA annotator, and which passed extracted features back to the annotator.
 This reduced boilerplate by unifying feature extraction for training classifiers and making predictions.
-However, there was a significant drawback to this approach.
-Because of its callback-like nature, the \texttt{AnnotationHandler} no longer looked familiar to UIMA users, who were used to defining their UIMA annotators in terms of a \texttt{process(JCas)} method.
-In the next version of ClearTK, we replaced \texttt{AnnotationHandler} with \texttt{ClassifierAnnotator}, a simple subclass of the standard UIMA annotator, that required a bit more code to handle the differences between training and prediction, but that leveraged users' existing knowledge about annotators and the \texttt{process(JCas)} method.
-Feedback from users on the redesign made the lesson clear: reducing boilerplate is great, but only if you can maintain familiar APIs.
+However, there was a significant drawback to this approach:
+the callback-like nature of \code{AnnotationHandler} no longer looked familiar to UIMA users, who were used to defining their UIMA annotators in terms of a \code{process(JCas)} method.
+In ClearTK 0.5, we replaced the \code{AnnotationHandler} callback with \code{ClassifierAnnotator}, a simple subclass of the standard UIMA annotator, that required a bit more code to handle the differences between training and prediction, but that leveraged users' existing knowledge about UIMA annotators.
 
+% this is similar to the above; could be cut if we need space
 We learned a similar lesson in designing an API for Begin-Inside-Outside (BIO) style chunking classification.
-Our original chunker framework defined a chunker as a subtype of \texttt{ClassifierAnnotator} that split labels into BIO tags on tokens and then delegated to a \texttt{ChunkerFeatureExtractor} to extract the token-level features.
-Most user code was then written within a \texttt{ChunkerFeatureExtractor}.
-This had the problem again that the \texttt{ChunkerFeatureExtractor} interface was not the standard \texttt{process(JCas)} method, so there was a fairly high barrier to entry.
-In ClearTK 1.2.0 we replaced this architecture with a set of utility objects for converting chunk labels into token labels (and vice versa) that could be used directly in a standard annotator with a standard \texttt{process(JCas)} method.
-Again, removing the indirection through code delegation allowed our users to leverage their existing UIMA knowledge when working with ClearTK.
+Our original chunker framework defined a chunker as a subtype of \code{ClassifierAnnotator} that split labels into BIO tags on tokens and then delegated to a \code{ChunkerFeatureExtractor} where the user would write code to extract the token-level features.
+This delegation had the problem again that the \code{ChunkerFeatureExtractor} interface was not the standard \code{process(JCas)} method, so there was a fairly high barrier to entry.
+In ClearTK 1.2 we replaced this architecture with a set of utility objects for converting chunk labels into token labels (and vice versa) that could be used directly in a standard annotator with a standard \code{process(JCas)} method.
+Removing the delegation again allowed our users to leverage their knowledge or UIMA annotators when working with ClearTK.
 
-Features like TF-IDF are in the Annotator, not in the encoder
-
+% Features like TF-IDF are in the Annotator, not in the encoder
+% I decided to skip this; is seemed too complicated to explain 
 
 \section{Pipelines should look like pipelines}
 
