@@ -13,7 +13,7 @@
 
 \address{%
 $^1$University of Alabama at Birmingham, Birmingham, AL, USA, \texttt{bethard@cis.uab.edu}\\
-$^2$Oracle America, Broomfield, CO, USA, \texttt{philip@ogren.info}\\
+$^2$University of Colorado at Boulder, Bouder, CO, USA, \texttt{ogren@colorado.edu}\\
 $^3$Hapara Inc., Boulder, CO, USA \texttt{lee@leebecker.com}
 }
 
@@ -42,24 +42,15 @@ The ClearTK framework was introduced to address this gap \cite{ogren-etal:2008:U
 Since its inception in 2008, ClearTK has undergone a large number of changes based on feedback from users and developers.
 In this paper, we reflect on key lessons learned over the last 5 years, and how they reflect generally on the development of natural language processing frameworks.
 
-\section{Annotators should look like annotators}
+\section{Annotators should be conceptually simple}
 \label{sec:annotators}
-At the core of UIMA is the idea of an annotator, which provides a \code{process(JCas)} method that inspects the document (\code{JCas}), performs some analysis, and adds annotations representing the result of that analysis to the \code{JCas}.
-This is a concept familiar even to novice UIMA users, and there are analogs in other frameworks, e.g. Stanford CoreNLP's \code{CoreMap}\footnote{http://nlp.stanford.edu/software/corenlp.shtml} and GATE's \code{Document}\footnote{http://gate.ac.uk/ie/}.
+At the core of UIMA is the idea of an annotator, which provides a \code{process()} method that inspects the document (i.e. the CAS), performs some analysis, and adds annotations representing the result of that analysis.  This is a construct familiar even to novice UIMA users, and there are analogs in other frameworks, e.g. Stanford CoreNLP's \code{CoreMap}\footnote{http://nlp.stanford.edu/software/corenlp.shtml} and GATE's \code{Document}\footnote{http://gate.ac.uk/ie/}.  Our experience suggests that annotators' process methods should orchestrate the core analysis code in ways that are as straightforward and intuitive as possible.  ClearTK in previous iterations, has suffered from abstracting out analysis code away from the process method in ways that made the code difficult to understand.  
 
-In the first versions of ClearTK, a machine-learning-based UIMA annotator would create an \code{AnnotationHandler}, which performed feature extraction and passed the features back to the annotator.
-This reduced boilerplate by unifying feature extraction for training classifiers and making predictions.
-However, there was a significant drawback to this approach:
-the callback-like nature of \code{AnnotationHandler} was very unlike the \code{process(JCas)} method familiar to UIMA users, and was therefore hard for many users to understand.
-In ClearTK 0.5, we replaced the \code{AnnotationHandler} callback with a \code{ClassifierAnnotator} that had the standard \code{process(JCas)} method but required a bit more code to handle the differences between training and prediction.
-User feedback confirmed that the benefit of maintaining a familiar annotator interface far outweighed the cost of writing a bit more code.
+In the first versions of ClearTK, developers were required to write two separate annotators: one for writing training data and another for classification.  Since both of these annotators perform the same feature extraction steps over the existing annotations and since this is, in practice, the bulk of the code in both annotators, this shared functionality was abstracted such that there was little redundancy of code.  However, the abstraction was implemented with a call-back approach that was unintuitive and unnecessarily complicated the code.  Now, there is a single \code{ClassifierAnnotator} which knows whether it is in training mode or classification mode and handles both cases.  While this requires a bit more orchestration by a single annotator, it is a conceptually intuitive and coherent approach that is much easier to learn.  
 
 % this is similar to the above; could be cut if we need space
 We learned a similar lesson in designing an API for Begin-Inside-Outside (BIO) style chunking classification.
-Our original chunker framework defined a chunker as a subtype of \code{ClassifierAnnotator} that split labels into BIO tags on tokens and then delegated to a \code{ChunkerFeatureExtractor} where the user would write code to extract the token-level features.
-This delegation had the problem again that the \code{ChunkerFeatureExtractor} interface was not the standard \code{process(JCas)} method, so there was a fairly high barrier to entry.
-In ClearTK 1.2 we replaced this architecture with a set of utility objects for converting chunk labels into token labels (and vice versa) that could be used directly in a standard annotator with a standard \code{process(JCas)} method.
-Removing the delegation again allowed our users to leverage their knowledge of UIMA annotators when working with ClearTK.
+Our original chunker framework defined a chunker as a subtype of \code{ClassifierAnnotator} that abstracted away different aspects of chunking, such as converting token-based labels to chunks, converting chunks to token-based labels, and performing token-level feature extraction.  How and when these activities were performed were based on how the chunker was instantiated rather following simple logic related to whether or not the chunker was being trained or not.  In ClearTK 1.2 we replaced this architecture with a set of utility objects for converting chunk labels into token labels (and vice versa) that could be used directly in a standard annotator with a standard \code{process(JCas)} method without the developer needing to implement or tie together specialized implementations of interfaces.  
 
 % Features like TF-IDF are in the Annotator, not in the encoder
 % I decided to skip this; is seemed too complicated to explain 
@@ -85,7 +76,7 @@ This abstraction preserves relationships between tightly coupled operations, whi
 \textbf{(HELP!!!: I need a way to contrast this with other approaches without dragging everyone into discussion about pipeline providers)}
 
 % this is probably not necessary
-\lstinputlisting[language=Java]{eval.java}
+%\lstinputlisting[language=Java]{eval.java}
 
 \subsection{Feature Transformation}
 
@@ -159,6 +150,8 @@ These tasks are fairly easy for a UIMA expert, but are often challenging and ove
 Thus, to get new potential users of ClearTK up to speed, we've found that it can be quite helpful to have a UIMA expert put the above items together.
 Then, the new users can focus on the core problems that ClearTK is designed for: extracting features and using the classifier in the \code{process(JCas)} method of the annotator.
 We applied exactly this approach with new users of ClearTK, and successfully developed both a student response analysis system for SemEval-2013 \cite{okoye-bethard-sumner:2013:SemEval-2013}, and a relation extraction system for Apache cTAKES \cite{dligach2013discovering}.
+
+This paper should mention the state-of-the art temporal extraction system that has been built with ClearTK somewhere.  Also, did we ever get any feedback from the survey?
 
 \section{Discussion}
 
