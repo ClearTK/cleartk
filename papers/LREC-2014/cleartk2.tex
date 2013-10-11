@@ -126,11 +126,12 @@ cleartk-corpus
 cleartk-feature
 
 
-\section{Type-system-agnostic requires interfaces}
+\section{Decoupling infrastructure from meta-data}
 
-Philip's blog post
+The output of the analytics of a text processing system is invariably determined by meta-data that defines the structure of the resulting analysis.  In UIMA parlance, this meta-data is defined by a type system which defines annotation types such as tokens or named entities and their features such as part-of-speech tags or unique identifiers.  Type systems, like all meta data definitions, vary widely across different UIMA-based systems due to the widely varying requirements imposed by different domains and use cases.  Not surprisingly, it is a difficult challenge to produce meta-data standards that are used widely across different projects and institutions.  With this in mind, we have been careful to decouple ClearTK from any specific type system.  In fact, the core framework that ClearTK provides does not require (or provide) any specific type system.  This is one of the key strengths of ClearTK: all of the machinery for creating classifier-based annotators including feature extraction, feature normalization, chunking, training, classification, etc. is completely type system independent.  This makes ClearTK a powerful framework to employ in a very wide vareity of scenarios.  A case in point is a feature extractor called \code{CleartkExtractor}.  This feature extractor allows one to create features such as ``get the text of the token two tokens before the focus annotation'' or ``get the part-of-speech tag of the token three tokens after the focus annotation''.  These and many more related feature extraction scenarios are all accomplished by instantiating a CleartkExtractor with the types specific to a CleartkAnnotator's type system.  This eliminates the need to write many specialized feature extractors for different type systems.  This is true for all of the feature extractors provided the core ClearTK project including those that generate bag-of-words features and TF-IDF weighted features as well as the code that supports BIO-style chunking.  Thus, the only code that needs to know about a specific type system is the code written by a user of ClearTK who is implementing analysis engines with the framework.  Some parts of ClearTK do depend on specific type systems such as the state-of-the-art temporal event extraction system that is provided as a sub-project of ClearTK.  However, we have been careful to keep infrastructure code that provides the framework for creating classifier-based annotators decoupled from any type system.  
 
-weaknesses of OpenNLP approach (e.g., assumes pos is an attribute of token)
+
+
 
 ClearNLP work
 
