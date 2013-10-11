@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{microtype}
+\usepackage{cleveref}
 
 \newcommand{\code}[1]{\texttt{\small #1}}
 
@@ -16,7 +17,7 @@ $^2$Oracle America, Broomfield, CO, USA, \texttt{philip@ogren.info}\\
 $^3$Hapara Inc., Boulder, CO, USA \texttt{lee@leebecker.com}
 }
 
-\hyphenation{Annotation-Handler Classifier-Annotator Chunker-Feature-Extractor}
+\hyphenation{Annotation-Handler Classifier-Annotator Chunker-Feature-Extractor Collection-Reader URI-Collection-Reader}
 
 \abstract{}
 
@@ -42,6 +43,7 @@ Since its inception in 2008, ClearTK has undergone a large number of changes bas
 In this paper, we reflect on key lessons learned over the last 5 years, and how they reflect generally on the development of natural language processing frameworks.
 
 \section{Annotators should look like annotators}
+\label{sec:annotators}
 At the core of UIMA is the idea of an annotator, which provides a \code{process(JCas)} method that inspects the document (\code{JCas}), performs some analysis, and adds annotations representing the result of that analysis to the \code{JCas}.
 This is a concept familiar even to novice UIMA users, and there are analogs in other frameworks, e.g. Stanford CoreNLP's \code{CoreMap}\footnote{http://nlp.stanford.edu/software/corenlp.shtml} and GATE's \code{Document}\footnote{http://gate.ac.uk/ie/}.
 
@@ -112,15 +114,16 @@ During classification, TrainableFeatureExtractors load a configuration file and 
 
 
 \section{CollectionReaders should be minimal}
+In UIMA, a \code{CollectionReader} is the connection between the source (file, URL, etc.) and the UIMA document (\code{JCas}) object.
+Early versions of ClearTK used the \code{CollectionReader} mechanism to both read in the text and import various annotation formats (TreeBank, PropBank, etc.).
 
-While CollectionReaders often serve a critical role in populating the UIMA CAS with the text, annotations and data necessary for processing, they are tedious to write, and they are not well suited for more scalable environments like UIMA-AS.  They are also not well suited for corpora where annotations are distributed across multiple documents such as OntoNotes.
+However, as ClearTK developed support for importing more annotation formats, it became clear that this approach was problematic.
+UIMA allows only a single \code{CollectionReader} at the beginning of each pipeline, so you cannot, for example, have both a \code{CollectionReader} for TreeBank and one for TimeML in the same pipeline, even if both layers of annotation exist for your document.
+The solution to this problem is to view these TreeBank and TimeML readers not as \code{CollectionReader}s, but as regular UIMA annotators whose \code{process(JCas)} method looks at some external resource (e.g. a \code{.mrg} or a \code{.tml} file) and converts that into annotations to be added to the \code{JCas}.
 
-As we have developed more support in ClearTK for importing various corpora, we have found that role of CollectionReaders should be minimal as possible.  Instead of creating a CollectionReader for each corpus, we have pushed the work of parsing data formats and reading files to Annotators while making use of the lighter-weight URICollectionReader.  The URICollectionReader does nothing more than populate the CAS's URI view with a Uniform Resource Identifier (URI).  
-
-Perhaps the simplest example of an Annotator as a reader is the UriToDocumentTextAnnotor. It simply reads the URI from the CAS's URI view and populates the target view with contents of the document pointed to by the URI.  In more complex cases, the URI may point to an XML or JSON configuration file or even to byte offsets within a file.  This decoupling of CollectionReader and import even allows for easier processing of collections of mixed document type as Annotators can choose to process only the views relevant to the them.
-
-Beyond the added flexibility, the most compelling reason for minimizing the use of CollectionReaders comes down to implementation time.  We have found users of ClearTK are more adept at creating custom Annotators than CollectionReaders, as the Annotator convention of overriding the process() method is well understood.
-
+ClearTK now recommends only one \code{CollectionReader}, \code{URICollectionReader}, which does nothing more than create a \code{JCas} containing the source's Uniform Resource Identifier (URI).
+Reading the text or annotations on top of the text must then be performed by subsequent annotators.
+This approach has several advantages, including that the pipelines become more parallelizable (which UIMA-AS can take advantage of), and that users can leverage their existing familiarity with UIMA annotators when writing readers.
 
 \section{Modules should group classes by function}
 not organized by type system
