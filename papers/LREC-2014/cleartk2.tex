@@ -63,27 +63,30 @@ In ClearTK 1.2 we replaced this architecture with a set of utility objects for c
 % I decided to skip this; is seemed too complicated to explain 
 
 \section{Pipelines should look like pipelines}
+Once a user has developed a number of annotators, they typically string them together in a \emph{pipeline}, indicating the sequence these annotators should be run on a new piece of text.
+In ClearTK, users develop a variety of different pipelines: pipelines for training classifiers, pipelines for applying trained classifiers to make predictions, pipelines for testing classifier predictions against a gold standard, etc.
+Our experience suggests that pipeline-based code should be structured to make it easy to quickly understand what annotators are running in what order.
 
-(Is it that pipelines should look like pipelines or is it that tightly coupled operations should be left together?)
-
-Though most deployed natural language processing systems follow a linear flow (e.g. tokenization, POS-tagging, parsing, \ldots), many tasks require multiple passes through the data.  Common examples of these multi-pass scenarios include model training and evaluation as well as feature normalization.  In developing ClearTK components for more complex flows, we have opted to stucture these abstractions at the granularity of the pipeline.  This in turn makes the programmer's job easier by organizing around an already familiar construct, and reduces the barrier to adoption of new frameworks.
-
-\subsection{Model Training and Evaluation}
-Consider the case of model training and evaluation.  Someone writing an evaluation for a new NLP component is best served by thinking of this in terms of three tasks:
-
+Consider the case of model training and evaluation.
+ClearTK's first abstraction for this separated out:
+\begin{itemize}
+\item The reader that loaded the training and testing data
+\item The preprocessing portion of a pipeline
+\item The classifier training portion of a pipeline
+\item The classifier prediction portion of a pipeline
+\item The evaluation portion of a pipeline
+\end{itemize}
+These items are easily separable and splitting them reduced code duplication. (For example, the processing portion of the pipeline would be identical for training and testing).
+However, because each of these items was implemented in a different class or method, it was often difficult for a reader to understand the big picture of what exactly was running in each pipeline.
+In ClearTK 1.2, we simplified this abstraction, resulting in the following division of labor for evaluation:
 \begin{enumerate}
-\item Creation of CollectionReaders to read a subset of the corpus
-\item Training a model given a CollectionReader
-\item Testing a model given a CollectionReader
+\item Reading a subset of data with a \code{CollectionReader}
+\item Training a model given a \code{CollectionReader}
+\item Testing a model given a \code{CollectionReader}
 \end{enumerate}
+This means that there is potentially some duplication, e.g. if training and testing used the same preprocessing.
+But a user can now easily examine and understand the complete training or testing pipeline by looking at a single method.
 
-
-This abstraction preserves relationships between tightly coupled operations, while providing the programmer with the freedom to make each task as simple or complex as necessary.  If preprocessing is needed it is simply added to to the training and testing methods.  Even multipass situations like semi-supervised models are permitted with this abstraction.  Most importantly, an existing pipeline can be dropped in place into the evaluation framework without need for refactoring or alteration.
-
-\textbf{(HELP!!!: I need a way to contrast this with other approaches without dragging everyone into discussion about pipeline providers)}
-
-% this is probably not necessary
-%\lstinputlisting[language=Java]{eval.java}
 
 \subsection{Feature Transformation}
 
