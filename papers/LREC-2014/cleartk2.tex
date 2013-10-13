@@ -100,7 +100,7 @@ ClearTK 1.2 introduced \code{TrainableFeatureExtractor}s which instead work like
 We found that this approach was a better match for the conceptual expectations of our users.
 
 
-\section{CollectionReaders should be minimal}
+\section{Collection readers should be minimal}
 In UIMA, a \code{CollectionReader} is the connection between the source (file, URL, etc.) and the UIMA document (\code{JCas}) object.
 Early versions of ClearTK used the \code{CollectionReader} mechanism to both read in the text and import various annotation formats (TreeBank, PropBank, etc.).
 
@@ -163,7 +163,9 @@ We applied exactly this approach with new users of ClearTK, and successfully dev
 
 This paper should mention the state-of-the art temporal extraction system that has been built with ClearTK somewhere.  Also, did we ever get any feedback from the survey?
 
-\section{Discussion}
+\section{Conclusion}
+The development of the ClearTK framework has revealed a number of key design patterns for NLP frameworks that can help new users to more quickly understand and adopt a framework.
+At their core, these patterns suggest aiming for intuitive interfaces that leverage the existing knowledge of users, and trying to minimize the number of conceptual dependencies between the various parts of the framework.
 
 \bibliographystyle{lrec2006}
 \bibliography{cleartk2}
