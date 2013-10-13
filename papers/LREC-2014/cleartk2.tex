@@ -85,33 +85,19 @@ In ClearTK 1.2, we simplified this abstraction, resulting in the following divis
 \item Testing a model given a \code{CollectionReader}
 \end{enumerate}
 This means that there is potentially some duplication, e.g. if training and testing used the same preprocessing.
-But a user can now easily examine and understand the complete training or testing pipeline by looking at a single method.
+But a user can now easily examine the complete training or testing pipeline by looking at a single method.
 
-
-\subsection{Feature Transformation}
-
-Feature normalization is a common prerequisite for many machine learning algorithms.  For information retrieval tasks it is common to scale term counts by inverse document frequency or to transform it into a z-score (zero mean, unit standard deviation).
-
-At its core feature transformation consists of:
-\begin{enumerate}
-\item Extracting features
-\item Identifying features in need of transformation
-\item Computing sufficient statistics for transformation
-\item Transforming the features
-\end{enumerate}
-
-When dealing solely with a dataset, these steps are simply a matter of selecting and transforming column values.  However, in processing and pipeline oriented environments, this is not possible.  One workaround to this limitation involves extracting the statistics independently of the pipeline, and then configuring analysis engines to accept these statistics as parameters for scaling during feature extraction.
-
-It has been our experience that this decoupling is error prone and leads to long-term maintenance issues, especially when dealing with ever changing corpora or evaluation parameters.  Although there is no way to avoid performing feature scaling in two passes, the ClearTK approach makes feature transformation more accessible by making it interoperable with the existing ClearTK extraction, training, and classification operations.
-
-To facilitate this, ClearTK introduces the \emph{TransformableFeatures} and \emph{TrainableFeatureExtractors} and {\emph InstanceDataWriter} classes.  Like all other feature extractors in ClearTK, a TrainableFeaturesExtractor accepts a JCas and an Annotation and returns a list of features.  In practice most TrainableFeatureExtractors delegate extraction to a sub-extractor, and instead of returning standard features it returns a list of TransformableFeatures.  ClearTK includes TrainableFeatureExtractors for common transformations such as z-score, tf*idf, min-max normalization and cosine similarity.
-
-Typically when training a CleartkAnnotator, the extracted feature vectors are written directly to a data file for consumption by the learning algorithm.  When using TrainableFeatureExtractors, the feature vectors are instead serialized using the InstanceDataWriter.  This enables the TrainableFeatureExtractors to iterate over the instances as a collection and compute the necessary statistics for direct transformation.
-
-After training each TrainableFeatureExtractor, the TransformableFeatures within the instances are transformed and then written out to the data file for training of the classifier.
-During classification, TrainableFeatureExtractors load a configuration file and directly transform the features for use by the classifier.
-
-\textbf{Struggling to succinctly wrap this up}.  This approach to feature scaling provides a means of wrangling a complex process into the paradigms already employed by users of ClearTK and UIMAFit.
+As another example of structuring code for pipelines, consider the case of feature transformations, e.g. normalizing feature values to zero mean and unit standard deviation, or scaling term counts by inverse document frequency.
+In early versions of ClearTK, these kinds of transformations required a specialized pipeline to be run separately before the real pipeline to collect the sufficient statistics.
+This was confusing to users because (1) two pipelines were required for what was conceptually a single pipeline and (2) feature transformations conceptually happen after training data is written, not before.
+ClearTK 1.2 introduced \code{TrainableFeatureExtractor}s which instead work like:
+\begin{itemize}
+\item Run the original pipeline for writing training data. The \code{TrainableFeatureExtractor} will flag features that need additional post-processing.
+\item End the pipeline with an \code{InstanceDataWriter} that serializes the features for re-use.
+\item Invoke the \code{TrainableFeaturesExtractor}'s \code{train()} method on the serialized features to store sufficient statistics.
+\item Use the original data writer on the transformed features to write out the training data for the classifier of choice.
+\end{itemize}
+We found that this approach was a better match for the conceptual expectations of our users.
 
 
 \section{CollectionReaders should be minimal}
