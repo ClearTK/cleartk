@@ -112,6 +112,21 @@ ClearTK now recommends only one \code{CollectionReader}, \code{URICollectionRead
 Reading the text or annotations on top of the text must then be performed by subsequent annotators.
 This approach has several advantages, including that the pipelines become more parallelizable (which UIMA-AS can take advantage of), and that users can leverage their existing familiarity with UIMA annotators when writing readers.
 
+
+\section{Code should be type system agnostic}
+All UIMA annotators must declare a type system, which defines the annotations and attributes that an annotator may add to documents.
+Due to varying requirements imposed by different domains and use cases, there is not yet a generally agreed upon NLP type system for UIMA, and thus many UIMA annotators cannot be combined easily.
+In ClearTK, we have always been careful to decouple the machine learning framework from the type system, and all of the machinery for creating classifier-based annotators including feature extraction, feature normalization, chunking, training, classification, etc. is completely type system independent.
+
+%A case in point is a feature extractor called \code{CleartkExtractor}.  This feature extractor allows one to create features such as ``get the text of the token two tokens before the focus annotation'' or ``get the part-of-speech tag of the token three tokens after the focus annotation''.  These and many more related feature extraction scenarios are all accomplished by instantiating a CleartkExtractor with the types specific to a CleartkAnnotator's type system.  This eliminates the need to write many specialized feature extractors for different type systems.  This is true for all of the feature extractors provided the core ClearTK project including those that generate bag-of-words features and TF-IDF weighted features as well as the code that supports BIO-style chunking.  Thus, the only code that needs to know about a specific type system is the code written by a user of ClearTK who is implementing analysis engines with the framework.
+
+However, other parts of ClearTK do depend on a specific type system, e.g. for reading different annotations from corpora, for wrapping the output produced by non-UIMA annotators, and for constructing state-of-the-art systems like ClearTK-TimeML \cite{bethard:2013:SemEval-2013}.
+It is quite difficult to write a truly type-system agnostic UIMA annotator.
+For example, the OpenNLP UIMA annotators are intended to be type system agnostic, but in fact make type-system specific assumptions, like that the part-of-speech is represented as a string-valued attribute of a token annotation.
+To avoid this level of specific type system dependence, we have found it to be necessary to define interfaces for the various operations on tokens, sentences, parses, etc.
+Such an approach has been implemented for the ClearTK wrappers for ClearNLP, and we hope to extend this to other areas as well.
+
+
 \section{Modules should match natural subsets}
 ClearTK provides many different types of utilities (machine learning wrappers, readers for various corpora, UIMA wrappers for non-UIMA components like MaltParser or Stanford CoreNLP, etc.) and so it has been necessary to split ClearTK up into a small number of modules to allow users to depend on only those parts of ClearTK that they need.
 In early versions of ClearTK, we structured these based on the types of annotations being processed, e.g. code for reading PennTreebank trees was put into the same module as our wrapper for OpenNLP's parser.
@@ -128,16 +143,6 @@ ClearTK 1.2 restructured the modules to match the natural subsets of ClearTK tha
 \item Wrappers for non-UIMA components, based on the ClearTK type system
 \end{itemize}
 We have found that this structure better matches the conceptual dependencies of ClearTK, and better enables ClearTK users to get just the parts that they want.
-
-
-\section{Decoupling infrastructure from meta-data}
-
-The output of the analytics of a text processing system is invariably determined by meta-data that defines the structure of the resulting analysis.  In UIMA parlance, this meta-data is defined by a type system which defines annotation types such as tokens or named entities and their features such as part-of-speech tags or unique identifiers.  Type systems, like all meta data definitions, vary widely across different UIMA-based systems due to the widely varying requirements imposed by different domains and use cases.  Not surprisingly, it is a difficult challenge to produce meta-data standards that are used widely across different projects and institutions.  With this in mind, we have been careful to decouple ClearTK from any specific type system.  In fact, the core framework that ClearTK provides does not require (or provide) any specific type system.  This is one of the key strengths of ClearTK: all of the machinery for creating classifier-based annotators including feature extraction, feature normalization, chunking, training, classification, etc. is completely type system independent.  This makes ClearTK a powerful framework to employ in a very wide vareity of scenarios.  A case in point is a feature extractor called \code{CleartkExtractor}.  This feature extractor allows one to create features such as ``get the text of the token two tokens before the focus annotation'' or ``get the part-of-speech tag of the token three tokens after the focus annotation''.  These and many more related feature extraction scenarios are all accomplished by instantiating a CleartkExtractor with the types specific to a CleartkAnnotator's type system.  This eliminates the need to write many specialized feature extractors for different type systems.  This is true for all of the feature extractors provided the core ClearTK project including those that generate bag-of-words features and TF-IDF weighted features as well as the code that supports BIO-style chunking.  Thus, the only code that needs to know about a specific type system is the code written by a user of ClearTK who is implementing analysis engines with the framework.  Some parts of ClearTK do depend on specific type systems such as the state-of-the-art temporal event extraction system that is provided as a sub-project of ClearTK.  However, we have been careful to keep infrastructure code that provides the framework for creating classifier-based annotators decoupled from any type system.  
-
-
-
-
-ClearNLP work
 
 
 \section{Users need help past the UIMA overhead}
