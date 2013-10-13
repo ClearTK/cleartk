@@ -37,17 +37,19 @@ The ClearTK framework was introduced to address this gap \cite{ogren-etal:2008:U
 \item Infrastructure for using and evaluating machine learning classifiers within the UIMA framework.
 \end{itemize}
 
-Since its inception in 2008, ClearTK has been adopted by multiple developers worldwide in both academia and industry, and has been employed on diverse domains including clinical text, social media and student writing.  The project is now starred by 78 users in Google Code.  In the past year ClearTK has been downloaded over 1700 times, and the project site receives over 100 new visits a month.  This growing user and developer base has provided a wealth of feedback that has led to a large number of changes.  In this paper, we reflect on key lessons learned over the last 5 years, and how they reflect generally on the design of natural language processing frameworks.
+Since its inception in 2008, ClearTK has been adopted by multiple developers worldwide in both academia and industry, and has been employed on diverse domains including clinical text, social media and student writing.  The project is now starred by 78 users in Google Code.  In the past year ClearTK has been downloaded over 1700 times, and the project site receives over 100 new visits a month.  This growing user and developer base has provided a wealth of feedback that has led to a large number of changes.  In this paper, we reflect on key lessons learned over the last 5 years, and how they generally inform the design of natural language processing frameworks.
 
 \section{Annotators should be conceptually simple}
 \label{sec:annotators}
-A core aspect of UIMA is the Annotator, which provides a \code{process()} method that inspects the document, performs analyses, and stores resulting annotations.  This is a familiar construct, even to novice UIMA users, as there are analogs in other frameworks, e.g. Stanford CoreNLP's \code{CoreMap}\footnote{http://nlp.stanford.edu/software/corenlp.shtml} and GATE's \code{Document}\footnote{http://gate.ac.uk/ie/}.  Our experience suggests that annotators' process methods should orchestrate the core analysis code in ways that are as straightforward and intuitive as possible.  ClearTK in previous iterations, has suffered from abstracting out analysis code away from the process method in ways that made the code difficult to understand.  
+A core aspect of UIMA is the Annotator, which provides a \code{process()} method that inspects the document, performs analyses, and stores resulting annotations.  This is a familiar construct, even to novice UIMA users, as there are analogs in other frameworks, e.g. Stanford CoreNLP's \code{CoreMap}\footnote{http://nlp.stanford.edu/software/corenlp.shtml} and GATE's \code{Document}\footnote{http://gate.ac.uk/ie/}.  Our experience suggests that annotators' process methods should orchestrate the core analysis code in ways that are as straightforward and intuitive as possible.  ClearTK in previous iterations has suffered from over-abstraction of analysis code away from the process method -- resulting in difficult to understand code.
 
-In the first versions of ClearTK, developers were required to write two separate annotators: one for writing training data and another for classification.
-In practice, the bulk of the code in both annotators shared the same feature extraction code.  Consequently, this overlapping functionality was structured to remove this redundancy.  The first version of this abstraction used a call-back approach where users only had to implement the feature extraction code.  However, users found the call-back style unintuitive as it flouted the UIMA \code{process()} conventions.  
-Thus we redesigned this abstraction into \code{ClassifierAnnotator}, which allows users to write their feature extraction code in the standard \code{process()} method, but requires them to handle two cases: training mode and classification mode.  Though this change requires additional coordinatino with a single annotator, it is conceptually simpler to learn.
+In the first versions of ClearTK, developers were required to write two separate annotators: one for writing training data and another for classification.  In practice, the bulk of the code in both annotators shared the same feature extraction steps.  Consequently, this overlapping functionality was structured to remove this redundancy.  The first version of this abstraction used a call-back approach where users only had to implement the feature extraction code.  However, users found the call-back style unintuitive as it flouted the UIMA \code{process()} conventions.  
+Thus we redesigned this abstraction into \code{ClassifierAnnotator}, which allows users to write their feature extraction code in the standard \code{process()} method, but requires them to handle two cases: training mode and classification mode.  Though this change requires additional coordination with a single annotator, it is conceptually simpler to learn.
 
 % this is similar to the above; could be cut if we need space
+\textbf{Potential condensing of BIO:}  We learned a similar lesson in designing an API for Begin-Inside-Outside (BIO) style chunking classification.  The original approach consisted of a subtype of \code{ClassifierAnnotator} that hid most of the details of chunking via dynamic overrides.  In ClearTK 1.2 we replaced this architecture with a set of utility objecst for converting chunk labels in to tokens labels (and vice versa), allowing for direct use of chunking within a standard \code{process()} method without need for specialized implementations of interfaces.
+
+
 We learned a similar lesson in designing an API for Begin-Inside-Outside (BIO) style chunking classification.
 Our original chunker framework defined a chunker as a subtype of \code{ClassifierAnnotator} that abstracted away different aspects of chunking, such as converting token-based labels to chunks, converting chunks to token-based labels, and performing token-level feature extraction.
 How and when these activities were performed were based on classes passed to the chunker and dynamically loaded at instantiation time.
@@ -57,12 +59,11 @@ In ClearTK 1.2 we replaced this architecture with a set of utility objects for c
 % I decided to skip this; is seemed too complicated to explain 
 
 \section{Pipelines should look like pipelines}
-Once a user has developed a number of annotators, they typically string them together in a \emph{pipeline}, indicating the sequence these annotators should be run on a new piece of text.
-In ClearTK, users develop a variety of different pipelines: pipelines for training classifiers, pipelines for applying trained classifiers to make predictions, pipelines for testing classifier predictions against a gold standard, etc.
-Our experience suggests that pipeline-based code should be structured to make it easy to quickly understand what annotators are running in what order.
+Once a user has developed a number of annotators, they typically string them together in a \emph{pipeline}, indicating the sequence in which these annotators analyze a text.
+In ClearTK, users develop a variety of pipelines for different tasks such as training classifiers, making predictions with trained classifiers, testing classifier predictions against a gold standard, etc.  Our experience suggests that pipeline-based code should be structured to make it easy to quickly understand what annotators are running in what order.
 
 Consider the case of model training and evaluation.
-ClearTK's first abstraction for this separated out:
+ClearTK's first abstraction separated evalaution into the following:
 \begin{itemize}
 \item The reader that loaded the training and testing data
 \item The preprocessing portion of a pipeline
@@ -78,13 +79,12 @@ In ClearTK 1.2, we simplified this abstraction, resulting in the following divis
 \item Training a model given a \code{CollectionReader}
 \item Testing a model given a \code{CollectionReader}
 \end{enumerate}
-This means that there is potentially some duplication, e.g. if training and testing used the same preprocessing.
-But a user can now easily examine the complete training or testing pipeline by looking at a single method.
+In exchange for some duplication, e.g. if training and testing used the same preprocessing, developers are rewarded with a more interpretable, self-contained picture of the training and testing pipelines.
 
-As another example of structuring code for pipelines, consider the case of feature transformations, e.g. normalizing feature values to zero mean and unit standard deviation, or scaling term counts by inverse document frequency.
-In early versions of ClearTK, these kinds of transformations required a specialized pipeline to be run separately before the real pipeline to collect the sufficient statistics.
+Feature transformation (e.g. normalizing feature values to z-scores, scaling term counts by inverse document frequency) is another example of structuring concerns around pipelines.
+In early versions of ClearTK, these kinds of transformations required running a specialized pipeline separately before the real pipeline to collect the sufficient statistics.
 This was confusing to users because (1) two pipelines were required for what was conceptually a single pipeline and (2) feature transformations conceptually happen after training data is written, not before.
-ClearTK 1.2 introduced \code{TrainableFeatureExtractor}s which instead work like:
+ClearTK 1.2 introduced \code{TrainableFeatureExtractor}s which instead:
 \begin{itemize}
 \item Run the original pipeline for writing training data. The \code{TrainableFeatureExtractor} will flag features that need additional post-processing.
 \item End the pipeline with an \code{InstanceDataWriter} that serializes the features for re-use.
@@ -100,10 +100,10 @@ Early versions of ClearTK used the \code{CollectionReader} mechanism to both rea
 
 However, as ClearTK developed support for importing more annotation formats, it became clear that this approach was problematic.
 UIMA allows only a single \code{CollectionReader} at the beginning of each pipeline, so you cannot, for example, have both a \code{CollectionReader} for TreeBank and one for TimeML in the same pipeline, even if both layers of annotation exist for your document.
-The solution to this problem is to view these TreeBank and TimeML readers not as \code{CollectionReader}s, but as regular UIMA annotators whose \code{process(JCas)} method looks at some external resource (e.g. a \code{.mrg} or a \code{.tml} file) and converts that into annotations to be added to the \code{JCas}.
+The solution to this problem is to view these TreeBank and TimeML readers not as \code{CollectionReader}s, but as regular UIMA annotators whose \code{process(JCas)} method utilizes external resources (e.g. a \code{.mrg} or a \code{.tml} file) to produce annotations to be added to the \code{JCas}.
 
 ClearTK now recommends only one \code{CollectionReader}, \code{URICollectionReader}, which does nothing more than create a \code{JCas} containing the source's Uniform Resource Identifier (URI).
-Reading the text or annotations on top of the text must then be performed by subsequent annotators.
+Reading the text or annotations over the text is the responsibility of subsequent annotators.
 This approach to developing readers has several advantages, including more parallizable pipelines (which UIMA-AS can take advantage of) and added accessibility by leveraging users' existing familiarity with UIMA annotators.
 
 
@@ -116,21 +116,21 @@ In ClearTK, we have always been careful to decouple the machine learning framewo
 
 However, other parts of ClearTK do depend on a specific type system, e.g. for reading different annotations from corpora, for wrapping the output produced by non-UIMA annotators, and for constructing state-of-the-art systems like ClearTK-TimeML \cite{bethard:2013:SemEval-2013}.
 It is quite difficult to write a truly type-system agnostic UIMA annotator.
-For example, the OpenNLP UIMA annotators are intended to be type system agnostic, but in fact make type-system specific assumptions, like that the part-of-speech is represented as a string-valued attribute of a token annotation.
+For example, the OpenNLP UIMA annotators are intended to be type system agnostic, but in fact make type-system specific assumptions, like representing the part-of-speech as a string-valued attribute of a token annotation.
 To avoid this level of specific type system dependence, we have found it to be necessary to define interfaces for the various operations on tokens, sentences, parses, etc.
-Such an approach has been implemented for the ClearTK wrappers for ClearNLP, and we hope to extend this to other areas as well.
+Such an approach has been implemented in ClearTK 2.0's wrappers for ClearNLP, and we plan to extend this to other areas.
 
 
 \section{Modules should match natural subsets}
 ClearTK provides many different types of utilities (machine learning wrappers, readers for various corpora, UIMA wrappers for non-UIMA components like MaltParser or Stanford CoreNLP, etc.) and so it has been necessary to split ClearTK up into a small number of modules to allow users to depend on only those parts of ClearTK that they need.
 In early versions of ClearTK, we structured these based on the types of annotations being processed, e.g. code for reading PennTreebank trees was put into the same module as our wrapper for OpenNLP's parser.
 The idea was that if you were working on, say, parsing, you would want access to all the different parsing algorithms.
-However, we found that this approach didn't scale.
+However, we found that this approach did not scale.
 For example, very few users would want to include all of OpenNLP, MaltParser, BerkeleyParser, Stanford CoreNLP, etc. just to read trees from a PennTreebank file.
 
-ClearTK 1.2 restructured the modules to match the natural subsets of ClearTK that users might want:
+ClearTK 1.2 restructured the modules to match the natural subsets of ClearTK functionality:
 \begin{itemize}
-\item The machine learning libraries and generic feature extractors that do not require a UIMA type system
+\item Type system agnostic machine learning libraries and feature extractors 
 \item ClearTK's version of a UIMA type system for NLP
 \item Feature extractors based on the ClearTK type system (e.g. paths through constituency trees)
 \item Readers for various corpora, based on the ClearTK type system
@@ -140,7 +140,7 @@ We have found that this structure better matches the conceptual dependencies of 
 
 
 \section{Users need help past the UIMA overhead}
-After the many improvements to ClearTK interfaces and usability over the years, we've now reached a point where much of the overhead of learning ClearTK is actually the overhead of learning UIMA.
+After the many improvements to ClearTK interfaces and usability over the years, we have now reached a point where much of the overhead of learning ClearTK is actually the overhead of learning UIMA.
 To understand the UIMA framework, you need to understand not just how to write an annotator with a \code{process(JCas)} method -- which is what is really at the heart of the framework -- but also how to:
 \begin{itemize}
 \item Declare a type system that describes the annotations you want your annotator to create
