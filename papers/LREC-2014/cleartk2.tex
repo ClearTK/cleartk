@@ -112,14 +112,22 @@ ClearTK now recommends only one \code{CollectionReader}, \code{URICollectionRead
 Reading the text or annotations on top of the text must then be performed by subsequent annotators.
 This approach has several advantages, including that the pipelines become more parallelizable (which UIMA-AS can take advantage of), and that users can leverage their existing familiarity with UIMA annotators when writing readers.
 
-\section{Modules should group classes by function}
-not organized by type system
+\section{Modules should match natural subsets}
+ClearTK provides many different types of utilities (machine learning wrappers, readers for various corpora, UIMA wrappers for non-UIMA components like MaltParser or Stanford CoreNLP, etc.) and so it has been necessary to split ClearTK up into a small number of modules to allow users to depend on only those parts of ClearTK that they need.
+In early versions of ClearTK, we structured these based on the types of annotations being processed, e.g. code for reading PennTreebank trees was put into the same module as our wrapper for OpenNLP's parser.
+The idea was that if you were working on, say, parsing, you would want access to all the different parsing algorithms.
+However, we found that this approach didn't scale.
+For example, very few users would want to include all of OpenNLP, MaltParser, BerkeleyParser, Stanford CoreNLP, etc. just to read trees from a PennTreebank file.
 
-cleartk-type-system
-
-cleartk-corpus
-
-cleartk-feature
+ClearTK 1.2 restructured the modules to match the natural subsets of ClearTK that users might want:
+\begin{itemize}
+\item The machine learning libraries and generic feature extractors that do not require a UIMA type system
+\item ClearTK's version of a UIMA type system for NLP
+\item Feature extractors based on the ClearTK type system (e.g. paths through constituency trees)
+\item Readers for various corpora, based on the ClearTK type system
+\item Wrappers for non-UIMA components, based on the ClearTK type system
+\end{itemize}
+We have found that this structure better matches the conceptual dependencies of ClearTK, and better enables ClearTK users to get just the parts that they want.
 
 
 \section{Decoupling infrastructure from meta-data}
