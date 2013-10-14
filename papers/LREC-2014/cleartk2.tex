@@ -5,6 +5,8 @@
 \usepackage{microtype}
 \usepackage{cleveref}
 
+\hyphenation{Berkeley-Parser}
+
 \newcommand{\code}[1]{\texttt{\small #1}}
 
 \title{ClearTK 2.0: Design Patterns for Machine Learning in UIMA}
@@ -61,7 +63,7 @@ Once a user has developed a number of annotators, they typically string them tog
 In ClearTK, users develop a variety of pipelines for different tasks such as training classifiers, making predictions with trained classifiers, testing classifier predictions against a gold standard, etc.  Our experience suggests that pipeline-based code should be structured to make it easy to quickly understand what annotators are running in what order.
 
 Consider the case of model training and evaluation.
-ClearTK's first abstraction separated evalaution into the following:
+ClearTK's first abstraction separated evaluation into various classes and methods:
 \begin{itemize}
 \item The reader that loaded the training and testing data
 \item The preprocessing portion of a pipeline
@@ -69,25 +71,25 @@ ClearTK's first abstraction separated evalaution into the following:
 \item The classifier prediction portion of a pipeline
 \item The evaluation portion of a pipeline
 \end{itemize}
-These items are easily separable and splitting them reduced code duplication. (For example, the processing portion of the pipeline would be identical for training and testing).
+These items are easily separable and splitting them reduced code duplication. (For example, the preprocessing portion of the pipeline would be identical for training and testing).
 However, because each of these items was implemented in a different class or method, it was often difficult for a reader to understand the big picture of what exactly was running in each pipeline.
-In ClearTK 1.2, we simplified this abstraction, resulting in the following division of labor for evaluation:
+In ClearTK 1.2, we simplified this abstraction, resulting in a single evaluation class with just three methods that must be defined:
 \begin{enumerate}
-\item Reading a subset of data with a \code{CollectionReader}
-\item Training a model given a \code{CollectionReader}
-\item Testing a model given a \code{CollectionReader}
+\item Read a subset of data with a \code{CollectionReader}
+\item Train a model given a \code{CollectionReader}
+\item Test a model given a \code{CollectionReader}
 \end{enumerate}
-In exchange for some duplication, e.g. if training and testing used the same preprocessing, developers are rewarded with a more interpretable, self-contained picture of the training and testing pipelines.
+In exchange for some duplication (e.g. if training and testing used the same preprocessing) developers are rewarded with more interpretable, self-contained pictures of the training and testing pipelines.
 
-Feature transformation (e.g. normalizing feature values to z-scores, scaling term counts by inverse document frequency) is another example of structuring concerns around pipelines.
+Feature transformation (e.g. normalizing feature values to z-scores or scaling term counts by inverse document frequency) is another example of structuring concerns around pipelines.
 In early versions of ClearTK, these kinds of transformations required running a specialized pipeline separately before the real pipeline to collect the sufficient statistics.
-This was confusing to users because (1) two pipelines were required for what was conceptually a single pipeline and (2) feature transformations conceptually happen after training data is written, not before.
-ClearTK 1.2 introduced \code{TrainableFeatureExtractor}s which instead:
+This was confusing to users because (1) two pipelines were required for what was conceptually a single pipeline and (2) feature transformations conceptually happens after training data is written, not before.
+ClearTK 1.2 introduced \code{TrainableFeatureExtractor}s where a user instead:
 \begin{itemize}
-\item Run the original pipeline for writing training data. The \code{TrainableFeatureExtractor} will flag features that need additional post-processing.
-\item End the pipeline with an \code{InstanceDataWriter} that serializes the features for re-use.
-\item Invoke the \code{TrainableFeaturesExtractor}'s \code{train()} method on the serialized features to store sufficient statistics.
-\item Use the original data writer on the transformed features to write out the training data for the classifier of choice.
+\item Runs the original pipeline for writing training data. The \code{TrainableFeatureExtractor} will flag features that need additional post-processing.
+\item Ends the pipeline with an \code{InstanceDataWriter} that serializes the features for re-use.
+\item Invokes the \code{TrainableFeaturesExtractor}'s \code{train()} method on the serialized features to store sufficient statistics.
+\item Uses the original data writer on the transformed features to write out training data for a classifier.
 \end{itemize}
 We found that this approach aligned better with the conceptual expectations of our users.
 
@@ -116,7 +118,7 @@ However, other parts of ClearTK do depend on a specific type system, e.g. for re
 It is quite difficult to write a truly type-system agnostic UIMA annotator.
 For example, the OpenNLP UIMA annotators are intended to be type system agnostic, but in fact make type-system specific assumptions, like representing the part-of-speech as a string-valued attribute of a token annotation.
 To avoid this level of specific type system dependence, we have found it to be necessary to define interfaces for the various operations on tokens, sentences, parses, etc.
-Such an approach has been implemented in ClearTK 2.0's wrappers for ClearNLP, and we plan to extend this to other areas.
+Such an approach has been implemented in ClearTK 2.0's wrappers for ClearNLP, and we plan to extend this to other areas in the future.
 
 
 \section{Modules should match natural subsets}
@@ -146,7 +148,7 @@ To understand the UIMA framework, you need to understand not just how to write a
 \item Create code to read your training data into \code{JCas} objects
 \item Declare (using XML files or Java annotations) any parameters needed to initialize your annotator
 \item Create an \code{AnalysisEngine} object from your annotator and the initialization parameters
-\item \ldots
+\item etc.
 \end{itemize}
 These tasks are fairly easy for a UIMA expert, but are often challenging and overwhelming for a new UIMA user.
 Thus, to get new potential users of ClearTK up to speed, we have found it helpful to have a UIMA expert put the above items together.
