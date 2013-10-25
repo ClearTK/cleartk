@@ -47,8 +47,8 @@
 			<artifactId>uimaj-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.uimafit</groupId>
-			<artifactId>uimafit</artifactId>
+			<groupId>org.apache.uima</groupId>
+			<artifactId>uimafit-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>

@@ -40,19 +40,27 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.component.ViewCreatorAnnotator;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.JCasIterator;
+import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.CasCopier;
 import org.cleartk.classifier.liblinear.LibLinearStringOutcomeDataWriter;
+import org.cleartk.corpus.timeml.PlainTextTlinkGoldAnnotator;
+import org.cleartk.corpus.timeml.TempEval2013Writer;
+import org.cleartk.corpus.timeml.TimeMlGoldAnnotator;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
-import org.cleartk.corpus.timeml.PlainTextTlinkGoldAnnotator;
-import org.cleartk.corpus.timeml.TempEval2013Writer;
-import org.cleartk.corpus.timeml.TimeMlGoldAnnotator;
 import org.cleartk.timeml.event.EventAnnotator;
 import org.cleartk.timeml.event.EventAspectAnnotator;
 import org.cleartk.timeml.event.EventClassAnnotator;
@@ -82,14 +90,6 @@ import org.jdom2.JDOMException;
 import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.component.ViewCreatorAnnotator;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.JCasIterable;
-import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMultimap;
@@ -571,7 +571,7 @@ public class TempEval2013Evaluation
     AggregateBuilder builder = new AggregateBuilder();
 
     // read the manual TimeML annotations into the CAS
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         TimeMlGoldAnnotator.TIMEML_VIEW_NAME));
@@ -581,7 +581,7 @@ public class TempEval2013Evaluation
         TimeMlGoldAnnotator.TIMEML_VIEW_NAME);
     builder.add(TimeMlGoldAnnotator.getDescription());
     if (this.inferredTLinksDirectories != null) {
-      builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+      builder.add(AnalysisEngineFactory.createEngineDescription(
           UseInferredTlinks.class,
           UseInferredTlinks.PARAM_INFERRED_TLINKS_DIRECTORIES,
           this.inferredTLinksDirectories));
@@ -589,10 +589,10 @@ public class TempEval2013Evaluation
     if (this.useVerbClauseTlinks) {
       builder.add(PlainTextTlinkGoldAnnotator.getDescription());
     }
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(FixTimeML.class));
+    builder.add(AnalysisEngineFactory.createEngineDescription(FixTimeML.class));
 
     // only add sentences and other annotations under <TEXT>
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         SentenceAnnotator.class,
         SentenceAnnotator.PARAM_SENTENCE_MODEL_PATH,
         "/models/en-sent.bin",
@@ -630,7 +630,7 @@ public class TempEval2013Evaluation
     AggregateBuilder preprocess = new AggregateBuilder();
 
     // read the manual TimeML annotations into the gold view
-    preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
+    preprocess.add(AnalysisEngineFactory.createEngineDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         TimeMlGoldAnnotator.TIMEML_VIEW_NAME));
@@ -638,13 +638,13 @@ public class TempEval2013Evaluation
         UriToDocumentTextAnnotator.getDescription(),
         CAS.NAME_DEFAULT_SOFA,
         TimeMlGoldAnnotator.TIMEML_VIEW_NAME);
-    preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
+    preprocess.add(AnalysisEngineFactory.createEngineDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         goldViewName));
     preprocess.add(TimeMlGoldAnnotator.getDescription(), CAS.NAME_DEFAULT_SOFA, goldViewName);
     if (this.inferredTLinksDirectories != null) {
-      preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
+      preprocess.add(AnalysisEngineFactory.createEngineDescription(
           UseInferredTlinks.class,
           UseInferredTlinks.PARAM_INFERRED_TLINKS_DIRECTORIES,
           this.inferredTLinksDirectories), CAS.NAME_DEFAULT_SOFA, goldViewName);
@@ -656,22 +656,22 @@ public class TempEval2013Evaluation
           goldViewName);
     }
     preprocess.add(
-        AnalysisEngineFactory.createPrimitiveDescription(FixTimeML.class),
+        AnalysisEngineFactory.createEngineDescription(FixTimeML.class),
         CAS.NAME_DEFAULT_SOFA,
         goldViewName);
-    preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
+    preprocess.add(AnalysisEngineFactory.createEngineDescription(
         CopyTextAndDocumentCreationTime.class,
         CopyTextAndDocumentCreationTime.PARAM_SOURCE_VIEW,
         goldViewName));
     if (this.relationsOnly) {
-      preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
+      preprocess.add(AnalysisEngineFactory.createEngineDescription(
           CopyEventsAndTimes.class,
           CopyEventsAndTimes.PARAM_SOURCE_VIEW,
           goldViewName));
     } 
 
     // only add sentences and other annotations under <TEXT>
-    preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
+    preprocess.add(AnalysisEngineFactory.createEngineDescription(
         SentenceAnnotator.class,
         SentenceAnnotator.PARAM_SENTENCE_MODEL_PATH,
         "/models/en-sent.bin",
@@ -685,8 +685,8 @@ public class TempEval2013Evaluation
 
     // finalize TLINK ids and write out TimeML files
     AggregateBuilder postprocess = new AggregateBuilder();
-    postprocess.add(AnalysisEngineFactory.createPrimitiveDescription(ShrinkTimesContainingEvents.class));
-    postprocess.add(AnalysisEngineFactory.createPrimitiveDescription(SetTemporalLinkIDs.class));
+    postprocess.add(AnalysisEngineFactory.createEngineDescription(ShrinkTimesContainingEvents.class));
+    postprocess.add(AnalysisEngineFactory.createEngineDescription(SetTemporalLinkIDs.class));
     postprocess.add(TempEval2013Writer.getDescription(new File(this.baseDirectory, "timeml")));
     AnalysisEngine postprocessEngine = postprocess.createAggregate();
 
@@ -696,7 +696,7 @@ public class TempEval2013Evaluation
     for (Model<?> model : this.models.keySet()) {
       for (Model.Params params : this.models.get(model)) {
         AnalysisEngineDescription desc = model.getAnnotatorDescription(directory, params);
-        enginesBuilder.put(model, params, AnalysisEngineFactory.createPrimitive(desc));
+        enginesBuilder.put(model, params, AnalysisEngineFactory.createEngine(desc));
         statsBuilder.put(model, params, new AnnotationStatistics<String>());
       }
     }
@@ -704,7 +704,9 @@ public class TempEval2013Evaluation
     ImmutableTable<Model<?>, Model.Params, AnnotationStatistics<String>> stats = statsBuilder.build();
 
     // evaluate each CAS in the test data
-    for (JCas jCas : new JCasIterable(reader, preprocessEngine)) {
+    JCasIterator iter = new JCasIterator(reader, preprocessEngine);
+    while (iter.hasNext()) {
+      JCas jCas = iter.next();
 
       // evaluate each model/parameters combination
       JCas goldView = jCas.getView(goldViewName);

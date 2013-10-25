@@ -30,7 +30,7 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.syntax.opennlp.parser.InputTypesHelper;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>

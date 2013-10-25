@@ -27,6 +27,9 @@ import java.io.File;
 
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.UimaContextFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
@@ -45,14 +48,10 @@ import org.cleartk.timeml.time.TimeTypeAnnotator;
 import org.cleartk.timeml.tlink.TemporalLinkEventToDocumentCreationTimeAnnotator;
 import org.cleartk.timeml.tlink.TemporalLinkEventToSameSentenceTimeAnnotator;
 import org.cleartk.timeml.tlink.TemporalLinkEventToSubordinatedEventAnnotator;
-import org.cleartk.timeml.tlink.TemporalLinkMainEventToNextSentenceMainEventAnnotator;
 import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.cr.FilesCollectionReader;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.UimaContextFactory;
-import org.uimafit.pipeline.SimplePipeline;
 
 /**
  * Command line utility for annotating plain text files with TimeML annotations. Usage:
@@ -111,7 +110,7 @@ public class TimeMlAnnotate {
         EventClassAnnotator.FACTORY.getAnnotatorDescription(),
         EventPolarityAnnotator.FACTORY.getAnnotatorDescription(),
         EventModalityAnnotator.FACTORY.getAnnotatorDescription(),
-        AnalysisEngineFactory.createPrimitiveDescription(AddEmptyDCT.class),
+        AnalysisEngineFactory.createEngineDescription(AddEmptyDCT.class),
         TemporalLinkEventToDocumentCreationTimeAnnotator.FACTORY.getAnnotatorDescription(),
         TemporalLinkEventToSameSentenceTimeAnnotator.FACTORY.getAnnotatorDescription(),
         TemporalLinkEventToSubordinatedEventAnnotator.FACTORY.getAnnotatorDescription(),

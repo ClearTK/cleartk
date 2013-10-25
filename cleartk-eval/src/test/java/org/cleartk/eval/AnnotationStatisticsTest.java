@@ -32,7 +32,7 @@ import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.base.Function;
 

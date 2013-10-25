@@ -47,9 +47,9 @@ import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasCollectionReader_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.descriptor.SofaCapability;
+import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.SofaCapability;
 
 /**
  * <br>

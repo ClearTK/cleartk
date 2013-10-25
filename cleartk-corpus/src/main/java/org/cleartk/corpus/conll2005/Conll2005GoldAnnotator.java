@@ -49,10 +49,10 @@ import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationUtil;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.descriptor.SofaCapability;
-import org.uimafit.util.FSCollectionFactory;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.SofaCapability;
+import org.apache.uima.fit.util.FSCollectionFactory;
 
 /**
  * <br>

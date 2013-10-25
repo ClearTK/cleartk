@@ -46,8 +46,8 @@ import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.HideOutput;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -94,7 +94,7 @@ public class MalletCrfStringOutcomeClassifierTest extends DefaultTestBase {
   @Test
   public void runTest1() throws Exception {
 
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         TestAnnotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -111,7 +111,6 @@ public class MalletCrfStringOutcomeClassifierTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName);
     hider.restoreOutput();
-    hider.close();
 
     MalletCrfStringOutcomeClassifierBuilder builder = new MalletCrfStringOutcomeClassifierBuilder();
     MalletCrfStringOutcomeClassifier classifier;
@@ -129,7 +128,7 @@ public class MalletCrfStringOutcomeClassifierTest extends DefaultTestBase {
         outcomes,
         "O O O O O O O O O O O O O O O B-GENE I-GENE I-GENE O B-GENE I-GENE O O O O O O O O O O O O O O O O O O O O O");
 
-    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createEngine(
         TestAnnotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         JarClassifierBuilder.getModelJarFile(outputDirectoryName));

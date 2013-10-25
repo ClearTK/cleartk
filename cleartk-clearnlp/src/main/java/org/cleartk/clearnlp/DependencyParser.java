@@ -32,8 +32,8 @@ import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.descriptor.TypeCapability;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.descriptor.TypeCapability;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -67,11 +67,11 @@ public class DependencyParser extends DependencyParser_ImplBase<Sentence, Token,
    * Convenience method for creating Analysis Engine for ClearNLP's dependency parser using default English model files
    */
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(DependencyParser.class);
+    return AnalysisEngineFactory.createEngineDescription(DependencyParser.class);
   }
   
   public static AnalysisEngineDescription getDescription(String languageCode, URI modelUri) throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(DependencyParser.class,
+    return AnalysisEngineFactory.createEngineDescription(DependencyParser.class,
         DependencyParser_ImplBase.PARAM_LANGUAGE_CODE,
         languageCode,
         DependencyParser_ImplBase.PARAM_PARSER_MODEL_URI,

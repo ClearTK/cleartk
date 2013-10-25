@@ -54,11 +54,11 @@ import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ViewUriUtil;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.xml.sax.SAXException;
 
 import com.google.common.annotations.Beta;
@@ -177,7 +177,7 @@ public class SumBasic extends Summarize_ImplBase<File> {
     builder.add(DefaultSnowballStemmer.getDescription("English"));
 
     // This will extract the features for summarization
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         SumBasicAnnotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         SumBasicDataWriter.class.getName(),
@@ -189,7 +189,7 @@ public class SumBasic extends Summarize_ImplBase<File> {
         stopwordsFile.toURI()));
 
     // Save off xmis for re-reading
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         XMIWriter.class,
         XMIAnnotator.PARAM_XMI_DIRECTORY,
         xmiDirectory.getPath()));
@@ -200,13 +200,13 @@ public class SumBasic extends Summarize_ImplBase<File> {
   public AggregateBuilder buildExtractAggregate() throws ResourceInitializationException {
     AggregateBuilder builder = new AggregateBuilder();
 
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         XMIReader.class,
         XMIAnnotator.PARAM_XMI_DIRECTORY,
         this.xmiDirectory));
 
     // This will extract the features for summarization
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         SumBasicAnnotator.class,
         CleartkAnnotator.PARAM_IS_TRAINING,
         false,

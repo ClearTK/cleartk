@@ -26,16 +26,13 @@ package org.cleartk.examples.parser;
 
 import java.io.File;
 
+import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
-import org.cleartk.util.ViewUriFileNamer;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.uimafit.component.xwriter.XWriter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
 
 /**
  * <br>
@@ -50,7 +47,6 @@ public class ParserExample {
   public static void main(String[] args) throws Exception {
 
     File filesDirectory = new File(args[0]);
-    String outputDirectory = args[1];
 
     SimplePipeline.runPipeline(
         UriCollectionReader.getCollectionReaderFromDirectory(filesDirectory),
@@ -58,12 +54,6 @@ public class ParserExample {
         SentenceAnnotator.getDescription(),
         TokenAnnotator.getDescription(),
         PosTaggerAnnotator.getDescription(),
-        ParserAnnotator.getDescription(),
-        AnalysisEngineFactory.createPrimitiveDescription(
-            XWriter.class,
-            XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-            outputDirectory,
-            XWriter.PARAM_FILE_NAMER_CLASS_NAME,
-            ViewUriFileNamer.class.getName()));
+        ParserAnnotator.getDescription());
   }
 }

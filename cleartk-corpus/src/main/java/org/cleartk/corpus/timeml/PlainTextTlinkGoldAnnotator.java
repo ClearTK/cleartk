@@ -44,10 +44,10 @@ import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.util.ParamUtil;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -74,7 +74,7 @@ public class PlainTextTlinkGoldAnnotator extends JCasAnnotator_ImplBase {
   }
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         PlainTextTlinkGoldAnnotator.class,
         PARAM_TLINK_FILE_URL,
         ParamUtil.getParameterValue(

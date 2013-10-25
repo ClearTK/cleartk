@@ -52,8 +52,8 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -86,7 +86,7 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMlTestBase {
 
   @Test
   public void test() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         VerbClauseTemporalAnnotator.class,
         CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         PublicFieldDataWriter.StringFactory.class.getName(),
@@ -160,7 +160,7 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMlTestBase {
 
     // and run the annotator again, asking it to annotate this time
     // but don't let it add any events
-    engine = AnalysisEngineFactory.createPrimitive(
+    engine = AnalysisEngineFactory.createEngine(
         VerbClauseTemporalAnnotator.class,
         CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
         AfterNewClassifier.class.getName());
@@ -174,7 +174,7 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMlTestBase {
     Assert.assertEquals(0, tlinks.size());
 
     // run the annotator again, but let it add events this time
-    engine = AnalysisEngineFactory.createPrimitive(
+    engine = AnalysisEngineFactory.createEngine(
         VerbClauseTemporalAnnotator.class,
         CleartkAnnotator.PARAM_CLASSIFIER_FACTORY_CLASS_NAME,
         AfterNewClassifier.class.getName(),

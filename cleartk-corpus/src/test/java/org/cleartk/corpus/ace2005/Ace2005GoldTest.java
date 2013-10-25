@@ -28,7 +28,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.CollectionReaderFactory;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
 
 /**
  * <br>
@@ -44,13 +44,13 @@ public class Ace2005GoldTest extends DefaultTestBase {
   @Test
   public void testReaderInvalidParameters() throws Exception {
     try {
-      CollectionReaderFactory.createCollectionReader(Ace2005GoldReader.class);
+      CollectionReaderFactory.createReader(Ace2005GoldReader.class);
       Assert.fail("expected error for invalid corpus directory");
     } catch (ResourceInitializationException e) {
     }
 
     try {
-      CollectionReaderFactory.createCollectionReader(
+      CollectionReaderFactory.createReader(
           Ace2005GoldReader.class,
           Ace2005GoldReader.PARAM_ACE_DIRECTORY_NAME,
           "foo/bar");

@@ -50,8 +50,8 @@ import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.TemporalLink;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -173,7 +173,7 @@ class Model<ANNOTATION_TYPE extends TOP> {
       throws ResourceInitializationException {
     AnalysisEngineDescription desc;
     if (params.nViterbiOutcomes > 0) {
-      desc = AnalysisEngineFactory.createPrimitiveDescription(
+      desc = AnalysisEngineFactory.createEngineDescription(
           this.annotatorClass,
           CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
           ViterbiDataWriterFactory.class,
@@ -198,7 +198,7 @@ class Model<ANNOTATION_TYPE extends TOP> {
       } else {
         throw new RuntimeException("Invalid data writer class: " + params.dataWriterClass);
       }
-      desc = AnalysisEngineFactory.createPrimitiveDescription(
+      desc = AnalysisEngineFactory.createEngineDescription(
           this.annotatorClass,
           datatWriterParamName,
           params.dataWriterClass,
@@ -230,7 +230,7 @@ class Model<ANNOTATION_TYPE extends TOP> {
 
   public AnalysisEngineDescription getAnnotatorDescription(File directory, Model.Params params)
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
     this.annotatorClass,
     GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
     JarClassifierBuilder.getModelJarFile(this.getModelDirectory(directory, params)));

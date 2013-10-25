@@ -40,8 +40,8 @@ import org.cleartk.classifier.libsvm.ExampleInstanceFactory.StringAnnotator;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.UimaContextFactory;
-import org.uimafit.testing.util.HideOutput;
+import org.apache.uima.fit.factory.UimaContextFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -78,7 +78,6 @@ public class LibSvmTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "1.0", "-s", "0", "-t", "0");
     hider.restoreOutput();
-    hider.close();
 
     // read in the classifier and test it on new instances
     LibSvmBooleanOutcomeClassifierBuilder builder = new LibSvmBooleanOutcomeClassifierBuilder();
@@ -120,7 +119,6 @@ public class LibSvmTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "10", "-t", "0");
     hider.restoreOutput();
-    hider.close();
 
     // read in the classifier and test it on new instances
     LibSvmStringOutcomeClassifierBuilder builder = new LibSvmStringOutcomeClassifierBuilder();

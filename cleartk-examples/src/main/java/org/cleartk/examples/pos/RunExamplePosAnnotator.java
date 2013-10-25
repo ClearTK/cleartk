@@ -33,9 +33,9 @@ import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 
 /**
  * <br>
@@ -75,7 +75,7 @@ public class RunExamplePosAnnotator {
 						ExamplePosAnnotator.DEFAULT_OUTPUT_DIRECTORY).getPath()));
 
     // An annotator that write out the tokens and their part of speech tags
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         ExamplePosPlainTextWriter.class,
         ExamplePosPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         ExamplePosPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY));

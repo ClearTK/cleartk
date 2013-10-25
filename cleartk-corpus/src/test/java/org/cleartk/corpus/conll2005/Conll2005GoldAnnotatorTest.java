@@ -27,7 +27,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.cleartk.test.CleartkTestBase;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -38,7 +38,7 @@ public class Conll2005GoldAnnotatorTest extends CleartkTestBase {
 
   @Test
   public void testDescriptor() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         Conll2005GoldAnnotator.class,
         Conll2005GoldAnnotator.PARAM_HAS_VERB_SENSES,
         false);

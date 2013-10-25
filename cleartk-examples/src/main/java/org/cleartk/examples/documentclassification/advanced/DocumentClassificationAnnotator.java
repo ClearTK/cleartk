@@ -53,9 +53,9 @@ import org.cleartk.examples.documentclassification.basic.BasicDocumentClassifica
 import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -245,7 +245,7 @@ public class DocumentClassificationAnnotator extends CleartkAnnotator<String> {
 
   public static AnalysisEngineDescription getClassifierDescription(File classifierJarFile)
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         DocumentClassificationAnnotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         classifierJarFile.toString());

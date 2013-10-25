@@ -40,14 +40,14 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.collection.CollectionReaderDescription;
+import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasCollectionReader_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.CollectionReaderFactory;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
@@ -104,7 +104,7 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
   public static CollectionReaderDescription getDescriptionFromDirectory(File directory)
       throws ResourceInitializationException {
-    return CollectionReaderFactory.createDescription(
+    return CollectionReaderFactory.createReaderDescription(
         UriCollectionReader.class,
         null,
         PARAM_DIRECTORY,
@@ -115,7 +115,7 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
       File directory,
       Class<? extends IOFileFilter> fileFilterClass,
       Class<? extends IOFileFilter> dirFilterClass) throws ResourceInitializationException {
-    return CollectionReaderFactory.createDescription(
+    return CollectionReaderFactory.createReaderDescription(
         UriCollectionReader.class,
         null,
         PARAM_DIRECTORY,
@@ -128,14 +128,14 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
   public static CollectionReader getCollectionReaderFromDirectory(File directory)
       throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(getDescriptionFromDirectory(directory));
+    return CollectionReaderFactory.createReader(getDescriptionFromDirectory(directory));
   }
 
   public static CollectionReader getCollectionReaderFromDirectory(
       File directory,
       Class<? extends IOFileFilter> fileFilterClass,
       Class<? extends IOFileFilter> dirFilterClass) throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(getDescriptionFromDirectory(
+    return CollectionReaderFactory.createReader(getDescriptionFromDirectory(
         directory,
         fileFilterClass,
         dirFilterClass));
@@ -144,7 +144,7 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
   public static CollectionReaderDescription getDescriptionFromFiles(Collection<File> files)
       throws ResourceInitializationException {
 
-    return CollectionReaderFactory.createDescription(
+    return CollectionReaderFactory.createReaderDescription(
         UriCollectionReader.class,
         null,
         PARAM_FILES,
@@ -153,13 +153,13 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
   public static CollectionReader getCollectionReaderFromFiles(Collection<File> files)
       throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(getDescriptionFromFiles(files));
+    return CollectionReaderFactory.createReader(getDescriptionFromFiles(files));
   }
 
   public static CollectionReaderDescription getDescriptionFromUris(Collection<URI> uris)
       throws ResourceInitializationException {
 
-    return CollectionReaderFactory.createDescription(
+    return CollectionReaderFactory.createReaderDescription(
         UriCollectionReader.class,
         null,
         PARAM_URIS,
@@ -168,13 +168,14 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
   public static CollectionReader getCollectionReaderFromUris(Collection<URI> uris)
       throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(getDescriptionFromUris(uris));
+    return CollectionReaderFactory.createReader(getDescriptionFromUris(uris));
   }
 
   public static final String PARAM_FILES = "files";
 
   @ConfigurationParameter(
       name = PARAM_FILES,
+      mandatory = false,
       description = "provides a list of files whose URI should be written to the default sofa within the CAS")
   private Collection<File> files = new ArrayList<File>();
 
@@ -182,6 +183,7 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_DIRECTORY,
+      mandatory = false,
       description = "provids a directory containing files whose URIs should be written to the defaul sofa within the CAS")
   private File directory = null;
 
@@ -189,6 +191,7 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_URIS,
+      mandatory = false,
       description = "This parameter provides a list of URIs that should be written to the default sofa within the CAS.  Proper URI construction is the responsibility of the caller")
   private Collection<URI> uris = new ArrayList<URI>();
 

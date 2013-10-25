@@ -50,10 +50,10 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.ViewUriUtil;
 import org.jdom2.JDOMException;
-import org.uimafit.component.JCasCollectionReader_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.descriptor.SofaCapability;
-import org.uimafit.factory.CollectionReaderFactory;
+import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.SofaCapability;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
 
 /**
  * <br>
@@ -82,6 +82,7 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_LOAD_SENTENCES,
+      mandatory = false,
       description = "determines whether sentence annotations will be added from the Genia corpus.",
       defaultValue = "true")
   private boolean loadSentences = true;
@@ -90,6 +91,7 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_LOAD_TOKENS,
+      mandatory = false,
       description = "determines whether tokens annotations will be added from the Genia corpus. ",
       defaultValue = "true")
   private boolean loadTokens = true;
@@ -98,6 +100,7 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_LOAD_POS_TAGS,
+      mandatory = false,
       description = "determines whether the part of speech tags assigned to each token in the genia corpus will be loaded. The default value of 'true' is used if this "
           + "parameter is unspecified. If 'loadTokens' is 'false', then 'loadPOSTags' will be treated as 'false' regardless of what is given in the descriptor file.",
       defaultValue = "true")
@@ -107,6 +110,7 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_ARTICLE_IDS_LIST_FILE,
+      mandatory = false,
       description = "names the file used to specify the article ids that should be read in")
   File articleIdsListFile;
 
@@ -228,7 +232,7 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 
   public static CollectionReader getDescription(String geniaCorpusFile)
       throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(
+    return CollectionReaderFactory.createReader(
         GeniaPosGoldReader.class,
         GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
         geniaCorpusFile);

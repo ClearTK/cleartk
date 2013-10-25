@@ -51,8 +51,8 @@ import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.factory.UimaContextFactory;
-import org.uimafit.testing.util.HideOutput;
+import org.apache.uima.fit.factory.UimaContextFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 
 import com.google.common.collect.Lists;
 
@@ -144,7 +144,7 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     
     // test that the encoder can handle features without names
     try{
-      TreeFeatureVector features = encoder.encodeAll(singletonList);
+      encoder.encodeAll(singletonList);
     }catch(Exception e){
         Assert.assertTrue(false);
     }
@@ -199,7 +199,6 @@ public class RunTkSvmLightTest extends DefaultTestBase {
       Assert.assertEquals(outcome, classifier.classify(features));
       hider.restoreOutput();
     }
-    hider.close();
   }
 
   @Test
@@ -247,7 +246,6 @@ public class RunTkSvmLightTest extends DefaultTestBase {
       String outcome = instance.getOutcome();
       Assert.assertEquals("Assert error with instance: " + instance.toString(), outcome, classifier.classify(features));
     }
-    hider.close();
   }
 
   private static List<Instance<Boolean>> generateBooleanInstances(int n) {

@@ -43,8 +43,8 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.HideOutput;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -132,7 +132,7 @@ public class GrmmDataWriterTest extends DefaultTestBase {
 
   @Test
   public void test1DataWriter() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         Test1Annotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -162,7 +162,6 @@ public class GrmmDataWriterTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName, "template.txt");
     hider.restoreOutput();
-    hider.close();
   }
 
 }

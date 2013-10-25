@@ -32,7 +32,7 @@ import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * Tests for classes in the chunking package.

@@ -25,26 +25,22 @@
 package org.cleartk.examples.treebank;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.fit.component.ViewCreatorAnnotator;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.corpus.penntreebank.TreebankGoldAnnotator;
 import org.cleartk.eval.EvaluationConstants;
-import org.cleartk.util.ViewUriFileNamer;
+import org.cleartk.examples.XmiWriter;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.uimafit.component.ViewCreatorAnnotator;
-import org.uimafit.component.xwriter.XWriter;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
 
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
@@ -95,7 +91,7 @@ public class TreebankParsingExample {
     public List<String> getTreebankFileSuffixes();
   }
 
-  public static void main(String[] args) throws UIMAException, IOException {
+  public static void main(String[] args) throws Exception {
     Options options = CliFactory.parseArguments(Options.class, args);
 
     // Loads URIS specified by files into URI view
@@ -111,22 +107,19 @@ public class TreebankParsingExample {
     builder.add(UriToDocumentTextAnnotator.getDescriptionForView(PennTreebankReader.TREEBANK_VIEW));
 
     // Ensures GOLD_VIEW is present
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         EvaluationConstants.GOLD_VIEW));
 
     // Parses treebank text into gold view (instead of default sofa view)
-    AnalysisEngineDescription treebankParserDescription = AnalysisEngineFactory.createPrimitiveDescription(TreebankGoldAnnotator.class);
-    builder.add(treebankParserDescription, CAS.NAME_DEFAULT_SOFA, EvaluationConstants.GOLD_VIEW);
+    builder.add(
+        TreebankGoldAnnotator.getDescription(),
+        CAS.NAME_DEFAULT_SOFA,
+        EvaluationConstants.GOLD_VIEW);
 
     // XMI Writer
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
-        XWriter.class,
-        XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-        options.getOutputDirectory(),
-        XWriter.PARAM_FILE_NAMER_CLASS_NAME,
-        ViewUriFileNamer.class.getName()));
+    builder.add(XmiWriter.getDescription(new File(options.getOutputDirectory())));
 
     SimplePipeline.runPipeline(reader, builder.createAggregateDescription());
 

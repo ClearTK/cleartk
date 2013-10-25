@@ -24,20 +24,22 @@
 package org.cleartk.classifier.feature.selection;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.fit.component.NoOpAnnotator;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
-import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.selection.MutualInformationFeatureSelectionExtractor.MutualInformationStats;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Sentence;
@@ -45,9 +47,6 @@ import org.cleartk.type.test.Token;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.component.NoOpAnnotator;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
 
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
@@ -64,7 +63,7 @@ public class MutualInformationTest extends DefaultTestBase {
 
   @Before
   public void localSetUp() throws Throwable {
-    this.engine = AnalysisEngineFactory.createPrimitive(NoOpAnnotator.class);
+    this.engine = AnalysisEngineFactory.createEngine(NoOpAnnotator.class);
     this.jCasObjects = new ArrayList<JCas>();
   }
 
@@ -92,7 +91,7 @@ public class MutualInformationTest extends DefaultTestBase {
   }
 
   @Test
-  public void testMutualInformationFeatureSelection() throws UIMAException, IOException {
+  public void testMutualInformationFeatureSelection() throws Exception {
 
     CleartkExtractor<Sentence, Token> extractor = new CleartkExtractor<Sentence, Token>(
         Token.class,

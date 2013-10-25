@@ -59,7 +59,7 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -118,7 +118,7 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
     this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, CRF_SUITE_TESTS_PROPERTY_VALUE);
     this.logger.info(CRF_SUITE_TESTS_ENABLED_MESSAGE);
 
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         TestAnnotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -158,7 +158,7 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
         outcomes,
         "O O O O O O O O O O O O O O O B-GENE I-GENE I-GENE O B-GENE I-GENE O O O O O O O O O O O O O O O O O O O O O");
 
-    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createEngine(
         TestAnnotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         JarClassifierBuilder.getModelJarFile(outputDirectoryName));

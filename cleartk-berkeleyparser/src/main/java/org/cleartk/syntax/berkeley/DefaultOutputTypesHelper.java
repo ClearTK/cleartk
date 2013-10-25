@@ -27,7 +27,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.uimafit.util.FSCollectionFactory;
+import org.apache.uima.fit.util.FSCollectionFactory;
 
 import edu.berkeley.nlp.syntax.Tree;
 

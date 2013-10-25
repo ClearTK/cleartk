@@ -36,9 +36,9 @@ import org.cleartk.examples.chunking.util.MascGoldAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
@@ -91,7 +91,7 @@ public class TrainNamedEntityChunker {
     aggregate.add(PosTaggerAnnotator.getDescription());
 
     // our NamedEntityChunker annotator, configured to write Mallet CRF training data
-    aggregate.add(AnalysisEngineFactory.createPrimitiveDescription(
+    aggregate.add(AnalysisEngineFactory.createEngineDescription(
         NamedEntityChunker.class,
         CleartkSequenceAnnotator.PARAM_IS_TRAINING,
         true,

@@ -38,6 +38,14 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.fit.component.ViewTextCopierAnnotator;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.ConfigurationParameterFactory;
+import org.apache.uima.fit.pipeline.JCasIterator;
+import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.testing.util.HideOutput;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -62,14 +70,6 @@ import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.uimafit.component.ViewTextCopierAnnotator;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.pipeline.JCasIterable;
-import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.testing.util.HideOutput;
-import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Function;
 import com.lexicalscope.jewel.cli.CliFactory;
@@ -269,7 +269,6 @@ public class DocumentClassificationEvaluation extends
         outputDirectory,
         this.trainingArguments.toArray(new String[this.trainingArguments.size()]));
     hider.restoreOutput();
-    hider.close();
   }
 
   /**
@@ -298,12 +297,12 @@ public class DocumentClassificationEvaluation extends
     switch (mode) {
       case TRAIN:
         // If this is training, put the label categories directly into the default view
-        builder.add(AnalysisEngineFactory.createPrimitiveDescription(GoldDocumentCategoryAnnotator.class));
+        builder.add(AnalysisEngineFactory.createEngineDescription(GoldDocumentCategoryAnnotator.class));
         break;
 
       case TEST:
         // Copies the text from the default view to a separate gold view
-        builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+        builder.add(AnalysisEngineFactory.createEngineDescription(
             ViewTextCopierAnnotator.class,
             ViewTextCopierAnnotator.PARAM_SOURCE_VIEW_NAME,
             CAS.NAME_DEFAULT_SOFA,
@@ -313,7 +312,7 @@ public class DocumentClassificationEvaluation extends
         // If this is testing, put the document categories in the gold view
         // The extra parameters to add() map the default view to the gold view.
         builder.add(
-            AnalysisEngineFactory.createPrimitiveDescription(GoldDocumentCategoryAnnotator.class),
+            AnalysisEngineFactory.createEngineDescription(GoldDocumentCategoryAnnotator.class),
             CAS.NAME_DEFAULT_SOFA,
             GOLD_VIEW_NAME);
         break;
@@ -343,7 +342,7 @@ public class DocumentClassificationEvaluation extends
         // For training we will create DocumentClassificationAnnotator that
         // Extracts the features as is, and then writes out the data to
         // a serialized instance file.
-        builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+        builder.add(AnalysisEngineFactory.createEngineDescription(
             DocumentClassificationAnnotator.class,
             DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
             InstanceDataWriter.class.getName(),
@@ -357,7 +356,7 @@ public class DocumentClassificationEvaluation extends
         // DocumentClassificationAnnotator using
         // all of the model data computed during training. This includes feature normalization data
         // and thei model jar file for the classifying algorithm
-        AnalysisEngineDescription documentClassificationAnnotator = AnalysisEngineFactory.createPrimitiveDescription(
+        AnalysisEngineDescription documentClassificationAnnotator = AnalysisEngineFactory.createEngineDescription(
             DocumentClassificationAnnotator.class,
             CleartkAnnotator.PARAM_IS_TRAINING,
             false,
@@ -394,7 +393,9 @@ public class DocumentClassificationEvaluation extends
     // Run and evaluate
     Function<UsenetDocument, ?> getSpan = AnnotationStatistics.annotationToSpan();
     Function<UsenetDocument, String> getCategory = AnnotationStatistics.annotationToFeatureValue("category");
-    for (JCas jCas : new JCasIterable(collectionReader, engine)) {
+    JCasIterator iter = new JCasIterator(collectionReader, engine);
+    while (iter.hasNext()) {
+      JCas jCas = iter.next();
       JCas goldView = jCas.getView(GOLD_VIEW_NAME);
       JCas systemView = jCas.getView(DocumentClassificationEvaluation.SYSTEM_VIEW_NAME);
 

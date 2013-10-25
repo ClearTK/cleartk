@@ -32,7 +32,7 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>

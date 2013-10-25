@@ -54,8 +54,8 @@ import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.feature.FilteringExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.collect.Lists;
 
@@ -82,7 +82,7 @@ public class TemporalLinkEventToSameSentenceTimeAnnotator extends
 
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
-      return AnalysisEngineFactory.createPrimitiveDescription(TemporalLinkEventToSameSentenceTimeAnnotator.class);
+      return AnalysisEngineFactory.createEngineDescription(TemporalLinkEventToSameSentenceTimeAnnotator.class);
     }
   };
 

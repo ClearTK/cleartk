@@ -37,10 +37,10 @@ import org.cleartk.type.test.NamedEntityMention;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.util.type.Parenthetical;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.ConfigurationParameterFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -128,7 +128,7 @@ public class ParentheticalAnnotatorTest extends DefaultTestBase {
         aed,
         ParentheticalAnnotator.PARAM_PARENTHETICAL_TYPE_NAME,
         Chunk.class.getName());
-    AnalysisEngine ae = AnalysisEngineFactory.createPrimitive(aed);
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(aed);
 
     String text = "((a))(((abc)bc)def)";
     jCas.setDocumentText(text);
@@ -147,7 +147,7 @@ public class ParentheticalAnnotatorTest extends DefaultTestBase {
 
   @Test
   public void testBrackets() throws Exception {
-    AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
+    AnalysisEngineDescription aed = AnalysisEngineFactory.createEngineDescription(
         ParentheticalAnnotator.class,
         ParentheticalAnnotator.PARAM_LEFT_PARENTHESIS,
         "[",
@@ -156,7 +156,7 @@ public class ParentheticalAnnotatorTest extends DefaultTestBase {
     testParens("[[[a]b]ccc]", aed, "[[[a]b]ccc]", "[[a]b]", "[a]");
 
     AnalysisEngineDescription aed2 = ParentheticalAnnotator.getDescription();
-    AnalysisEngineDescription aed3 = AnalysisEngineFactory.createPrimitiveDescription(
+    AnalysisEngineDescription aed3 = AnalysisEngineFactory.createEngineDescription(
         ParentheticalAnnotator.class,
         ParentheticalAnnotator.PARAM_LEFT_PARENTHESIS,
         "{",
@@ -183,7 +183,7 @@ public class ParentheticalAnnotatorTest extends DefaultTestBase {
   }
 
   private void testParens(AnalysisEngineDescription aed, String... parenStrings) throws Exception {
-    AnalysisEngine ae = AnalysisEngineFactory.createPrimitive(aed);
+    AnalysisEngine ae = AnalysisEngineFactory.createEngine(aed);
 
     SimplePipeline.runPipeline(jCas, ae);
 

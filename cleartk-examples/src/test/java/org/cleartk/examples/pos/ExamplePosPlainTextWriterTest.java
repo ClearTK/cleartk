@@ -34,7 +34,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -63,7 +63,7 @@ public class ExamplePosPlainTextWriterTest extends ExamplesTestBase {
   @Test
   public void test() throws Exception {
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         ExamplePosPlainTextWriter.class,
         ExamplePosPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath());
@@ -84,7 +84,7 @@ public class ExamplePosPlainTextWriterTest extends ExamplesTestBase {
 
   @Test
   public void testDescriptor() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePosPlainTextWriter.class);
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(ExamplePosPlainTextWriter.class);
     Object outDirectory = engine.getConfigParameterValue(ExamplePosPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME);
     Assert.assertEquals(ExamplePosPlainTextWriter.DEFAULT_OUTPUT_DIRECTORY, outDirectory);
   }

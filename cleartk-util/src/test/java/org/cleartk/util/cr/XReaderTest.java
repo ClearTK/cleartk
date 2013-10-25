@@ -24,25 +24,24 @@
 package org.cleartk.util.cr;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 
 import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.cas.impl.XCASSerializer;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.collection.CollectionReaderDescription;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
+import org.apache.uima.fit.pipeline.JCasIterable;
+import org.apache.uima.fit.util.CasIOUtil;
+import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.util.XMLSerializer;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.ViewUriFileNamer;
-import org.cleartk.util.ViewUriUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.component.xwriter.XWriter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.pipeline.JCasIterable;
-import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -57,39 +56,34 @@ import org.uimafit.util.JCasUtil;
 public class XReaderTest extends DefaultTestBase {
 
   @Test
-  public void testReader() throws IOException, UIMAException {
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+  public void testReader() throws Exception {
+    CollectionReaderDescription desc = CollectionReaderFactory.createReaderDescription(
         XReader.class,
         FilesCollectionReader.PARAM_ROOT_FILE,
         "src/test/resources/data/xreader-test/xmi",
         FilesCollectionReader.PARAM_SUFFIXES,
         new String[] { ".xmi" });
-    testCollectionReaderCount(reader, 11);
+    int count = 0;
+    for (@SuppressWarnings("unused")
+    JCas unused : new JCasIterable(desc)) {
+      count += 1;
+    }
+    Assert.assertEquals(11, count);
   }
 
   @Test
-  public void testReaderXmi() throws IOException, UIMAException {
+  public void testReaderXmi() throws Exception {
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-        XWriter.class,
-        XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-        this.outputDirectory.getPath(),
-        XWriter.PARAM_FILE_NAMER_CLASS_NAME,
-        ViewUriFileNamer.class.getName());
     tokenBuilder.buildTokens(jCas, "I like\nspam!", "I like spam !", "PRP VB NN .");
-    URI uri = new File(outputDirectory, "test").toURI();
-    ViewUriUtil.setURI(jCas, uri);
-    engine.process(jCas);
-    engine.collectionProcessComplete();
+    File outputFile = new File(outputDirectory, "test.xmi");
+    CasIOUtil.writeXmi(jCas, outputFile);
 
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+    CollectionReaderDescription desc = CollectionReaderFactory.createReaderDescription(
         XReader.class,
         FilesCollectionReader.PARAM_ROOT_FILE,
-        new File(outputDirectory, "test.xmi").getPath());
+        outputFile.getPath());
 
-    Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
-
-    jCas = new JCasIterable(reader).next();
+    jCas = new JCasIterable(desc).iterator().next();
 
     String jCasText = jCas.getDocumentText();
     String docText = "I like\nspam!";
@@ -97,38 +91,27 @@ public class XReaderTest extends DefaultTestBase {
 
     Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
     Assert.assertEquals("I", token.getCoveredText());
-    reader.close();
 
   }
 
   @Test
-  public void testReaderXcas() throws IOException, UIMAException {
+  public void testReaderXcas() throws Exception {
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-        XWriter.class,
-        XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-        this.outputDirectory.getPath(),
-        XWriter.PARAM_XML_SCHEME_NAME,
-        XWriter.XCAS,
-        XWriter.PARAM_FILE_NAMER_CLASS_NAME,
-        ViewUriFileNamer.class.getName());
     tokenBuilder.buildTokens(jCas, "I like\nspam!", "I like spam !", "PRP VB NN .");
+    File outputFile = new File(outputDirectory, "test.xcas");
+    FileOutputStream out = new FileOutputStream(outputFile);
+    XCASSerializer ser = new XCASSerializer(jCas.getTypeSystem());
+    XMLSerializer xmlSer = new XMLSerializer(out, false);
+    ser.serialize(jCas.getCas(), xmlSer.getContentHandler());
 
-    URI uri = new File(outputDirectory, "test").toURI();
-    ViewUriUtil.setURI(jCas, uri);
-    engine.process(jCas);
-    engine.collectionProcessComplete();
-
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+    CollectionReaderDescription desc = CollectionReaderFactory.createReaderDescription(
         XReader.class,
         FilesCollectionReader.PARAM_ROOT_FILE,
         new File(outputDirectory, "test.xcas").getPath(),
         XReader.PARAM_XML_SCHEME,
         XReader.XCAS);
 
-    Assert.assertEquals(0, reader.getProgress()[0].getCompleted());
-
-    jCas = new JCasIterable(reader).next();
+    jCas = new JCasIterable(desc).iterator().next();
 
     String jCasText = jCas.getDocumentText();
     String docText = "I like\nspam!";
@@ -136,19 +119,17 @@ public class XReaderTest extends DefaultTestBase {
 
     Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
     Assert.assertEquals("I", token.getCoveredText());
-    reader.close();
-
   }
 
   @Test
   public void testDescriptor() throws UIMAException {
     try {
-      CollectionReaderFactory.createCollectionReader(XReader.class);
+      CollectionReaderFactory.createReader(XReader.class);
       Assert.fail("expected exception with no file or directory specified");
     } catch (ResourceInitializationException e) {
     }
 
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+    CollectionReader reader = CollectionReaderFactory.createReader(
         XReader.class,
         FilesCollectionReader.PARAM_ROOT_FILE,
         outputDirectory.getPath());
@@ -163,15 +144,13 @@ public class XReaderTest extends DefaultTestBase {
     xrt.buildTestXmiFiles();
   }
 
-  private void buildTestXmiFiles() throws Exception {
-    AnalysisEngine xWriter = AnalysisEngineFactory.createPrimitive(
-        XWriter.class,
-        XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
-        "src/test/resources/data/xreader-test/xmi");
-    super.setUp();
+  private static void writeTestXMI(JCas jCas, String name) throws IOException {
+    CasIOUtil.writeXmi(jCas, new File("src/test/resources/data/xreader-test/xmi/", name));
+  }
 
+  private void buildTestXmiFiles() throws Exception {
     tokenBuilder.buildTokens(jCas, "This is a test.", "This is a test .", "t1 t2 t3 t4 t5");
-    SimplePipeline.runPipeline(jCas, xWriter); // 1.xmi
+    writeTestXMI(jCas, "1.xmi");
     jCas.reset();
     tokenBuilder.buildTokens(
         jCas,
@@ -180,39 +159,38 @@ public class XReaderTest extends DefaultTestBase {
         "t1 t2 t3 t4 t5 t6");
     jCas.reset();
     tokenBuilder.buildTokens(jCas, "A B C D", "A B C D", "t1 t2 t3 t4");
-    SimplePipeline.runPipeline(jCas, xWriter); // 2.xmi
+    writeTestXMI(jCas, "2.xmi");
     jCas.reset();
     tokenBuilder.buildTokens(jCas, "1 2 3 4", "1 2 3 4", "tA tB tC tD");
-    SimplePipeline.runPipeline(jCas, xWriter); // 3.xmi
+    writeTestXMI(jCas, "3.xmi");
     jCas.reset();
     tokenBuilder.buildTokens(jCas, "1 2 3 4", "1 2 3 4", "tA tB tC tD");
-    SimplePipeline.runPipeline(jCas, xWriter); // 4.xmi
+    writeTestXMI(jCas, "4.xmi");
     jCas.reset();
     tokenBuilder.buildTokens(jCas, "10 20 30 40 50", "10 20 30 40 50", "1 2 3 4 5");
-    SimplePipeline.runPipeline(jCas, xWriter); // 5.xmi
+    writeTestXMI(jCas, "5.xmi");
     jCas.reset();
     tokenBuilder.buildTokens(
         jCas,
         "first sentence. second sentence.",
         "first sentence . \n second sentence .",
         "1 2 3 1 2 3");
-    SimplePipeline.runPipeline(jCas, xWriter); // 6.xmi
+    writeTestXMI(jCas, "6.xmi");
     jCas.reset();
     tokenBuilder.buildTokens(jCas, "A1 A1 B2 B2", "A1 A1 B2 B2", "A A B B");
-    SimplePipeline.runPipeline(jCas, xWriter); // 7.xmi
+    writeTestXMI(jCas, "7.xmi");
     jCas.reset();
     tokenBuilder.buildTokens(jCas, "AAAA", "A A A A", "1 2 3 4");
-    SimplePipeline.runPipeline(jCas, xWriter); // 8.xmi
+    writeTestXMI(jCas, "8.xmi");
     jCas.reset();
     tokenBuilder.buildTokens(jCas, "AA AA", "AA AA", "1 2");
-    SimplePipeline.runPipeline(jCas, xWriter); // 9.xmi
+    writeTestXMI(jCas, "9.xmi");
     jCas.reset();
     tokenBuilder.buildTokens(jCas, "A", "A", "1");
-    SimplePipeline.runPipeline(jCas, xWriter); // 10.xmi
+    writeTestXMI(jCas, "10.xmi");
     jCas.reset();
     tokenBuilder.buildTokens(jCas, "b", "b", "BB1");
-    SimplePipeline.runPipeline(jCas, xWriter); // 11.xmi
-
+    writeTestXMI(jCas, "11.xmi");
   }
 
 }

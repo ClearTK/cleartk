@@ -32,16 +32,16 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.initializable.InitializableFactory;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -82,7 +82,8 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 
   @ConfigurationParameter(
       description = OUTPUT_DIRECTORY_NAME_DESCRIPTION,
-      name = PARAM_OUTPUT_DIRECTORY_NAME)
+      name = PARAM_OUTPUT_DIRECTORY_NAME,
+      mandatory = false)
   private String outputDirectoryName;
 
   private static final String FILE_SUFFIX_DESCRIPTION = "provides a file "
@@ -95,7 +96,10 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 
   public static final String PARAM_FILE_SUFFIX = "fileSuffix";
 
-  @ConfigurationParameter(description = FILE_SUFFIX_DESCRIPTION, name = PARAM_FILE_SUFFIX)
+  @ConfigurationParameter(
+      description = FILE_SUFFIX_DESCRIPTION,
+      name = PARAM_FILE_SUFFIX,
+      mandatory = false)
   private String fileSuffix;
 
   private static final String OUTPUT_FILE_NAME_DESCRIPTION = "takes a file "
@@ -110,7 +114,10 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 
   public static final String PARAM_OUTPUT_FILE_NAME = "outputFileName";
 
-  @ConfigurationParameter(description = OUTPUT_FILE_NAME_DESCRIPTION, name = PARAM_OUTPUT_FILE_NAME)
+  @ConfigurationParameter(
+      description = OUTPUT_FILE_NAME_DESCRIPTION,
+      name = PARAM_OUTPUT_FILE_NAME,
+      mandatory = false)
   private String outputFileName;
 
   private static final String OUTPUT_ANNOTATION_CLASS_NAME_DESCRIPTION = "takes the name of the annotation class of the annotations that are to be "
@@ -169,7 +176,8 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 
   @ConfigurationParameter(
       description = BLOCK_ANNOTATION_CLASS_NAME_DESCRIPTION,
-      name = PARAM_BLOCK_ANNOTATION_CLASS_NAME)
+      name = PARAM_BLOCK_ANNOTATION_CLASS_NAME,
+      mandatory = false)
   private String blockAnnotationClassName;
 
   private final static String BLOCK_WRITER_CLASS_NAME_DESCRIPTION = "Provides  the class name of a class that extends org.cleartk.util.linewriter.BlockWriter. "
@@ -184,6 +192,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
   @ConfigurationParameter(
       name = PARAM_BLOCK_WRITER_CLASS_NAME,
       description = BLOCK_WRITER_CLASS_NAME_DESCRIPTION,
+      mandatory = false,
       defaultValue = "org.cleartk.util.ae.linewriter.block.BlankLineBlockWriter")
   private String blockWriterClassName;
 

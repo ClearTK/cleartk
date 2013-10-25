@@ -34,7 +34,7 @@ import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.feature.token.TokenTextForSelectedPosExtractor;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -60,7 +60,7 @@ public class EventModalityAnnotator extends EventAttributeAnnotator<String> {
 
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
-      return AnalysisEngineFactory.createPrimitiveDescription(EventModalityAnnotator.class);
+      return AnalysisEngineFactory.createEngineDescription(EventModalityAnnotator.class);
     }
   };
 

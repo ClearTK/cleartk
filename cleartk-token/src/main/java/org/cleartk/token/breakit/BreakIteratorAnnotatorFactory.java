@@ -30,7 +30,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -45,7 +45,7 @@ public class BreakIteratorAnnotatorFactory {
 
   public static AnalysisEngineDescription createSentenceAnnotator(Locale locale)
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         BreakIteratorAnnotator.class,
         BreakIteratorAnnotator.PARAM_ANNOTATION_TYPE_NAME,
         Sentence.class.getName(),
@@ -55,7 +55,7 @@ public class BreakIteratorAnnotatorFactory {
 
   public static AnalysisEngineDescription createTokenAnnotator(Locale locale)
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         BreakIteratorAnnotator.class,
         BreakIteratorAnnotator.PARAM_BREAK_ITERATOR_TYPE,
         "WORD",

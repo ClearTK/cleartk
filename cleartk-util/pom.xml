@@ -47,8 +47,8 @@
 			<artifactId>uimaj-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.uimafit</groupId>
-			<artifactId>uimafit</artifactId>
+			<groupId>org.apache.uima</groupId>
+			<artifactId>uimafit-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -62,6 +62,11 @@
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.uima</groupId>
+			<artifactId>uimaj-document-annotation</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

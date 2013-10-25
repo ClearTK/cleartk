@@ -43,6 +43,12 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.JCasIterator;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.XMLSerializer;
@@ -53,12 +59,6 @@ import org.cleartk.corpus.timeml.TempEval2010Writer;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.JCasIterable;
-import org.uimafit.pipeline.SimplePipeline;
 import org.xml.sax.SAXException;
 
 /**
@@ -123,7 +123,7 @@ public class TempEval2010Evaluation extends
 
     // run the XMI reader and the classifier data writers
     AggregateBuilder builder = new AggregateBuilder();
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         XMIReader.class,
         XMIAnnotator.PARAM_XMI_DIRECTORY,
         this.getXMIDirectory(directory, Stage.TRAIN).getPath()));
@@ -159,7 +159,7 @@ public class TempEval2010Evaluation extends
       File directory) throws Exception {
     // prepare the XMI reader, the classifiers and the TempEval writer
     AggregateBuilder builder = new AggregateBuilder();
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         XMIReader.class,
         XMIAnnotator.PARAM_XMI_DIRECTORY,
         this.getXMIDirectory(directory, Stage.TEST).getPath()));
@@ -167,7 +167,7 @@ public class TempEval2010Evaluation extends
       File modelFile = JarClassifierBuilder.getModelJarFile(modelInfo.getModelSubdirectory(directory));
       builder.add(modelInfo.modelFactory.getAnnotatorDescription(modelFile.getPath()));
     }
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         TempEval2010Writer.class,
         TempEval2010Writer.PARAM_OUTPUT_DIRECTORY,
         new File(directory, "eval").getPath(),
@@ -185,7 +185,9 @@ public class TempEval2010Evaluation extends
 
     // gather statistics over all the CASes in the test set
     AnalysisEngine engine = builder.createAggregate();
-    for (JCas jCas : new JCasIterable(collectionReader, engine)) {
+    JCasIterator iter = new JCasIterator(collectionReader, engine);
+    while (iter.hasNext()) {
+      JCas jCas = iter.next();
       JCas goldView = jCas.getView(GOLD_VIEW_NAME);
       JCas systemView = jCas.getView(SYSTEM_VIEW_NAME);
       for (ModelInfo<?> modelInfo : this.modelInfos) {
@@ -262,13 +264,13 @@ public class TempEval2010Evaluation extends
 
       // run the gold annotator, the preprocessing annotators, and the XMI writer
       AggregateBuilder builder = new AggregateBuilder();
-      builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+      builder.add(AnalysisEngineFactory.createEngineDescription(
           TempEval2010GoldAnnotator.class,
           goldAnnotatorParams.toArray()));
       for (AnalysisEngineDescription desc : this.preprocessingAnnotators) {
         builder.add(desc);
       }
-      builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+      builder.add(AnalysisEngineFactory.createEngineDescription(
           XMIWriter.class,
           XMIAnnotator.PARAM_XMI_DIRECTORY,
           xmiDirectory.getPath()));

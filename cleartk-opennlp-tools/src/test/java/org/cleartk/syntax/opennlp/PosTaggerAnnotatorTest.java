@@ -32,8 +32,8 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.cleartk.token.type.Token;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -44,7 +44,7 @@ public class PosTaggerAnnotatorTest extends OpennlpSyntaxTestBase {
 
   @Test
   public void testSimple() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PosTaggerAnnotator.getDescription());
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(PosTaggerAnnotator.getDescription());
     tokenBuilder.buildTokens(
         jCas,
         "The brown fox jumped quickly over the lazy dog.",

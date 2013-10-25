@@ -28,8 +28,8 @@ import java.net.URI;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.type.Token;
-import org.uimafit.descriptor.TypeCapability;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.descriptor.TypeCapability;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -53,11 +53,11 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class PosTagger extends PosTagger_ImplBase<Token> {
 		
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(PosTagger.class);
+    return AnalysisEngineFactory.createEngineDescription(PosTagger.class);
   }
   
   public static AnalysisEngineDescription getDescription(String languageCode, URI modelUri) throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(PosTagger.class,
+    return AnalysisEngineFactory.createEngineDescription(PosTagger.class,
         PosTagger_ImplBase.PARAM_LANGUAGE_CODE,
         languageCode,
         PosTagger_ImplBase.PARAM_MODEL_URI,

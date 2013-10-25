@@ -23,12 +23,16 @@
  */
 package org.cleartk.corpus.timeml;
 
-import java.io.IOException;
 import java.util.Iterator;
 
-import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.collection.CollectionReaderDescription;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
+import org.apache.uima.fit.pipeline.JCasIterable;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.test.CleartkTestBase;
 import org.cleartk.timeml.type.DocumentCreationTime;
@@ -38,10 +42,6 @@ import org.cleartk.timeml.type.Time;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.pipeline.JCasIterable;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -55,11 +55,11 @@ import org.uimafit.util.JCasUtil;
 public class TimeMlGoldAnnotatorTest extends CleartkTestBase {
 
   @Test
-  public void testTimeBank() throws UIMAException, IOException {
+  public void testTimeBank() throws Exception {
     CollectionReader reader = FilesCollectionReader.getCollectionReaderWithView(
         "src/test/resources/data/timeml/wsj_0106.tml",
         TimeMlGoldAnnotator.TIMEML_VIEW_NAME);
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMlGoldAnnotator.getDescription());
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(TimeMlGoldAnnotator.getDescription());
     reader.getNext(this.jCas.getCas());
     engine.process(this.jCas);
     engine.collectionProcessComplete();
@@ -112,15 +112,15 @@ public class TimeMlGoldAnnotatorTest extends CleartkTestBase {
   }
 
   @Test
-  public void testTempEval() throws UIMAException, IOException {
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+  public void testTempEval() throws Exception {
+    CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(
         FilesCollectionReader.class,
         FilesCollectionReader.PARAM_VIEW_NAME,
         TimeMlGoldAnnotator.TIMEML_VIEW_NAME,
         FilesCollectionReader.PARAM_ROOT_FILE,
         "src/test/resources/data/timeml/AP900815-0044.tml");
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMlGoldAnnotator.class);
-    JCas jcas = new JCasIterable(reader, engine).next();
+    AnalysisEngineDescription engine = AnalysisEngineFactory.createEngineDescription(TimeMlGoldAnnotator.class);
+    JCas jcas = new JCasIterable(reader, engine).iterator().next();
 
     // <EVENT eid="e5" class="STATE" stem="face" aspect="NONE"
     // tense="PRESPART" polarity="POS" pos="VERB">facing</EVENT>
@@ -158,8 +158,8 @@ public class TimeMlGoldAnnotatorTest extends CleartkTestBase {
   }
 
   @Test
-  public void testNoTLINKs() throws UIMAException, IOException {
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+  public void testNoTLINKs() throws Exception {
+    CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(
         FilesCollectionReader.class,
         FilesCollectionReader.PARAM_VIEW_NAME,
         TimeMlGoldAnnotator.TIMEML_VIEW_NAME,
@@ -167,7 +167,7 @@ public class TimeMlGoldAnnotatorTest extends CleartkTestBase {
         "src/test/resources/data/timeml",
         FilesCollectionReader.PARAM_SUFFIXES,
         new String[] { ".tml" });
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngineDescription engine = AnalysisEngineFactory.createEngineDescription(
         TimeMlGoldAnnotator.class,
         TimeMlGoldAnnotator.PARAM_LOAD_TLINKS,
         false);
@@ -184,7 +184,7 @@ public class TimeMlGoldAnnotatorTest extends CleartkTestBase {
     view.setDocumentText("<TimeML>\n"
         + "<TIMEX3 tid='t1' anchorTimeID='t0' value='2010-05-27'>One year ago</TIMEX3>...\n"
         + "<TIMEX3 tid='t0' value='2011-05-27'>May 27, 2011</TIMEX3>\n</TimeML>");
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TimeMlGoldAnnotator.getDescription());
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(TimeMlGoldAnnotator.getDescription());
     engine.process(this.jCas);
     Iterator<Time> times = JCasUtil.select(this.jCas, Time.class).iterator();
     Time time1 = times.next();

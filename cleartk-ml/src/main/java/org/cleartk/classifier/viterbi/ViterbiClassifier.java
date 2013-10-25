@@ -39,9 +39,9 @@ import org.cleartk.classifier.SequenceClassifier;
 import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.initializable.Initializable;
+import org.apache.uima.fit.component.initialize.ConfigurationParameterInitializer;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.initializable.Initializable;
 
 import com.google.common.base.Functions;
 import com.google.common.base.Objects;

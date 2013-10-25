@@ -27,14 +27,13 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.Assert;
-
+import org.apache.uima.fit.util.JCasUtil;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CharacterCategoryPatternExtractor.PatternType;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
+import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>

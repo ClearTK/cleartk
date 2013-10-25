@@ -43,10 +43,10 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.initializable.Initializable;
-import org.uimafit.factory.initializable.InitializableFactory;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.initializable.Initializable;
+import org.apache.uima.fit.factory.initializable.InitializableFactory;
 
 /**
  * <br>

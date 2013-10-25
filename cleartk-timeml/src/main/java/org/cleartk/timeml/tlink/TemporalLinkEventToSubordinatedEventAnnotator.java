@@ -48,8 +48,8 @@ import org.cleartk.feature.syntax.SyntacticFirstChildOfGrandparentOfLeafExtracto
 import org.cleartk.feature.syntax.SyntacticLeafToLeafPathPartsExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.collect.Lists;
 
@@ -76,7 +76,7 @@ public class TemporalLinkEventToSubordinatedEventAnnotator extends
 
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
-      return AnalysisEngineFactory.createPrimitiveDescription(TemporalLinkEventToSubordinatedEventAnnotator.class);
+      return AnalysisEngineFactory.createEngineDescription(TemporalLinkEventToSubordinatedEventAnnotator.class);
     }
   };
 

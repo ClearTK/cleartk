@@ -46,8 +46,8 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.HideOutput;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -113,7 +113,7 @@ public class MaxentStringOutcomeClassifierTest extends DefaultTestBase {
 
   @Test
   public void test1() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         Test1Annotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -132,7 +132,6 @@ public class MaxentStringOutcomeClassifierTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName);
     hider.restoreOutput();
-    hider.close();
 
     MaxentStringOutcomeClassifierBuilder builder = new MaxentStringOutcomeClassifierBuilder();
     MaxentStringOutcomeClassifier classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
@@ -143,7 +142,7 @@ public class MaxentStringOutcomeClassifierTest extends DefaultTestBase {
     classification = classifier.classify(createInstance(null, "goodbye", 1).getFeatures());
     assertEquals("C", classification);
 
-    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createEngine(
         Test1Annotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         JarClassifierBuilder.getModelJarFile(outputDirectoryName));
@@ -301,7 +300,7 @@ public class MaxentStringOutcomeClassifierTest extends DefaultTestBase {
 
   @Test
   public void test2() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         Test2Annotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -319,7 +318,6 @@ public class MaxentStringOutcomeClassifierTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName + "/", "10", "1");
     hider.restoreOutput();
-    hider.close();
 
     MaxentStringOutcomeClassifierBuilder builder = new MaxentStringOutcomeClassifierBuilder();
     MaxentStringOutcomeClassifier classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
@@ -343,7 +341,7 @@ public class MaxentStringOutcomeClassifierTest extends DefaultTestBase {
     Assert.assertTrue(scoredOutcomes2.get("O") > scoredOutcomes2.get("B-GENE"));
     Assert.assertTrue(scoredOutcomes2.get("O") > scoredOutcomes2.get("I-GENE"));
 
-    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createEngine(
         Test2Annotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         JarClassifierBuilder.getModelJarFile(outputDirectoryName));

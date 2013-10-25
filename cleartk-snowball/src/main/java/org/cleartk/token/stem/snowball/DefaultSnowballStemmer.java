@@ -29,7 +29,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * This class borrows from {@link SnowballFilter}
@@ -46,7 +46,7 @@ public class DefaultSnowballStemmer extends SnowballStemmer<Token> {
 
   public static AnalysisEngineDescription getDescription(String language)
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         DefaultSnowballStemmer.class,
         SnowballStemmer.PARAM_STEMMER_NAME,
         language);

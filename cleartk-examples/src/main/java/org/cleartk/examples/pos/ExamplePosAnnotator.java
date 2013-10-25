@@ -54,8 +54,8 @@ import org.cleartk.classifier.viterbi.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -137,7 +137,7 @@ public class ExamplePosAnnotator extends CleartkSequenceAnnotator<String> {
 
   public static AnalysisEngineDescription getClassifierDescription(String modelFileName)
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         ExamplePosAnnotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         modelFileName);
@@ -145,7 +145,7 @@ public class ExamplePosAnnotator extends CleartkSequenceAnnotator<String> {
 
   public static AnalysisEngineDescription getWriterDescription(String outputDirectory)
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         ExamplePosAnnotator.class,
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         ViterbiDataWriterFactory.class.getName(),

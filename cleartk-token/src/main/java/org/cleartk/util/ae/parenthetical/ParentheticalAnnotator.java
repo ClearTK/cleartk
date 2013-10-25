@@ -34,12 +34,12 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.CleartkInitializationException;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.ConfigurationParameterFactory;
+import org.apache.uima.fit.factory.initializable.InitializableFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -61,6 +61,7 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
   // are no sentences to iterate over.
   @ConfigurationParameter(
       name = PARAM_WINDOW_TYPE_NAME,
+      mandatory = false,
       description = WINDOW_TYPE_DESCRIPTION)
   private String windowTypeName;
 
@@ -75,17 +76,14 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_LEFT_PARENTHESIS = "leftParenthesis";
 
-  @ConfigurationParameter(
-      name = PARAM_LEFT_PARENTHESIS,
-      defaultValue = "(", mandatory = true)
+  @ConfigurationParameter(name = PARAM_LEFT_PARENTHESIS, defaultValue = "(", mandatory = true)
   private String leftParenthesis;
 
   private char leftParen;
 
   public static final String PARAM_RIGHT_PARENTHESIS = "rightParenthesis";
 
-  @ConfigurationParameter(name = PARAM_RIGHT_PARENTHESIS, 
-      defaultValue = ")", mandatory = true)
+  @ConfigurationParameter(name = PARAM_RIGHT_PARENTHESIS, defaultValue = ")", mandatory = true)
   private String rightParenthesis;
 
   private char rightParen;
@@ -162,7 +160,6 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
     }
   }
 
-
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return getDescription(null, '(', ')');
   }
@@ -176,7 +173,7 @@ public class ParentheticalAnnotator extends JCasAnnotator_ImplBase {
       Class<? extends Annotation> windowClass,
       char leftParen,
       char rightParen) throws ResourceInitializationException {
-    AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
+    AnalysisEngineDescription aed = AnalysisEngineFactory.createEngineDescription(
         ParentheticalAnnotator.class,
         PARAM_LEFT_PARENTHESIS,
         "" + leftParen,

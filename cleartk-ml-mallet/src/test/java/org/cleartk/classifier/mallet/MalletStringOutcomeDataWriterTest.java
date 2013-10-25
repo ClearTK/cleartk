@@ -59,9 +59,9 @@ import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.HideOutput;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -99,7 +99,7 @@ public class MalletStringOutcomeDataWriterTest extends DefaultTestBase {
 
   @Test
   public void test1() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         Test1Annotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -122,7 +122,6 @@ public class MalletStringOutcomeDataWriterTest extends DefaultTestBase {
       Train.main(outputDirectoryName, classifierName);
     }
     hider.restoreOutput();
-    hider.close();
     
     IllegalArgumentException iae = null;
     try {
@@ -153,7 +152,7 @@ public class MalletStringOutcomeDataWriterTest extends DefaultTestBase {
   @Test
   public void test4() throws Exception {
 
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         Test4Annotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -203,7 +202,7 @@ public class MalletStringOutcomeDataWriterTest extends DefaultTestBase {
 
   @Test
   public void testSequenceDataWriterAnnotator() throws IOException, UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         TestAnnotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,

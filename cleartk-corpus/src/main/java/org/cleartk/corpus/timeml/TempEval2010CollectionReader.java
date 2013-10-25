@@ -45,9 +45,9 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasCollectionReader_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.CollectionReaderFactory;
+import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ArrayListMultimap;
@@ -109,7 +109,7 @@ public class TempEval2010CollectionReader extends JCasCollectionReader_ImplBase 
     String[] names = selectedFileNames == null
         ? null
         : selectedFileNames.toArray(new String[selectedFileNames.size()]);
-    return CollectionReaderFactory.createCollectionReader(
+    return CollectionReaderFactory.createReader(
         TempEval2010CollectionReader.class,
         null,
         PARAM_DATA_DIRECTORIES,
@@ -118,14 +118,20 @@ public class TempEval2010CollectionReader extends JCasCollectionReader_ImplBase 
         names);
   }
 
-  @ConfigurationParameter(name = PARAM_DATA_DIRECTORIES, mandatory = true, description = "The directories containing the TempEval "
-      + "2010 data, e.g. \"tempeval-training-2/english\" and \"tempeval2-test/english\"")
+  @ConfigurationParameter(
+      name = PARAM_DATA_DIRECTORIES,
+      mandatory = true,
+      description = "The directories containing the TempEval "
+          + "2010 data, e.g. \"tempeval-training-2/english\" and \"tempeval2-test/english\"")
   protected List<File> dataDirectories;
 
   public static final String PARAM_DATA_DIRECTORIES = "dataDirectories";
 
-  @ConfigurationParameter(name = PARAM_SELECTED_FILE_NAMES, description = "The names of files that should be included when reading, "
-      + "e.g \"ABC19980108.1830.0711\". If null, then all files in the dataset will be included.")
+  @ConfigurationParameter(
+      name = PARAM_SELECTED_FILE_NAMES,
+      mandatory = false,
+      description = "The names of files that should be included when reading, "
+          + "e.g \"ABC19980108.1830.0711\". If null, then all files in the dataset will be included.")
   protected Set<String> selectedFileNames;
 
   public static final String PARAM_SELECTED_FILE_NAMES = "selectedFileNames";

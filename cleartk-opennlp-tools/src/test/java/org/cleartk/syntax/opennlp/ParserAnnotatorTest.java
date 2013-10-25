@@ -37,10 +37,10 @@ import org.cleartk.syntax.opennlp.parser.DefaultOutputTypesHelper;
 import org.cleartk.syntax.opennlp.parser.ParserWrapper_ImplBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.factory.TokenBuilder;
-import org.uimafit.testing.util.DisableLogging;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
+import org.apache.uima.fit.testing.util.DisableLogging;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -53,7 +53,7 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
 
   @Test
   public void test() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         ParserAnnotator.class,
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         MODEL_PATH,
@@ -124,7 +124,7 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
 
   @Test
   public void test2() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         ParserAnnotator.class,
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         MODEL_PATH,
@@ -187,7 +187,7 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
 
   @Test
   public void testTerminals() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         ParserAnnotator.class,
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         MODEL_PATH,
@@ -218,7 +218,7 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
 
   @Test
   public void testNoPos() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         ParserAnnotator.class,
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         MODEL_PATH,
@@ -246,7 +246,7 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
   @Test
   public void testDescriptor() throws UIMAException {
     this.assumeBigMemoryTestsEnabled();
-    AnalysisEngineFactory.createPrimitive(ParserAnnotator.getDescription());
+    AnalysisEngineFactory.createEngine(ParserAnnotator.getDescription());
   }
 
   public static void main(String[] args) {

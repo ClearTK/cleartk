@@ -24,9 +24,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
+import org.apache.uima.fit.util.JCasUtil;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
@@ -36,11 +37,9 @@ import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.factory.TokenBuilder;
-import org.uimafit.util.JCasUtil;
 
 /**
  * 
@@ -68,7 +67,7 @@ public class StanfordCoreNlpTest extends CleartkTestBase {
     String sent1 = "The Stanford-based Dr. Smith bought \n milk for Martha.";
     String sent2 = "So she thanked him for it \n and put the milk into her bag.";
     this.jCas.setDocumentText(String.format("%s %s", sent1, sent2));
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(StanfordCoreNlpAnnotator.getDescription());
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(StanfordCoreNlpAnnotator.getDescription());
     engine.process(this.jCas);
     engine.collectionProcessComplete();
 

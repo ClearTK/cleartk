@@ -43,10 +43,10 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.ViewUriUtil;
 import org.cleartk.util.treebank.TreebankFormatParser;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -73,7 +73,7 @@ public class TreebankAligningAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription(String treeBankDir)
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         TreebankAligningAnnotator.class,
         PARAM_TREEBANK_DIRECTORY_NAME,
         treeBankDir);

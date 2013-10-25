@@ -33,7 +33,7 @@ import java.util.Map;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.LinkedHashMultiset;

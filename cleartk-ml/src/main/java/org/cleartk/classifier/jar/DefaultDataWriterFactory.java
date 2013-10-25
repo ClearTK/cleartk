@@ -27,7 +27,7 @@ import java.io.IOException;
 
 import org.cleartk.classifier.DataWriter;
 import org.cleartk.classifier.DataWriterFactory;
-import org.uimafit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 
 /**
  * A {@link DataWriterFactory} that creates a data writer from the class given by

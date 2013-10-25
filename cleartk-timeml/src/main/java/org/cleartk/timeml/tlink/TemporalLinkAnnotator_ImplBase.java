@@ -46,7 +46,7 @@ import org.cleartk.syntax.constituent.type.TreebankNodeUtil.TreebankNodePath;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.token.type.Sentence;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.base.Function;
 import com.google.common.collect.HashBasedTable;

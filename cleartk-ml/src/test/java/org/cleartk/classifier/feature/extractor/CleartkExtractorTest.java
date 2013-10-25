@@ -27,8 +27,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.Assert;
-
+import org.apache.uima.fit.factory.JCasFactory;
+import org.apache.uima.fit.util.JCasUtil;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Count;
@@ -44,9 +44,8 @@ import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
+import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.JCasFactory;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>

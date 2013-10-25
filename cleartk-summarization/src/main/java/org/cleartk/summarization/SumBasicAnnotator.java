@@ -43,8 +43,8 @@ import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.summarization.type.SummarySentence;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
 import com.google.common.base.Charsets;

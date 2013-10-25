@@ -46,9 +46,9 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.SofaCapability;
-import org.uimafit.util.FSCollectionFactory;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.SofaCapability;
+import org.apache.uima.fit.util.FSCollectionFactory;
 
 /**
  * <br>

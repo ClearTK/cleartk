@@ -38,9 +38,9 @@ import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.util.ReflectionUtil;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.initializable.InitializableFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>

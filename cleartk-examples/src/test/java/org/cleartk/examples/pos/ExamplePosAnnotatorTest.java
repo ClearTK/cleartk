@@ -31,6 +31,8 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
@@ -42,8 +44,6 @@ import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.examples.ExamplesTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -57,7 +57,7 @@ public class ExamplePosAnnotatorTest extends ExamplesTestBase {
 
   @Test
   public void testSimpleSentence() throws Exception {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         ExamplePosAnnotator.class,
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         PublicFieldSequenceDataWriter.StringFactory.class.getName(),
@@ -167,12 +167,11 @@ public class ExamplePosAnnotatorTest extends ExamplesTestBase {
     HideOutput hider = new HideOutput();
     BuildTestExamplePosModel.main();
     hider.restoreOutput();
-    hider.close();
 
     String modelFileName = JarClassifierBuilder.getModelJarFile(
         ExamplePosAnnotator.DEFAULT_OUTPUT_DIRECTORY).getPath();
     AnalysisEngineDescription posTaggerDescription = ExamplePosAnnotator.getClassifierDescription(modelFileName);
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(posTaggerDescription);
 
     Object classifierJar = engine.getConfigParameterValue(GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH);
     Assert.assertEquals(modelFileName, classifierJar);
@@ -182,7 +181,7 @@ public class ExamplePosAnnotatorTest extends ExamplesTestBase {
 
   @Test
   public void testDataWriterDescriptor() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(ExamplePosAnnotator.getWriterDescription(ExamplePosAnnotator.DEFAULT_OUTPUT_DIRECTORY));
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(ExamplePosAnnotator.getWriterDescription(ExamplePosAnnotator.DEFAULT_OUTPUT_DIRECTORY));
 
     String outputDir = (String) engine.getConfigParameterValue(DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY);
     outputDir = outputDir.replace(File.separatorChar, '/');

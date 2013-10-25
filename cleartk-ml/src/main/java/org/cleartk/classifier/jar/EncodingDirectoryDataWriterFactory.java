@@ -36,9 +36,9 @@ import org.cleartk.classifier.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.classifier.encoder.outcome.OutcomeEncoder;
 import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.initializable.Initializable;
+import org.apache.uima.fit.component.initialize.ConfigurationParameterInitializer;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.initializable.Initializable;
 
 /**
  * Superclass for {@link DataWriterFactory} and {@link SequenceDataWriterFactory} implementations

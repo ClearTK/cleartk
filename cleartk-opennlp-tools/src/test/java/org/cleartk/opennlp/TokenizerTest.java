@@ -27,15 +27,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
-import junit.framework.Assert;
-
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.util.DisableLogging;
+import org.apache.uima.fit.util.JCasUtil;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
+import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.DisableLogging;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -54,7 +53,7 @@ public class TokenizerTest extends OpennlpTestBase {
     new Sentence(this.jCas, 48, 60).addToIndexes();
     new Sentence(this.jCas, 61, 81).addToIndexes();
     Level level = DisableLogging.disableLogging();
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Tokenizer.getDescription("en"));
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(Tokenizer.getDescription("en"));
     engine.process(this.jCas);
     DisableLogging.enableLogging(level);
     List<String> expected = Arrays.asList(

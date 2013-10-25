@@ -28,8 +28,8 @@ import java.net.URI;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.type.Token;
-import org.uimafit.descriptor.TypeCapability;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.descriptor.TypeCapability;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -58,11 +58,11 @@ public class MpAnalyzer extends MpAnalyzer_ImplBase<Token> {
 	 * Convenience method to create Analysis Engine for ClearNLP's POSTagger + Lemmatizer using default English models and dictionaries.
 	 */
 	public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-		return AnalysisEngineFactory.createPrimitiveDescription(MpAnalyzer.class);
+		return AnalysisEngineFactory.createEngineDescription(MpAnalyzer.class);
 	}
 	
 	public static AnalysisEngineDescription getDescription(String langCode, URI dictionaryUri) throws ResourceInitializationException {
-	  return AnalysisEngineFactory.createPrimitiveDescription(MpAnalyzer.class, 
+	  return AnalysisEngineFactory.createEngineDescription(MpAnalyzer.class, 
 	      MpAnalyzer_ImplBase.PARAM_LANGUAGE_CODE, langCode,
 	      MpAnalyzer_ImplBase.PARAM_DICTIONARY_URI, dictionaryUri);
 	}

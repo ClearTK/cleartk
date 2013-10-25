@@ -34,8 +34,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.IoUtil;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 import edu.berkeley.nlp.PCFGLA.CoarseToFineMaxRuleParser;
 import edu.berkeley.nlp.PCFGLA.Grammar;
@@ -57,7 +57,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
     extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Tree<String>, TOP_NODE_TYPE> {
   
   public static AnalysisEngineDescription getDescription(String modelPath) throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         ParserAnnotator.class,
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         modelPath,

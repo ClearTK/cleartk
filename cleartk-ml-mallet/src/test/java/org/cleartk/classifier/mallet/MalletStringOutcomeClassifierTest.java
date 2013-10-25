@@ -45,8 +45,8 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.HideOutput;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 
 import cc.mallet.types.FeatureVector;
 
@@ -107,7 +107,7 @@ public class MalletStringOutcomeClassifierTest extends DefaultTestBase {
 
   @Test
   public void runTest1() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         TestAnnotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -141,7 +141,6 @@ public class MalletStringOutcomeClassifierTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(new String[] { outputDirectoryName, "C45" });
     hider.restoreOutput();
-    hider.close();
 
     MalletStringOutcomeClassifierBuilder builder = new MalletStringOutcomeClassifierBuilder();
     MalletStringOutcomeClassifier classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
@@ -160,7 +159,7 @@ public class MalletStringOutcomeClassifierTest extends DefaultTestBase {
     FeatureVector fv = (FeatureVector) malletInstance.getData();
     assertEquals(95.0, fv.value("hello"), 0.001);
 
-    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createEngine(
         TestAnnotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         JarClassifierBuilder.getModelJarFile(outputDirectoryName));

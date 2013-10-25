@@ -32,8 +32,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.test.CleartkTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.CollectionReaderFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
 
 /**
  * <br>
@@ -48,7 +48,7 @@ public class PropbankGoldReaderAndAnnotatorTest extends CleartkTestBase {
 
     ResourceInitializationException rie = null;
     try {
-      reader = CollectionReaderFactory.createCollectionReader(PropbankGoldReader.class);
+      reader = CollectionReaderFactory.createReader(PropbankGoldReader.class);
     } catch (ResourceInitializationException e) {
       rie = e;
     }
@@ -56,7 +56,7 @@ public class PropbankGoldReaderAndAnnotatorTest extends CleartkTestBase {
 
     rie = null;
     try {
-      reader = CollectionReaderFactory.createCollectionReader(
+      reader = CollectionReaderFactory.createReader(
           PropbankGoldReader.class,
           PropbankGoldReader.PARAM_WSJ_SECTIONS,
           "02-21");
@@ -66,7 +66,7 @@ public class PropbankGoldReaderAndAnnotatorTest extends CleartkTestBase {
     assertNotNull(rie);
 
     try {
-      reader = CollectionReaderFactory.createCollectionReader(
+      reader = CollectionReaderFactory.createReader(
           PropbankGoldReader.class,
           PropbankGoldReader.PARAM_WSJ_SECTIONS,
           "02-21",
@@ -77,7 +77,7 @@ public class PropbankGoldReaderAndAnnotatorTest extends CleartkTestBase {
     }
     assertNotNull(rie);
 
-    reader = CollectionReaderFactory.createCollectionReader(
+    reader = CollectionReaderFactory.createReader(
         PropbankGoldReader.class,
         PropbankGoldReader.PARAM_WSJ_SECTIONS,
         "02-21",
@@ -99,7 +99,7 @@ public class PropbankGoldReaderAndAnnotatorTest extends CleartkTestBase {
 
   @Test
   public void testAnnotatorDescriptor() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(PropbankGoldAnnotator.class);
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(PropbankGoldAnnotator.class);
     engine.collectionProcessComplete();
   }
 

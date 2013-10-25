@@ -37,9 +37,9 @@ import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
@@ -100,7 +100,7 @@ public class TrainModel {
     builder.add(UriToDocumentTextAnnotator.getDescription());
 
     // Label documents with gold labels for training
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(GoldDocumentCategoryAnnotator.class));
+    builder.add(AnalysisEngineFactory.createEngineDescription(GoldDocumentCategoryAnnotator.class));
 
     // NLP pre-processing components
     builder.add(SentenceAnnotator.getDescription()); // Sentence segmentation
@@ -108,7 +108,7 @@ public class TrainModel {
     builder.add(DefaultSnowballStemmer.getDescription("English")); // Stemming
 
     // The simple document classification annotator
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         BasicDocumentClassificationAnnotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         LibSvmStringOutcomeDataWriter.class.getName(),

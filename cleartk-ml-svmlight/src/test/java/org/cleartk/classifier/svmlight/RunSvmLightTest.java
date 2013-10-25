@@ -53,8 +53,8 @@ import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.UimaContextFactory;
-import org.uimafit.testing.util.HideOutput;
+import org.apache.uima.fit.factory.UimaContextFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -256,7 +256,6 @@ public class RunSvmLightTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "1.0");
     hider.restoreOutput();
-    hider.close();
 
     // read in the classifier and test it on new instances
     SvmLightBooleanOutcomeClassifierBuilder builder = new SvmLightBooleanOutcomeClassifierBuilder();
@@ -295,7 +294,6 @@ public class RunSvmLightTest extends DefaultTestBase {
         Train.main(this.outputDirectoryName, "-42");
       } finally {
         hider.restoreOutput();
-        hider.close();
       }
       Assert.fail("expected FileNotFoundException");
     } catch (FileNotFoundException e) {
@@ -338,7 +336,6 @@ public class RunSvmLightTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "0.01", "-t", "1", "-d", "2");
     hider.restoreOutput();
-    hider.close();
 
     // read in the classifier and test it on new instances
     SvmLightStringOutcomeClassifierBuilder builder = new SvmLightStringOutcomeClassifierBuilder();
@@ -381,7 +378,6 @@ public class RunSvmLightTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "1", "-w", "0.0001");
     hider.restoreOutput();
-    hider.close();
 
     // read in the regression and test it on new instances
     SvmLightRegressionBuilder builder = new SvmLightRegressionBuilder();
@@ -437,7 +433,6 @@ public class RunSvmLightTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "1", "-w", "0.0001");
     hider.restoreOutput();
-    hider.close();
 
     // read in the ranking SVM model and test it on new instances
     SvmLightRankBuilder builder = new SvmLightRankBuilder();

@@ -37,8 +37,8 @@ import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.uimafit.factory.UimaContextFactory;
-import org.uimafit.pipeline.SimplePipeline;
+import org.apache.uima.fit.factory.UimaContextFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 
 /**
  * <br>

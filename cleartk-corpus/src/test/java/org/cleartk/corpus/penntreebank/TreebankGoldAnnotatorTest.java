@@ -38,9 +38,9 @@ import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.component.ViewCreatorAnnotator;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.ViewCreatorAnnotator;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -58,7 +58,7 @@ public class TreebankGoldAnnotatorTest extends CleartkTestBase {
     String treebankParse = "( (X (NP (NP (NML (NN Complex ) (NN trait )) (NN analysis )) (PP (IN of ) (NP (DT the ) (NN mouse ) (NN striatum )))) (: : ) (S (NP-SBJ (JJ independent ) (NNS QTLs )) (VP (VBP modulate ) (NP (NP (NN volume )) (CC and ) (NP (NN neuron ) (NN number)))))) )";
     String expectedText = "Complex trait analysis of the mouse striatum: independent QTLs modulate volume and neuron number";
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(TreebankGoldAnnotator.class);
 
     JCas tbView = jCas.createView(PennTreebankReader.TREEBANK_VIEW);
     tbView.setDocumentText(treebankParse);
@@ -96,7 +96,7 @@ public class TreebankGoldAnnotatorTest extends CleartkTestBase {
 
   @Test
   public void testAED() throws UIMAException {
-    AnalysisEngineDescription description = AnalysisEngineFactory.createPrimitiveDescription(TreebankGoldAnnotator.class);
+    AnalysisEngineDescription description = AnalysisEngineFactory.createEngineDescription(TreebankGoldAnnotator.class);
     Boolean postTrees = (Boolean) description.getAnalysisEngineMetaData().getConfigurationParameterSettings().getParameterValue(
         TreebankGoldAnnotator.PARAM_POST_TREES);
     Assert.assertTrue(postTrees.booleanValue());
@@ -107,7 +107,7 @@ public class TreebankGoldAnnotatorTest extends CleartkTestBase {
 
   @Test
   public void testInitialize() throws ResourceInitializationException {
-    AnalysisEngineFactory.createPrimitive(
+    AnalysisEngineFactory.createEngine(
         TreebankGoldAnnotator.class,
         TreebankGoldAnnotator.PARAM_POST_TREES,
         true);
@@ -127,7 +127,7 @@ public class TreebankGoldAnnotatorTest extends CleartkTestBase {
     JCas view = ViewCreatorAnnotator.createViewSafely(jCas, CAS.NAME_DEFAULT_SOFA);
     view.setSofaDataString(expectedText, "text/plain");
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TreebankGoldAnnotator.class);
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(TreebankGoldAnnotator.class);
 
     JCas tbView = jCas.createView(PennTreebankReader.TREEBANK_VIEW);
     tbView.setDocumentText(treebankParse);

@@ -35,11 +35,11 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.initializable.InitializableFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.initializable.InitializableFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -54,7 +54,7 @@ import org.uimafit.util.JCasUtil;
 public class TokenAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(TokenAnnotator.class);
+    return AnalysisEngineFactory.createEngineDescription(TokenAnnotator.class);
   }
 
   public static final String PARAM_TOKENIZER_NAME = "tokenizerName";

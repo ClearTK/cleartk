@@ -23,12 +23,13 @@
  */
 package org.cleartk.corpus.conll2003;
 
-import java.io.IOException;
 import java.util.Iterator;
 
-import org.apache.uima.UIMAException;
 import org.apache.uima.cas.FSIndex;
-import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.collection.CollectionReaderDescription;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
+import org.apache.uima.fit.pipeline.JCasIterable;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.ne.type.Chunk;
@@ -40,9 +41,6 @@ import org.cleartk.token.type.Token;
 import org.cleartk.util.ViewUriUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.pipeline.JCasIterable;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -56,15 +54,15 @@ import org.uimafit.util.JCasUtil;
 public class Conll2003GoldReaderTest extends DefaultTestBase {
 
   @Test
-  public void testFakeTrainDocs() throws UIMAException, IOException {
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+  public void testFakeTrainDocs() throws Exception {
+    CollectionReaderDescription desc = CollectionReaderFactory.createReaderDescription(
         Conll2003GoldReader.class,
         Conll2003GoldReader.PARAM_DATA_FILE_NAME,
         "src/test/resources/data/conll2003/eng.train",
         Conll2003GoldReader.PARAM_LOAD_NAMED_ENTITIES,
         true);
 
-    Iterator<JCas> iterator = new JCasIterable(reader).iterator();
+    Iterator<JCas> iterator = new JCasIterable(desc).iterator();
 
     JCas jcas = iterator.next();
     

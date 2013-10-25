@@ -59,10 +59,10 @@ import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationUtil;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.descriptor.TypeCapability;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.TypeCapability;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.collect.Lists;
 
@@ -92,7 +92,7 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
-      return AnalysisEngineFactory.createPrimitiveDescription(VerbClauseTemporalAnnotator.class);
+      return AnalysisEngineFactory.createEngineDescription(VerbClauseTemporalAnnotator.class);
     }
   };
 

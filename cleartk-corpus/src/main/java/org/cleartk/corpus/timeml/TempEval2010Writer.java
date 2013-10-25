@@ -48,10 +48,10 @@ import org.cleartk.timeml.type.Time;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.base.Joiner;
 
@@ -65,76 +65,86 @@ import com.google.common.base.Joiner;
 public class TempEval2010Writer extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(TempEval2010Writer.class);
+    return AnalysisEngineFactory.createEngineDescription(TempEval2010Writer.class);
   }
 
   @ConfigurationParameter(
       name = PARAM_OUTPUT_DIRECTORY,
-      mandatory = true, description = "The directory where the TempEval .tab "
-      + "files should be written.")
+      mandatory = true,
+      description = "The directory where the TempEval .tab " + "files should be written.")
   private File outputDirectory;
 
   @ConfigurationParameter(
-      name = PARAM_TEXT_VIEW, 
-      mandatory = true, description = "View containing the document text.")
+      name = PARAM_TEXT_VIEW,
+      mandatory = true,
+      description = "View containing the document text.")
   private String textView;
 
   @ConfigurationParameter(
       name = PARAM_DOCUMENT_CREATION_TIME_VIEW,
+      mandatory = false,
       description = "View containing DocumentCreationTime annotations. If "
-      + "provided, the document creation times file will be written.")
+          + "provided, the document creation times file will be written.")
   private String documentCreationTimeView;
 
   @ConfigurationParameter(
       name = PARAM_TIME_EXTENT_VIEW,
+      mandatory = false,
       description = "View containing Time annotations. If provided, the time "
-      + "extents file will be written.")
+          + "extents file will be written.")
   private String timeExtentView;
 
   @ConfigurationParameter(
       name = PARAM_TIME_ATTRIBUTE_VIEW,
+      mandatory = false,
       description = "View containing Time annotations with their attributes. "
-      + "If provided, the time attributes file will be written.")
+          + "If provided, the time attributes file will be written.")
   private String timeAttributeView;
 
   @ConfigurationParameter(
       name = PARAM_EVENT_EXTENT_VIEW,
+      mandatory = false,
       description = "View containing Event annotations. If provided, the "
-      + "event extents will be written.")
+          + "event extents will be written.")
   private String eventExtentView;
 
   @ConfigurationParameter(
       name = PARAM_EVENT_ATTRIBUTE_VIEW,
+      mandatory = false,
       description = "View containing Event annotations with their attributes. "
-      + "If provided, the event attributes file will be written.")
+          + "If provided, the event attributes file will be written.")
   private String eventAttributeView;
 
   @ConfigurationParameter(
       name = PARAM_TEMPORAL_LINK_EVENT_TO_DOCUMENT_CREATION_TIME_VIEW,
+      mandatory = false,
       description = "View containing TemporalLink annotations between events "
-      + "and the document creation time. If provided, the corresponding temporal links file will "
-      + "be written.")
+          + "and the document creation time. If provided, the corresponding temporal links file will "
+          + "be written.")
   private String temporalLinkEventToDocumentCreationTimeView;
 
   @ConfigurationParameter(
       name = PARAM_TEMPORAL_LINK_EVENT_TO_SAME_SENTENCE_TIME_VIEW,
+      mandatory = false,
       description = "View containing TemporalLink annotations between events "
-      + "and times within the same sentence. If provided, the corresponding temporal links file "
-      + "will be written.")
+          + "and times within the same sentence. If provided, the corresponding temporal links file "
+          + "will be written.")
   private String temporalLinkEventToSameSentenceTimeView;
 
   @ConfigurationParameter(
       name = PARAM_TEMPORAL_LINK_EVENT_TO_SUBORDINATED_EVENT_VIEW,
+      mandatory = false,
       description = "View containing TemporalLink annotations between events "
-      + "and syntactically dominated events. If provided, the corresponding temporal links file "
-      + "will be written.")
+          + "and syntactically dominated events. If provided, the corresponding temporal links file "
+          + "will be written.")
   private String temporalLinkEventToSubordinatedEventView;
 
   @ConfigurationParameter(
       name = PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEW,
+      mandatory = false,
       description = "View containing TemporalLink annotations between main "
-      + "events in adjacent sentences. If provided, the corresponding temporal links file will be "
-      + "written.")
+          + "events in adjacent sentences. If provided, the corresponding temporal links file will be "
+          + "written.")
   private String temporalLinkMainEventToNextSentenceMainEventView;
 
   public static final String PARAM_OUTPUT_DIRECTORY = "outputDirectory";
@@ -188,8 +198,12 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
       this.outputDirectory.mkdirs();
     }
     this.writers = new ArrayList<PrintWriter>();
-    this.baseWriter = this.createWriter(TempEval2010CollectionReader.BASE_SEGMENTATION_VIEW_NAME, this.textView);
-    this.dctWriter = this.createWriter(TempEval2010CollectionReader.DCT_VIEW_NAME, this.documentCreationTimeView);
+    this.baseWriter = this.createWriter(
+        TempEval2010CollectionReader.BASE_SEGMENTATION_VIEW_NAME,
+        this.textView);
+    this.dctWriter = this.createWriter(
+        TempEval2010CollectionReader.DCT_VIEW_NAME,
+        this.documentCreationTimeView);
     this.timexExtentWriter = this.createWriter(
         TempEval2010CollectionReader.TIMEX_EXTENTS_VIEW_NAME,
         this.timeExtentView);

@@ -35,10 +35,10 @@ import org.cleartk.classifier.DataWriterFactory;
 import org.cleartk.classifier.SequenceDataWriter;
 import org.cleartk.classifier.SequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
-import org.uimafit.component.initialize.ConfigurationParameterInitializer;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.initializable.Initializable;
-import org.uimafit.factory.initializable.InitializableFactory;
+import org.apache.uima.fit.component.initialize.ConfigurationParameterInitializer;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.initializable.Initializable;
+import org.apache.uima.fit.factory.initializable.InitializableFactory;
 
 /**
  * <br>

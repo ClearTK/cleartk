@@ -45,7 +45,7 @@ import org.cleartk.classifier.feature.function.NumericTypeFeatureFunction;
 import org.cleartk.token.pos.PosFeatureExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.initializable.Initializable;
+import org.apache.uima.fit.factory.initializable.Initializable;
 
 import com.google.common.collect.Lists;
 

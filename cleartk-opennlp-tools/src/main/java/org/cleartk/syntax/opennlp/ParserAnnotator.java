@@ -47,9 +47,9 @@ import org.cleartk.syntax.opennlp.parser.Parser;
 import org.cleartk.syntax.opennlp.parser.ParserWrapper_ImplBase;
 import org.cleartk.util.IoUtil;
 import org.cleartk.util.ParamUtil;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.initializable.InitializableFactory;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.initializable.InitializableFactory;
 
 import com.google.common.annotations.Beta;
 
@@ -199,7 +199,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
   }
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         ParserAnnotator.class,
         PARAM_PARSER_MODEL_PATH,
         ParamUtil.getParameterValue(PARAM_PARSER_MODEL_PATH, "/models/en-parser-chunking.bin"),

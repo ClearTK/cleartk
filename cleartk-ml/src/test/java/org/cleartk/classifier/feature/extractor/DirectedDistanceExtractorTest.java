@@ -30,7 +30,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Test;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>

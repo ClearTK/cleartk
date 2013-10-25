@@ -38,7 +38,7 @@ import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.collect.Lists;
 

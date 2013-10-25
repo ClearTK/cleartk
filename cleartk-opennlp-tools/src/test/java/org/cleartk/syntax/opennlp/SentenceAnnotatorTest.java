@@ -25,7 +25,7 @@ package org.cleartk.syntax.opennlp;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -34,12 +34,15 @@ import opennlp.tools.cmdline.CLI;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.ConfigurationParameterFactory;
+import org.apache.uima.fit.util.JCasUtil;
 import org.cleartk.token.type.Sentence;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ConfigurationParameterFactory;
-import org.uimafit.util.JCasUtil;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 /**
  * <br>
@@ -57,7 +60,7 @@ public class SentenceAnnotatorTest extends OpennlpSyntaxTestBase {
   public void setUp() throws Exception {
     super.setUp();
     if (sentenceSegmenter == null) {
-      sentenceSegmenter = AnalysisEngineFactory.createPrimitive(SentenceAnnotator.getDescription());
+      sentenceSegmenter = AnalysisEngineFactory.createEngine(SentenceAnnotator.getDescription());
     }
   }
 
@@ -75,14 +78,17 @@ public class SentenceAnnotatorTest extends OpennlpSyntaxTestBase {
     sentenceSegmenter.process(jCas);
     sentenceSegmenter.collectionProcessComplete();
   }
+  
+  private void sentenceSegmentFile(String path) throws Exception {
+    this.jCas.setDocumentText(Files.toString(new File(path), Charsets.US_ASCII));
+    this.sentenceSegmenter.process(this.jCas);
+    this.sentenceSegmenter.collectionProcessComplete();
+  }
 
   @Test
-  public void testSentenceSegmentor() throws UIMAException, IOException {
+  public void testSentenceSegmentor() throws Exception {
 
-    AnalysisEngineFactory.process(
-        jCas,
-        sentenceSegmenter,
-        "src/test/resources/data/sentence/youthful-precocity.txt");
+    this.sentenceSegmentFile("src/test/resources/data/sentence/youthful-precocity.txt");
 
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     String sentenceText = "The precocity of some youths is surprising.";
@@ -111,11 +117,8 @@ public class SentenceAnnotatorTest extends OpennlpSyntaxTestBase {
   }
 
   @Test
-  public void test1() throws UIMAException, IOException {
-    AnalysisEngineFactory.process(
-        jCas,
-        sentenceSegmenter,
-        "src/test/resources/data/sentence/test1.txt");
+  public void test1() throws Exception {
+    this.sentenceSegmentFile("src/test/resources/data/sentence/test1.txt");
 
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     assertEquals("aaaa aaaa aaaa aaaa", sentence.getCoveredText());
@@ -131,31 +134,22 @@ public class SentenceAnnotatorTest extends OpennlpSyntaxTestBase {
   }
 
   @Test
-  public void test2() throws UIMAException, IOException {
-    AnalysisEngineFactory.process(
-        jCas,
-        sentenceSegmenter,
-        "src/test/resources/data/sentence/test2.txt");
+  public void test2() throws Exception {
+    this.sentenceSegmentFile("src/test/resources/data/sentence/test2.txt");
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     assertEquals("I don't understand this.", sentence.getCoveredText());
   }
 
   @Test
-  public void test3() throws UIMAException, IOException {
-    AnalysisEngineFactory.process(
-        jCas,
-        sentenceSegmenter,
-        "src/test/resources/data/sentence/test3.txt");
+  public void test3() throws Exception {
+    this.sentenceSegmentFile("src/test/resources/data/sentence/test3.txt");
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     assertEquals("test", sentence.getCoveredText());
   }
 
   @Test
-  public void test5() throws UIMAException, IOException {
-    AnalysisEngineFactory.process(
-        jCas,
-        sentenceSegmenter,
-        "src/test/resources/data/sentence/test5.txt");
+  public void test5() throws Exception {
+    this.sentenceSegmentFile("src/test/resources/data/sentence/test5.txt");
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     assertEquals("a", sentence.getCoveredText());
     sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 1);
@@ -168,11 +162,8 @@ public class SentenceAnnotatorTest extends OpennlpSyntaxTestBase {
   }
 
   @Test
-  public void test6() throws UIMAException, IOException {
-    AnalysisEngineFactory.process(
-        jCas,
-        sentenceSegmenter,
-        "src/test/resources/data/sentence/test6.txt");
+  public void test6() throws Exception {
+    this.sentenceSegmentFile("src/test/resources/data/sentence/test6.txt");
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     assertEquals("a", sentence.getCoveredText());
     sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 1);
@@ -185,11 +176,8 @@ public class SentenceAnnotatorTest extends OpennlpSyntaxTestBase {
   }
 
   @Test
-  public void test7() throws UIMAException, IOException {
-    AnalysisEngineFactory.process(
-        jCas,
-        sentenceSegmenter,
-        "src/test/resources/data/sentence/test7.txt");
+  public void test7() throws Exception {
+    this.sentenceSegmentFile("src/test/resources/data/sentence/test7.txt");
     Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     assertEquals("It was a Wednesday morning.", sentence.getCoveredText());
 
@@ -207,7 +195,7 @@ public class SentenceAnnotatorTest extends OpennlpSyntaxTestBase {
         desc,
         SentenceAnnotator.PARAM_WINDOW_CLASS_NAMES,
         new String[] { "org.cleartk.token.type.Sentence" });
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(desc);
     engine.process(this.jCas);
     engine.collectionProcessComplete();
 

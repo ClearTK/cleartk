@@ -35,7 +35,7 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.junit.Assert;
-import org.uimafit.factory.ConfigurationParameterFactory;
+import org.apache.uima.fit.factory.ConfigurationParameterFactory;
 
 /**
  * <br>
@@ -76,7 +76,7 @@ public class ParametersTestUtil {
       Field[] fields = cls.getDeclaredFields();
       for (Field field : fields) {
         if (ConfigurationParameterFactory.isConfigurationParameterField(field)) {
-          org.uimafit.descriptor.ConfigurationParameter annotation = field.getAnnotation(org.uimafit.descriptor.ConfigurationParameter.class);
+          org.apache.uima.fit.descriptor.ConfigurationParameter annotation = field.getAnnotation(org.apache.uima.fit.descriptor.ConfigurationParameter.class);
           String parameterName = annotation.name();
           String expectedName = field.getName();
           if (!expectedName.equals(parameterName)) {

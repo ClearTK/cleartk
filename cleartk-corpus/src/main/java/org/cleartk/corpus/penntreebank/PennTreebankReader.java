@@ -39,10 +39,10 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasCollectionReader_ImplBase;
-import org.uimafit.component.ViewCreatorAnnotator;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.descriptor.SofaCapability;
+import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;
+import org.apache.uima.fit.component.ViewCreatorAnnotator;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.SofaCapability;
 
 /**
  * <p>

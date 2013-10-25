@@ -31,13 +31,13 @@ import java.net.URI;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.component.ViewCreatorAnnotator;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.component.ViewCreatorAnnotator;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
 
 import com.google.common.io.CharStreams;
 
@@ -55,7 +55,7 @@ import com.google.common.io.CharStreams;
 public class UriToDocumentTextAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(UriToDocumentTextAnnotator.class);
+    return AnalysisEngineFactory.createEngineDescription(UriToDocumentTextAnnotator.class);
   }
 
   /**
@@ -65,7 +65,7 @@ public class UriToDocumentTextAnnotator extends JCasAnnotator_ImplBase {
   public static AnalysisEngineDescription getDescriptionForView(String targetViewName)
       throws ResourceInitializationException {
     AggregateBuilder builder = new AggregateBuilder();
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         targetViewName));

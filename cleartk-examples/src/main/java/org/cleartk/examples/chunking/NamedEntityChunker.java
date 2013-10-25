@@ -46,7 +46,7 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * This is the most important class in the named entity chunking example -- it demonstrates how to

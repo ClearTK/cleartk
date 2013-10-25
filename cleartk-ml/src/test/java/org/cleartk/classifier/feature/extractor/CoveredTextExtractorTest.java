@@ -25,12 +25,11 @@ package org.cleartk.classifier.feature.extractor;
 
 import java.util.Arrays;
 
-import junit.framework.Assert;
-
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**

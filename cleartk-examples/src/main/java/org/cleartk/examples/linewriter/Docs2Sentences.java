@@ -24,18 +24,16 @@
 package org.cleartk.examples.linewriter;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.apache.uima.UIMAException;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.ae.linewriter.LineWriter;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
 
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
@@ -72,7 +70,7 @@ public class Docs2Sentences {
 
   }
 
-  public static void main(String[] args) throws UIMAException, IOException {
+  public static void main(String[] args) throws Exception {
     Options options = CliFactory.parseArguments(Options.class, args);
 
     CollectionReader reader = UriCollectionReader.getCollectionReaderFromDirectory(options.getInputDirectory());
@@ -80,7 +78,7 @@ public class Docs2Sentences {
     AggregateBuilder builder = new AggregateBuilder();
     builder.add(UriToDocumentTextAnnotator.getDescription());
     builder.add(SentenceAnnotator.getDescription());
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         LineWriter.class,
         LineWriter.PARAM_OUTPUT_FILE_NAME,
         options.getOutputFile(),

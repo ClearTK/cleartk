@@ -25,10 +25,9 @@ package org.cleartk.timeml;
 
 import java.io.File;
 
-import junit.framework.Assert;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

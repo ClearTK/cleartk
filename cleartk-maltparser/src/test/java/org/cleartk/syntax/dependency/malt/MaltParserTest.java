@@ -42,9 +42,9 @@ import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.factory.TokenBuilder;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -70,7 +70,7 @@ public class MaltParserTest extends CleartkTestBase {
         "DT NN VBD DT NN IN DT NN .");
 
     AnalysisEngineDescription desc = MaltParser.getDescription();
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(desc);
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(desc);
     engine.process(this.jCas);
     engine.collectionProcessComplete();
 

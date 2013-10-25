@@ -42,8 +42,8 @@ import org.cleartk.classifier.liblinear.encoder.FeatureNodeArrayEncoder;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.UimaContextFactory;
-import org.uimafit.testing.util.HideOutput;
+import org.apache.uima.fit.factory.UimaContextFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 
 import com.google.common.collect.Lists;
 
@@ -86,7 +86,6 @@ public class LibLinearTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "1.0", "-s", "1");
     hider.restoreOutput();
-    hider.close();
 
     // read in the classifier and test it on new instances
     LibLinearBooleanOutcomeClassifier classifier;
@@ -126,7 +125,6 @@ public class LibLinearTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, "-c", "1.0", "-s", "0");
     hider.restoreOutput();
-    hider.close();
 
     // read in the classifier and test it on new instances
     LibLinearStringOutcomeClassifierBuilder builder = new LibLinearStringOutcomeClassifierBuilder();

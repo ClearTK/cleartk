@@ -25,13 +25,14 @@ package org.cleartk.token.tokenizer;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -41,9 +42,6 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Subtoken;
 import org.cleartk.token.type.Token;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Joiner;
 
@@ -75,7 +73,7 @@ public class TokenizerAndTokenAnnotatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testMarysDog() throws UIMAException, IOException {
+  public void testMarysDog() throws Exception {
     this.createSentences(
         "\"John & Mary's 'dog'...\", Jane thought (to herself).",
         "\"What a @#$%*!",
@@ -126,7 +124,7 @@ public class TokenizerAndTokenAnnotatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testWatcha() throws UIMAException, IOException {
+  public void testWatcha() throws Exception {
     this.createSentences(
         "I can't believe they wanna keep 40% of that.\"",
         "        ``Whatcha think?''",
@@ -171,7 +169,7 @@ public class TokenizerAndTokenAnnotatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testTimes() throws UIMAException, IOException {
+  public void testTimes() throws Exception {
     this.createSentences(
         "I said at 4:45pm.",
         "        I was born in '80, not the '70s.");
@@ -201,7 +199,7 @@ public class TokenizerAndTokenAnnotatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testDollars() throws UIMAException, IOException {
+  public void testDollars() throws Exception {
     this.createSentences(
         "        ",
         "You `paid' US$170,000?!",
@@ -233,7 +231,7 @@ public class TokenizerAndTokenAnnotatorTest extends DefaultTestBase {
   }
 
   @Test
-  public void testPercents() throws UIMAException, IOException {
+  public void testPercents() throws Exception {
 
     jCas.setDocumentText(" 1. Buy a new Chevrolet (37%-owned in the U.S..) . 15%");
     new Sentence(jCas, 0, 54).addToIndexes();
@@ -262,7 +260,7 @@ public class TokenizerAndTokenAnnotatorTest extends DefaultTestBase {
 
   @Test
   public void testDescriptor() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TokenAnnotator.class);
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(TokenAnnotator.class);
     assertEquals(
         PennTreebankTokenizer.class.getName(),
         engine.getConfigParameterValue(TokenAnnotator.PARAM_TOKENIZER_NAME));
@@ -274,7 +272,7 @@ public class TokenizerAndTokenAnnotatorTest extends DefaultTestBase {
 
   @Test
   public void ticket176() throws ResourceInitializationException, AnalysisEngineProcessException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         TokenAnnotator.class,
         TokenAnnotator.PARAM_TOKEN_TYPE_NAME,
         Subtoken.class.getName(),
@@ -315,7 +313,7 @@ public class TokenizerAndTokenAnnotatorTest extends DefaultTestBase {
    * TokenAnnotator.
    */
   @Test
-  public void testPeriod() throws UIMAException, IOException {
+  public void testPeriod() throws Exception {
     String text = "The sides was so steep and the bushes so thick. We tramped and clumb. ";
     jCas.setDocumentText(text);
     new Sentence(jCas, 0, 47).addToIndexes();

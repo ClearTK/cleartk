@@ -27,14 +27,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.encoder.CleartkEncoderException;
 import org.cleartk.classifier.encoder.features.FeatureEncoder;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**

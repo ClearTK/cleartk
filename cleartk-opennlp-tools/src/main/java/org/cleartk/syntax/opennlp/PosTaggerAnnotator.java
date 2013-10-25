@@ -40,11 +40,11 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.IoUtil;
 import org.cleartk.util.ParamUtil;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.descriptor.TypeCapability;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.TypeCapability;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
 
@@ -63,7 +63,7 @@ public class PosTaggerAnnotator extends JCasAnnotator_ImplBase {
 
   // public static AnalysisEngineDescription getDescription() throws ResourceInitializationException
   // {
-  // AnalysisEngineDescription aed = AnalysisEngineFactory.createPrimitiveDescription(
+  // AnalysisEngineDescription aed = AnalysisEngineFactory.createEngineDescription(
   // opennlp.uima.postag.POSTagger.class,
   // SyntaxComponents.TYPE_SYSTEM_DESCRIPTION,
   // UimaUtil.TOKEN_TYPE_PARAMETER, Token.class.getName(),
@@ -85,7 +85,7 @@ public class PosTaggerAnnotator extends JCasAnnotator_ImplBase {
   // }
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         PosTaggerAnnotator.class,
         PARAM_POSTAG_MODEL_FILE,
         ParamUtil.getParameterValue(PARAM_POSTAG_MODEL_FILE, "/models/en-pos-maxent.bin"));

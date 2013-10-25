@@ -54,9 +54,9 @@ import org.jdom2.Content;
 import org.jdom2.Element;
 import org.jdom2.Text;
 import org.jdom2.output.XMLOutputter;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
@@ -77,7 +77,7 @@ public class TempEval2013Writer extends JCasAnnotator_ImplBase {
   
   public static AnalysisEngineDescription getDescription(File outputDir)
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         TempEval2013Writer.class,
         PARAM_OUTPUT_DIRECTORY,
         outputDir);

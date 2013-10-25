@@ -42,7 +42,7 @@ import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.util.InstanceFactory;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
-import org.uimafit.factory.UimaContextFactory;
+import org.apache.uima.fit.factory.UimaContextFactory;
 
 /**
  * <br>

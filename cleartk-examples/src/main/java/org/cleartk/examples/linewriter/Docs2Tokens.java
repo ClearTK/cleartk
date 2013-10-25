@@ -24,13 +24,13 @@
 package org.cleartk.examples.linewriter;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.apache.uima.UIMAException;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
@@ -41,8 +41,6 @@ import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.ae.linewriter.AnnotationWriter;
 import org.cleartk.util.ae.linewriter.LineWriter;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
 
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
@@ -71,7 +69,7 @@ public class Docs2Tokens {
 
   }
 
-  public static void main(String[] args) throws UIMAException, IOException {
+  public static void main(String[] args) throws Exception {
 
     Options options = CliFactory.parseArguments(Options.class, args);
 
@@ -85,7 +83,7 @@ public class Docs2Tokens {
 
     AnalysisEngineDescription posTagger = PosTaggerAnnotator.getDescription();
 
-    AnalysisEngineDescription lineWriter = AnalysisEngineFactory.createPrimitiveDescription(
+    AnalysisEngineDescription lineWriter = AnalysisEngineFactory.createEngineDescription(
         LineWriter.class,
         LineWriter.PARAM_OUTPUT_FILE_NAME,
         options.getOutputFile(),

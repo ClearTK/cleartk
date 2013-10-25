@@ -35,6 +35,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.fit.component.ViewCreatorAnnotator;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
+import org.apache.uima.fit.pipeline.JCasIterator;
+import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
@@ -53,13 +60,6 @@ import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.uimafit.component.ViewCreatorAnnotator;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.pipeline.JCasIterable;
-import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Function;
 import com.lexicalscope.jewel.cli.CliFactory;
@@ -129,7 +129,7 @@ public class EvaluateNamedEntityChunker extends
 
   @Override
   protected CollectionReader getCollectionReader(List<File> files) throws Exception {
-    return CollectionReaderFactory.createCollectionReader(UriCollectionReader.getDescriptionFromFiles(files));
+    return CollectionReaderFactory.createReader(UriCollectionReader.getDescriptionFromFiles(files));
   }
 
   @Override
@@ -147,7 +147,7 @@ public class EvaluateNamedEntityChunker extends
     aggregate.add(PosTaggerAnnotator.getDescription());
 
     // our NamedEntityChunker annotator, configured to write Mallet CRF training data
-    aggregate.add(AnalysisEngineFactory.createPrimitiveDescription(
+    aggregate.add(AnalysisEngineFactory.createEngineDescription(
         NamedEntityChunker.class,
         CleartkSequenceAnnotator.PARAM_IS_TRAINING,
         true,
@@ -184,7 +184,7 @@ public class EvaluateNamedEntityChunker extends
     // * create the gold view
     // * load the text
     // * load the MASC annotations
-    aggregate.add(AnalysisEngineFactory.createPrimitiveDescription(
+    aggregate.add(AnalysisEngineFactory.createEngineDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         goldViewName));
@@ -199,7 +199,7 @@ public class EvaluateNamedEntityChunker extends
     aggregate.add(SentenceAnnotator.getDescription());
     aggregate.add(TokenAnnotator.getDescription());
     aggregate.add(PosTaggerAnnotator.getDescription());
-    aggregate.add(AnalysisEngineFactory.createPrimitiveDescription(
+    aggregate.add(AnalysisEngineFactory.createEngineDescription(
         NamedEntityChunker.class,
         CleartkSequenceAnnotator.PARAM_IS_TRAINING,
         false,
@@ -212,7 +212,9 @@ public class EvaluateNamedEntityChunker extends
     Function<NamedEntityMention, String> getCategory = AnnotationStatistics.annotationToFeatureValue("mentionType");
 
     // iterate over each JCas to be evaluated
-    for (JCas jCas : new JCasIterable(collectionReader, aggregate.createAggregate())) {
+    JCasIterator iter = new JCasIterator(collectionReader, aggregate.createAggregate());
+    while (iter.hasNext()) {
+      JCas jCas = iter.next();
       JCas goldView = jCas.getView(goldViewName);
       JCas systemView = jCas.getView(defaultViewName);
 

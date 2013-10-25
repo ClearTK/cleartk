@@ -42,10 +42,10 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasCollectionReader_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.descriptor.SofaCapability;
-import org.uimafit.factory.CollectionReaderFactory;
+import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.SofaCapability;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
 
 /**
  * <br>
@@ -57,7 +57,7 @@ public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
 
   public static CollectionReader getCollectionReader(String conll2005DataFile)
       throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(
+    return CollectionReaderFactory.createReader(
         Conll2005GoldReader.class,
         PARAM_CONLL2005_DATA_FILE,
         conll2005DataFile);

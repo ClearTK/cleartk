@@ -38,10 +38,10 @@ import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.corpus.penntreebank.TreebankGoldAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.uimafit.component.ViewCreatorAnnotator;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
+import org.apache.uima.fit.component.ViewCreatorAnnotator;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 
 /**
  * <br>
@@ -71,7 +71,7 @@ public class BuildTestExamplePosModel {
     AggregateBuilder builder = new AggregateBuilder();
 
     // An annotator that creates an empty treebank view in the CAS
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         PennTreebankReader.TREEBANK_VIEW));

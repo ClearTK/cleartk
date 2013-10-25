@@ -11,10 +11,10 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.summarization.type.SummarySentence;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
 
@@ -23,7 +23,7 @@ public class SummarySentenceWriterAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription(File outputFile, boolean writeScores)
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         SummarySentenceWriterAnnotator.class,
         SummarySentenceWriterAnnotator.PARAM_OUTPUT_URI,
         outputFile.toURI(),

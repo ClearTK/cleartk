@@ -55,10 +55,10 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.descriptor.SofaCapability;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.SofaCapability;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -78,17 +78,18 @@ public class TimeMlGoldAnnotator extends JCasAnnotator_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_LOAD_TLINKS,
+      mandatory = false,
       description = "when false indicates that annotation should not be created for TLINKs (though annotations will still be created for TIMEX3s, EVENTs, etc.).",
       defaultValue = "true")
   private boolean loadTlinks;
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(TimeMlGoldAnnotator.class);
+    return AnalysisEngineFactory.createEngineDescription(TimeMlGoldAnnotator.class);
   }
 
   public static AnalysisEngineDescription getDescriptionNoTLINKs()
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         TimeMlGoldAnnotator.class,
         PARAM_LOAD_TLINKS,
         false);

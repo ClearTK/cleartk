@@ -36,7 +36,7 @@ import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.ViewUriUtil;
 import org.cleartk.util.ae.linewriter.AnnotationWriter;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>

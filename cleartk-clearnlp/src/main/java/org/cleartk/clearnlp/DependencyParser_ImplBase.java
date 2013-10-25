@@ -34,9 +34,9 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
@@ -54,44 +54,41 @@ import com.googlecode.clearnlp.reader.AbstractReader;
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
- * This class provides the base implementation class for the UIMA/ClearTK wrapper for the ClearNLP dependency parser. 
- * Subclasses should override methods for creating and setting properties on dependency annotations
+ * This class provides the base implementation class for the UIMA/ClearTK wrapper for the ClearNLP
+ * dependency parser. Subclasses should override methods for creating and setting properties on
+ * dependency annotations
  * 
  * <p>
  * This parser is available here:
  * <p>
  * http://clearnlp.googlecode.com
  * <p>
-* 
+ * 
  * @author Lee Becker
  * 
  */
-public abstract class DependencyParser_ImplBase<
-   WINDOW_TYPE extends Annotation, 
-   TOKEN_TYPE extends Annotation, 
-   DEPENDENCY_NODE_TYPE extends TOP,
-   DEPENDENCY_ROOT_NODE_TYPE extends DEPENDENCY_NODE_TYPE,
-   DEPENDENCY_RELATION_TYPE extends TOP> extends JCasAnnotator_ImplBase {
+public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_TYPE extends Annotation, DEPENDENCY_NODE_TYPE extends TOP, DEPENDENCY_ROOT_NODE_TYPE extends DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE extends TOP>
+    extends JCasAnnotator_ImplBase {
 
-	public static final String DEFAULT_MODEL_FILE_NAME = "ontonotes-en-dep-1.3.0.tgz";
-	
-	public static final String PARAM_PARSER_MODEL_URI = "parserModelUri";
-	
-	@ConfigurationParameter(
-	    name = PARAM_PARSER_MODEL_URI,
-			description = "This parameter provides the file name of the dependency parser model required by the factory method provided by ClearParserUtil.")
-	private URI parserModelUri;
-	
+  public static final String DEFAULT_MODEL_FILE_NAME = "ontonotes-en-dep-1.3.0.tgz";
 
-	public static final String PARAM_LANGUAGE_CODE = "languageCode";
+  public static final String PARAM_PARSER_MODEL_URI = "parserModelUri";
 
-	@ConfigurationParameter(
-	    name = PARAM_LANGUAGE_CODE,
-	    description = "Language code for the dependency parser (default value=en).",
-	    defaultValue = AbstractReader.LANG_EN)
-	private String languageCode;
-	
-	
+  @ConfigurationParameter(
+      name = PARAM_PARSER_MODEL_URI,
+      mandatory = false,
+      description = "This parameter provides the file name of the dependency parser model required by the factory method provided by ClearParserUtil.")
+  private URI parserModelUri;
+
+  public static final String PARAM_LANGUAGE_CODE = "languageCode";
+
+  @ConfigurationParameter(
+      name = PARAM_LANGUAGE_CODE,
+      mandatory = false,
+      description = "Language code for the dependency parser (default value=en).",
+      defaultValue = AbstractReader.LANG_EN)
+  private String languageCode;
+
   public static final String PARAM_WINDOW_CLASS = "windowClass";
 
   private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "
@@ -100,6 +97,7 @@ public abstract class DependencyParser_ImplBase<
 
   @ConfigurationParameter(
       name = PARAM_WINDOW_CLASS,
+      mandatory = false,
       description = WINDOW_TYPE_DESCRIPTION,
       defaultValue = "org.cleartk.token.type.Sentence")
   private Class<WINDOW_TYPE> windowClass;
@@ -107,7 +105,7 @@ public abstract class DependencyParser_ImplBase<
   private TokenOps<TOKEN_TYPE> tokenOps;
 
   private DependencyOps<DEPENDENCY_NODE_TYPE, TOKEN_TYPE, DEPENDENCY_ROOT_NODE_TYPE, WINDOW_TYPE, DEPENDENCY_RELATION_TYPE> dependencyOps;
-  
+
   public DependencyParser_ImplBase(
       TokenOps<TOKEN_TYPE> tokenOps,
       DependencyOps<DEPENDENCY_NODE_TYPE, TOKEN_TYPE, DEPENDENCY_ROOT_NODE_TYPE, WINDOW_TYPE, DEPENDENCY_RELATION_TYPE> dependencyOps) {
@@ -115,89 +113,95 @@ public abstract class DependencyParser_ImplBase<
     this.dependencyOps = dependencyOps;
   }
 
-	@Override
-	public void initialize(UimaContext aContext)
-			throws ResourceInitializationException {
-		super.initialize(aContext);
-		
-		try {
-			URL parserModelURL = (this.parserModelUri == null)
-					? DependencyParser_ImplBase.class.getResource(DEFAULT_MODEL_FILE_NAME).toURI().toURL()
-					: this.parserModelUri.toURL();
-					
-			this.parser = EngineGetter.getComponent(parserModelURL.openStream(), this.languageCode, NLPLib.MODE_DEP);
-			
-		} catch (Exception e) {
-			throw new ResourceInitializationException(e);
-		}
-	}
-	
-	
-	@Override
-	public void process(JCas jCas) throws AnalysisEngineProcessException {
-		
-		for (WINDOW_TYPE window : JCasUtil.select(jCas, this.windowClass)) {
-			List<TOKEN_TYPE> tokens = this.tokenOps.selectTokens(jCas, window);
-			
-			// Extract data from CAS and stuff it into ClearNLP data structures
-			DEPTree tree = new DEPTree();
-			for (int i = 0; i < tokens.size(); i++) {
-			  TOKEN_TYPE token = tokens.get(i);
-			  String lemma = this.tokenOps.getLemma(jCas, token);
-			  String pos = this.tokenOps.getPos(jCas, token);
-				DEPNode node = new DEPNode(i+1, token.getCoveredText(), lemma, pos, new DEPFeat());
-				tree.add(node);
-			}
-			
-			// Run the parser
-			this.parser.process(tree);
-			
-			// convert ClearNLP output back into CAS type system annotation
-			this.addTreeToCas(jCas, tree, window, tokens);
-		}
-	}
-	
-	/**
-	 * Takes parsed tree from ClearNLP and converts it into dependency type system.
-	 * @param jCas
-	 * @param tree
-	 * @param window
-	 * @param tokens
-	 */
-	private void addTreeToCas(JCas jCas, DEPTree tree, WINDOW_TYPE window, List<TOKEN_TYPE> tokens) {
-	  
-	    ArrayList<DEPENDENCY_NODE_TYPE> nodes = new ArrayList<DEPENDENCY_NODE_TYPE>(tree.size());
-	    DEPENDENCY_ROOT_NODE_TYPE rootNode = this.dependencyOps.createRootNode(jCas, window);
-	    nodes.add(rootNode); 
-	    
-	    for (int i = 0; i < tokens.size(); i++) {
-	        TOKEN_TYPE token = tokens.get(i);
-	        nodes.add(this.dependencyOps.createNode(jCas, token));
-	    }
-	    
-	    Multimap<DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE> headRelations = HashMultimap.create();
-	    Multimap<DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE> childRelations = HashMultimap.create();
-	    // extract relation arcs from ClearNLP parse tree
-	    for (int i = 0; i < tree.size(); i++) {
-	      DEPNode parserNode = tree.get(i);
-	      if (parserNode.hasHead()) {
-	        int headIndex = parserNode.getHead().id;
-	        DEPENDENCY_NODE_TYPE node = nodes.get(i);
-	        DEPENDENCY_NODE_TYPE headNode = nodes.get(headIndex);
-	        DEPENDENCY_RELATION_TYPE rel = this.dependencyOps.createRelation(jCas, headNode, node, parserNode.getLabel());
-	    
-	        headRelations.put(node, rel);
-	        childRelations.put(headNode, rel);
-	      }
-	    } 
-	    
-	    // finalize nodes: add links between nodes and relations 
-	    for (DEPENDENCY_NODE_TYPE node : nodes) {
-	      this.dependencyOps.setHeadRelations(jCas, node, Lists.newArrayList(headRelations.get(node)));
-	      this.dependencyOps.setChildRelations(jCas, node, Lists.newArrayList(childRelations.get(node)));
-	      node.addToIndexes();
-	    }
-	}
-	
-	private AbstractComponent parser;
+  @Override
+  public void initialize(UimaContext aContext) throws ResourceInitializationException {
+    super.initialize(aContext);
+
+    try {
+      URL parserModelURL = (this.parserModelUri == null)
+          ? DependencyParser_ImplBase.class.getResource(DEFAULT_MODEL_FILE_NAME).toURI().toURL()
+          : this.parserModelUri.toURL();
+
+      this.parser = EngineGetter.getComponent(
+          parserModelURL.openStream(),
+          this.languageCode,
+          NLPLib.MODE_DEP);
+
+    } catch (Exception e) {
+      throw new ResourceInitializationException(e);
+    }
+  }
+
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
+
+    for (WINDOW_TYPE window : JCasUtil.select(jCas, this.windowClass)) {
+      List<TOKEN_TYPE> tokens = this.tokenOps.selectTokens(jCas, window);
+
+      // Extract data from CAS and stuff it into ClearNLP data structures
+      DEPTree tree = new DEPTree();
+      for (int i = 0; i < tokens.size(); i++) {
+        TOKEN_TYPE token = tokens.get(i);
+        String lemma = this.tokenOps.getLemma(jCas, token);
+        String pos = this.tokenOps.getPos(jCas, token);
+        DEPNode node = new DEPNode(i + 1, token.getCoveredText(), lemma, pos, new DEPFeat());
+        tree.add(node);
+      }
+
+      // Run the parser
+      this.parser.process(tree);
+
+      // convert ClearNLP output back into CAS type system annotation
+      this.addTreeToCas(jCas, tree, window, tokens);
+    }
+  }
+
+  /**
+   * Takes parsed tree from ClearNLP and converts it into dependency type system.
+   * 
+   * @param jCas
+   * @param tree
+   * @param window
+   * @param tokens
+   */
+  private void addTreeToCas(JCas jCas, DEPTree tree, WINDOW_TYPE window, List<TOKEN_TYPE> tokens) {
+
+    ArrayList<DEPENDENCY_NODE_TYPE> nodes = new ArrayList<DEPENDENCY_NODE_TYPE>(tree.size());
+    DEPENDENCY_ROOT_NODE_TYPE rootNode = this.dependencyOps.createRootNode(jCas, window);
+    nodes.add(rootNode);
+
+    for (int i = 0; i < tokens.size(); i++) {
+      TOKEN_TYPE token = tokens.get(i);
+      nodes.add(this.dependencyOps.createNode(jCas, token));
+    }
+
+    Multimap<DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE> headRelations = HashMultimap.create();
+    Multimap<DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE> childRelations = HashMultimap.create();
+    // extract relation arcs from ClearNLP parse tree
+    for (int i = 0; i < tree.size(); i++) {
+      DEPNode parserNode = tree.get(i);
+      if (parserNode.hasHead()) {
+        int headIndex = parserNode.getHead().id;
+        DEPENDENCY_NODE_TYPE node = nodes.get(i);
+        DEPENDENCY_NODE_TYPE headNode = nodes.get(headIndex);
+        DEPENDENCY_RELATION_TYPE rel = this.dependencyOps.createRelation(
+            jCas,
+            headNode,
+            node,
+            parserNode.getLabel());
+
+        headRelations.put(node, rel);
+        childRelations.put(headNode, rel);
+      }
+    }
+
+    // finalize nodes: add links between nodes and relations
+    for (DEPENDENCY_NODE_TYPE node : nodes) {
+      this.dependencyOps.setHeadRelations(jCas, node, Lists.newArrayList(headRelations.get(node)));
+      this.dependencyOps.setChildRelations(jCas, node, Lists.newArrayList(childRelations.get(node)));
+      node.addToIndexes();
+    }
+  }
+
+  private AbstractComponent parser;
 }

@@ -28,8 +28,8 @@ import java.util.List;
 
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.examples.documentclassification.advanced.DocumentClassificationEvaluation.AnnotatorMode;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.pipeline.SimplePipeline;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;

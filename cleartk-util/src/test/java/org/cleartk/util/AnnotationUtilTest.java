@@ -28,13 +28,17 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnnotationFactory;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.test.DefaultTestBase;
@@ -43,10 +47,9 @@ import org.cleartk.type.test.NamedEntityMention;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.junit.Test;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.AnnotationFactory;
-import org.uimafit.util.JCasUtil;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 /**
  * <br>
@@ -59,9 +62,14 @@ import org.uimafit.util.JCasUtil;
 public class AnnotationUtilTest extends DefaultTestBase {
 
   public static class Annotator extends JCasAnnotator_ImplBase {
-    public static void getProcessedJCas(JCas jCas) throws UIMAException, IOException {
-      AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Annotator.class);
-      AnalysisEngineFactory.process(jCas, engine, "src/test/resources/docs/huckfinn.txt");
+    public static void getProcessedJCas(JCas jCas) throws Exception {
+      AnalysisEngine engine = AnalysisEngineFactory.createEngine(Annotator.class);
+      jCas.reset();
+      jCas.setDocumentText(Files.toString(
+          new File("src/test/resources/docs/huckfinn.txt"),
+          Charsets.US_ASCII));
+      engine.process(jCas);
+      engine.collectionProcessComplete();
     }
 
     @Override
@@ -108,7 +116,7 @@ public class AnnotationUtilTest extends DefaultTestBase {
   }
 
   @Test
-  public void testContains() throws UIMAException, IOException {
+  public void testContains() throws Exception {
     AnnotationUtilTest.Annotator.getProcessedJCas(jCas);
 
     Token token6 = JCasUtil.selectByIndex(jCas, Token.class, 6);

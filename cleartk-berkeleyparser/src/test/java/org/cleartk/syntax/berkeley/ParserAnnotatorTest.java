@@ -25,8 +25,8 @@ import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 import edu.berkeley.nlp.PCFGLA.GrammarTrainer;
 
@@ -45,7 +45,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
 
   @Test
   public void test() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         ParserAnnotator.getDescription(MODEL_PATH));
     tokenBuilder.buildTokens(
         jCas,

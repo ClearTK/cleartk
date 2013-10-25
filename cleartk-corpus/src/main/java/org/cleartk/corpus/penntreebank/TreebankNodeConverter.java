@@ -33,7 +33,7 @@ import org.apache.uima.jcas.cas.StringArray;
 import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.util.treebank.TopTreebankNode;
 import org.cleartk.util.treebank.TreebankNode;
-import org.uimafit.util.FSCollectionFactory;
+import org.apache.uima.fit.util.FSCollectionFactory;
 
 /**
  * <br>

@@ -44,8 +44,8 @@ import org.cleartk.classifier.feature.function.LowerCaseFeatureFunction;
 import org.cleartk.classifier.feature.function.NumericTypeFeatureFunction;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.initializable.Initializable;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.initializable.Initializable;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.collect.Lists;
 

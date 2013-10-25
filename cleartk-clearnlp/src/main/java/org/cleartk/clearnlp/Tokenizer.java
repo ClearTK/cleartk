@@ -28,7 +28,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 public class Tokenizer extends Tokenizer_ImplBase<Token> {
   
@@ -42,11 +42,11 @@ public class Tokenizer extends Tokenizer_ImplBase<Token> {
   }
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(Tokenizer.class);
+    return AnalysisEngineFactory.createEngineDescription(Tokenizer.class);
   }
   
   public static AnalysisEngineDescription getDescription(String languageCode, URI dictionaryUri) throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(Tokenizer.class,
+    return AnalysisEngineFactory.createEngineDescription(Tokenizer.class,
         Tokenizer_ImplBase.PARAM_LANGUAGE_CODE,
         languageCode,
         Tokenizer_ImplBase.PARAM_DICTIONARY_URI,

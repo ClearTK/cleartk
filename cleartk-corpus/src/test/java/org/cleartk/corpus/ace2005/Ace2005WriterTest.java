@@ -39,7 +39,7 @@ import org.cleartk.test.DefaultTestBase;
 import org.cleartk.util.ViewUriUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -52,7 +52,7 @@ public class Ace2005WriterTest extends DefaultTestBase {
   @Test
   public void testMissingParameters() throws Exception {
     try {
-      AnalysisEngineFactory.createPrimitive(Ace2005Writer.class);
+      AnalysisEngineFactory.createEngine(Ace2005Writer.class);
       Assert.fail("expected exception with output directory not specified");
     } catch (ResourceInitializationException e) {
     }
@@ -60,7 +60,7 @@ public class Ace2005WriterTest extends DefaultTestBase {
 
   @Test
   public void testOutputFile() throws Exception {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         Ace2005Writer.class,
         Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath());
@@ -147,12 +147,12 @@ public class Ace2005WriterTest extends DefaultTestBase {
   @Test
   public void testDescriptor() throws UIMAException {
     try {
-      AnalysisEngineFactory.createPrimitive(Ace2005Writer.class);
+      AnalysisEngineFactory.createEngine(Ace2005Writer.class);
       Assert.fail("expected exception with output directory not specified");
     } catch (ResourceInitializationException e) {
     }
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         Ace2005Writer.class,
         Ace2005Writer.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath());

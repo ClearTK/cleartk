@@ -43,8 +43,8 @@ import org.jdom2.JDOMException;
 import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * This class reads MASC (http://www.anc.org/MASC) annotations into the CAS.
@@ -64,7 +64,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class MascGoldAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(MascGoldAnnotator.class);
+    return AnalysisEngineFactory.createEngineDescription(MascGoldAnnotator.class);
   }
 
   @Override

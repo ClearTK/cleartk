@@ -48,8 +48,8 @@ import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.timeml.util.TimeWordsExtractor;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.collect.Lists;
 
@@ -75,7 +75,7 @@ public class TimeTypeAnnotator extends CleartkAnnotator<String> {
 
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
-      return AnalysisEngineFactory.createPrimitiveDescription(TimeTypeAnnotator.class);
+      return AnalysisEngineFactory.createEngineDescription(TimeTypeAnnotator.class);
     }
   };
 

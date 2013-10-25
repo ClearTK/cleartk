@@ -30,6 +30,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -44,8 +46,6 @@ import org.cleartk.util.ae.linewriter.block.DoNothingBlockWriter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -67,7 +67,7 @@ public class LineWriterTest extends DefaultTestBase {
 
   @Test
   public void test1() throws Exception {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         LineWriter.class,
         LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath(),
@@ -127,7 +127,7 @@ public class LineWriterTest extends DefaultTestBase {
 
   @Test
   public void test2() throws Exception {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         LineWriter.class,
         LineWriter.PARAM_OUTPUT_FILE_NAME,
         new File(outputDirectory, "output.txt").getPath(),
@@ -159,7 +159,7 @@ public class LineWriterTest extends DefaultTestBase {
 
   @Test
   public void test3() throws Exception {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         LineWriter.class,
         LineWriter.PARAM_OUTPUT_FILE_NAME,
         new File(outputDirectory, "output.txt").getPath(),
@@ -369,7 +369,7 @@ public class LineWriterTest extends DefaultTestBase {
       throws Exception {
     ResourceInitializationException rie = null;
     try {
-      AnalysisEngineFactory.createPrimitive(LineWriter.class, params);
+      AnalysisEngineFactory.createEngine(LineWriter.class, params);
     } catch (ResourceInitializationException e) {
       rie = e;
     }
@@ -385,7 +385,7 @@ public class LineWriterTest extends DefaultTestBase {
 
   @Test
   public void testTokenWriter() throws Exception {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         LineWriter.class,
         LineWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath(),

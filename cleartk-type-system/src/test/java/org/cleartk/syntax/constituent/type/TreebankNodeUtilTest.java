@@ -32,7 +32,7 @@ import org.cleartk.syntax.constituent.type.TreebankNodeUtil.TreebankNodePath;
 import org.cleartk.test.CleartkTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>

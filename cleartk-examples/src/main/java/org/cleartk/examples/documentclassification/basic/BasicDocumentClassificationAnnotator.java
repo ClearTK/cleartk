@@ -39,7 +39,7 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor.Count;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.token.type.Token;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>

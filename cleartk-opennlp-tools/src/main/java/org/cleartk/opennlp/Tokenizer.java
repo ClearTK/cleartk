@@ -29,8 +29,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.ExternalResourceFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.ExternalResourceFactory;
 
 import com.google.common.annotations.Beta;
 
@@ -48,7 +48,7 @@ public class Tokenizer {
   public static AnalysisEngineDescription getDescription(String languageCode)
       throws ResourceInitializationException {
     String modelPath = String.format("/models/%s-token.bin", languageCode);
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         opennlp.uima.tokenize.Tokenizer.class,
         opennlp.uima.util.UimaUtil.MODEL_PARAMETER,
         ExternalResourceFactory.createExternalResourceDescription(

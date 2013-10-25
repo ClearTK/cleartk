@@ -47,8 +47,8 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.HideOutput;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -114,7 +114,7 @@ public class MaxentBooleanOutcomeClassifierTest extends DefaultTestBase {
 
   @Test
   public void test1() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         Test1Annotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -133,7 +133,6 @@ public class MaxentBooleanOutcomeClassifierTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName);
     hider.restoreOutput();
-    hider.close();
 
     MaxentBooleanOutcomeClassifierBuilder builder = new MaxentBooleanOutcomeClassifierBuilder();
     MaxentBooleanOutcomeClassifier classifier;
@@ -145,7 +144,7 @@ public class MaxentBooleanOutcomeClassifierTest extends DefaultTestBase {
     classification = classifier.classify(createInstance(null, "goodbye", 1).getFeatures());
     assertFalse(classification);
 
-    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createEngine(
         Test1Annotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         JarClassifierBuilder.getModelJarFile(outputDirectoryName));
@@ -303,7 +302,7 @@ public class MaxentBooleanOutcomeClassifierTest extends DefaultTestBase {
 
   @Test
   public void test2() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         Test2Annotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -321,7 +320,6 @@ public class MaxentBooleanOutcomeClassifierTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName + "/", "10", "1");
     hider.restoreOutput();
-    hider.close();
 
     MaxentBooleanOutcomeClassifierBuilder builder = new MaxentBooleanOutcomeClassifierBuilder();
     MaxentBooleanOutcomeClassifier classifier;
@@ -344,7 +342,7 @@ public class MaxentBooleanOutcomeClassifierTest extends DefaultTestBase {
     Map<Boolean, Double> scoredOutcomes2 = classifier.score(features2);
     Assert.assertTrue(scoredOutcomes2.get(false) > scoredOutcomes2.get(true));
 
-    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createEngine(
         Test2Annotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         JarClassifierBuilder.getModelJarFile(outputDirectoryName));

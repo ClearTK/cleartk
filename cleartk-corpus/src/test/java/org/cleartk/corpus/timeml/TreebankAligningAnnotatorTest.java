@@ -29,7 +29,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.test.CleartkTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -44,13 +44,13 @@ public class TreebankAligningAnnotatorTest extends CleartkTestBase {
   @Test
   public void testDescriptor() throws UIMAException {
     try {
-      AnalysisEngineFactory.createPrimitive(TreebankAligningAnnotator.class);
+      AnalysisEngineFactory.createEngine(TreebankAligningAnnotator.class);
       Assert.fail("expected exception with TreebankDirectory unspecified");
     } catch (ResourceInitializationException e) {
     }
 
     String treebankPath = "data/treebank/wsj";
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         TreebankAligningAnnotator.class,
         TreebankAligningAnnotator.PARAM_TREEBANK_DIRECTORY_NAME,
         treebankPath);

@@ -24,14 +24,11 @@
 
 package org.cleartk.corpus.genia.pos;
 
-import java.io.IOException;
-
-import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.cleartk.util.ae.PlainTextWriter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
 
 /**
  * <br>
@@ -47,9 +44,9 @@ import org.uimafit.pipeline.SimplePipeline;
  */
 public class Genia2PlainText {
 
-  public static void main(String[] args) throws UIMAException, IOException {
+  public static void main(String[] args) throws Exception {
     CollectionReader geniaReader = GeniaPosGoldReader.getDescription(args[0]);
-    AnalysisEngineDescription plainTextWriter = AnalysisEngineFactory.createPrimitiveDescription(
+    AnalysisEngineDescription plainTextWriter = AnalysisEngineFactory.createEngineDescription(
         PlainTextWriter.class,
         PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         args[1]);

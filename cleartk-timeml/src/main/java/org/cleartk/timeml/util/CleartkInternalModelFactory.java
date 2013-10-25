@@ -36,7 +36,7 @@ import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
-import org.uimafit.factory.ResourceCreationSpecifierFactory;
+import org.apache.uima.fit.factory.ResourceCreationSpecifierFactory;
 
 /**
  * 

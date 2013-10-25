@@ -43,6 +43,11 @@ import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.collection.CollectionReaderDescription;
+import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;
+import org.apache.uima.fit.component.ViewCreatorAnnotator;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.SofaCapability;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -50,11 +55,6 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasCollectionReader_ImplBase;
-import org.uimafit.component.ViewCreatorAnnotator;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.descriptor.SofaCapability;
-import org.uimafit.factory.CollectionReaderFactory;
 
 /**
  * <br>
@@ -75,7 +75,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
   public static CollectionReaderDescription getDescription(String fileOrDir)
       throws ResourceInitializationException {
-    return CollectionReaderFactory.createDescription(
+    return CollectionReaderFactory.createReaderDescription(
         FilesCollectionReader.class,
         null,
         PARAM_ROOT_FILE,
@@ -84,12 +84,12 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
   public static CollectionReader getCollectionReader(String fileOrDir)
       throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(getDescription(fileOrDir));
+    return CollectionReaderFactory.createReader(getDescription(fileOrDir));
   }
 
   public static CollectionReaderDescription getDescriptionWithView(String dir, String viewName)
       throws ResourceInitializationException {
-    return CollectionReaderFactory.createDescription(
+    return CollectionReaderFactory.createReaderDescription(
         FilesCollectionReader.class,
         PARAM_ROOT_FILE,
         dir,
@@ -99,14 +99,14 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
   public static CollectionReader getCollectionReaderWithView(String dir, String viewName)
       throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(getDescriptionWithView(dir, viewName));
+    return CollectionReaderFactory.createReader(getDescriptionWithView(dir, viewName));
   }
 
   public static CollectionReaderDescription getDescriptionWithPatterns(
       String dir,
       String viewName,
       String... patterns) throws ResourceInitializationException {
-    return CollectionReaderFactory.createDescription(
+    return CollectionReaderFactory.createReaderDescription(
         FilesCollectionReader.class,
         PARAM_ROOT_FILE,
         dir,
@@ -120,17 +120,14 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
       String dir,
       String viewName,
       String... patterns) throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(getDescriptionWithPatterns(
-        dir,
-        viewName,
-        patterns));
+    return CollectionReaderFactory.createReader(getDescriptionWithPatterns(dir, viewName, patterns));
   }
 
   public static CollectionReaderDescription getDescriptionWithSuffixes(
       String dir,
       String viewName,
       String... suffixes) throws ResourceInitializationException {
-    return CollectionReaderFactory.createDescription(
+    return CollectionReaderFactory.createReaderDescription(
         FilesCollectionReader.class,
         PARAM_ROOT_FILE,
         dir,
@@ -144,10 +141,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
       String dir,
       String viewName,
       String... suffixes) throws ResourceInitializationException {
-    return CollectionReaderFactory.createCollectionReader(getDescriptionWithSuffixes(
-        dir,
-        viewName,
-        suffixes));
+    return CollectionReaderFactory.createReader(getDescriptionWithSuffixes(dir, viewName, suffixes));
   }
 
   public static final String PARAM_ROOT_FILE = "rootFile";
@@ -162,6 +156,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_VIEW_NAME,
+      mandatory = false,
       description = "takes the the name that should be given to the JCas view that the document texts should be set to.",
       defaultValue = CAS.NAME_DEFAULT_SOFA)
   private String viewName;
@@ -170,6 +165,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_LANGUAGE,
+      mandatory = false,
       description = "takes the language code corresponding to the language of the documents being examined.  The value of this parameter "
           + "is simply passed on to JCas.setDocumentLanguage(String).")
   private String language;
@@ -178,6 +174,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_ENCODING,
+      mandatory = false,
       description = "takes the encoding of the text files (e.g. \"UTF-8\").  See javadoc for java.nio.charset.Charset for a list of encoding names.")
   private String encoding;
 
@@ -185,6 +182,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_SUFFIXES,
+      mandatory = false,
       description = "takes suffixes (e.g. .txt) of the files that should be read in.")
   private String[] suffixes;
 
@@ -192,6 +190,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_PATTERNS,
+      mandatory = false,
       description = "	takes regular expressions for matching the files that should be read in. Note that these will be searched for"
           + " using java.util. regex.Matcher.find, so if you want to make sure the entire file name matches a pattern, you should start the string with ^ and end the"
           + " string with $.")
@@ -201,6 +200,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_NAME_FILES_FILE_NAMES,
+      mandatory = false,
       description = "names files which contain lists of file names. For example, if the value 'mydata/mylist.txt' is provided, "
           + "then the file 'mylist.txt' should contain a line delimited list of file names.  The file names in the list should not have directory information "
           + "but should just be the names of the files. The directory is determined by 'rootFile' and the files that are processed result from "
@@ -212,6 +212,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_FILE_NAMES,
+      mandatory = false,
       description = "provides a list of file names that should be read in. The directory of the file names is determined by "
           + "'rootFile' and the files that are processed result from traversing the directory structure provided and looking for files with a name found in the list of file names. "
           + "That is, no exception will be thrown if a file name in the list does not actually correspond to a file.")
@@ -221,6 +222,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_IGNORE_SYSTEM_FILES,
+      mandatory = false,
       description = "This parameter provides a flag that determines whether file iteration will traverse into directories that begin with a period '.' - to loosely correspond to 'system' files.  Setting this parameter to true will not cause file names that begin with a period to be ignored - just directories. ")
   private boolean ignoreSystemFiles = true;
 

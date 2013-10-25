@@ -44,8 +44,8 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.util.InstanceFactory;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.HideOutput;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -84,7 +84,7 @@ public class MaxentBooleanOutcomeDataWriterTest extends DefaultTestBase {
 
   @Test
   public void test1() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         Test1Annotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -105,7 +105,6 @@ public class MaxentBooleanOutcomeDataWriterTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName, "10", "1");
     hider.restoreOutput();
-    hider.close();
 
   }
 
@@ -133,7 +132,7 @@ public class MaxentBooleanOutcomeDataWriterTest extends DefaultTestBase {
 
     HideOutput hider = new HideOutput();
 
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         Test4Annotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -149,7 +148,6 @@ public class MaxentBooleanOutcomeDataWriterTest extends DefaultTestBase {
     dataWriterAnnotator.collectionProcessComplete();
     assertNotNull(aepe);
     hider.restoreOutput();
-    hider.close();
   }
 
   public static class Test5Annotator extends CleartkAnnotator<Boolean> {

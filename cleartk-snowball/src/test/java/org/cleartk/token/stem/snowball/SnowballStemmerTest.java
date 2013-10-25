@@ -38,9 +38,9 @@ import org.cleartk.token.type.Token;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.factory.TokenBuilder;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -60,7 +60,7 @@ public class SnowballStemmerTest extends CleartkTestBase {
   @Test
   public void testBadStemmerName() {
     try {
-      AnalysisEngineFactory.createPrimitive(
+      AnalysisEngineFactory.createEngine(
           SnowballStemmer.class,
           SnowballStemmer.PARAM_STEMMER_NAME,
           "FooBar");
@@ -71,7 +71,7 @@ public class SnowballStemmerTest extends CleartkTestBase {
 
   @Test
   public void testSimple() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         DefaultSnowballStemmer.class,
         SnowballStemmer.PARAM_STEMMER_NAME,
         "English");
@@ -89,7 +89,7 @@ public class SnowballStemmerTest extends CleartkTestBase {
 
   @Test
   public void testUppercase() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         DefaultSnowballStemmer.class,
         SnowballStemmer.PARAM_STEMMER_NAME,
         "English");
@@ -112,14 +112,14 @@ public class SnowballStemmerTest extends CleartkTestBase {
   public void testDescriptor() throws UIMAException {
     ResourceInitializationException rie = null;
     try {
-      AnalysisEngineFactory.createPrimitive(DefaultSnowballStemmer.class);
+      AnalysisEngineFactory.createEngine(DefaultSnowballStemmer.class);
     } catch (ResourceInitializationException e) {
       rie = e;
     }
 
     assertNotNull(rie);
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         DefaultSnowballStemmer.class,
         SnowballStemmer.PARAM_STEMMER_NAME,
         "English");

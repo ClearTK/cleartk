@@ -29,7 +29,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.CollectionReaderFactory;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
 
 /**
  * <br>
@@ -52,12 +52,12 @@ public class PennTreebankReaderTest extends DefaultTestBase {
   @Test
   public void testReaderDescriptor() throws UIMAException {
     try {
-      CollectionReaderFactory.createCollectionReader(PennTreebankReader.class);
+      CollectionReaderFactory.createReader(PennTreebankReader.class);
       Assert.fail("expected exception with no file or directory specified");
     } catch (ResourceInitializationException e) {
     }
 
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+    CollectionReader reader = CollectionReaderFactory.createReader(
         PennTreebankReader.class,
         PennTreebankReader.PARAM_CORPUS_DIRECTORY_NAME,
         this.inputDir,

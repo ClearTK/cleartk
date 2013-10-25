@@ -37,8 +37,8 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.HideOutput;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -71,7 +71,7 @@ public class GrmmClassifierBuilderTest extends DefaultTestBase {
   @Before
   public void init() {
     try {
-      dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+      dataWriterAnnotator = AnalysisEngineFactory.createEngine(
           Test1Annotator.class,
           DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
           outputDirectoryName,
@@ -92,7 +92,6 @@ public class GrmmClassifierBuilderTest extends DefaultTestBase {
     // file does not exist, expect exception
     Train.main(outputDirectoryName, "template.txt");
     hider.restoreOutput();
-    hider.close();
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -101,7 +100,6 @@ public class GrmmClassifierBuilderTest extends DefaultTestBase {
     // file does not exist, expect exception
     Train.main(outputDirectoryName, null);
     hider.restoreOutput();
-    hider.close();
   }
 
   @Test
@@ -111,6 +109,5 @@ public class GrmmClassifierBuilderTest extends DefaultTestBase {
     HideOutput hider = new HideOutput();
     Train.main(this.outputDirectoryName, templateFilename);
     hider.restoreOutput();
-    hider.close();
   }
 }

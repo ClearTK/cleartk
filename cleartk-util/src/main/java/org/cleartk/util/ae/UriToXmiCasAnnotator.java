@@ -34,14 +34,14 @@ import org.apache.uima.cas.impl.XCASDeserializer;
 import org.apache.uima.cas.impl.XCASSerializer;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.component.ViewCreatorAnnotator;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.component.ViewCreatorAnnotator;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -59,7 +59,7 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class UriToXmiCasAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(UriToXmiCasAnnotator.class);
+    return AnalysisEngineFactory.createEngineDescription(UriToXmiCasAnnotator.class);
   }
 
   /**
@@ -68,7 +68,7 @@ public class UriToXmiCasAnnotator extends JCasAnnotator_ImplBase {
   public static AnalysisEngineDescription getCreateViewAggregateDescription(String targetViewName)
       throws ResourceInitializationException {
     AggregateBuilder builder = new AggregateBuilder();
-    builder.add(AnalysisEngineFactory.createPrimitiveDescription(
+    builder.add(AnalysisEngineFactory.createEngineDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         targetViewName));

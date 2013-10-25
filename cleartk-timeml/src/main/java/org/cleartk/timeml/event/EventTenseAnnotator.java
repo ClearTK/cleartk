@@ -37,7 +37,7 @@ import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.feature.TextSliceExtractor;
 import org.cleartk.feature.token.TokenTextForSelectedPosExtractor;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -63,7 +63,7 @@ public class EventTenseAnnotator extends EventAttributeAnnotator<String> {
 
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
-      return AnalysisEngineFactory.createPrimitiveDescription(EventTenseAnnotator.class);
+      return AnalysisEngineFactory.createEngineDescription(EventTenseAnnotator.class);
     }
   };
 

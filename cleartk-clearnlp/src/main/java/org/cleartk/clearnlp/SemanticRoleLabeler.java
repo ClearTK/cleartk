@@ -35,8 +35,8 @@ import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.descriptor.TypeCapability;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.descriptor.TypeCapability;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -70,11 +70,11 @@ import org.uimafit.factory.AnalysisEngineFactory;
 public class SemanticRoleLabeler extends SemanticRoleLabeler_ImplBase<Sentence, Token, DependencyNode, TopDependencyNode, DependencyRelation, SemanticArgument, Predicate> {
   
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(SemanticRoleLabeler.class);
+    return AnalysisEngineFactory.createEngineDescription(SemanticRoleLabeler.class);
   }
   
   public static AnalysisEngineDescription getDescription(String languageCode, URI predIdModelUri, URI rolesetModelUri, URI srlModelUri) throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(SemanticRoleLabeler.class, 
+    return AnalysisEngineFactory.createEngineDescription(SemanticRoleLabeler.class, 
       SemanticRoleLabeler_ImplBase.PARAM_LANGUAGE_CODE,
       languageCode,
       SemanticRoleLabeler_ImplBase.PARAM_PRED_ID_MODEL_URI,

@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Feature;
-import org.uimafit.factory.initializable.Initializable;
+import org.apache.uima.fit.factory.initializable.Initializable;
 
 /**
  * <br>

@@ -32,7 +32,7 @@ import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Subtoken;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -47,7 +47,7 @@ public class TokenComponents {
 
   public static AnalysisEngineDescription createPennTokenizer()
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         TokenAnnotator.class,
         TokenAnnotator.PARAM_TOKEN_TYPE_NAME,
         Token.class.getName(),
@@ -59,7 +59,7 @@ public class TokenComponents {
 
   public static AnalysisEngineDescription createSubtokenizer()
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         TokenAnnotator.class,
         TokenAnnotator.PARAM_TOKEN_TYPE_NAME,
         Subtoken.class.getName(),

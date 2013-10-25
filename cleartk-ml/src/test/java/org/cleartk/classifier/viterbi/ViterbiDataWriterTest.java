@@ -52,8 +52,8 @@ import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -93,7 +93,7 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
   @Test
   public void testConsumeAll() throws Exception {
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         TestAnnotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -149,7 +149,7 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
 
     Train.main(outputDirectoryName + "/", "10", "1");
 
-    engine = AnalysisEngineFactory.createPrimitive(
+    engine = AnalysisEngineFactory.createEngine(
         TestAnnotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         JarClassifierBuilder.getModelJarFile(outputDirectoryName));

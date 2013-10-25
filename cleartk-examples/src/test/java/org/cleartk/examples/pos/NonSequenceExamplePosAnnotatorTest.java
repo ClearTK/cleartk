@@ -33,6 +33,9 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.testing.util.HideOutput;
 import org.apache.uima.pear.util.FileUtil;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
@@ -49,9 +52,6 @@ import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -91,7 +91,7 @@ public class NonSequenceExamplePosAnnotatorTest extends ExamplesTestBase {
   @Test
   public void testLibsvm() throws Exception {
     String libsvmDirectoryName = outputDirectory + "/libsvm";
-    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
+    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createEngineDescription(
         NonSequenceExamplePosAnnotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         LibSvmStringOutcomeDataWriter.class.getName(),
@@ -107,7 +107,7 @@ public class NonSequenceExamplePosAnnotatorTest extends ExamplesTestBase {
   @Test
   public void testMaxent() throws Exception {
     String maxentDirectoryName = outputDirectoryName + "/maxent";
-    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
+    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createEngineDescription(
         NonSequenceExamplePosAnnotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         MaxentStringOutcomeDataWriter.class.getName(),
@@ -127,7 +127,7 @@ public class NonSequenceExamplePosAnnotatorTest extends ExamplesTestBase {
     this.logger.info(ExamplePosClassifierTest.SVMLIGHT_TESTS_ENABLED_MESSAGE);
 
     String svmlightDirectoryName = outputDirectoryName + "/svmlight";
-    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
+    AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createEngineDescription(
         NonSequenceExamplePosAnnotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         SvmLightStringOutcomeDataWriter.class.getName(),
@@ -164,9 +164,8 @@ public class NonSequenceExamplePosAnnotatorTest extends ExamplesTestBase {
     HideOutput hider = new HideOutput();
     org.cleartk.classifier.jar.Train.main(args);
     hider.restoreOutput();
-    hider.close();
 
-    AnalysisEngineDescription taggerDescription = AnalysisEngineFactory.createPrimitiveDescription(
+    AnalysisEngineDescription taggerDescription = AnalysisEngineFactory.createEngineDescription(
         NonSequenceExamplePosAnnotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         JarClassifierBuilder.getModelJarFile(outDirectoryName));
@@ -177,7 +176,7 @@ public class NonSequenceExamplePosAnnotatorTest extends ExamplesTestBase {
         TokenAnnotator.getDescription(),
         DefaultSnowballStemmer.getDescription("English"),
         taggerDescription,
-        AnalysisEngineFactory.createPrimitiveDescription(
+        AnalysisEngineFactory.createEngineDescription(
             ExamplePosPlainTextWriter.class,
             ExamplePosPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
             outDirectoryName));

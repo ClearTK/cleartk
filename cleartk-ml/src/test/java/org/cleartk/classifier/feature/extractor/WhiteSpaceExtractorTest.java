@@ -30,14 +30,14 @@ import java.util.List;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Test;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -87,14 +87,17 @@ public class WhiteSpaceExtractorTest extends DefaultTestBase {
 
   @Test
   public void testExtract() throws Exception {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Annotator.class);
-    JCas jc = AnalysisEngineFactory.process(engine, "This is some test text.");
-    FSIndex<Annotation> fsIndex = jc.getAnnotationIndex(Token.type);
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(Annotator.class);
+    jCas.reset();
+    jCas.setDocumentText("This is some test text.");
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+    FSIndex<Annotation> fsIndex = jCas.getAnnotationIndex(Token.type);
 
-    Token targetToken = new Token(jc, 0, 4);
+    Token targetToken = new Token(jCas, 0, 4);
     Token t1 = (Token) fsIndex.find(targetToken);
     WhiteSpaceExtractor<Token> extractor = new WhiteSpaceExtractor<Token>();
-    List<Feature> features = extractor.extract(jc, t1);
+    List<Feature> features = extractor.extract(jCas, t1);
     assertEquals(2, features.size());
     Feature feature = features.get(0);
     assertEquals(WhiteSpaceExtractor.ORIENTATION_LEFT, feature.getValue());
@@ -102,9 +105,9 @@ public class WhiteSpaceExtractorTest extends DefaultTestBase {
     assertEquals(WhiteSpaceExtractor.ORIENTATION_RIGHT, feature.getValue());
     assertEquals("whitespace", feature.getName());
 
-    targetToken = new Token(jc, 5, 7);
+    targetToken = new Token(jCas, 5, 7);
     t1 = (Token) fsIndex.find(targetToken);
-    features = extractor.extract(jc, t1);
+    features = extractor.extract(jCas, t1);
     assertEquals(features.size(), 2);
     feature = features.get(0);
     assertEquals(WhiteSpaceExtractor.ORIENTATION_LEFT, feature.getValue());
@@ -112,35 +115,35 @@ public class WhiteSpaceExtractorTest extends DefaultTestBase {
     assertEquals(WhiteSpaceExtractor.ORIENTATION_RIGHT, feature.getValue());
     assertEquals("whitespace", feature.getName());
 
-    targetToken = new Token(jc, 18, 22);
+    targetToken = new Token(jCas, 18, 22);
     t1 = (Token) fsIndex.find(targetToken);
-    features = extractor.extract(jc, t1);
+    features = extractor.extract(jCas, t1);
     assertEquals(features.size(), 1);
     feature = features.get(0);
     assertEquals(WhiteSpaceExtractor.ORIENTATION_LEFT, feature.getValue());
 
-    targetToken = new Token(jc, 22, 23);
+    targetToken = new Token(jCas, 22, 23);
     t1 = (Token) fsIndex.find(targetToken);
-    features = extractor.extract(jc, t1);
+    features = extractor.extract(jCas, t1);
     assertEquals(1, features.size());
     feature = features.get(0);
     assertEquals(WhiteSpaceExtractor.ORIENTATION_RIGHT, feature.getValue());
 
-    targetToken = new Token(jc, 10, 12);
+    targetToken = new Token(jCas, 10, 12);
     t1 = (Token) fsIndex.find(targetToken);
-    features = extractor.extract(jc, t1);
+    features = extractor.extract(jCas, t1);
     assertEquals(1, features.size());
     feature = features.get(0);
     assertEquals(WhiteSpaceExtractor.ORIENTATION_RIGHT, feature.getValue());
 
-    targetToken = new Token(jc, 15, 20);
+    targetToken = new Token(jCas, 15, 20);
     t1 = (Token) fsIndex.find(targetToken);
-    features = extractor.extract(jc, t1);
+    features = extractor.extract(jCas, t1);
     assertEquals(0, features.size());
 
-    targetToken = new Token(jc, 0, 23);
+    targetToken = new Token(jCas, 0, 23);
     t1 = (Token) fsIndex.find(targetToken);
-    features = extractor.extract(jc, t1);
+    features = extractor.extract(jCas, t1);
     assertEquals(features.size(), 2);
     feature = features.get(0);
     assertEquals(WhiteSpaceExtractor.ORIENTATION_LEFT, feature.getValue());

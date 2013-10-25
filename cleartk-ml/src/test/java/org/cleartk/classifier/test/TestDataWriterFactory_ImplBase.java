@@ -29,7 +29,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.encoder.features.NameNumber;
 import org.cleartk.classifier.jar.DataWriterFactory_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 
 /**
  * <br>

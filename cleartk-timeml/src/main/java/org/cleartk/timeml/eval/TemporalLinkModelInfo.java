@@ -34,7 +34,7 @@ import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.timeml.type.Anchor;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.base.Function;
 import com.google.common.base.Objects;

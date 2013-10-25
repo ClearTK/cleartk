@@ -29,16 +29,15 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.apache.uima.UIMAException;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.fit.util.JCasUtil;
 import org.cleartk.timeml.TimeMlTestBase;
 import org.cleartk.timeml.type.Event;
+import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>

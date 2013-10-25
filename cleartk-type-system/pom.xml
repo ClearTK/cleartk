@@ -44,14 +44,8 @@
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>org.uimafit</groupId>
-			<artifactId>uimafit</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-io</groupId>
-					<artifactId>commons-io</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>org.apache.uima</groupId>
+			<artifactId>uimafit-core</artifactId>
 		</dependency>
 		<!-- test only -->
 		<dependency>

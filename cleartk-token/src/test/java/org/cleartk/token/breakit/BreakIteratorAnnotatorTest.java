@@ -26,20 +26,18 @@ package org.cleartk.token.breakit;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 
-import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.junit.Test;
-import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -75,7 +73,7 @@ public class BreakIteratorAnnotatorTest extends DefaultTestBase {
       AnalysisEngineDescription annotator,
       Class<? extends Annotation> annotationCls,
       String text,
-      String[] expectedAnnotations) throws UIMAException, IOException {
+      String[] expectedAnnotations) throws Exception {
     jCas.setDocumentText(text);
     SimplePipeline.runPipeline(jCas, annotator);
     Collection<? extends Annotation> actualAnnotations = JCasUtil.select(jCas, annotationCls);
@@ -90,7 +88,7 @@ public class BreakIteratorAnnotatorTest extends DefaultTestBase {
       AnalysisEngineDescription annotator,
       Class<? extends Annotation> annotationCls,
       String text,
-      String expectedText) throws UIMAException, IOException {
+      String expectedText) throws Exception {
     String[] expectedAnnotations = expectedText.split(" ");
     test(annotator, annotationCls, text, expectedAnnotations);
   }

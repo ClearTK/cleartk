@@ -34,7 +34,7 @@ import org.cleartk.classifier.liblinear.LibLinearStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.token.type.Token;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -60,7 +60,7 @@ public class EventClassAnnotator extends EventAttributeAnnotator<String> {
 
     @Override
     public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {
-      return AnalysisEngineFactory.createPrimitiveDescription(EventClassAnnotator.class);
+      return AnalysisEngineFactory.createEngineDescription(EventClassAnnotator.class);
     }
   };
 

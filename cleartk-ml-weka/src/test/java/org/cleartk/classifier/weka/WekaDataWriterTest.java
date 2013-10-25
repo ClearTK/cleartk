@@ -34,7 +34,7 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -79,7 +79,7 @@ public class WekaDataWriterTest extends DefaultTestBase {
   // @Ignore
   @Test
   public void test1() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         Test1Annotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         WekaStringOutcomeDataWriter.class.getName(),
@@ -114,7 +114,7 @@ public class WekaDataWriterTest extends DefaultTestBase {
 
   @Test
   public void test2() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         Test2Annotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         WekaStringOutcomeDataWriter.class.getName(),
@@ -135,7 +135,7 @@ public class WekaDataWriterTest extends DefaultTestBase {
 
   @Test
   public void testIssue339() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         TestIssue339Annotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
         WekaStringOutcomeDataWriter.class.getName(),

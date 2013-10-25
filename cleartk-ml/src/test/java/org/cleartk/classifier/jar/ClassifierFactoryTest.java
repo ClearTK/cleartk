@@ -32,7 +32,7 @@ import org.cleartk.classifier.baseline.MostFrequentStringDataWriter;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.UimaContextFactory;
+import org.apache.uima.fit.factory.UimaContextFactory;
 
 /**
  * <br>

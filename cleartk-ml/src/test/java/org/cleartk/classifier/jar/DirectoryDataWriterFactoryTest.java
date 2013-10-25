@@ -23,13 +23,12 @@
  */
 package org.cleartk.classifier.jar;
 
-import junit.framework.Assert;
-
 import org.apache.uima.UimaContext;
+import org.apache.uima.fit.factory.UimaContextFactory;
+import org.apache.uima.fit.factory.initializable.InitializableFactory;
 import org.cleartk.test.DefaultTestBase;
+import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.UimaContextFactory;
-import org.uimafit.factory.initializable.InitializableFactory;
 
 /**
  * <br>

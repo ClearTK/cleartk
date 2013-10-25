@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2010, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,31 +21,54 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-
-package org.cleartk.util;
+package org.cleartk.examples;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.CasIOUtil;
 import org.apache.uima.jcas.JCas;
-import org.uimafit.component.xwriter.XWriterFileNamer;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.util.ViewUriUtil;
 
 /**
+ * This is a simple annotator for writing out XMI files, used by the parsing examples.
+ * 
  * <br>
- * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * Copyright (c) 2013, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * @author Philip Ogren
- * 
  */
+public class XmiWriter extends JCasAnnotator_ImplBase {
 
-public class ViewUriFileNamer implements XWriterFileNamer {
+  public static AnalysisEngineDescription getDescription(File outputDirectory)
+      throws ResourceInitializationException {
+    return AnalysisEngineFactory.createEngineDescription(
+        XmiWriter.class,
+        XmiWriter.PARAM_OUTPUT_DIRECTORY,
+        outputDirectory);
+  }
 
-  public String nameFile(JCas jCas) {
+  public static final String PARAM_OUTPUT_DIRECTORY = "outputDirectory";
+
+  @ConfigurationParameter(name = PARAM_OUTPUT_DIRECTORY)
+  private File outputDirectory;
+
+  @Override
+  public void process(JCas jCas) throws AnalysisEngineProcessException {
     try {
-      return new File(ViewUriUtil.getURI(jCas)).getName();
-    } catch (AnalysisEngineProcessException e) {
-      throw new RuntimeException("attempting to name a file using ViewURIUtil", e);
+      CasIOUtil.writeXmi(jCas, this.getOutputFile(this.outputDirectory, jCas));
+    } catch (IOException e) {
+      throw new AnalysisEngineProcessException(e);
     }
   }
+
+  protected File getOutputFile(File dir, JCas jCas) throws AnalysisEngineProcessException {
+    return new File(dir, new File(ViewUriUtil.getURI(jCas)).getName());
+  }
+
 }

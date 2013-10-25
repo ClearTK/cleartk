@@ -45,8 +45,8 @@ import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.HideOutput;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -100,7 +100,7 @@ public class GrmmClassifierTest extends DefaultTestBase {
   @Test
   public void runTest1() throws Exception {
 
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
         Test1Annotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
@@ -124,7 +124,6 @@ public class GrmmClassifierTest extends DefaultTestBase {
     // train and create a model with this template:
     Train.main(outputDirectoryName, templateFilename);
     hider.restoreOutput();
-    hider.close();
 
     // check that the classifier is successfully loaded from the model
     File modelJarFile = JarClassifierBuilder.getModelJarFile(this.outputDirectory);
@@ -132,7 +131,7 @@ public class GrmmClassifierTest extends DefaultTestBase {
     builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
 
     // try to use model for classification:
-    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine classifierAnnotator = AnalysisEngineFactory.createEngine(
         Test1Annotator.class,
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         modelJarFile.getPath());

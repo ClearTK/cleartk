@@ -30,13 +30,13 @@ import static org.junit.Assert.assertNull;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
+import org.apache.uima.fit.util.JCasUtil;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.examples.ExamplesTestBase;
 import org.cleartk.token.type.Token;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.testing.util.HideOutput;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -53,11 +53,10 @@ public class ExampleModelTest extends ExamplesTestBase {
     HideOutput hider = new HideOutput();
     BuildTestExamplePosModel.main();
     hider.restoreOutput();
-    hider.close();
 
     AnalysisEngineDescription posTaggerDescription = ExamplePosAnnotator.getClassifierDescription(JarClassifierBuilder.getModelJarFile(
         ExamplePosAnnotator.DEFAULT_OUTPUT_DIRECTORY).getPath());
-    AnalysisEngine posTagger = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
+    AnalysisEngine posTagger = AnalysisEngineFactory.createEngine(posTaggerDescription);
 
     tokenBuilder.buildTokens(
         jCas,

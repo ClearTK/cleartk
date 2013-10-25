@@ -40,16 +40,16 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionException;
+import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;
+import org.apache.uima.fit.component.ViewCreatorAnnotator;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.SofaCapability;
+import org.apache.uima.fit.factory.initializable.InitializableFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasCollectionReader_ImplBase;
-import org.uimafit.component.ViewCreatorAnnotator;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.descriptor.SofaCapability;
-import org.uimafit.factory.initializable.InitializableFactory;
 
 /**
  * <br>
@@ -94,6 +94,7 @@ public class LineReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_VIEW_NAME,
+      mandatory = false,
       description = "takes the the name that should be given to the JCas view associated with the document texts.",
       defaultValue = CAS.NAME_DEFAULT_SOFA)
   private String viewName;
@@ -102,6 +103,7 @@ public class LineReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_LANGUAGE,
+      mandatory = false,
       description = "takes the language code corresponding to the language of the documents being examined. The value of this parameter is simply passed on to JCas.setDocumentLanguage(String)")
   private String language;
 
@@ -109,6 +111,7 @@ public class LineReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_ENCODING,
+      mandatory = false,
       description = "takes the encoding of the text files (e.g. 'UTF-8').  See apidocs for java.nio.charset.Charset for a list of encoding names.")
   private String encoding;
 
@@ -116,6 +119,7 @@ public class LineReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_SUFFIXES,
+      mandatory = false,
       description = "Takes suffixes (e.g. .txt) of the files that should be read in.")
   private String[] suffixes;
 
@@ -123,6 +127,7 @@ public class LineReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_LINE_HANDLER_CLASS_NAME,
+      mandatory = false,
       description = "specifies the class name of the LineHandler. If one is not specified, then the DefaultLineHandler will be used.",
       defaultValue = "org.cleartk.util.cr.linereader.DefaultLineHandler")
   private String lineHandlerClassName;
@@ -131,6 +136,7 @@ public class LineReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_COMMENT_SPECIFIERS,
+      mandatory = false,
       description = "Specifies lines that should be considered 'comments' - i.e. lines that should be skipped. Commented lines are those the start with one of the values of this parameter.")
   private String[] commentSpecifiers;
 
@@ -138,6 +144,7 @@ public class LineReader extends JCasCollectionReader_ImplBase {
 
   @ConfigurationParameter(
       name = PARAM_SKIP_BLANK_LINES,
+      mandatory = false,
       description = "Specifies whether blank lines should be skipped or not. The default value is true if no value is given. If this parameter is set to false, then blank lines that appear in the text files will be read in and given their own JCas.  Blank lines are those that consist of only whitespace.",
       defaultValue = "true")
   private boolean skipBlankLines;

@@ -35,10 +35,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.fit.factory.UimaContextFactory;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.Feature;
 import org.junit.Test;
-import org.uimafit.factory.UimaContextFactory;
 
 /**
  * <br>
@@ -70,7 +70,6 @@ public class DefaultOutcomeFeatureExtractorTest {
         new Integer(3),
         DefaultOutcomeFeatureExtractor.PARAM_LEAST_RECENT_OUTCOME,
         new Integer(1));
-    rie = null;
     try {
       ofe = new DefaultOutcomeFeatureExtractor();
       ofe.initialize(context);

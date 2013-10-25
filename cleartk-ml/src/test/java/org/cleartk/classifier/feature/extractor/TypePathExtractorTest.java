@@ -45,9 +45,9 @@ import org.cleartk.type.test.Lemma;
 import org.cleartk.type.test.PosTag;
 import org.cleartk.type.test.Token;
 import org.junit.Test;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -121,7 +121,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
 
   @Test
   public void testExtract() throws Throwable {
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(Annotator.class);
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(Annotator.class);
 
     engine.process(jCas);
     engine.collectionProcessComplete();

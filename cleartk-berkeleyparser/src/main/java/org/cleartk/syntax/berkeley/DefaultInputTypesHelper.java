@@ -24,7 +24,7 @@ import java.util.List;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>

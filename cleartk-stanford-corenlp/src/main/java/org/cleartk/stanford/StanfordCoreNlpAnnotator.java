@@ -42,10 +42,10 @@ import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.FSCollectionFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.FSCollectionFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.collect.ArrayListMultimap;
 
@@ -83,7 +83,7 @@ import edu.stanford.nlp.util.CoreMap;
 public class StanfordCoreNlpAnnotator extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(StanfordCoreNlpAnnotator.class);
+    return AnalysisEngineFactory.createEngineDescription(StanfordCoreNlpAnnotator.class);
   }
 
   private StanfordCoreNLP processor;

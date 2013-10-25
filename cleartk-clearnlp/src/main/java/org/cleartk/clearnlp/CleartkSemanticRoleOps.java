@@ -7,7 +7,7 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.token.type.Token;
-import org.uimafit.util.FSCollectionFactory;
+import org.apache.uima.fit.util.FSCollectionFactory;
 
 /**
  * Defines common set of token data type operations used to convert output from semantic role labelers into

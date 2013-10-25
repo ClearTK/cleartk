@@ -31,10 +31,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.apache.uima.UIMAException;
-import org.apache.uima.cas.CASException;
-import org.apache.uima.collection.CollectionException;
-import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.collection.CollectionReaderDescription;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
+import org.apache.uima.fit.pipeline.JCasIterable;
+import org.apache.uima.fit.pipeline.JCasIterator;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.test.DefaultTestBase;
@@ -43,9 +44,6 @@ import org.cleartk.token.type.Token;
 import org.cleartk.util.ViewUriUtil;
 import org.jdom2.JDOMException;
 import org.junit.Test;
-import org.uimafit.factory.CollectionReaderFactory;
-import org.uimafit.pipeline.JCasIterable;
-import org.uimafit.util.JCasUtil;
 
 /**
  * <br>
@@ -58,8 +56,8 @@ import org.uimafit.util.JCasUtil;
 public class GeniaPosGoldReaderTest extends DefaultTestBase {
 
   @Test
-  public void testReader() throws CASException, UIMAException, IOException {
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+  public void testReader() throws Exception {
+    CollectionReaderDescription desc = CollectionReaderFactory.createReaderDescription(
         GeniaPosGoldReader.class,
         GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
         "src/test/resources/org/cleartk/corpus/genia/pos/GENIAcorpus3.02.articleA.pos.xml",
@@ -70,7 +68,7 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
         GeniaPosGoldReader.PARAM_LOAD_POS_TAGS,
         true);
 
-    JCas jcas = new JCasIterable(reader).next();
+    JCas jcas = new JCasIterable(desc).iterator().next();
     
     // ensure that file exists
     ViewUriUtil.getURI(jcas).toURL().openStream().close();
@@ -88,7 +86,7 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
     assertEquals("requires", token.getCoveredText());
     assertEquals("VBZ", token.getPos());
 
-    reader = CollectionReaderFactory.createCollectionReader(
+    desc = CollectionReaderFactory.createReaderDescription(
         GeniaPosGoldReader.class,
         GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
         "src/test/resources/org/cleartk/corpus/genia/pos/GENIAcorpus3.02.articleA.pos.xml",
@@ -99,12 +97,10 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
         GeniaPosGoldReader.PARAM_LOAD_POS_TAGS,
         false);
 
-    jcas = new JCasIterable(reader).next();
+    jcas = new JCasIterable(desc).iterator().next();
 
     // ensure that file exists
     ViewUriUtil.getURI(jcas).toURL().openStream().close();
-
-    assertEquals(1, reader.getProgress()[0].getCompleted());
 
     token = JCasUtil.selectByIndex(jcas, Token.class, 0);
     assertNull(token);
@@ -117,7 +113,7 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
 
     IOException ioe = null;
     try {
-      reader = CollectionReaderFactory.createCollectionReader(
+      CollectionReaderFactory.createReader(
           GeniaPosGoldReader.class,
           GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
           "src/test/resources/org/cleartk/corpus/genia/pos/GENIAcorpus3.02.articleA.pos.xml",
@@ -136,7 +132,7 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
 
     JDOMException jde = null;
     try {
-      reader = CollectionReaderFactory.createCollectionReader(
+      CollectionReaderFactory.createReader(
           GeniaPosGoldReader.class,
           GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
           "src/test/resources/org/cleartk/corpus/genia/pos/article_ids.txt");
@@ -145,7 +141,7 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
     }
     assertNotNull(jde);
 
-    reader = CollectionReaderFactory.createCollectionReader(
+    desc = CollectionReaderFactory.createReaderDescription(
         GeniaPosGoldReader.class,
         GeniaPosGoldReader.PARAM_GENIA_CORPUS_FILE,
         "src/test/resources/org/cleartk/corpus/genia/pos/GENIAcorpus3.02.articleA.pos.xml",
@@ -157,20 +153,9 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
         false,
         GeniaPosGoldReader.PARAM_ARTICLE_IDS_LIST_FILE,
         "src/test/resources/org/cleartk/corpus/genia/pos/article_ids.txt");
-    jcas = new JCasIterable(reader).next();
-    assertEquals(1, reader.getProgress()[0].getCompleted());
-    assertFalse(reader.hasNext());
-
-    CollectionException ce = null;
-    try {
-      reader.getNext(jcas.getCas());
-
-    } catch (CollectionException collectionException) {
-      ce = collectionException;
-    }
-    assertNotNull(ce);
-
-    reader.close();
+    JCasIterator iter = new JCasIterable(desc).iterator(); 
+    jcas = iter.next();
+    assertFalse(iter.hasNext());
   }
 
 }

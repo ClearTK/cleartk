@@ -29,7 +29,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.test.CleartkTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.CollectionReaderFactory;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
 
 /**
  * <br>
@@ -44,12 +44,12 @@ public class Conll2005GoldReaderTest extends CleartkTestBase {
   @Test
   public void testDescriptor() throws UIMAException {
     try {
-      CollectionReaderFactory.createCollectionReader(Conll2005GoldReader.class);
+      CollectionReaderFactory.createReader(Conll2005GoldReader.class);
       Assert.fail("expected error for missing CoNLL 2005 data file");
     } catch (ResourceInitializationException e) {
     }
 
-    CollectionReader reader = CollectionReaderFactory.createCollectionReader(
+    CollectionReader reader = CollectionReaderFactory.createReader(
         Conll2005GoldReader.class,
         Conll2005GoldReader.PARAM_CONLL2005_DATA_FILE,
         this.oneSentencePath);

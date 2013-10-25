@@ -34,9 +34,9 @@ import org.cleartk.corpus.propbank.util.Propbank;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.util.AnnotationUtil;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.SofaCapability;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.SofaCapability;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>

@@ -46,11 +46,11 @@ import org.maltparser.core.exception.MaltChainedException;
 import org.maltparser.core.options.OptionManager;
 import org.maltparser.core.symbol.SymbolTable;
 import org.maltparser.core.syntaxgraph.DependencyStructure;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.util.FSCollectionFactory;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.FSCollectionFactory;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -70,7 +70,7 @@ public class MaltParser extends JCasAnnotator_ImplBase {
 
   public static AnalysisEngineDescription getDescription(String modelFileName)
       throws ResourceInitializationException {
-    return AnalysisEngineFactory.createPrimitiveDescription(
+    return AnalysisEngineFactory.createEngineDescription(
         MaltParser.class,
         PARAM_MODEL_FILE_NAME,
         modelFileName);

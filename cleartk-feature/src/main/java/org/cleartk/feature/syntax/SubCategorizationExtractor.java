@@ -31,7 +31,7 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>

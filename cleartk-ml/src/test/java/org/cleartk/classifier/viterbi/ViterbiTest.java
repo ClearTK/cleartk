@@ -31,14 +31,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Assert;
-
 import org.apache.uima.UimaContext;
+import org.apache.uima.fit.factory.UimaContextFactory;
 import org.cleartk.classifier.Classifier;
 import org.cleartk.classifier.CleartkProcessingException;
 import org.cleartk.classifier.Feature;
+import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.UimaContextFactory;
 
 import com.google.common.collect.Maps;
 

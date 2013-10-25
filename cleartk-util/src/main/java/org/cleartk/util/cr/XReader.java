@@ -33,10 +33,10 @@ import org.apache.uima.cas.impl.XCASSerializer;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.collection.CollectionException;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.CleartkInitializationException;
-import org.uimafit.descriptor.ConfigurationParameter;
 import org.xml.sax.SAXException;
 
 /**
@@ -58,6 +58,7 @@ public class XReader extends FilesCollectionReader {
 
   @ConfigurationParameter(
       name = PARAM_XML_SCHEME,
+      mandatory = false,
       defaultValue = "XMI",
       description = "specifies the UIMA XML serialization scheme that should be used. Valid values for this parameter are 'XMI' and 'XCAS'")
   private String xmlScheme;

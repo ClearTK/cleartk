@@ -27,7 +27,7 @@ package org.cleartk.test;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.junit.Before;
-import org.uimafit.testing.factory.TokenBuilder;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
 
 /**
  * <br>

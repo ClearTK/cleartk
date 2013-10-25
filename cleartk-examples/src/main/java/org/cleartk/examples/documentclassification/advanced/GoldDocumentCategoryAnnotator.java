@@ -32,7 +32,7 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.util.ViewUriUtil;
-import org.uimafit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 
 /**
  * <br>

@@ -35,7 +35,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.util.AnnotationUtil;
-import org.uimafit.util.FSCollectionFactory;
+import org.apache.uima.fit.util.FSCollectionFactory;
 
 /**
  * <br>

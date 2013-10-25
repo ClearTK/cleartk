@@ -29,10 +29,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.Assert;
-
-
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
@@ -42,11 +42,9 @@ import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.testing.factory.TokenBuilder;
-import org.uimafit.util.JCasUtil;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;

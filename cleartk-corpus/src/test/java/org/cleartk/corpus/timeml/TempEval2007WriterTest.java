@@ -48,7 +48,7 @@ import org.jdom2.input.SAXBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -73,12 +73,12 @@ public class TempEval2007WriterTest extends CleartkTestBase {
   }
 
   @Test
-  public void test() throws UIMAException, IOException, JDOMException {
+  public void test() throws Exception, JDOMException {
     CollectionReader reader = FilesCollectionReader.getCollectionReaderWithView(
         this.inputFile.getPath(),
         TimeMlGoldAnnotator.TIMEML_VIEW_NAME);
-    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(TimeMlGoldAnnotator.getDescription());
-    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(TempEval2007Writer.getDescription(this.outputDirectory.getPath()));
+    AnalysisEngine annotator = AnalysisEngineFactory.createEngine(TimeMlGoldAnnotator.getDescription());
+    AnalysisEngine writer = AnalysisEngineFactory.createEngine(TempEval2007Writer.getDescription(this.outputDirectory.getPath()));
 
     reader.getNext(this.jCas.getCas());
     annotator.process(this.jCas);
@@ -129,12 +129,12 @@ public class TempEval2007WriterTest extends CleartkTestBase {
   @Test
   public void testDescriptor() throws UIMAException {
     try {
-      AnalysisEngineFactory.createPrimitive(TempEval2007Writer.class);
+      AnalysisEngineFactory.createEngine(TempEval2007Writer.class);
       Assert.fail("expected failure with no OutputDirectory specified");
     } catch (ResourceInitializationException e) {
     }
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         TempEval2007Writer.class,
         TempEval2007Writer.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath());

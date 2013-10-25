@@ -29,13 +29,15 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.Iterator;
 
-import junit.framework.Assert;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.test.CleartkTestBase;
 import org.cleartk.timeml.type.DocumentCreationTime;
@@ -45,12 +47,9 @@ import org.cleartk.timeml.type.Time;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.ViewUriUtil;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.testing.factory.TokenBuilder;
-import org.uimafit.util.JCasUtil;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -352,7 +351,7 @@ public class TempEval2010ReaderAnnotatorWriterTest extends CleartkTestBase {
   @Test
   public void testTempEval2010GoldAnnotator() throws Exception {
     CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(this.outputDirectory.getPath());
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(TempEval2010GoldAnnotator.getDescription());
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(TempEval2010GoldAnnotator.getDescription());
     reader.getNext(this.jCas.getCas());
     engine.process(this.jCas);
 
@@ -418,7 +417,7 @@ public class TempEval2010ReaderAnnotatorWriterTest extends CleartkTestBase {
   public void testTempEval2010GoldAnnotatorViews() throws Exception {
 
     CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(this.outputDirectory.getPath());
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         TempEval2010GoldAnnotator.getDescription(),
         TempEval2010GoldAnnotator.PARAM_TEXT_VIEWS,
         new String[] { "DCT", "TE", "TA", "EE", "EA", "E2DCT", "E2SST", "E2SE", "ME2ME" },
@@ -540,7 +539,7 @@ public class TempEval2010ReaderAnnotatorWriterTest extends CleartkTestBase {
   public void testTempEval2010Writer() throws Exception {
     File writerDirectory = new File(this.outputDirectory, "writer");
     CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(this.outputDirectory.getPath());
-    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine annotator = AnalysisEngineFactory.createEngine(
         TempEval2010GoldAnnotator.getDescription(),
         TempEval2010GoldAnnotator.PARAM_TEXT_VIEWS,
         new String[] { CAS.NAME_DEFAULT_SOFA, "E2DCT", "E2SST", "E2SE", "ME2ME" },
@@ -562,7 +561,7 @@ public class TempEval2010ReaderAnnotatorWriterTest extends CleartkTestBase {
         new String[] { "E2SE" },
         TempEval2010GoldAnnotator.PARAM_TEMPORAL_LINK_MAIN_EVENT_TO_NEXT_SENTENCE_MAIN_EVENT_VIEWS,
         new String[] { "ME2ME" });
-    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine writer = AnalysisEngineFactory.createEngine(
         TempEval2010Writer.getDescription(),
         TempEval2010Writer.PARAM_OUTPUT_DIRECTORY,
         writerDirectory.getPath(),
@@ -607,8 +606,8 @@ public class TempEval2010ReaderAnnotatorWriterTest extends CleartkTestBase {
   public void testTempEval2010WriterPartial() throws Exception {
     File writerDirectory = new File(this.outputDirectory, "writer");
     CollectionReader reader = TempEval2010CollectionReader.getCollectionReader(this.outputDirectory.getPath());
-    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(TempEval2010GoldAnnotator.getDescription());
-    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine annotator = AnalysisEngineFactory.createEngine(TempEval2010GoldAnnotator.getDescription());
+    AnalysisEngine writer = AnalysisEngineFactory.createEngine(
         TempEval2010Writer.getDescription(),
         TempEval2010Writer.PARAM_OUTPUT_DIRECTORY,
         writerDirectory.getPath(),
@@ -635,7 +634,7 @@ public class TempEval2010ReaderAnnotatorWriterTest extends CleartkTestBase {
   @Test
   public void testTempEval2010WriterNullTemporalLink() throws Exception {
     File writerDirectory = new File(this.outputDirectory, "writer");
-    AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine writer = AnalysisEngineFactory.createEngine(
         TempEval2010Writer.getDescription(),
         TempEval2010Writer.PARAM_OUTPUT_DIRECTORY,
         writerDirectory.getPath(),

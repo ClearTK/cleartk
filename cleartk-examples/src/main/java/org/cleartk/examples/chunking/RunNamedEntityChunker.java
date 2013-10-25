@@ -38,11 +38,11 @@ import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.uimafit.component.JCasAnnotator_ImplBase;
-import org.uimafit.factory.AggregateBuilder;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.pipeline.SimplePipeline;
-import org.uimafit.util.JCasUtil;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.util.JCasUtil;
 
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
@@ -91,7 +91,7 @@ public class RunNamedEntityChunker {
     aggregate.add(PosTaggerAnnotator.getDescription());
 
     // our NamedEntityChunker annotator, configured to classify on the new texts
-    aggregate.add(AnalysisEngineFactory.createPrimitiveDescription(
+    aggregate.add(AnalysisEngineFactory.createEngineDescription(
         NamedEntityChunker.class,
         CleartkSequenceAnnotator.PARAM_IS_TRAINING,
         false,
@@ -99,7 +99,7 @@ public class RunNamedEntityChunker {
         JarClassifierBuilder.getModelJarFile(options.getModelDirectory())));
 
     // a very simple annotator that just prints out any named entities we found
-    aggregate.add(AnalysisEngineFactory.createPrimitiveDescription(PrintNamedEntityMentions.class));
+    aggregate.add(AnalysisEngineFactory.createEngineDescription(PrintNamedEntityMentions.class));
 
     // run the classification pipeline on the new texts
     SimplePipeline.runPipeline(reader, aggregate.createAggregateDescription());

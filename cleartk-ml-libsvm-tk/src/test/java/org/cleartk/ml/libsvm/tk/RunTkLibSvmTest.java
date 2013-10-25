@@ -45,8 +45,8 @@ import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.uimafit.factory.UimaContextFactory;
-import org.uimafit.testing.util.HideOutput;
+import org.apache.uima.fit.factory.UimaContextFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 
 /**
  * <br>
@@ -118,7 +118,6 @@ public class RunTkLibSvmTest extends DefaultTestBase {
       Assert.assertEquals(outcome, classifier.classify(features));
       hider.restoreOutput();
     }
-    hider.close();
   }
 
   @Test
@@ -163,7 +162,6 @@ public class RunTkLibSvmTest extends DefaultTestBase {
       String outcome = instance.getOutcome();
       Assert.assertEquals("Assert error with instance: " + instance.toString(), outcome, classifier.classify(features));
     }
-    hider.close();
   }
 
   private static List<Instance<Boolean>> generateBooleanInstances(int n) {

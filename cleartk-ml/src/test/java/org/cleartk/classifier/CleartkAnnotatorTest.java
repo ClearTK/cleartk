@@ -45,8 +45,8 @@ import org.cleartk.classifier.util.InstanceFactory;
 import org.cleartk.test.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
-import org.uimafit.factory.UimaContextFactory;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.UimaContextFactory;
 
 /**
  * <br>
@@ -151,7 +151,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
   @Test
   public void testDescriptor() throws UIMAException {
     try {
-      AnalysisEngineFactory.createPrimitive(
+      AnalysisEngineFactory.createEngine(
           StringTestAnnotator.class,
           CleartkAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
           DefaultStringTestDataWriterFactory.class.getName());
@@ -160,7 +160,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
     }
 
     try {
-      AnalysisEngineFactory.createPrimitive(
+      AnalysisEngineFactory.createEngine(
           StringTestAnnotator.class,
           DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
           outputDirectoryName);
@@ -168,7 +168,7 @@ public class CleartkAnnotatorTest extends DefaultTestBase {
     } catch (ResourceInitializationException e) {
     }
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         StringTestAnnotator.class,
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,

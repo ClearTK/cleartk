@@ -26,13 +26,13 @@ package org.cleartk.util.ae;
 import java.io.File;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.util.ViewUriUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.uimafit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -45,12 +45,12 @@ public class PlainTextWriterTest extends DefaultTestBase {
   @Test
   public void test() throws Exception {
     try {
-      AnalysisEngineFactory.createPrimitive(PlainTextWriter.class);
+      AnalysisEngineFactory.createEngine(PlainTextWriter.class);
       Assert.fail("expected exception with output directory not specified");
     } catch (ResourceInitializationException e) {
     }
 
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         PlainTextWriter.class,
         PlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath());
