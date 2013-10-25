@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>tw.edu.ntu.csie</groupId>
 			<artifactId>libsvm</artifactId>
-			<version>3.1</version>
+			<version>3.17</version>
 		</dependency>
 		<!-- test only -->
 		<dependency>
