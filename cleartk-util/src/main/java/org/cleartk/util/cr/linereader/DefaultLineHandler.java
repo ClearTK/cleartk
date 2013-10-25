@@ -31,7 +31,7 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 
 /**
  * <br>
@@ -58,7 +58,7 @@ public class DefaultLineHandler implements LineHandler {
     } catch (URISyntaxException e) {
       throw new CollectionException(e);
     }
-    ViewURIUtil.setURI(jCas, uri);
+    ViewUriUtil.setURI(jCas, uri);
     ++count;
   }
 

@@ -49,7 +49,7 @@ import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Time;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.jdom2.Content;
 import org.jdom2.Element;
 import org.jdom2.Text;
@@ -170,7 +170,7 @@ public class TempEval2013Writer extends JCasAnnotator_ImplBase {
     
     // write the XML to the output file
     XMLOutputter outputter = new XMLOutputter();
-    String fileName = new File(ViewURIUtil.getURI(jCas).getPath()).getName();
+    String fileName = new File(ViewUriUtil.getURI(jCas).getPath()).getName();
     String inputSuffix = ".TE3input";
     if (fileName.endsWith(inputSuffix)) {
       fileName = fileName.substring(0, fileName.length() - inputSuffix.length());

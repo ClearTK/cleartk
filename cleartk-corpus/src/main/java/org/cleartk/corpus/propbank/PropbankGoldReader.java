@@ -43,7 +43,7 @@ import org.cleartk.corpus.penntreebank.ListSpecification;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.corpus.propbank.util.Propbank;
 import org.cleartk.util.CleartkInitializationException;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
@@ -66,7 +66,7 @@ import org.uimafit.descriptor.SofaCapability;
 @SofaCapability(outputSofas = {
     PropbankConstants.PROPBANK_VIEW,
     PennTreebankReader.TREEBANK_VIEW,
-    ViewURIUtil.URI })
+    ViewUriUtil.URI })
 public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
 
   public static final String PARAM_PROPBANK_FILE_NAME = "propbankFileName";
@@ -161,7 +161,7 @@ public class PropbankGoldReader extends JCasCollectionReader_ImplBase {
     }
 
     File treebankFile = treebankFiles.removeFirst();
-    ViewURIUtil.setURI(jCas, treebankFile.toURI());
+    ViewUriUtil.setURI(jCas, treebankFile.toURI());
 
     StringBuffer propbankText = new StringBuffer();
 

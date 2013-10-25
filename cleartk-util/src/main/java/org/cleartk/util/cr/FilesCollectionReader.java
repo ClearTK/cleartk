@@ -49,7 +49,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -70,7 +70,7 @@ import org.uimafit.factory.CollectionReaderFactory;
  * @author Steven Bethard
  * @author Philip Ogren
  */
-@SofaCapability(outputSofas = ViewURIUtil.URI)
+@SofaCapability(outputSofas = ViewUriUtil.URI)
 public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
 
   public static CollectionReaderDescription getDescription(String fileOrDir)
@@ -319,7 +319,7 @@ public class FilesCollectionReader extends JCasCollectionReader_ImplBase {
     }
 
     // set the document URI
-    ViewURIUtil.setURI(jCas, currentFile.toURI());
+    ViewUriUtil.setURI(jCas, currentFile.toURI());
 
     completed++;
     currentFile = null;

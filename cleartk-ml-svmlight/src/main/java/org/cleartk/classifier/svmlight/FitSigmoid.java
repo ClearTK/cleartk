@@ -31,7 +31,7 @@ import java.io.IOException;
 import org.cleartk.classifier.sigmoid.LinWengPlatt;
 import org.cleartk.classifier.sigmoid.LinWengPlatt.ConvergenceFailure;
 import org.cleartk.classifier.sigmoid.Sigmoid;
-import org.cleartk.classifier.svmlight.model.SVMlightModel;
+import org.cleartk.classifier.svmlight.model.SvmLightModel;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.InvalidFeatureVectorValueException;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
@@ -55,7 +55,7 @@ public class FitSigmoid {
 
   public static Sigmoid fit(File svmlightModelFile, File trainingDataFile)
       throws ConvergenceFailure, IOException, InvalidFeatureVectorValueException {
-    SVMlightModel model = SVMlightModel.fromFile(svmlightModelFile);
+    SvmLightModel model = SvmLightModel.fromFile(svmlightModelFile);
 
     BufferedReader r = new BufferedReader(new FileReader(trainingDataFile));
     int lines = 0;

@@ -30,7 +30,7 @@ import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
-import org.cleartk.util.ViewURIFileNamer;
+import org.cleartk.util.ViewUriFileNamer;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
 import org.uimafit.component.xwriter.XWriter;
@@ -64,6 +64,6 @@ public class ParserExample {
             XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
             outputDirectory,
             XWriter.PARAM_FILE_NAMER_CLASS_NAME,
-            ViewURIFileNamer.class.getName()));
+            ViewUriFileNamer.class.getName()));
   }
 }

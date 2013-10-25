@@ -51,7 +51,7 @@ import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
 import org.uimafit.component.JCasAnnotator_ImplBase;
@@ -322,7 +322,7 @@ public class SumBasic extends Summarize_ImplBase<File> {
     public static final String PARAM_XMI_DIRECTORY = "xmiDirectory";
 
     protected File getFile(JCas jCas) throws AnalysisEngineProcessException {
-      File origFile = new File(ViewURIUtil.getURI(jCas));
+      File origFile = new File(ViewUriUtil.getURI(jCas));
       String ext = Files.getFileExtension(origFile.getName());
       String xmi = origFile.getName().replaceAll("\\." + ext + "$", "");
       return new File(this.xmiDirectory, xmi + ".xmi");

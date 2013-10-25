@@ -44,7 +44,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.CollectionReaderFactory;
@@ -186,7 +186,7 @@ public class TempEval2010CollectionReader extends JCasCollectionReader_ImplBase 
   public void getNext(JCas jCas) throws IOException, CollectionException {
     URI uri = this.uris.get(this.uriIndex);
     this.uriIndex += 1;
-    ViewURIUtil.setURI(jCas, uri);
+    ViewUriUtil.setURI(jCas, uri);
 
     String fileName = uri.getFragment();
     for (String viewName : this.viewFileTexts.keySet()) {

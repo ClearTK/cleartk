@@ -37,7 +37,7 @@ import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
@@ -69,7 +69,7 @@ public class Conll2003GoldReaderTest extends DefaultTestBase {
     JCas jcas = iterator.next();
     
     // ensure that file exists
-    ViewURIUtil.getURI(jcas).toURL().openStream().close();
+    ViewUriUtil.getURI(jcas).toURL().openStream().close();
 
     FSIndex<Annotation> sentenceIndex = jcas.getAnnotationIndex(Sentence.type);
 
@@ -121,7 +121,7 @@ public class Conll2003GoldReaderTest extends DefaultTestBase {
     jcas = iterator.next();
 
     // ensure that file exists
-    ViewURIUtil.getURI(jcas).toURL().openStream().close();
+    ViewUriUtil.getURI(jcas).toURL().openStream().close();
 
     sentenceIndex = jcas.getAnnotationIndex(Sentence.type);
 

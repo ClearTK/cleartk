@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.CleartkEncoderException;
-import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
+import org.cleartk.classifier.encoder.features.normalizer.NoOpNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.feature.FeatureCollection;
 
@@ -61,11 +61,11 @@ public class FeatureCollectionEncoder implements FeatureEncoder<NameNumber> {
   }
 
   public FeatureCollectionEncoder(String name, FeatureEncoder<NameNumber> subEncoder) {
-    this(name, subEncoder, new NOPNormalizer());
+    this(name, subEncoder, new NoOpNormalizer());
   }
 
   public FeatureCollectionEncoder(FeatureEncoder<NameNumber> subEncoder) {
-    this(null, subEncoder, new NOPNormalizer());
+    this(null, subEncoder, new NoOpNormalizer());
   }
 
   public List<NameNumber> encode(Feature feature) throws CleartkEncoderException {
@@ -100,7 +100,7 @@ public class FeatureCollectionEncoder implements FeatureEncoder<NameNumber> {
 
   private String identifier;
 
-  private NameNumberNormalizer normalizer = new NOPNormalizer();
+  private NameNumberNormalizer normalizer = new NoOpNormalizer();
 
   private FeatureEncoder<NameNumber> subEncoder = null;
 }

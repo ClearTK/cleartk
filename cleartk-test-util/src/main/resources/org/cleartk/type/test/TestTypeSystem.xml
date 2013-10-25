@@ -49,7 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
           <name>posTag</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.cleartk.type.test.POSTag</elementType>
+          <elementType>org.cleartk.type.test.PosTag</elementType>
         </featureDescription>
         <featureDescription>
           <name>depRel</name>
@@ -94,7 +94,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.cleartk.type.test.POSTag</name>
+      <name>org.cleartk.type.test.PosTag</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>

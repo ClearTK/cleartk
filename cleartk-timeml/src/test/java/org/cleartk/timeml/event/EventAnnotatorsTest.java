@@ -35,7 +35,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.cleartk.timeml.TimeMLTestBase;
+import org.cleartk.timeml.TimeMlTestBase;
 import org.cleartk.timeml.type.Event;
 import org.junit.Test;
 import org.uimafit.util.JCasUtil;
@@ -49,7 +49,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Steven Bethard
  */
-public class EventAnnotatorsTest extends TimeMLTestBase {
+public class EventAnnotatorsTest extends TimeMlTestBase {
 
   @Test
   public void testModel() throws UIMAException {

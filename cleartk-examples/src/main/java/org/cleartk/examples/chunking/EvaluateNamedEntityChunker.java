@@ -42,11 +42,11 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.classifier.mallet.MalletCRFStringOutcomeDataWriter;
+import org.cleartk.classifier.mallet.MalletCrfStringOutcomeDataWriter;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
-import org.cleartk.examples.chunking.TrainNamedEntityChunker.MASCTextFileFilter;
-import org.cleartk.examples.chunking.util.MASCGoldAnnotator;
+import org.cleartk.examples.chunking.TrainNamedEntityChunker.MascTextFileFilter;
+import org.cleartk.examples.chunking.util.MascGoldAnnotator;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
@@ -104,7 +104,7 @@ public class EvaluateNamedEntityChunker extends
     // find training files
     List<File> trainFiles = new ArrayList<File>(FileUtils.listFiles(
         options.getTrainDirectory(),
-        new MASCTextFileFilter(),
+        new MascTextFileFilter(),
         FileFilterUtils.falseFileFilter()));
 
     // run cross validation
@@ -141,7 +141,7 @@ public class EvaluateNamedEntityChunker extends
     aggregate.add(UriToDocumentTextAnnotator.getDescription());
 
     // an annotator that parses and loads MASC named entity annotations (and tokens)
-    aggregate.add(MASCGoldAnnotator.getDescription());
+    aggregate.add(MascGoldAnnotator.getDescription());
 
     // an annotator that adds part-of-speech tags
     aggregate.add(PosTaggerAnnotator.getDescription());
@@ -154,7 +154,7 @@ public class EvaluateNamedEntityChunker extends
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectory,
         DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        MalletCRFStringOutcomeDataWriter.class));
+        MalletCrfStringOutcomeDataWriter.class));
 
     // run the pipeline over the training corpus
     SimplePipeline.runPipeline(collectionReader, aggregate.createAggregateDescription());
@@ -189,7 +189,7 @@ public class EvaluateNamedEntityChunker extends
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         goldViewName));
     aggregate.add(UriToDocumentTextAnnotator.getDescription(), defaultViewName, goldViewName);
-    aggregate.add(MASCGoldAnnotator.getDescription(), defaultViewName, goldViewName);
+    aggregate.add(MascGoldAnnotator.getDescription(), defaultViewName, goldViewName);
 
     // Annotators processing the default (system) view:
     // * load the text

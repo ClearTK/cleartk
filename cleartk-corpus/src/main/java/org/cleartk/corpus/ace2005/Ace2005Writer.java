@@ -38,7 +38,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ne.type.Ace2005Document;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
@@ -93,7 +93,7 @@ public class Ace2005Writer extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    String uri = new File(ViewURIUtil.getURI(jCas)).getName();
+    String uri = new File(ViewUriUtil.getURI(jCas)).getName();
     String docId = uri.substring(0, uri.indexOf(".sgm"));
     Ace2005Document document;
     document = JCasUtil.select(jCas, Ace2005Document.class).iterator().next();

@@ -85,9 +85,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 
       String conllText = conllView.getSofaDataString();
 
-      List<CoNLL2005Line> conll2005Lines = new ArrayList<CoNLL2005Line>();
+      List<Conll2005Line> conll2005Lines = new ArrayList<Conll2005Line>();
       for (String line : conllText.split("\n")) {
-        conll2005Lines.add(new CoNLL2005Line(line, hasVerbSenses));
+        conll2005Lines.add(new Conll2005Line(line, hasVerbSenses));
         // System.err.println(line);
       }
       // System.err.println();
@@ -98,7 +98,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
       CharniakParseParser parser = new CharniakParseParser(initView);
 
       int numberOfPredicates = 0;
-      for (CoNLL2005Line line : conll2005Lines)
+      for (Conll2005Line line : conll2005Lines)
         if (!line.targetVerb.equals("-"))
           numberOfPredicates += 1;
 
@@ -109,7 +109,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 
       NamedEntityParser namedEntityParser = new NamedEntityParser(initView);
 
-      for (CoNLL2005Line line : conll2005Lines.toArray(new CoNLL2005Line[0])) {
+      for (Conll2005Line line : conll2005Lines.toArray(new Conll2005Line[0])) {
         if (line.argumentSegments.length != 0 && line.argumentSegments.length != numberOfPredicates) {
           throw new RuntimeException(String.format(
               "expected 0 or %d segments, found %d",
@@ -172,7 +172,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
     }
   }
 
-  private static class CoNLL2005Line {
+  private static class Conll2005Line {
     String word;
 
     String pos;
@@ -187,7 +187,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 
     String argumentSegments[];
 
-    CoNLL2005Line(String line, boolean hasSenseTag) {
+    Conll2005Line(String line, boolean hasSenseTag) {
       String fields[] = line.split("\\s+");
       int i = 0;
       this.word = fields[i++].trim();

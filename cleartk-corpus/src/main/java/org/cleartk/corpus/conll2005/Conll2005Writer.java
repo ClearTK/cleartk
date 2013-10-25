@@ -88,7 +88,7 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
       }
 
       for (Token token : JCasUtil.selectCovered(jCas, Token.class, sentence)) {
-        CoNLL05Line line = new CoNLL05Line();
+        Conll05Line line = new Conll05Line();
 
         // line.setLexeme(token.getCoveredText());
         // line.setPos(token.getPos());
@@ -110,7 +110,7 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
     super.collectionProcessComplete();
   }
 
-  private static class CoNLL05Line {
+  private static class Conll05Line {
     // String lexeme;
     // String pos;
     // String syntaxSegment;
@@ -120,7 +120,7 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
 
     List<String> argumentRoles;
 
-    public CoNLL05Line() {
+    public Conll05Line() {
       // lexeme = "<empty>";
       // pos = "<empty>";
       // syntaxSegment = "*";
@@ -212,7 +212,7 @@ public class Conll2005Writer extends JCasAnnotator_ImplBase {
       }
     }
 
-    void write(Token tok, CoNLL05Line line) {
+    void write(Token tok, Conll05Line line) {
       if (this.token.equals(tok)) {
         line.setPredicateBaseform(this.baseform);
         line.setPredicateFrameset(this.frameset);

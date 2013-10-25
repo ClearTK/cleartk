@@ -38,7 +38,7 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -68,7 +68,7 @@ import org.uimafit.descriptor.SofaCapability;
  * @author Philip Ogren, Philipp Wetzler
  */
 
-@SofaCapability(outputSofas = { PennTreebankReader.TREEBANK_VIEW, ViewURIUtil.URI })
+@SofaCapability(outputSofas = { PennTreebankReader.TREEBANK_VIEW, ViewUriUtil.URI })
 public class PennTreebankReader extends JCasCollectionReader_ImplBase {
   /**
    * The view containing the parenthesized text of a TreeBank .mrg file.
@@ -169,7 +169,7 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
     getUimaContext().getLogger().log(
         Level.FINEST,
         "reading treebank file: " + treebankFile.getPath());
-    ViewURIUtil.setURI(jCas, treebankFile.toURI());
+    ViewUriUtil.setURI(jCas, treebankFile.toURI());
     try {
       JCas treebankView = ViewCreatorAnnotator.createViewSafely(
           jCas,

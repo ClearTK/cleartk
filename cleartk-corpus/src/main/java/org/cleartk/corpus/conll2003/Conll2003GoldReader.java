@@ -46,7 +46,7 @@ import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
@@ -64,7 +64,7 @@ import org.uimafit.descriptor.SofaCapability;
  *         retrieved from http://www.cnts.ua.ac.be/conll2003/ner/
  * 
  */
-@SofaCapability(outputSofas = ViewURIUtil.URI)
+@SofaCapability(outputSofas = ViewUriUtil.URI)
 public class Conll2003GoldReader extends JCasCollectionReader_ImplBase {
   
   public static final String PARAM_DATA_FILE_NAME = "dataFileName";
@@ -225,7 +225,7 @@ public class Conll2003GoldReader extends JCasCollectionReader_ImplBase {
       // should never reach this; fragment should always be valid since it's just a number
       throw new RuntimeException(e);
     }
-    ViewURIUtil.setURI(jCas, uri);
+    ViewUriUtil.setURI(jCas, uri);
     ++documentIndex;
 
   }

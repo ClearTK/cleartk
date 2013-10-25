@@ -205,8 +205,8 @@ public class FeatureFunctionsTest extends DefaultTestBase {
 
   @Test
   public void testCharacterNGramFeatureFunction() {
-    FeatureFunction triSuff = new CharacterNGramFeatureFunction(
-        CharacterNGramFeatureFunction.Orientation.RIGHT_TO_LEFT,
+    FeatureFunction triSuff = new CharacterNgramFeatureFunction(
+        CharacterNgramFeatureFunction.Orientation.RIGHT_TO_LEFT,
         0,
         3,
         7,
@@ -215,9 +215,9 @@ public class FeatureFunctionsTest extends DefaultTestBase {
     this.testOne(triSuff, null, "motion", null, null);
     this.testOne(triSuff, "OrigName", "locomotive", "NGram_Right_0_3_7_OrigName", "ive");
 
-    FeatureFunction triPre = new CharacterNGramFeatureFunction(
+    FeatureFunction triPre = new CharacterNgramFeatureFunction(
         "TriPre",
-        CharacterNGramFeatureFunction.Orientation.LEFT_TO_RIGHT,
+        CharacterNgramFeatureFunction.Orientation.LEFT_TO_RIGHT,
         0,
         3,
         3,
@@ -226,33 +226,33 @@ public class FeatureFunctionsTest extends DefaultTestBase {
     this.testOne(triPre, null, "LOC", "NGram_Left_0_3_3_TriPre", "LOC");
     this.testOne(triPre, "OrigName", "lo", null, null);
 
-    FeatureFunction left12 = new CharacterNGramFeatureFunction(
-        CharacterNGramFeatureFunction.Orientation.LEFT_TO_RIGHT,
+    FeatureFunction left12 = new CharacterNgramFeatureFunction(
+        CharacterNgramFeatureFunction.Orientation.LEFT_TO_RIGHT,
         1,
         3,
         8,
         false);
     this.testOne(left12, null, "locomotive", "NGram_Left_1_3_8", "oc");
 
-    FeatureFunction left5 = new CharacterNGramFeatureFunction(
+    FeatureFunction left5 = new CharacterNgramFeatureFunction(
         "FooBar",
-        CharacterNGramFeatureFunction.Orientation.LEFT_TO_RIGHT,
+        CharacterNgramFeatureFunction.Orientation.LEFT_TO_RIGHT,
         5,
         6,
         8,
         false);
     this.testOne(left5, "OrigName", "abcdefghi", "NGram_Left_5_6_8_FooBar_OrigName", "f");
 
-    FeatureFunction right46lower = new CharacterNGramFeatureFunction(
-        CharacterNGramFeatureFunction.Orientation.RIGHT_TO_LEFT,
+    FeatureFunction right46lower = new CharacterNgramFeatureFunction(
+        CharacterNgramFeatureFunction.Orientation.RIGHT_TO_LEFT,
         2,
         4,
         6,
         true);
     this.testOne(right46lower, null, "abcdefghi", "NGram_Right_2_4_6_lower", "fg");
 
-    FeatureFunction right3 = new CharacterNGramFeatureFunction(
-        CharacterNGramFeatureFunction.Orientation.RIGHT_TO_LEFT,
+    FeatureFunction right3 = new CharacterNgramFeatureFunction(
+        CharacterNgramFeatureFunction.Orientation.RIGHT_TO_LEFT,
         0,
         3);
     this.testOne(right3, null, "Foo", "NGram_Right_0_3_3", "Foo");

@@ -33,8 +33,8 @@ import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.ViewURIFileNamer;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriFileNamer;
+import org.cleartk.util.ViewUriUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.component.xwriter.XWriter;
@@ -75,10 +75,10 @@ public class XReaderTest extends DefaultTestBase {
         XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         this.outputDirectory.getPath(),
         XWriter.PARAM_FILE_NAMER_CLASS_NAME,
-        ViewURIFileNamer.class.getName());
+        ViewUriFileNamer.class.getName());
     tokenBuilder.buildTokens(jCas, "I like\nspam!", "I like spam !", "PRP VB NN .");
     URI uri = new File(outputDirectory, "test").toURI();
-    ViewURIUtil.setURI(jCas, uri);
+    ViewUriUtil.setURI(jCas, uri);
     engine.process(jCas);
     engine.collectionProcessComplete();
 
@@ -111,11 +111,11 @@ public class XReaderTest extends DefaultTestBase {
         XWriter.PARAM_XML_SCHEME_NAME,
         XWriter.XCAS,
         XWriter.PARAM_FILE_NAMER_CLASS_NAME,
-        ViewURIFileNamer.class.getName());
+        ViewUriFileNamer.class.getName());
     tokenBuilder.buildTokens(jCas, "I like\nspam!", "I like spam !", "PRP VB NN .");
 
     URI uri = new File(outputDirectory, "test").toURI();
-    ViewURIUtil.setURI(jCas, uri);
+    ViewUriUtil.setURI(jCas, uri);
     engine.process(jCas);
     engine.collectionProcessComplete();
 

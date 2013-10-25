@@ -30,7 +30,7 @@ import java.io.File;
 
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
@@ -188,7 +188,7 @@ public class LineReaderTest {
   private void test(JCasIterable jCasIterable, String text, String uri) throws Exception {
     JCas jCas = jCasIterable.next();
     assertEquals(text, jCas.getDocumentText());
-    assertEquals(uri, ViewURIUtil.getURI(jCas).toString());
+    assertEquals(uri, ViewUriUtil.getURI(jCas).toString());
   }
 
 }

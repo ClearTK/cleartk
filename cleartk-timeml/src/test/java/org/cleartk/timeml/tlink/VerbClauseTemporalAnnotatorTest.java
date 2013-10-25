@@ -45,7 +45,7 @@ import org.cleartk.classifier.util.PublicFieldDataWriter;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
-import org.cleartk.timeml.TimeMLTestBase;
+import org.cleartk.timeml.TimeMlTestBase;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.token.type.Sentence;
@@ -63,7 +63,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Steven Bethard
  */
-public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
+public class VerbClauseTemporalAnnotatorTest extends TimeMlTestBase {
 
   public static class AfterNewClassifier implements Classifier<String>, ClassifierFactory<String> {
     public AfterNewClassifier() {

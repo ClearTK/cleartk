@@ -52,7 +52,7 @@ import org.cleartk.corpus.timeml.TempEval2010GoldAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010Writer;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AggregateBuilder;
@@ -288,7 +288,7 @@ public class TempEval2010Evaluation extends
     public static final String PARAM_XMI_DIRECTORY = "xmiDirectory";
 
     protected File getFile(JCas jCas) throws AnalysisEngineProcessException {
-      return new File(this.xmiDirectory, ViewURIUtil.getURI(jCas).getFragment() + ".xmi");
+      return new File(this.xmiDirectory, ViewUriUtil.getURI(jCas).getFragment() + ".xmi");
     }
 
   }

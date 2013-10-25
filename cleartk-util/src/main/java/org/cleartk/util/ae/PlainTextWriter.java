@@ -56,7 +56,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 
@@ -96,7 +96,7 @@ public class PlainTextWriter extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    String id = new File(ViewURIUtil.getURI(jCas)).getName();
+    String id = new File(ViewUriUtil.getURI(jCas)).getName();
     File outFile = new File(this.outputDirectory, id + ".txt");
     try {
       FileUtils.saveString2File(jCas.getDocumentText(), outFile);

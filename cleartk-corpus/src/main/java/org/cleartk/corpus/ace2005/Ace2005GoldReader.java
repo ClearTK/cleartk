@@ -42,7 +42,7 @@ import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.ne.type.Ace2005Document;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -61,7 +61,7 @@ import org.uimafit.descriptor.SofaCapability;
  * 
  */
 
-@SofaCapability(outputSofas = { Ace2005Constants.ACE_2005_APF_URI_VIEW, ViewURIUtil.URI })
+@SofaCapability(outputSofas = { Ace2005Constants.ACE_2005_APF_URI_VIEW, ViewUriUtil.URI })
 public class Ace2005GoldReader extends JCasCollectionReader_ImplBase {
   public static final String PARAM_ACE_DIRECTORY_NAME = "aceDirectoryName";
 
@@ -210,7 +210,7 @@ public class Ace2005GoldReader extends JCasCollectionReader_ImplBase {
       String source = apfSource.getAttributeValue("SOURCE");
       String type = apfSource.getAttributeValue("TYPE");
 
-      ViewURIUtil.setURI(jCas, sgmFile.toURI());
+      ViewUriUtil.setURI(jCas, sgmFile.toURI());
       Ace2005Document document = new Ace2005Document(initialView);
       document.setAceUri(uri);
       document.setAceSource(source);

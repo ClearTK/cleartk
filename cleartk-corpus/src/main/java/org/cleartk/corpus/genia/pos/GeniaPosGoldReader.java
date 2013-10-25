@@ -41,14 +41,14 @@ import org.apache.uima.pear.util.FileUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.corpus.genia.pos.util.GeniaPOSParser;
+import org.cleartk.corpus.genia.pos.util.GeniaPosParser;
 import org.cleartk.corpus.genia.pos.util.GeniaParse;
 import org.cleartk.corpus.genia.pos.util.GeniaSentence;
 import org.cleartk.corpus.genia.pos.util.GeniaTag;
 import org.cleartk.corpus.genia.pos.util.Span;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.jdom2.JDOMException;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -63,9 +63,9 @@ import org.uimafit.factory.CollectionReaderFactory;
  * <p>
  * 
  * @author Philip V. Ogren
- * @see GeniaPOSParser
+ * @see GeniaPosParser
  */
-@SofaCapability(outputSofas = { ViewURIUtil.URI, GeniaPosViewName.GENIA_POS })
+@SofaCapability(outputSofas = { ViewUriUtil.URI, GeniaPosViewName.GENIA_POS })
 public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 
   public static final String GENIA_POS_VIEW = "GeniaPOSView";
@@ -114,7 +114,7 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
 
   private Set<String> articleIds;
 
-  private GeniaPOSParser parser;
+  private GeniaPosParser parser;
 
   private GeniaParse parse;
 
@@ -136,7 +136,7 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
         }
       }
 
-      parser = new GeniaPOSParser(geniaCorpusFile);
+      parser = new GeniaPosParser(geniaCorpusFile);
       loadPosTags = loadTokens & loadPosTags;
     } catch (IOException ioe) {
       throw new ResourceInitializationException(ioe);
@@ -186,7 +186,7 @@ public class GeniaPosGoldReader extends JCasCollectionReader_ImplBase {
         // should never reach this; fragment should always be valid since it's just a number
         throw new RuntimeException(e);
       }
-      ViewURIUtil.setURI(jCas, uri);
+      ViewUriUtil.setURI(jCas, uri);
 
       JCas geniaView = jCas.createView(GeniaPosViewName.GENIA_POS);
       geniaView.setDocumentText(parse.getXml());

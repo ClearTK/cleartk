@@ -30,7 +30,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.cleartk.classifier.mallet.factory.C45TrainerFactory;
 import org.cleartk.classifier.mallet.factory.ClassifierTrainerFactory;
-import org.cleartk.classifier.mallet.factory.MCMaxEntTrainerFactory;
+import org.cleartk.classifier.mallet.factory.McMaxEntTrainerFactory;
 import org.cleartk.classifier.mallet.factory.MaxEntTrainerFactory;
 import org.cleartk.classifier.mallet.factory.NaiveBayesTrainerFactory;
 import org.junit.Test;
@@ -101,7 +101,7 @@ public class FactoryTest {
 
   @Test
   public void testMCMaxentTrainerFactory() {
-    MCMaxEntTrainerFactory factory = new MCMaxEntTrainerFactory();
+    McMaxEntTrainerFactory factory = new McMaxEntTrainerFactory();
     factory.createTrainer(new String[] {
         "--useHyperbolicPrior",
         "true",

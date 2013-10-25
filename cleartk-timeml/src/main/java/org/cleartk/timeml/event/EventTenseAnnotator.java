@@ -31,11 +31,11 @@ import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
-import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
+import org.cleartk.classifier.liblinear.LibLinearStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.feature.TextSliceExtractor;
-import org.cleartk.feature.token.TokenTextForSelectedPOSExtractor;
+import org.cleartk.feature.token.TokenTextForSelectedPosExtractor;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
 
@@ -58,7 +58,7 @@ public class EventTenseAnnotator extends EventAttributeAnnotator<String> {
 
     @Override
     public Class<?> getDataWriterClass() {
-      return LIBLINEARStringOutcomeDataWriter.class;
+      return LibLinearStringOutcomeDataWriter.class;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class EventTenseAnnotator extends EventAttributeAnnotator<String> {
 
     this.contextExtractors.add(new CleartkExtractor<Event, Token>(
         Token.class,
-        new TokenTextForSelectedPOSExtractor("MD", "TO", "IN", "VB"),
+        new TokenTextForSelectedPosExtractor("MD", "TO", "IN", "VB"),
         new Preceding(3)));
   }
 

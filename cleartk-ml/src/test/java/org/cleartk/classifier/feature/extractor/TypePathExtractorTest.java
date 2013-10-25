@@ -42,7 +42,7 @@ import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.DependencyRelation;
 import org.cleartk.type.test.Header;
 import org.cleartk.type.test.Lemma;
-import org.cleartk.type.test.POSTag;
+import org.cleartk.type.test.PosTag;
 import org.cleartk.type.test.Token;
 import org.junit.Test;
 import org.uimafit.component.JCasAnnotator_ImplBase;
@@ -79,10 +79,10 @@ public class TypePathExtractorTest extends DefaultTestBase {
 
       lemma.addToIndexes();
       token1.setLemma(lemma);
-      POSTag posTag1 = new POSTag(jCas, 0, 8);
+      PosTag posTag1 = new PosTag(jCas, 0, 8);
       posTag1.setValue("pos1");
       posTag1.addToIndexes();
-      POSTag posTag2 = new POSTag(jCas, 0, 8);
+      PosTag posTag2 = new PosTag(jCas, 0, 8);
       posTag2.setValue("pos2");
       posTag2.addToIndexes();
       FSArray token1Poses = new FSArray(jCas, 2);
@@ -91,7 +91,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
 
       Token token2 = new Token(jCas, 9, 11);
       token2.addToIndexes();
-      POSTag posTag3 = new POSTag(jCas);
+      PosTag posTag3 = new PosTag(jCas);
       posTag3.setValue("pos3");
       posTag3.addToIndexes();
       FSArray token2Poses = new FSArray(jCas, 1);
@@ -129,7 +129,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
 
     assertTrue(jCas.getTypeSystem().subsumes(
         jCas.getTypeSystem().getType("uima.tcas.Annotation"),
-        jCas.getCasType(POSTag.type)));
+        jCas.getCasType(PosTag.type)));
 
     Token targetToken = new Token(jCas);
     targetToken.setBegin(0);
@@ -282,7 +282,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
 
   @Test
   public void testIsValidatePath() {
-    assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(POSTag.type), "value", jCas));
+    assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(PosTag.type), "value", jCas));
     assertTrue(TypePathExtractor.isValidPath(jCas.getCasType(Header.type), "authors/lastName", jCas));
     assertTrue(!TypePathExtractor.isValidPath(
         jCas.getCasType(Header.type),
@@ -311,7 +311,7 @@ public class TypePathExtractorTest extends DefaultTestBase {
 
   @Test
   public void testIsValidType() {
-    assertTrue(TypePathExtractor.isValidType(jCas.getCasType(POSTag.type), jCas.getTypeSystem()));
+    assertTrue(TypePathExtractor.isValidType(jCas.getCasType(PosTag.type), jCas.getTypeSystem()));
     assertTrue(TypePathExtractor.isValidType(jCas.getCasType(Token.type), jCas.getTypeSystem()));
 
     // subtypes of uima.cas.String do not have JCas class generated for them
