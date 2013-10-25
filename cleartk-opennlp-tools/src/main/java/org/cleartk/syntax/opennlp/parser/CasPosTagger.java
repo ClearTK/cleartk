@@ -99,4 +99,12 @@ public class CasPosTagger<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends A
     throw new UnsupportedOperationException();
   }
 
+  public String[] tag(String[] arg0, Object[] arg1) {
+    throw new UnsupportedOperationException();
+  }
+
+  public Sequence[] topKSequences(String[] arg0, Object[] arg1) {
+    throw new UnsupportedOperationException();
+  }
+
 }

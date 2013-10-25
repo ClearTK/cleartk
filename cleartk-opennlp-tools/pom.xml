@@ -45,12 +45,12 @@
 		<dependency>
 			<groupId>org.apache.opennlp</groupId>
 			<artifactId>opennlp-maxent</artifactId>
-			<version>3.0.2-incubating</version>
+			<version>3.0.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.opennlp</groupId>
 			<artifactId>opennlp-tools</artifactId>
-			<version>1.5.2-incubating</version>
+			<version>1.5.3</version>
 			<exclusions>
 			<!-- only needed for coreference, which we don't wrap yet -->
 				<exclusion>
@@ -62,7 +62,7 @@
 		<dependency>
 			<groupId>org.apache.opennlp</groupId>
 			<artifactId>opennlp-uima</artifactId>
-			<version>1.5.2-incubating</version>
+			<version>1.5.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
