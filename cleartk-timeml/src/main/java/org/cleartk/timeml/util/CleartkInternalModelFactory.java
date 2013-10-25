@@ -61,7 +61,9 @@ public abstract class CleartkInternalModelFactory {
   }
 
   public URL getClassifierJarURL() {
-    String resourceName = JarClassifierBuilder.getModelJarFile(getAnnotatorClass().getSimpleName().toLowerCase()).getPath(); 
+    String dirName = getAnnotatorClass().getSimpleName().toLowerCase();
+    File resourceFile = JarClassifierBuilder.getModelJarFile(dirName);
+    String resourceName = resourceFile.getPath().replaceAll("\\\\", "/");
     URL url = this.getAnnotatorClass().getResource(resourceName);
     if (url == null) {
       String className = this.getAnnotatorClass().getName();
