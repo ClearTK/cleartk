@@ -37,7 +37,7 @@ import org.apache.uima.collection.CollectionReader;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.corpus.penntreebank.TreebankGoldAnnotator;
 import org.cleartk.eval.EvaluationConstants;
-import org.cleartk.util.ViewURIFileNamer;
+import org.cleartk.util.ViewUriFileNamer;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
 import org.uimafit.component.ViewCreatorAnnotator;
@@ -126,7 +126,7 @@ public class TreebankParsingExample {
         XWriter.PARAM_OUTPUT_DIRECTORY_NAME,
         options.getOutputDirectory(),
         XWriter.PARAM_FILE_NAMER_CLASS_NAME,
-        ViewURIFileNamer.class.getName()));
+        ViewUriFileNamer.class.getName()));
 
     SimplePipeline.runPipeline(reader, builder.createAggregateDescription());
 

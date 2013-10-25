@@ -45,7 +45,7 @@ import org.cleartk.classifier.util.PublicFieldDataWriter;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
-import org.cleartk.timeml.TimeMLTestBase;
+import org.cleartk.timeml.TimeMlTestBase;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.token.type.Sentence;
@@ -63,7 +63,7 @@ import org.uimafit.util.JCasUtil;
  * 
  * @author Steven Bethard
  */
-public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
+public class VerbClauseTemporalAnnotatorTest extends TimeMlTestBase {
 
   public static class AfterNewClassifier implements Classifier<String>, ClassifierFactory<String> {
     public AfterNewClassifier() {
@@ -202,61 +202,4 @@ public class VerbClauseTemporalAnnotatorTest extends TimeMLTestBase {
   private TreebankNode newNode(JCas jcas, Token token) {
     return TreebankNodeUtil.newNode(jcas, token.getBegin(), token.getEnd(), token.getPos());
   }
-
-  @Test
-  public void testModel() throws Exception {
-    // fill in text and tokens
-    tokenBuilder.buildTokens(
-        jCas,
-        "He said he sold the stocks yesterday.",
-        "He said he sold the stocks yesterday .",
-        "PRP VBD PRP VBD DT NNS RB .",
-        "he say he sell the stock yesterday .");
-    Iterator<Token> tokensIter = JCasUtil.select(jCas, Token.class).iterator();
-
-    // fill in tree
-    TreebankNode root = TreebankNodeUtil.newNode(jCas, "S", TreebankNodeUtil.newNode(
-        jCas,
-        "NP",
-        this.newNode(jCas, tokensIter.next())), TreebankNodeUtil.newNode(
-        jCas,
-        "VP",
-        this.newNode(jCas, tokensIter.next()),
-        TreebankNodeUtil.newNode(jCas, "SBAR", TreebankNodeUtil.newNode(
-            jCas,
-            "NP",
-            this.newNode(jCas, tokensIter.next())), TreebankNodeUtil.newNode(
-            jCas,
-            "VP",
-            this.newNode(jCas, tokensIter.next()),
-            TreebankNodeUtil.newNode(
-                jCas,
-                "NP",
-                this.newNode(jCas, tokensIter.next()),
-                this.newNode(jCas, tokensIter.next())),
-            this.newNode(jCas, tokensIter.next())))), this.newNode(jCas, tokensIter.next()));
-    Sentence sentence = JCasUtil.selectSingle(jCas, Sentence.class);
-    TopTreebankNode tree = new TopTreebankNode(jCas, sentence.getBegin(), sentence.getEnd());
-    tree.setNodeType("TOP");
-    tree.setChildren(new FSArray(jCas, 1));
-    tree.setChildren(0, root);
-    tree.addToIndexes();
-
-    // run annotator
-    AnalysisEngine engine = AnalysisEngineFactory.createPrimitive(
-        VerbClauseTemporalAnnotator.FACTORY.getAnnotatorDescription(),
-        VerbClauseTemporalAnnotator.PARAM_CREATE_EVENTS,
-        true);
-    engine.process(jCas);
-
-    // check output
-    Collection<TemporalLink> tlinks = JCasUtil.select(jCas, TemporalLink.class);
-    TemporalLink tlink0 = tlinks.iterator().next();
-    Assert.assertEquals(1, tlinks.size());
-    Assert.assertEquals("said", tlink0.getSource().getCoveredText());
-    Assert.assertEquals("sold", tlink0.getTarget().getCoveredText());
-    Assert.assertEquals("AFTER", tlink0.getRelationType());
-
-  }
-
 }

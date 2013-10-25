@@ -47,7 +47,7 @@ import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -219,7 +219,7 @@ public class TempEval2010Writer extends JCasAnnotator_ImplBase {
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
     // determine the filename
-    URI uri = ViewURIUtil.getURI(jCas);
+    URI uri = ViewUriUtil.getURI(jCas);
     String fileName = uri.getFragment();
     if (fileName == null) {
       fileName = new File(uri.getPath()).getName();

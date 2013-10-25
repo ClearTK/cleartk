@@ -47,9 +47,9 @@ import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
-import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
+import org.cleartk.classifier.liblinear.LibLinearStringOutcomeDataWriter;
 import org.cleartk.feature.syntax.TargetPathExtractor;
-import org.cleartk.feature.token.TokenTextForSelectedPOSExtractor;
+import org.cleartk.feature.token.TokenTextForSelectedPosExtractor;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.timeml.type.Anchor;
@@ -87,7 +87,7 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
     @Override
     public Class<?> getDataWriterClass() {
-      return LIBLINEARStringOutcomeDataWriter.class;
+      return LibLinearStringOutcomeDataWriter.class;
     }
 
     @Override
@@ -134,7 +134,7 @@ public class VerbClauseTemporalAnnotator extends CleartkAnnotator<String> {
 
     FeatureExtractor1<Token> precedingAuxiliaries = new CleartkExtractor<Token, Token>(
         Token.class,
-        new TokenTextForSelectedPOSExtractor("MD", "TO", "IN", "VB", "RB"),
+        new TokenTextForSelectedPosExtractor("MD", "TO", "IN", "VB", "RB"),
         new Preceding(3));
     FeatureExtractor1<Token> tokenStemExtractor = new TypePathExtractor<Token>(Token.class, "stem");
     FeatureExtractor1<Token> tokenPOSExtractor = new TypePathExtractor<Token>(Token.class, "pos");

@@ -31,8 +31,8 @@ import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.classifier.mallet.MalletCRFStringOutcomeDataWriter;
-import org.cleartk.examples.chunking.util.MASCGoldAnnotator;
+import org.cleartk.classifier.mallet.MalletCrfStringOutcomeDataWriter;
+import org.cleartk.examples.chunking.util.MascGoldAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
@@ -75,7 +75,7 @@ public class TrainNamedEntityChunker {
     // a reader that loads the URIs of the training files
     CollectionReaderDescription reader = UriCollectionReader.getDescriptionFromDirectory(
         options.getTrainDirectory(),
-        MASCTextFileFilter.class,
+        MascTextFileFilter.class,
         null);
 
     // assemble the training pipeline
@@ -85,7 +85,7 @@ public class TrainNamedEntityChunker {
     aggregate.add(UriToDocumentTextAnnotator.getDescription());
 
     // an annotator that parses and loads MASC named entity annotations (and tokens)
-    aggregate.add(MASCGoldAnnotator.getDescription());
+    aggregate.add(MascGoldAnnotator.getDescription());
 
     // an annotator that adds part-of-speech tags (so we can use them for features)
     aggregate.add(PosTaggerAnnotator.getDescription());
@@ -98,7 +98,7 @@ public class TrainNamedEntityChunker {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         options.getModelDirectory(),
         DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        MalletCRFStringOutcomeDataWriter.class));
+        MalletCrfStringOutcomeDataWriter.class));
 
     // run the pipeline over the training corpus
     SimplePipeline.runPipeline(reader, aggregate.createAggregateDescription());
@@ -113,7 +113,7 @@ public class TrainNamedEntityChunker {
    * You can mostly ignore this - it's only necessary due to the idiosyncracies of the MASC
    * directory structure.
    */
-  public static class MASCTextFileFilter implements IOFileFilter {
+  public static class MascTextFileFilter implements IOFileFilter {
     @Override
     public boolean accept(File file) {
       return file.getPath().endsWith(".txt");

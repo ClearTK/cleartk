@@ -39,7 +39,7 @@ import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.XMLSerializer;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -88,7 +88,7 @@ public class TempEval2007Writer extends JCasAnnotator_ImplBase {
 
   public static String toTimeML(JCas jCas) throws AnalysisEngineProcessException {
     try {
-      return toXML(jCas.getCas(), new TimeMLAnnotationsToElements());
+      return toXML(jCas.getCas(), new TimeMlAnnotationsToElements());
     } catch (SAXException e) {
       throw new AnalysisEngineProcessException(e);
     }
@@ -99,7 +99,7 @@ public class TempEval2007Writer extends JCasAnnotator_ImplBase {
     String xmlString = toTimeML(jCas);
 
     // write the TimeML to the output file
-    String filePath = ViewURIUtil.getURI(jCas).getPath();
+    String filePath = ViewUriUtil.getURI(jCas).getPath();
     String fileName = new File(filePath).getName();
     if (!fileName.endsWith(".tml")) {
       fileName += ".tml";
@@ -130,9 +130,9 @@ public class TempEval2007Writer extends JCasAnnotator_ImplBase {
         throws SAXException;
   }
 
-  private static class TimeMLAnnotationsToElements implements AnnotationsToElements {
+  private static class TimeMlAnnotationsToElements implements AnnotationsToElements {
 
-    public TimeMLAnnotationsToElements() {
+    public TimeMlAnnotationsToElements() {
     }
 
     @Override
@@ -148,16 +148,16 @@ public class TempEval2007Writer extends JCasAnnotator_ImplBase {
     @Override
     public void startAnnotationElement(AnnotationFS annotation, ContentHandler handler)
         throws SAXException {
-      String name = TimeMLUtil.toTimeMLElementName(annotation);
+      String name = TimeMlUtil.toTimeMLElementName(annotation);
       if (name != null) {
-        handler.startElement("", name, name, TimeMLUtil.toTempEval2007Attributes(annotation, name));
+        handler.startElement("", name, name, TimeMlUtil.toTempEval2007Attributes(annotation, name));
       }
     }
 
     @Override
     public void endAnnotationElement(AnnotationFS annotation, ContentHandler handler)
         throws SAXException {
-      String name = TimeMLUtil.toTimeMLElementName(annotation);
+      String name = TimeMlUtil.toTimeMLElementName(annotation);
       if (name != null) {
         handler.endElement("", name, name);
       }

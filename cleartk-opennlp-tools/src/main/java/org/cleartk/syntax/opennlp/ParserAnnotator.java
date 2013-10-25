@@ -45,7 +45,7 @@ import org.cleartk.syntax.opennlp.parser.InputTypesHelper;
 import org.cleartk.syntax.opennlp.parser.OutputTypesHelper;
 import org.cleartk.syntax.opennlp.parser.Parser;
 import org.cleartk.syntax.opennlp.parser.ParserWrapper_ImplBase;
-import org.cleartk.util.IOUtil;
+import org.cleartk.util.IoUtil;
 import org.cleartk.util.ParamUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -129,7 +129,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
         InputTypesHelper.class);
 
     try {
-      InputStream modelInputStream = IOUtil.getInputStream(ParserAnnotator.class, parserModelPath);
+      InputStream modelInputStream = IoUtil.getInputStream(ParserAnnotator.class, parserModelPath);
       ParserModel parserModel = new ParserModel(modelInputStream);
       if (useTagsFromCas) {
         this.casTagger = new CasPosTagger<TOKEN_TYPE, SENTENCE_TYPE>(inputTypesHelper);

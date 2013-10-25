@@ -40,7 +40,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.jdom2.JDOMException;
 import org.junit.Test;
 import org.uimafit.factory.CollectionReaderFactory;
@@ -73,7 +73,7 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
     JCas jcas = new JCasIterable(reader).next();
     
     // ensure that file exists
-    ViewURIUtil.getURI(jcas).toURL().openStream().close();
+    ViewUriUtil.getURI(jcas).toURL().openStream().close();
 
     Token token = JCasUtil.selectByIndex(jcas, Token.class, 0);
     assertEquals("IL-2", token.getCoveredText());
@@ -102,7 +102,7 @@ public class GeniaPosGoldReaderTest extends DefaultTestBase {
     jcas = new JCasIterable(reader).next();
 
     // ensure that file exists
-    ViewURIUtil.getURI(jcas).toURL().openStream().close();
+    ViewUriUtil.getURI(jcas).toURL().openStream().close();
 
     assertEquals(1, reader.getProgress()[0].getCompleted());
 

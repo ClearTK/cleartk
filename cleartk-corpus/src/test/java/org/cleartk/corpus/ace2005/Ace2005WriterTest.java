@@ -36,7 +36,7 @@ import org.cleartk.ne.type.Chunk;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.test.DefaultTestBase;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -116,7 +116,7 @@ public class Ace2005WriterTest extends DefaultTestBase {
       item.addToIndexes();
     }
 
-    ViewURIUtil.setURI(jCas, new File("uri.sgm").toURI());
+    ViewUriUtil.setURI(jCas, new File("uri.sgm").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 

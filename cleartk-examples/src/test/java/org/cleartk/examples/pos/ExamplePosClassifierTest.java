@@ -38,11 +38,11 @@ import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
-import org.cleartk.classifier.libsvm.LIBSVMStringOutcomeDataWriter;
-import org.cleartk.classifier.mallet.MalletCRFStringOutcomeDataWriter;
+import org.cleartk.classifier.libsvm.LibSvmStringOutcomeDataWriter;
+import org.cleartk.classifier.mallet.MalletCrfStringOutcomeDataWriter;
 import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter;
 import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
-import org.cleartk.classifier.svmlight.SVMlightStringOutcomeDataWriter;
+import org.cleartk.classifier.svmlight.SvmLightStringOutcomeDataWriter;
 import org.cleartk.classifier.viterbi.DefaultOutcomeFeatureExtractor;
 import org.cleartk.classifier.viterbi.ViterbiClassifier;
 import org.cleartk.classifier.viterbi.ViterbiDataWriterFactory;
@@ -91,13 +91,13 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     String outDirectoryName = outputDirectoryName + "/libsvm";
 
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
-        ExamplePOSAnnotator.class,
+        ExamplePosAnnotator.class,
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         ViterbiDataWriterFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        LIBSVMStringOutcomeDataWriter.class.getName(),
+        LibSvmStringOutcomeDataWriter.class.getName(),
         ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
         new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
 
@@ -121,9 +121,9 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
     String outDirectoryName = outputDirectoryName + "/malletcrf";
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
-        ExamplePOSAnnotator.class,
+        ExamplePosAnnotator.class,
         DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        MalletCRFStringOutcomeDataWriter.class.getName(),
+        MalletCrfStringOutcomeDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outDirectoryName);
     testClassifier(dataWriter, outDirectoryName, -1); // viterbi stack size is meaningless here so
@@ -143,7 +143,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     String outDirectoryName = outputDirectoryName + "/maxent";
 
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
-        ExamplePOSAnnotator.class,
+        ExamplePosAnnotator.class,
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         ViterbiDataWriterFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -166,7 +166,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     String outDirectoryName = outputDirectoryName + "/mallet-maxent";
 
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
-        ExamplePOSAnnotator.class,
+        ExamplePosAnnotator.class,
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         ViterbiDataWriterFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -189,7 +189,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     String outDirectoryName = outputDirectoryName + "/mallet-naive-bayes";
 
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
-        ExamplePOSAnnotator.class,
+        ExamplePosAnnotator.class,
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         ViterbiDataWriterFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -215,7 +215,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     String outDirectoryName = outputDirectoryName + "/mallet-c45";
 
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
-        ExamplePOSAnnotator.class,
+        ExamplePosAnnotator.class,
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         ViterbiDataWriterFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
@@ -240,13 +240,13 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
     String outDirectoryName = outputDirectoryName + "/svmlight";
     AnalysisEngineDescription dataWriter = AnalysisEngineFactory.createPrimitiveDescription(
-        ExamplePOSAnnotator.class,
+        ExamplePosAnnotator.class,
         CleartkSequenceAnnotator.PARAM_DATA_WRITER_FACTORY_CLASS_NAME,
         ViterbiDataWriterFactory.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outDirectoryName,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        SVMlightStringOutcomeDataWriter.class.getName(),
+        SvmLightStringOutcomeDataWriter.class.getName(),
         ViterbiDataWriterFactory.PARAM_OUTCOME_FEATURE_EXTRACTOR_NAMES,
         new String[] { DefaultOutcomeFeatureExtractor.class.getName() });
     testClassifier(dataWriter, outDirectoryName, 1);
@@ -294,7 +294,7 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
     }
     hider.close();
 
-    AnalysisEngineDescription taggerDescription = ExamplePOSAnnotator.getClassifierDescription(JarClassifierBuilder.getModelJarFile(
+    AnalysisEngineDescription taggerDescription = ExamplePosAnnotator.getClassifierDescription(JarClassifierBuilder.getModelJarFile(
         outDirectoryName).getPath());
     ResourceCreationSpecifierFactory.setConfigurationParameters(
         taggerDescription,
@@ -310,8 +310,8 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
         DefaultSnowballStemmer.getDescription("English"),
         taggerDescription,
         AnalysisEngineFactory.createPrimitiveDescription(
-            ExamplePOSPlainTextWriter.class,
-            ExamplePOSPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
+            ExamplePosPlainTextWriter.class,
+            ExamplePosPlainTextWriter.PARAM_OUTPUT_DIRECTORY_NAME,
             outDirectoryName));
   }
 }

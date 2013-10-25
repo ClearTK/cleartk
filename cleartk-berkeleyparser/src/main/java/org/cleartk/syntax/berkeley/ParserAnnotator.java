@@ -33,7 +33,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.IOUtil;
+import org.cleartk.util.IoUtil;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.AnalysisEngineFactory;
 
@@ -85,7 +85,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
 
     InputStream modelInputStream;
     try {
-      modelInputStream = IOUtil.getInputStream(ParserAnnotator.class, parserModelPath);
+      modelInputStream = IoUtil.getInputStream(ParserAnnotator.class, parserModelPath);
 
       GZIPInputStream gzis = new GZIPInputStream(modelInputStream); // Compressed
       ObjectInputStream in = new ObjectInputStream(gzis); // Load objects

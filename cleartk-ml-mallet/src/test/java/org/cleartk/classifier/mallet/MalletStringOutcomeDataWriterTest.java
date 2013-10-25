@@ -208,7 +208,7 @@ public class MalletStringOutcomeDataWriterTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        MalletCRFStringOutcomeDataWriter.class.getName());
+        MalletCrfStringOutcomeDataWriter.class.getName());
 
     // create some tokens and sentences
     // add part-of-speech and stems to tokens
@@ -222,7 +222,7 @@ public class MalletStringOutcomeDataWriterTest extends DefaultTestBase {
     engine.process(jCas);
     engine.collectionProcessComplete();
 
-    File trainFile = new MalletCRFStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    File trainFile = new MalletCrfStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     BufferedReader input = new BufferedReader(new FileReader(trainFile));
     String line = input.readLine();
     assertNotNull(line);

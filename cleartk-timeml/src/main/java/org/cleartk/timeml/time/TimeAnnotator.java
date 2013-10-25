@@ -34,7 +34,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instances;
-import org.cleartk.classifier.chunking.BIOChunking;
+import org.cleartk.classifier.chunking.BioChunking;
 import org.cleartk.classifier.feature.extractor.CharacterCategoryPatternExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
@@ -43,7 +43,7 @@ import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
-import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
+import org.cleartk.classifier.liblinear.LibLinearStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.timeml.util.TimeWordsExtractor;
@@ -72,7 +72,7 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
 
     @Override
     public Class<?> getDataWriterClass() {
-      return LIBLINEARStringOutcomeDataWriter.class;
+      return LibLinearStringOutcomeDataWriter.class;
     }
 
     @Override
@@ -85,14 +85,14 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
 
   private List<CleartkExtractor<Token, Token>> contextFeatureExtractors;
 
-  private BIOChunking<Token, Time> chunking;
+  private BioChunking<Token, Time> chunking;
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
 
     // define chunking type
-    this.chunking = new BIOChunking<Token, Time>(Token.class, Time.class);
+    this.chunking = new BioChunking<Token, Time>(Token.class, Time.class);
 
     // add features: word, character pattern, stem, pos
     this.tokenFeatureExtractors = Lists.newArrayList();

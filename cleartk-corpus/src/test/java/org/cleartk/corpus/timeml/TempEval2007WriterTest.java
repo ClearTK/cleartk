@@ -76,8 +76,8 @@ public class TempEval2007WriterTest extends CleartkTestBase {
   public void test() throws UIMAException, IOException, JDOMException {
     CollectionReader reader = FilesCollectionReader.getCollectionReaderWithView(
         this.inputFile.getPath(),
-        TimeMLGoldAnnotator.TIMEML_VIEW_NAME);
-    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(TimeMLGoldAnnotator.getDescription());
+        TimeMlGoldAnnotator.TIMEML_VIEW_NAME);
+    AnalysisEngine annotator = AnalysisEngineFactory.createPrimitive(TimeMlGoldAnnotator.getDescription());
     AnalysisEngine writer = AnalysisEngineFactory.createPrimitive(TempEval2007Writer.getDescription(this.outputDirectory.getPath()));
 
     reader.getNext(this.jCas.getCas());

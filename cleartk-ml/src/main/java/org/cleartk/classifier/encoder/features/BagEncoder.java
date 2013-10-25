@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
+import org.cleartk.classifier.encoder.features.normalizer.NoOpNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.feature.Counts;
 
@@ -54,7 +54,7 @@ public class BagEncoder implements FeatureEncoder<NameNumber> {
   }
 
   public BagEncoder(String identifier) {
-    this(identifier, new NOPNormalizer());
+    this(identifier, new NoOpNormalizer());
   }
 
   public BagEncoder(NameNumberNormalizer normalizer) {
@@ -62,7 +62,7 @@ public class BagEncoder implements FeatureEncoder<NameNumber> {
   }
 
   public BagEncoder() {
-    this(null, new NOPNormalizer());
+    this(null, new NoOpNormalizer());
   }
 
   public List<NameNumber> encode(Feature feature) {

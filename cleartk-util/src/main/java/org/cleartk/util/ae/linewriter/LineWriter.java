@@ -37,7 +37,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.initializable.InitializableFactory;
@@ -323,7 +323,7 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
 
     try {
       if (outputDirectory != null) {
-        String id = (new File(ViewURIUtil.getURI(jCas))).getName();
+        String id = (new File(ViewUriUtil.getURI(jCas))).getName();
         while (id.endsWith(".")) {
           id = id.substring(0, id.length() - 1);
         }

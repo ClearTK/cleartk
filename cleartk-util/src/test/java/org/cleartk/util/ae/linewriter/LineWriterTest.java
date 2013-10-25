@@ -37,7 +37,7 @@ import org.apache.uima.util.FileUtils;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.cleartk.util.ae.linewriter.annotation.CoveredTextAnnotationWriter;
 import org.cleartk.util.ae.linewriter.block.BlankLineBlockWriter;
 import org.cleartk.util.ae.linewriter.block.DoNothingBlockWriter;
@@ -87,7 +87,7 @@ public class LineWriterTest extends DefaultTestBase {
         text,
         "What if we built a rocket ship made of cheese ?\nWe could fly it to the moon for repairs .",
         "A B C D E F G H I J K L M N O P Q R S T U");
-    ViewURIUtil.setURI(jCas, new File("1234").toURI());
+    ViewUriUtil.setURI(jCas, new File("1234").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 
@@ -108,7 +108,7 @@ public class LineWriterTest extends DefaultTestBase {
         text,
         "What if we \n built a rocket \n ship made of cheese ?\nWe could fly it \nto the moon for repairs .",
         "A B C D E F G H I J K L M N O P Q R S T U");
-    ViewURIUtil.setURI(jCas, new File("1234").toURI());
+    ViewUriUtil.setURI(jCas, new File("1234").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 
@@ -402,7 +402,7 @@ public class LineWriterTest extends DefaultTestBase {
 
     String spacedTokens = "What if we built a large , wooden badger ?\nHmm? ";
     tokenBuilder.buildTokens(jCas, "What if we built\na large, wooden badger? Hmm?", spacedTokens);
-    ViewURIUtil.setURI(jCas, new File("identifier").toURI());
+    ViewUriUtil.setURI(jCas, new File("identifier").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 

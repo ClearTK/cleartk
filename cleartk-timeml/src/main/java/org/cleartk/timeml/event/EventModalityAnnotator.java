@@ -29,10 +29,10 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
-import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
+import org.cleartk.classifier.liblinear.LibLinearStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
-import org.cleartk.feature.token.TokenTextForSelectedPOSExtractor;
+import org.cleartk.feature.token.TokenTextForSelectedPosExtractor;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.AnalysisEngineFactory;
 
@@ -55,7 +55,7 @@ public class EventModalityAnnotator extends EventAttributeAnnotator<String> {
 
     @Override
     public Class<?> getDataWriterClass() {
-      return LIBLINEARStringOutcomeDataWriter.class;
+      return LibLinearStringOutcomeDataWriter.class;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class EventModalityAnnotator extends EventAttributeAnnotator<String> {
     super.initialize(context);
     this.contextExtractors.add(new CleartkExtractor<Event, Token>(
         Token.class,
-        new TokenTextForSelectedPOSExtractor("RB", "MD", "TO", "IN"),
+        new TokenTextForSelectedPosExtractor("RB", "MD", "TO", "IN"),
         new Bag(new Preceding(3))));
   }
 

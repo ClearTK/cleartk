@@ -123,12 +123,12 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         outputDirectoryName,
         DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        CRFSuiteStringOutcomeDataWriter.class);
+        CrfSuiteStringOutcomeDataWriter.class);
 
     dataWriterAnnotator.process(jCas);
     dataWriterAnnotator.collectionProcessComplete();
 
-    File trainFile = new CRFSuiteStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
+    File trainFile = new CrfSuiteStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
     BufferedReader reader = new BufferedReader(new FileReader(trainFile));
     reader.readLine();
     reader.close();
@@ -142,8 +142,8 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
       crfSuiteLogger.setLevel(level);
     }
 
-    CRFSuiteStringOutcomeClassifierBuilder builder = new CRFSuiteStringOutcomeClassifierBuilder();
-    CRFSuiteStringOutcomeClassifier classifier;
+    CrfSuiteStringOutcomeClassifierBuilder builder = new CrfSuiteStringOutcomeClassifierBuilder();
+    CrfSuiteStringOutcomeClassifier classifier;
     classifier = builder.loadClassifierFromTrainingDirectory(this.outputDirectory);
 
     List<List<Feature>> sequenceFeatures = new ArrayList<List<Feature>>();
@@ -173,7 +173,7 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
     this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, CRF_SUITE_TESTS_PROPERTY_VALUE);
     this.logger.info(CRF_SUITE_TESTS_ENABLED_MESSAGE);
 
-    CRFSuiteWrapper wrapper = new CRFSuiteWrapper();
+    CrfSuiteWrapper wrapper = new CrfSuiteWrapper();
     String model = "target/tmpModel";
     File modelFile = new File(model);
     modelFile.deleteOnExit();

@@ -30,7 +30,7 @@ import java.util.List;
 
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.encoder.CleartkEncoderException;
-import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
+import org.cleartk.classifier.encoder.features.normalizer.NoOpNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.InvalidFeatureVectorValueException;
@@ -60,11 +60,11 @@ public class FeatureVectorFeaturesEncoder extends
   }
 
   public FeatureVectorFeaturesEncoder(int cutoff) {
-    this(cutoff, new NOPNormalizer());
+    this(cutoff, new NoOpNormalizer());
   }
 
   public FeatureVectorFeaturesEncoder() {
-    this(0, new NOPNormalizer());
+    this(0, new NoOpNormalizer());
   }
 
   @Override

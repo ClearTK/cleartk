@@ -57,7 +57,7 @@ import org.uimafit.pipeline.SimplePipeline;
 public class BuildTestExamplePosModel {
 
   public static void main(String... args) throws Exception {
-    String outputDirectory = ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY;
+    String outputDirectory = ExamplePosAnnotator.DEFAULT_OUTPUT_DIRECTORY;
 
     // select all the .tree files in the treebank directory
     File treebankDirectory = new File("data/pos/treebank");
@@ -86,19 +86,19 @@ public class BuildTestExamplePosModel {
     builder.add(TreebankGoldAnnotator.getDescriptionPOSTagsOnly());
 
     // The POS annotator, configured to write training data
-    builder.add(ExamplePOSAnnotator.getWriterDescription(outputDirectory));
+    builder.add(ExamplePosAnnotator.getWriterDescription(outputDirectory));
 
     // Run the pipeline of annotators on each of the CASes produced by the reader
     SimplePipeline.runPipeline(reader, builder.createAggregateDescription());
 
-    System.out.println("training data written to " + ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY);
+    System.out.println("training data written to " + ExamplePosAnnotator.DEFAULT_OUTPUT_DIRECTORY);
     System.out.println("training model...");
 
     // Train a classifier on the training data, and package it into a .jar file
     Train.main(outputDirectory);
 
     System.out.println("model written to "
-        + JarClassifierBuilder.getModelJarFile(ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY).getPath());
+        + JarClassifierBuilder.getModelJarFile(ExamplePosAnnotator.DEFAULT_OUTPUT_DIRECTORY).getPath());
 
   }
 }

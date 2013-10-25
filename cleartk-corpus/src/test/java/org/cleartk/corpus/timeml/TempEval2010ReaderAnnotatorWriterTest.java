@@ -44,7 +44,7 @@ import org.cleartk.timeml.type.TemporalLink;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -647,7 +647,7 @@ public class TempEval2010ReaderAnnotatorWriterTest extends CleartkTestBase {
     this.tokenBuilder.buildTokens(this.jCas, "I woke up this morning.", "I woke up this morning .");
     URI baseURI = new File("base").toURI();
     URI uri = new URI(baseURI.getScheme(), baseURI.getHost(), baseURI.getPath(), "FILENAME");
-    ViewURIUtil.setURI(this.jCas, uri);
+    ViewUriUtil.setURI(this.jCas, uri);
     Event event = new Event(this.jCas, 2, 6);
     event.setId("e1");
     event.addToIndexes();

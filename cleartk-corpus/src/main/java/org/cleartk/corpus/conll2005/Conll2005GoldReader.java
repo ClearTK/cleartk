@@ -41,7 +41,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.descriptor.SofaCapability;
@@ -52,7 +52,7 @@ import org.uimafit.factory.CollectionReaderFactory;
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-@SofaCapability(outputSofas = { Conll2005Constants.CONLL_2005_VIEW, ViewURIUtil.URI })
+@SofaCapability(outputSofas = { Conll2005Constants.CONLL_2005_VIEW, ViewUriUtil.URI })
 public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
 
   public static CollectionReader getCollectionReader(String conll2005DataFile)
@@ -153,7 +153,7 @@ public class Conll2005GoldReader extends JCasCollectionReader_ImplBase {
         // should never reach this; fragment should always be valid since it's just a number
         throw new RuntimeException(e);
       }
-      ViewURIUtil.setURI(jCas, uri);
+      ViewUriUtil.setURI(jCas, uri);
     } catch (CASException e) {
       throw new CollectionException(e);
     }

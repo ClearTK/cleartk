@@ -29,7 +29,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.cleartk.util.ae.linewriter.BlockWriter;
 
 /**
@@ -49,7 +49,7 @@ public class DocumentIdBlockWriter implements BlockWriter<Annotation> {
 
   public String writeBlock(JCas jCas, Annotation blockAnnotation)
       throws AnalysisEngineProcessException {
-    return new File(ViewURIUtil.getURI(jCas)).getName() + newline;
+    return new File(ViewUriUtil.getURI(jCas)).getName() + newline;
   }
 
 }

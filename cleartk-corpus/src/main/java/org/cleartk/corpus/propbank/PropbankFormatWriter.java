@@ -34,7 +34,7 @@ import org.cleartk.srl.type.Argument;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.token.type.Sentence;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.cleartk.util.ae.linewriter.AnnotationWriter;
 import org.uimafit.util.JCasUtil;
 
@@ -54,7 +54,7 @@ public class PropbankFormatWriter implements AnnotationWriter<Predicate> {
       throws AnalysisEngineProcessException {
     StringBuilder sb = new StringBuilder();
 
-    String uri = new File(ViewURIUtil.getURI(jCas)).getPath();
+    String uri = new File(ViewUriUtil.getURI(jCas)).getPath();
     sb.append(uri + "\t");
 
     int sentenceId = -1;

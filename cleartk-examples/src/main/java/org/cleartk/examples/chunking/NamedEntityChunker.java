@@ -33,7 +33,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instances;
-import org.cleartk.classifier.chunking.BIOChunking;
+import org.cleartk.classifier.chunking.BioChunking;
 import org.cleartk.classifier.feature.extractor.CharacterCategoryPatternExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CombinedExtractor1;
@@ -65,7 +65,7 @@ public class NamedEntityChunker extends CleartkSequenceAnnotator<String> {
 
   private CleartkExtractor<Token, Token> contextExtractor;
 
-  private BIOChunking<Token, NamedEntityMention> chunking;
+  private BioChunking<Token, NamedEntityMention> chunking;
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -86,7 +86,7 @@ public class NamedEntityChunker extends CleartkSequenceAnnotator<String> {
 
     // the chunking definition: Tokens will be combined to form NamedEntityMentions, with labels
     // from the "mentionType" attribute so that we get B-location, I-person, etc.
-    this.chunking = new BIOChunking<Token, NamedEntityMention>(
+    this.chunking = new BioChunking<Token, NamedEntityMention>(
         Token.class,
         NamedEntityMention.class,
         "mentionType");

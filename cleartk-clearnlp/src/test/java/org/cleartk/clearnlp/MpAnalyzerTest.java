@@ -46,7 +46,7 @@ public class MpAnalyzerTest extends CleartkTestBase {
 
   static {
     try {
-      mpAnalyzer = AnalysisEngineFactory.createPrimitive(MPAnalyzer.getDescription()); 
+      mpAnalyzer = AnalysisEngineFactory.createPrimitive(MpAnalyzer.getDescription()); 
     } catch (Exception e) {
       e.printStackTrace();
     }

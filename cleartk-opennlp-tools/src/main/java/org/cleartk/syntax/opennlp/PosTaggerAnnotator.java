@@ -38,7 +38,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.IOUtil;
+import org.cleartk.util.IoUtil;
 import org.cleartk.util.ParamUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -105,7 +105,7 @@ public class PosTaggerAnnotator extends JCasAnnotator_ImplBase {
   public void initialize(UimaContext uimaContext) throws ResourceInitializationException {
     super.initialize(uimaContext);
     try {
-      InputStream modelInputStream = IOUtil.getInputStream(
+      InputStream modelInputStream = IoUtil.getInputStream(
           PosTaggerAnnotator.class,
           postagModelFile);
       POSModel posModel = new POSModel(modelInputStream);

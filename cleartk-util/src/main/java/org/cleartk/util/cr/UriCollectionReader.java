@@ -44,7 +44,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.uimafit.component.JCasCollectionReader_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
 import org.uimafit.factory.CollectionReaderFactory;
@@ -302,7 +302,7 @@ public class UriCollectionReader extends JCasCollectionReader_ImplBase {
       throw new RuntimeException("getNext(jCas) was called but hasNext() returns false");
     }
 
-    ViewURIUtil.setURI(jCas, this.uriIter.next());
+    ViewUriUtil.setURI(jCas, this.uriIter.next());
   }
 
 }

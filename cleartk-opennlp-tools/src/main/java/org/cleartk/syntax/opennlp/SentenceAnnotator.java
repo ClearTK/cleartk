@@ -42,7 +42,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.IOUtil;
+import org.cleartk.util.IoUtil;
 import org.cleartk.util.ParamUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.descriptor.ConfigurationParameter;
@@ -140,7 +140,7 @@ public class SentenceAnnotator extends JCasAnnotator_ImplBase {
         }
       }
 
-      InputStream modelInputStream = IOUtil.getInputStream(
+      InputStream modelInputStream = IoUtil.getInputStream(
           SentenceAnnotator.class,
           sentenceModelPath);
       SentenceModel model = new SentenceModel(modelInputStream);

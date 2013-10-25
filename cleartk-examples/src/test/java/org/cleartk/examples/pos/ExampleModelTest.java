@@ -55,8 +55,8 @@ public class ExampleModelTest extends ExamplesTestBase {
     hider.restoreOutput();
     hider.close();
 
-    AnalysisEngineDescription posTaggerDescription = ExamplePOSAnnotator.getClassifierDescription(JarClassifierBuilder.getModelJarFile(
-        ExamplePOSAnnotator.DEFAULT_OUTPUT_DIRECTORY).getPath());
+    AnalysisEngineDescription posTaggerDescription = ExamplePosAnnotator.getClassifierDescription(JarClassifierBuilder.getModelJarFile(
+        ExamplePosAnnotator.DEFAULT_OUTPUT_DIRECTORY).getPath());
     AnalysisEngine posTagger = AnalysisEngineFactory.createPrimitive(posTaggerDescription);
 
     tokenBuilder.buildTokens(

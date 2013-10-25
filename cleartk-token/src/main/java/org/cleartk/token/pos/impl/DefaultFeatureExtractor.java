@@ -38,11 +38,11 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor.Ngram;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
 import org.cleartk.classifier.feature.function.CapitalTypeFeatureFunction;
-import org.cleartk.classifier.feature.function.CharacterNGramFeatureFunction;
+import org.cleartk.classifier.feature.function.CharacterNgramFeatureFunction;
 import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
 import org.cleartk.classifier.feature.function.LowerCaseFeatureFunction;
 import org.cleartk.classifier.feature.function.NumericTypeFeatureFunction;
-import org.cleartk.token.pos.POSFeatureExtractor;
+import org.cleartk.token.pos.PosFeatureExtractor;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.uimafit.factory.initializable.Initializable;
@@ -58,7 +58,7 @@ import com.google.common.collect.Lists;
  * 
  */
 
-public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sentence>, Initializable {
+public class DefaultFeatureExtractor implements PosFeatureExtractor<Token, Sentence>, Initializable {
 
   private List<FeatureExtractor1<Token>> simpleExtractors;
 
@@ -71,22 +71,22 @@ public class DefaultFeatureExtractor implements POSFeatureExtractor<Token, Sente
 
     FeatureExtractor1<Token> wordExtractor = new CoveredTextExtractor<Token>();
 
-    CharacterNGramFeatureFunction.Orientation fromLeft = CharacterNGramFeatureFunction.Orientation.LEFT_TO_RIGHT;
-    CharacterNGramFeatureFunction.Orientation fromRight = CharacterNGramFeatureFunction.Orientation.RIGHT_TO_LEFT;
+    CharacterNgramFeatureFunction.Orientation fromLeft = CharacterNgramFeatureFunction.Orientation.LEFT_TO_RIGHT;
+    CharacterNgramFeatureFunction.Orientation fromRight = CharacterNgramFeatureFunction.Orientation.RIGHT_TO_LEFT;
     simpleExtractors.add(new FeatureFunctionExtractor<Token>(
         wordExtractor,
         new LowerCaseFeatureFunction(),
         new CapitalTypeFeatureFunction(),
         new NumericTypeFeatureFunction(),
-        new CharacterNGramFeatureFunction(fromLeft, 0, 1),
-        new CharacterNGramFeatureFunction(fromLeft, 0, 2),
-        new CharacterNGramFeatureFunction(fromLeft, 0, 3),
-        new CharacterNGramFeatureFunction(fromRight, 0, 1),
-        new CharacterNGramFeatureFunction(fromRight, 0, 2),
-        new CharacterNGramFeatureFunction(fromRight, 0, 3),
-        new CharacterNGramFeatureFunction(fromRight, 0, 4),
-        new CharacterNGramFeatureFunction(fromRight, 0, 5),
-        new CharacterNGramFeatureFunction(fromRight, 0, 6)));
+        new CharacterNgramFeatureFunction(fromLeft, 0, 1),
+        new CharacterNgramFeatureFunction(fromLeft, 0, 2),
+        new CharacterNgramFeatureFunction(fromLeft, 0, 3),
+        new CharacterNgramFeatureFunction(fromRight, 0, 1),
+        new CharacterNgramFeatureFunction(fromRight, 0, 2),
+        new CharacterNgramFeatureFunction(fromRight, 0, 3),
+        new CharacterNgramFeatureFunction(fromRight, 0, 4),
+        new CharacterNgramFeatureFunction(fromRight, 0, 5),
+        new CharacterNgramFeatureFunction(fromRight, 0, 6)));
 
     windowExtractors = Lists.newArrayList();
     windowExtractors.add(new CleartkExtractor<Token, Token>(

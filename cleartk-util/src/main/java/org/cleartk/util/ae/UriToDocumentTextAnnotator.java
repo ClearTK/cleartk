@@ -33,7 +33,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.uimafit.component.JCasAnnotator_ImplBase;
 import org.uimafit.component.ViewCreatorAnnotator;
 import org.uimafit.factory.AggregateBuilder;
@@ -76,7 +76,7 @@ public class UriToDocumentTextAnnotator extends JCasAnnotator_ImplBase {
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
 
-    URI uri = ViewURIUtil.getURI(jCas);
+    URI uri = ViewUriUtil.getURI(jCas);
     String content;
 
     try {

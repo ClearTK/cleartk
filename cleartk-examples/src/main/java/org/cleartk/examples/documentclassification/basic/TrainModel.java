@@ -30,7 +30,7 @@ import org.apache.uima.collection.CollectionReader;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
-import org.cleartk.classifier.libsvm.LIBSVMStringOutcomeDataWriter;
+import org.cleartk.classifier.libsvm.LibSvmStringOutcomeDataWriter;
 import org.cleartk.examples.documentclassification.advanced.GoldDocumentCategoryAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
@@ -111,7 +111,7 @@ public class TrainModel {
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(
         BasicDocumentClassificationAnnotator.class,
         DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        LIBSVMStringOutcomeDataWriter.class.getName(),
+        LibSvmStringOutcomeDataWriter.class.getName(),
         DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
         options.getModelsDirectory()));
 

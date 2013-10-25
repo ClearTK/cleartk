@@ -53,7 +53,7 @@ import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
-import org.cleartk.classifier.libsvm.LIBSVMStringOutcomeDataWriter;
+import org.cleartk.classifier.libsvm.LibSvmStringOutcomeDataWriter;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.examples.type.UsenetDocument;
@@ -248,7 +248,7 @@ public class DocumentClassificationEvaluation extends
     //
     // In this example, we now write in the libsvm format
     System.err.println("Write out model training data");
-    LIBSVMStringOutcomeDataWriter dataWriter = new LIBSVMStringOutcomeDataWriter(outputDirectory);
+    LibSvmStringOutcomeDataWriter dataWriter = new LibSvmStringOutcomeDataWriter(outputDirectory);
     for (Instance<String> instance : instances) {
       instance = extractor.transform(instance);
       instance = simExtractor.transform(instance);

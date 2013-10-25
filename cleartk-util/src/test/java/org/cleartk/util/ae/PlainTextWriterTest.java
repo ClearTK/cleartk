@@ -29,7 +29,7 @@ import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
 import org.cleartk.test.DefaultTestBase;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.uimafit.factory.AnalysisEngineFactory;
@@ -60,7 +60,7 @@ public class PlainTextWriterTest extends DefaultTestBase {
         text,
         "What if we built a large \n, wooden badger ?",
         "WDT TO PRP VBN DT JJ , JJ NN .");
-    ViewURIUtil.setURI(jCas, new File("identifier").toURI());
+    ViewUriUtil.setURI(jCas, new File("identifier").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 
@@ -75,7 +75,7 @@ public class PlainTextWriterTest extends DefaultTestBase {
         text,
         "What if we built a large \n, wooden badger ?",
         "WDT TO PRP VBN DT JJ , JJ NN .");
-    ViewURIUtil.setURI(jCas, new File("1234").toURI());
+    ViewUriUtil.setURI(jCas, new File("1234").toURI());
     engine.process(jCas);
     engine.collectionProcessComplete();
 

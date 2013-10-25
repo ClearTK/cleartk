@@ -37,7 +37,7 @@ import org.cleartk.classifier.encoder.features.FeatureEncoder;
 import org.cleartk.classifier.encoder.features.FeatureVectorFeaturesEncoder;
 import org.cleartk.classifier.encoder.features.FeaturesEncoder;
 import org.cleartk.classifier.encoder.features.NameNumber;
-import org.cleartk.classifier.encoder.features.normalizer.NOPNormalizer;
+import org.cleartk.classifier.encoder.features.normalizer.NoOpNormalizer;
 import org.cleartk.classifier.encoder.features.normalizer.NameNumberNormalizer;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 
@@ -69,11 +69,11 @@ public class TreeFeatureVectorFeaturesEncoder implements FeaturesEncoder<TreeFea
   }
 
   public TreeFeatureVectorFeaturesEncoder(int cutoff) {
-    this(cutoff, new NOPNormalizer());
+    this(cutoff, new NoOpNormalizer());
   }
 
   public TreeFeatureVectorFeaturesEncoder() {
-    this(0, new NOPNormalizer());
+    this(0, new NoOpNormalizer());
   }
 
   @Override

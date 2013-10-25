@@ -32,7 +32,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.TypePathExtractor;
-import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
+import org.cleartk.classifier.liblinear.LibLinearStringOutcomeDataWriter;
 import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.timeml.type.Event;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
@@ -61,7 +61,7 @@ public class TemporalLinkEventToDocumentCreationTimeAnnotator extends
 
     @Override
     public Class<?> getDataWriterClass() {
-      return LIBLINEARStringOutcomeDataWriter.class;
+      return LibLinearStringOutcomeDataWriter.class;
     }
 
     @Override

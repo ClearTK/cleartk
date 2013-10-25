@@ -44,15 +44,15 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.CasCopier;
-import org.cleartk.classifier.liblinear.LIBLINEARStringOutcomeDataWriter;
+import org.cleartk.classifier.liblinear.LibLinearStringOutcomeDataWriter;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
-import org.cleartk.corpus.timeml.PlainTextTLINKGoldAnnotator;
+import org.cleartk.corpus.timeml.PlainTextTlinkGoldAnnotator;
 import org.cleartk.corpus.timeml.TempEval2013Writer;
-import org.cleartk.corpus.timeml.TimeMLGoldAnnotator;
+import org.cleartk.corpus.timeml.TimeMlGoldAnnotator;
 import org.cleartk.timeml.event.EventAnnotator;
 import org.cleartk.timeml.event.EventAspectAnnotator;
 import org.cleartk.timeml.event.EventClassAnnotator;
@@ -73,7 +73,7 @@ import org.cleartk.timeml.type.Text;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
-import org.cleartk.util.ViewURIUtil;
+import org.cleartk.util.ViewUriUtil;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
 import org.jdom2.Document;
@@ -325,24 +325,24 @@ public class TempEval2013Evaluation
 
   private static List<Model.Params> SEQUENCE_CLASSIFIER_PARAM_SEARCH_SPACE = Lists.newArrayList(
       // L2-regularized L2-loss support vector classification (dual)
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 1, "-c", "0.1", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 1, "-c", "0.5", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 1, "-c", "1", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 1, "-c", "5", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 1, "-c", "10", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 1, "-c", "50", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 2, "-c", "0.1", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 2, "-c", "0.5", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 2, "-c", "1", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 2, "-c", "5", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 2, "-c", "10", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 2, "-c", "50", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "0.1", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "0.5", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "1", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "5", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "10", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 3, "-c", "50", "-s", "1"));
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 1, "-c", "0.1", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 1, "-c", "0.5", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 1, "-c", "1", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 1, "-c", "5", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 1, "-c", "10", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 1, "-c", "50", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 2, "-c", "0.1", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 2, "-c", "0.5", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 2, "-c", "1", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 2, "-c", "5", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 2, "-c", "10", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 2, "-c", "50", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 3, "-c", "0.1", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 3, "-c", "0.5", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 3, "-c", "1", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 3, "-c", "5", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 3, "-c", "10", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 3, "-c", "50", "-s", "1"));
 //      // default is --iterations 500 --gaussian-variance 10
 //      new Model.Params(MalletCRFStringOutcomeDataWriter.class),
 //      new Model.Params(MalletCRFStringOutcomeDataWriter.class, "--forbidden", "O,I"),
@@ -363,25 +363,25 @@ public class TempEval2013Evaluation
 //      new Model.Params(MaxentStringOutcomeDataWriter.class, "100", "10"),
 //      new Model.Params(MaxentStringOutcomeDataWriter.class, "500", "5"),
       // L2-regularized logistic regression (primal)
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "0"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.5", "-s", "0"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "0"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "5", "-s", "0"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "10", "-s", "0"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "50", "-s", "0"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "0.1", "-s", "0"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "0.5", "-s", "0"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "1", "-s", "0"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "5", "-s", "0"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "10", "-s", "0"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "50", "-s", "0"),
       // L2-regularized L2-loss support vector classification (dual)
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.5", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "5", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "10", "-s", "1"),
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "50", "-s", "1"));
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "0.1", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "0.5", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "1", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "5", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "10", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "50", "-s", "1"));
 
   private static final Model<Time> TIME_EXTENT_MODEL = new Model<Time>(
       "time-extent",
       Lists.<Model<?>> newArrayList(),
       TimeAnnotator.class,
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, 1, "-c", "0.1", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, 1, "-c", "0.1", "-s", "1"),
       SEQUENCE_CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Model.LoggingType.NONE,
@@ -394,7 +394,7 @@ public class TempEval2013Evaluation
       "time-type",
       Lists.<Model<?>> newArrayList(TIME_EXTENT_MODEL),
       TimeTypeAnnotator.class,
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "5", "-s", "0"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "5", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Model.LoggingType.NONE,
@@ -407,7 +407,7 @@ public class TempEval2013Evaluation
       "event-extent",
       Lists.<Model<?>> newArrayList(),
       EventAnnotator.class,
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "0.1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Model.LoggingType.NONE,
@@ -420,7 +420,7 @@ public class TempEval2013Evaluation
       "event-aspect",
       Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
       EventAspectAnnotator.class,
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "5", "-s", "0"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "5", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Model.LoggingType.NONE,
@@ -433,7 +433,7 @@ public class TempEval2013Evaluation
       "event-class",
       Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
       EventClassAnnotator.class,
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "5", "-s", "0"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "5", "-s", "0"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Model.LoggingType.NONE,
@@ -446,7 +446,7 @@ public class TempEval2013Evaluation
       "event-modality",
       Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
       EventModalityAnnotator.class,
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Model.LoggingType.NONE,
@@ -459,7 +459,7 @@ public class TempEval2013Evaluation
       "event-polarity",
       Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
       EventPolarityAnnotator.class,
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "1", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Model.LoggingType.NONE,
@@ -472,7 +472,7 @@ public class TempEval2013Evaluation
       "event-tense",
       Lists.<Model<?>> newArrayList(EVENT_EXTENT_MODEL),
       EventTenseAnnotator.class,
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.5", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "0.5", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.NORMAL,
       Model.LoggingType.NONE,
@@ -491,7 +491,7 @@ public class TempEval2013Evaluation
           EVENT_POLARITY_MODEL,
           EVENT_TENSE_MODEL),
       TemporalLinkEventToDocumentCreationTimeAnnotator.class,
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "50", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "50", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.INTERSECTED_SPANS,
       Model.LoggingType.NONE,
@@ -512,7 +512,7 @@ public class TempEval2013Evaluation
           EVENT_POLARITY_MODEL,
           EVENT_TENSE_MODEL),
       TemporalLinkEventToSameSentenceTimeAnnotator.class,
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.5", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "0.5", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.INTERSECTED_SPANS,
       Model.LoggingType.NONE,
@@ -531,7 +531,7 @@ public class TempEval2013Evaluation
           EVENT_POLARITY_MODEL,
           EVENT_TENSE_MODEL),
       TemporalLinkEventToSubordinatedEventAnnotator.class,
-      new Model.Params(LIBLINEARStringOutcomeDataWriter.class, "-c", "0.1", "-s", "1"),
+      new Model.Params(LibLinearStringOutcomeDataWriter.class, "-c", "0.1", "-s", "1"),
       CLASSIFIER_PARAM_SEARCH_SPACE,
       Model.EvaluationType.INTERSECTED_SPANS,
       Model.LoggingType.NONE,
@@ -574,12 +574,12 @@ public class TempEval2013Evaluation
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
-        TimeMLGoldAnnotator.TIMEML_VIEW_NAME));
+        TimeMlGoldAnnotator.TIMEML_VIEW_NAME));
     builder.add(
         UriToDocumentTextAnnotator.getDescription(),
         CAS.NAME_DEFAULT_SOFA,
-        TimeMLGoldAnnotator.TIMEML_VIEW_NAME);
-    builder.add(TimeMLGoldAnnotator.getDescription());
+        TimeMlGoldAnnotator.TIMEML_VIEW_NAME);
+    builder.add(TimeMlGoldAnnotator.getDescription());
     if (this.inferredTLinksDirectories != null) {
       builder.add(AnalysisEngineFactory.createPrimitiveDescription(
           UseInferredTlinks.class,
@@ -587,7 +587,7 @@ public class TempEval2013Evaluation
           this.inferredTLinksDirectories));
     }
     if (this.useVerbClauseTlinks) {
-      builder.add(PlainTextTLINKGoldAnnotator.getDescription());
+      builder.add(PlainTextTlinkGoldAnnotator.getDescription());
     }
     builder.add(AnalysisEngineFactory.createPrimitiveDescription(FixTimeML.class));
 
@@ -633,16 +633,16 @@ public class TempEval2013Evaluation
     preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
-        TimeMLGoldAnnotator.TIMEML_VIEW_NAME));
+        TimeMlGoldAnnotator.TIMEML_VIEW_NAME));
     preprocess.add(
         UriToDocumentTextAnnotator.getDescription(),
         CAS.NAME_DEFAULT_SOFA,
-        TimeMLGoldAnnotator.TIMEML_VIEW_NAME);
+        TimeMlGoldAnnotator.TIMEML_VIEW_NAME);
     preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
         ViewCreatorAnnotator.class,
         ViewCreatorAnnotator.PARAM_VIEW_NAME,
         goldViewName));
-    preprocess.add(TimeMLGoldAnnotator.getDescription(), CAS.NAME_DEFAULT_SOFA, goldViewName);
+    preprocess.add(TimeMlGoldAnnotator.getDescription(), CAS.NAME_DEFAULT_SOFA, goldViewName);
     if (this.inferredTLinksDirectories != null) {
       preprocess.add(AnalysisEngineFactory.createPrimitiveDescription(
           UseInferredTlinks.class,
@@ -651,7 +651,7 @@ public class TempEval2013Evaluation
     }
     if (this.useVerbClauseTlinks) {
       preprocess.add(
-          PlainTextTLINKGoldAnnotator.getDescription(),
+          PlainTextTlinkGoldAnnotator.getDescription(),
           CAS.NAME_DEFAULT_SOFA,
           goldViewName);
     }
@@ -921,7 +921,7 @@ public class TempEval2013Evaluation
 
     @Override
     public void process(JCas jCas) throws AnalysisEngineProcessException {
-      String fileName = new File(ViewURIUtil.getURI(jCas).getPath()).getName();
+      String fileName = new File(ViewUriUtil.getURI(jCas).getPath()).getName();
       File inferredTLinksFile = this.fileNameToFile.get(fileName);
 
       if (inferredTLinksFile == null) {
@@ -1002,7 +1002,7 @@ public class TempEval2013Evaluation
 
     private static String errorString(JCas jCas, Element element, String message)
         throws AnalysisEngineProcessException {
-      URI uri = ViewURIUtil.getURI(jCas);
+      URI uri = ViewUriUtil.getURI(jCas);
       String elemString = new XMLOutputter().outputString(element);
       return String.format("In %s: " + message, uri, elemString);
     }
