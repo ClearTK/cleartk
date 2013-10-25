@@ -25,12 +25,15 @@ package org.cleartk.timeml;
 
 import java.io.File;
 
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
+import org.cleartk.corpus.timeml.TempEval2007Writer;
 import org.cleartk.syntax.opennlp.ParserAnnotator;
 import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
 import org.cleartk.syntax.opennlp.SentenceAnnotator;
-import org.cleartk.corpus.timeml.TempEval2007Writer;
 import org.cleartk.timeml.event.EventAnnotator;
 import org.cleartk.timeml.event.EventAspectAnnotator;
 import org.cleartk.timeml.event.EventClassAnnotator;
@@ -39,12 +42,15 @@ import org.cleartk.timeml.event.EventPolarityAnnotator;
 import org.cleartk.timeml.event.EventTenseAnnotator;
 import org.cleartk.timeml.time.TimeAnnotator;
 import org.cleartk.timeml.time.TimeTypeAnnotator;
+import org.cleartk.timeml.tlink.TemporalLinkEventToDocumentCreationTimeAnnotator;
 import org.cleartk.timeml.tlink.TemporalLinkEventToSameSentenceTimeAnnotator;
+import org.cleartk.timeml.tlink.TemporalLinkEventToSubordinatedEventAnnotator;
 import org.cleartk.timeml.tlink.TemporalLinkMainEventToNextSentenceMainEventAnnotator;
-import org.cleartk.timeml.tlink.VerbClauseTemporalAnnotator;
+import org.cleartk.timeml.type.DocumentCreationTime;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.cr.FilesCollectionReader;
+import org.uimafit.factory.AnalysisEngineFactory;
 import org.uimafit.factory.UimaContextFactory;
 import org.uimafit.pipeline.SimplePipeline;
 
@@ -105,11 +111,22 @@ public class TimeMlAnnotate {
         EventClassAnnotator.FACTORY.getAnnotatorDescription(),
         EventPolarityAnnotator.FACTORY.getAnnotatorDescription(),
         EventModalityAnnotator.FACTORY.getAnnotatorDescription(),
-        // TemporalLinkEventToDocumentCreationTimeAnnotator.FACTORY.getAnnotatorDescription(),
+        AnalysisEngineFactory.createPrimitiveDescription(AddEmptyDCT.class),
+        TemporalLinkEventToDocumentCreationTimeAnnotator.FACTORY.getAnnotatorDescription(),
         TemporalLinkEventToSameSentenceTimeAnnotator.FACTORY.getAnnotatorDescription(),
-        TemporalLinkMainEventToNextSentenceMainEventAnnotator.FACTORY.getAnnotatorDescription(),
-        // TemporalLinkEventToSubordinatedEventAnnotator.FACTORY.getAnnotatorDescription(),
-        VerbClauseTemporalAnnotator.FACTORY.getAnnotatorDescription(),
+        TemporalLinkEventToSubordinatedEventAnnotator.FACTORY.getAnnotatorDescription(),
         TempEval2007Writer.getDescription(outputDir.getPath()));
+  }
+  
+  public static class AddEmptyDCT extends JCasAnnotator_ImplBase {
+
+    @Override
+    public void process(JCas jCas) throws AnalysisEngineProcessException {
+      DocumentCreationTime dct = new DocumentCreationTime(jCas, 0, 0);
+      dct.setFunctionInDocument("CREATION_TIME");
+      dct.setId("t0");
+      dct.addToIndexes();
+    }
+    
   }
 }
