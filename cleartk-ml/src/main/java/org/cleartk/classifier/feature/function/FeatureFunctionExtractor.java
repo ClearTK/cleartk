@@ -47,14 +47,28 @@ public class FeatureFunctionExtractor<T extends Annotation> implements FeatureEx
   public FeatureFunctionExtractor(
       FeatureExtractor1<T> extractor,
       FeatureFunction... featureFunctions) {
+    this(extractor, true, featureFunctions);
+  }
+
+  /**
+   * @param returnBaseFeatures
+   *          determines if the base features created by the extractor parameter will be returned by
+   *          the extract method.
+   */
+  public FeatureFunctionExtractor(
+      FeatureExtractor1<T> extractor,
+      boolean returnBaseFeatures,
+      FeatureFunction... featureFunctions) {
     this.extractor = extractor;
+    this.returnBaseFeatures = returnBaseFeatures;
     this.featureFunctions = featureFunctions;
   }
 
   public List<Feature> extract(JCas jCas, T focusAnnotation) throws CleartkExtractorException {
     List<Feature> features = new ArrayList<Feature>();
     List<Feature> baseFeatures = this.extractor.extract(jCas, focusAnnotation);
-    features.addAll(baseFeatures);
+    if (returnBaseFeatures)
+      features.addAll(baseFeatures);
     for (Function<Feature, List<Feature>> featureFunction : this.featureFunctions) {
       features.addAll(apply(featureFunction, baseFeatures));
     }
@@ -74,4 +88,6 @@ public class FeatureFunctionExtractor<T extends Annotation> implements FeatureEx
   private FeatureExtractor1<T> extractor;
 
   private FeatureFunction[] featureFunctions;
+
+  private boolean returnBaseFeatures;
 }
