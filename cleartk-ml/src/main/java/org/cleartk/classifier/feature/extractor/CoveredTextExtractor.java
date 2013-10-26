@@ -50,7 +50,11 @@ public class CoveredTextExtractor<T extends Annotation> implements NamedFeatureE
 
   @Override
   public List<Feature> extract(JCas jCas, Annotation focusAnnotation) {
-    // inline Annotation.getCoveredText() here, but use the right JCas instead
+    // Inline Annotation.getCoveredText() here, but use the right JCas instead.
+    // Why? Because that's what the signature says: "extract the text of this
+    // annotation within the given JCas". When might this happen? Whenever your
+    // text and your annotations aren't in the same view, e.g., if your text
+    // is in the system view, but your manual annotations are in the gold view.
     String jCasText = jCas.getDocumentText();
     int begin = focusAnnotation.getBegin();
     int end = focusAnnotation.getEnd();
