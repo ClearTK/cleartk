@@ -57,10 +57,12 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.cleartk</groupId>
+				<groupId>org.apache.uima</groupId>
 				<artifactId>jcasgen-maven-plugin</artifactId>
 				<configuration>
-					<typeSystem>src/main/resources/org/cleartk/TypeSystem.xml</typeSystem>
+					<typeSystemIncludes>
+						<include>src/main/resources/org/cleartk/TypeSystem.xml</include>
+					</typeSystemIncludes>
 				</configuration>
 			</plugin>
 			<plugin>
