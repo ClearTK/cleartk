@@ -12,6 +12,8 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
+import org.cleartk.classifier.feature.extractor.TypePathExtractor;
+import org.cleartk.classifier.feature.function.CapitalTypeFeatureFunction;
 import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
 import org.cleartk.classifier.feature.function.LowerCaseFeatureFunction;
 import org.cleartk.test.DefaultTestBase;
@@ -89,4 +91,37 @@ public class FeatureExtractionTutorialTest extends DefaultTestBase {
     assertEquals(1, features.size());
     assertEquals("the", features.get(0).getValue());
   }
+
+  @Test
+  public void test4() throws Exception {
+    this.tokenBuilder.buildTokens(
+        this.jCas,
+        "This is a short sentence.",
+        "This is a short sentence . ",
+        "DT VB DT JJ NN .");
+    Token token = JCasUtil.selectByIndex(jCas, Token.class, 3);
+
+    FeatureExtractor1<Token> extractor = new TypePathExtractor<Token>(Token.class, "pos");
+    List<Feature> features = extractor.extract(this.jCas, token);
+    assertEquals(1, features.size());
+    assertEquals("JJ", features.get(0).getValue());
+    // System.out.println(features.get(0).getName());
+  }
+
+  @Test
+  public void test5() throws Exception {
+    this.tokenBuilder.buildTokens(this.jCas, "This is a short sentence.");
+    Token token = JCasUtil.selectByIndex(jCas, Token.class, 0);
+
+    FeatureExtractor1<Token> extractor = new FeatureFunctionExtractor<Token>(
+        new CoveredTextExtractor<Token>(),
+        new CapitalTypeFeatureFunction());
+    List<Feature> features = extractor.extract(this.jCas, token);
+    assertEquals(2, features.size());
+    assertEquals("This", features.get(0).getValue());
+    assertEquals(
+        CapitalTypeFeatureFunction.CapitalType.INITIAL_UPPERCASE.toString(),
+        features.get(1).getValue());
+  }
+
 }
