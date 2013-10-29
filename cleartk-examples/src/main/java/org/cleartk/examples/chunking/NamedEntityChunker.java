@@ -28,25 +28,26 @@ import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instances;
 import org.cleartk.classifier.chunking.BioChunking;
-import org.cleartk.classifier.feature.extractor.CharacterCategoryPatternExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
 import org.cleartk.classifier.feature.extractor.CombinedExtractor1;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.TypePathExtractor;
-import org.cleartk.classifier.feature.extractor.CharacterCategoryPatternExtractor.PatternType;
-import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
-import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
+import org.cleartk.classifier.feature.function.CharacterCategoryPatternFunction;
+import org.cleartk.classifier.feature.function.CharacterCategoryPatternFunction.PatternType;
+import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
 import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * This is the most important class in the named entity chunking example -- it demonstrates how to
@@ -73,8 +74,9 @@ public class NamedEntityChunker extends CleartkSequenceAnnotator<String> {
 
     // the token feature extractor: text, char pattern (uppercase, digits, etc.), and part-of-speech
     this.extractor = new CombinedExtractor1<Token>(
-        new CoveredTextExtractor<Token>(),
-        new CharacterCategoryPatternExtractor<Token>(PatternType.REPEATS_MERGED),
+        new FeatureFunctionExtractor<Token>(
+            new CoveredTextExtractor<Token>(),
+            new CharacterCategoryPatternFunction<Token>(PatternType.REPEATS_MERGED)),
         new TypePathExtractor<Token>(Token.class, "pos"));
 
     // the context feature extractor: the features above for the 3 preceding and 3 following tokens

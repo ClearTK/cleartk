@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor;
+package org.cleartk.classifier.feature.function;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -29,7 +29,9 @@ import java.util.List;
 
 import org.apache.uima.fit.util.JCasUtil;
 import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.CharacterCategoryPatternExtractor.PatternType;
+import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
+import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
+import org.cleartk.classifier.feature.function.CharacterCategoryPatternFunction.PatternType;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;
@@ -42,11 +44,11 @@ import org.junit.Test;
  * 
  * @author Steven Bethard
  */
-public class CharacterCategoryPatternExtractorTest extends DefaultTestBase {
+public class CharacterCategoryPatternFunctionTest extends DefaultTestBase {
 
   @Test
   public void testOnePerChar() throws Exception {
-    CharacterCategoryPatternExtractor<Token> extractor = new CharacterCategoryPatternExtractor<Token>();
+    CharacterCategoryPatternFunction<Token> ccpf = new CharacterCategoryPatternFunction<Token>();
     this.tokenBuilder.buildTokens(this.jCas, "spam 42 XXyy C3p0 A1-b4.");
     Iterator<Token> tokensIter = JCasUtil.select(this.jCas, Token.class).iterator();
     Token spam = tokensIter.next();
@@ -56,16 +58,16 @@ public class CharacterCategoryPatternExtractorTest extends DefaultTestBase {
     Token a1b4 = tokensIter.next();
     Assert.assertFalse(tokensIter.hasNext());
 
-    this.assertFeature("CharPattern", "LlLlLlLl", extractor, spam);
-    this.assertFeature("CharPattern", "NdNd", extractor, fortyTwo);
-    this.assertFeature("CharPattern", "LuLuLlLl", extractor, xxyy);
-    this.assertFeature("CharPattern", "LuNdLlNd", extractor, c3p0);
-    this.assertFeature("CharPattern", "LuNdPdLlNdPo", extractor, a1b4);
+    this.assertFeature("CharPattern", "LlLlLlLl", ccpf, spam);
+    this.assertFeature("CharPattern", "NdNd", ccpf, fortyTwo);
+    this.assertFeature("CharPattern", "LuLuLlLl", ccpf, xxyy);
+    this.assertFeature("CharPattern", "LuNdLlNd", ccpf, c3p0);
+    this.assertFeature("CharPattern", "LuNdPdLlNdPo", ccpf, a1b4);
   }
 
   @Test
   public void testRepeatsMerged() throws Exception {
-    CharacterCategoryPatternExtractor<Token> extractor = new CharacterCategoryPatternExtractor<Token>(
+    CharacterCategoryPatternFunction<Token> extractor = new CharacterCategoryPatternFunction<Token>(
         PatternType.REPEATS_MERGED);
     this.tokenBuilder.buildTokens(this.jCas, "spam 42 XXyy C3p0 AC1-b43.!");
     Iterator<Token> tokensIter = JCasUtil.select(this.jCas, Token.class).iterator();
@@ -85,7 +87,7 @@ public class CharacterCategoryPatternExtractorTest extends DefaultTestBase {
 
   @Test
   public void testRepeatsAsKleenePlus() throws Exception {
-    CharacterCategoryPatternExtractor<Token> extractor = new CharacterCategoryPatternExtractor<Token>(
+    CharacterCategoryPatternFunction<Token> extractor = new CharacterCategoryPatternFunction<Token>(
         PatternType.REPEATS_AS_KLEENE_PLUS);
     this.tokenBuilder.buildTokens(this.jCas, "spam 42 XXXyy C3p0 AC1-b432. A0BC12");
     Iterator<Token> tokensIter = JCasUtil.select(this.jCas, Token.class).iterator();
@@ -107,7 +109,7 @@ public class CharacterCategoryPatternExtractorTest extends DefaultTestBase {
 
   @Test
   public void testOverriddenClassifier() throws Exception {
-    CharacterCategoryPatternExtractor<Token> extractor = new CharacterCategoryPatternExtractor<Token>(
+    CharacterCategoryPatternFunction<Token> extractor = new CharacterCategoryPatternFunction<Token>(
         PatternType.REPEATS_MERGED) {
       @Override
       protected String classifyChar(char c) {
@@ -133,9 +135,14 @@ public class CharacterCategoryPatternExtractorTest extends DefaultTestBase {
   private void assertFeature(
       String name,
       Object value,
-      CharacterCategoryPatternExtractor<Token> extractor,
+      CharacterCategoryPatternFunction<Token> ccpf,
       Token token) throws Exception {
     List<Feature> expected = Arrays.asList(new Feature(name, value));
+    FeatureExtractor1<Token> extractor = new FeatureFunctionExtractor<Token>(
+        new CoveredTextExtractor<Token>(),
+        false,
+        ccpf);
+
     List<Feature> actual = extractor.extract(this.jCas, token);
     Assert.assertEquals(expected, actual);
   }

@@ -21,12 +21,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.classifier.feature.extractor;
+package org.cleartk.classifier.feature.function;
 
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
 
@@ -42,8 +41,7 @@ import org.cleartk.classifier.Feature;
  * 
  * @author Steven Bethard
  */
-public class CharacterCategoryPatternExtractor<T extends Annotation> implements
-    NamedFeatureExtractor1<T> {
+public class CharacterCategoryPatternFunction<T extends Annotation> implements FeatureFunction {
 
   /**
    * The type of pattern to generate in feature values.
@@ -77,7 +75,7 @@ public class CharacterCategoryPatternExtractor<T extends Annotation> implements
    * Create the standard feature extractor, where one category is added to the feature value for
    * each character in the text. See {@link PatternType#ONE_PER_CHAR}.
    */
-  public CharacterCategoryPatternExtractor() {
+  public CharacterCategoryPatternFunction() {
     this(PatternType.ONE_PER_CHAR);
   }
 
@@ -88,7 +86,7 @@ public class CharacterCategoryPatternExtractor<T extends Annotation> implements
    * @param patternType
    *          The type of pattern to generate in feature values.
    */
-  public CharacterCategoryPatternExtractor(PatternType patternType) {
+  public CharacterCategoryPatternFunction(PatternType patternType) {
     this.patternType = patternType;
     switch (this.patternType) {
       case ONE_PER_CHAR:
@@ -103,42 +101,47 @@ public class CharacterCategoryPatternExtractor<T extends Annotation> implements
     }
   }
 
-  @Override
   public String getFeatureName() {
     return this.name;
   }
 
   @Override
-  public List<Feature> extract(JCas view, Annotation focusAnnotation)
-      throws CleartkExtractorException {
-    StringBuilder builder = new StringBuilder();
-    String text = focusAnnotation.getCoveredText();
-    String lastType = null;
-    boolean multipleRepeats = false;
-    for (int i = 0; i < text.length(); i += 1) {
-      char c = text.charAt(i);
-      String type = classifyChar(c);
-      switch (this.patternType) {
-        case ONE_PER_CHAR:
-          builder.append(type);
-          break;
-        case REPEATS_MERGED:
-          if (!type.equals(lastType)) {
+  public List<Feature> apply(Feature feature) {
+    String featureName = Feature.createName(getFeatureName(), feature.getName());
+    Object featureValue = feature.getValue();
+    if (featureValue == null)
+      return Collections.emptyList();
+    else if (featureValue instanceof String) {
+      String text = featureValue.toString();
+      StringBuilder builder = new StringBuilder();
+      String lastType = null;
+      boolean multipleRepeats = false;
+      for (int i = 0; i < text.length(); i += 1) {
+        char c = text.charAt(i);
+        String type = classifyChar(c);
+        switch (this.patternType) {
+          case ONE_PER_CHAR:
             builder.append(type);
-          }
-          break;
-        case REPEATS_AS_KLEENE_PLUS:
-          if (!type.equals(lastType)) {
-            builder.append(type);
-            multipleRepeats = false;
-          } else if (!multipleRepeats) {
-            builder.append('+');
-            multipleRepeats = true;
-          }
+            break;
+          case REPEATS_MERGED:
+            if (!type.equals(lastType)) {
+              builder.append(type);
+            }
+            break;
+          case REPEATS_AS_KLEENE_PLUS:
+            if (!type.equals(lastType)) {
+              builder.append(type);
+              multipleRepeats = false;
+            } else if (!multipleRepeats) {
+              builder.append('+');
+              multipleRepeats = true;
+            }
+        }
+        lastType = type;
       }
-      lastType = type;
+      return Collections.singletonList(new Feature(featureName, builder.toString()));
     }
-    return Collections.singletonList(new Feature(this.name, builder.toString()));
+    return Collections.emptyList();
   }
 
   protected String classifyChar(char c) {

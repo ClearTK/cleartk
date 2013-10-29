@@ -36,13 +36,14 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.extractor.CharacterCategoryPatternExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
+import org.cleartk.classifier.feature.function.CharacterCategoryPatternFunction;
+import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
 import org.cleartk.classifier.liblinear.LibLinearStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
@@ -86,7 +87,8 @@ public class TimeTypeAnnotator extends CleartkAnnotator<String> {
     super.initialize(context);
     this.featuresExtractors = Lists.newArrayList();
     this.featuresExtractors.add(new LastWordExtractor<Time>());
-    this.featuresExtractors.add(new CharacterCategoryPatternExtractor<Time>());
+    this.featuresExtractors.add(
+        new FeatureFunctionExtractor<Time>(new CoveredTextExtractor<Time>(), false, new CharacterCategoryPatternFunction<Time>());
     this.featuresExtractors.add(new TimeWordsExtractor<Time>());
     this.featuresExtractors.add(new CleartkExtractor<Time, Token>(Token.class, new CoveredTextExtractor<Token>(), new Bag(new Covered())));
   }
