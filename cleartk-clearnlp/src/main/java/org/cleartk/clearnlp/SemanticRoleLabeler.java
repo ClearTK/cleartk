@@ -23,10 +23,11 @@
  */
 package org.cleartk.clearnlp;
 
-import java.io.File;
 import java.net.URI;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.fit.descriptor.TypeCapability;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
@@ -35,8 +36,6 @@ import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.apache.uima.fit.descriptor.TypeCapability;
-import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 /**
  * <br>
@@ -78,11 +77,11 @@ public class SemanticRoleLabeler extends SemanticRoleLabeler_ImplBase<Sentence, 
       SemanticRoleLabeler_ImplBase.PARAM_LANGUAGE_CODE,
       languageCode,
       SemanticRoleLabeler_ImplBase.PARAM_PRED_ID_MODEL_URI,
-      new File("src/test/resources/models/sample-en-pred-1.3.0.tgz").toURI(),
+      predIdModelUri,
       SemanticRoleLabeler_ImplBase.PARAM_ROLESET_MODEL_URI,
-      new File("src/test/resources/models/sample-en-role-1.3.0.tgz").toURI(),
+      rolesetModelUri,
       SemanticRoleLabeler_ImplBase.PARAM_SRL_MODEL_URI,
-      new File("src/test/resources/models/sample-en-srl-1.3.0.tgz").toURI());
+      srlModelUri);
   }
 
    public SemanticRoleLabeler() {

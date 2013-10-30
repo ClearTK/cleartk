@@ -23,8 +23,7 @@
  */
 package org.cleartk.clearnlp;
 
-
-import java.io.File;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -58,49 +57,91 @@ import com.google.common.collect.Sets;
  * @author Lee Becker
  */
 public class ClearNlpTest extends CleartkTestBase {
-	protected TokenBuilder<Token, Sentence> tokenBuilder;
-	protected AnalysisEngineDescription lemmatizer;
-	protected AnalysisEngineDescription depparser;
-	protected AnalysisEngineDescription srlabeler;
+  protected TokenBuilder<Token, Sentence> tokenBuilder;
 
-	private void initLowMemModels() throws ResourceInitializationException {
-	  this.lemmatizer = MpAnalyzer.getDescription();
-	  this.depparser = DependencyParser.getDescription("en", new File("src/test/resources/models/sample-en-dep-1.3.0.tgz").toURI());
-	  
-	  this.srlabeler = SemanticRoleLabeler.getDescription("en", 
-	      new File("src/test/resources/models/sample-en-pred-1.3.0.tgz").toURI(),
-	      new File("src/test/resources/models/sample-en-role-1.3.0.tgz").toURI(),
-	      new File("src/test/resources/models/sample-en-srl-1.3.0.tgz").toURI());
-	}
+  protected AnalysisEngineDescription lemmatizer;
 
-	private void initDefaultModels() throws ResourceInitializationException {
-	  this.lemmatizer = MpAnalyzer.getDescription();
-	  this.depparser = DependencyParser.getDescription();
-	  this.srlabeler = SemanticRoleLabeler.getDescription();
-	}
-	
+  protected AnalysisEngineDescription depparser;
+
+  protected AnalysisEngineDescription srlabeler;
+
+  private void initLowMemModels() throws Exception {
+    this.lemmatizer = MpAnalyzer.getDescription();
+    this.depparser = DependencyParser.getDescription(
+        "en",
+        ClearNlpTest.class.getResource("/models/sample-en-dep-1.3.0.tgz").toURI());
+
+    this.srlabeler = SemanticRoleLabeler.getDescription(
+        "en",
+        ClearNlpTest.class.getResource("/models/sample-en-pred-1.3.0.tgz").toURI(),
+        ClearNlpTest.class.getResource("/models/sample-en-role-1.3.0.tgz").toURI(),
+        ClearNlpTest.class.getResource("/models/sample-en-srl-1.3.0.tgz").toURI());
+  }
+
+  private void initDefaultModels() throws ResourceInitializationException {
+    this.lemmatizer = MpAnalyzer.getDescription();
+    this.depparser = DependencyParser.getDescription();
+    this.srlabeler = SemanticRoleLabeler.getDescription();
+  }
+
   @Before
   public void setUp() throws Exception {
     super.setUp();
     tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
   }
-  
-  
 
-	@Test
-	public void srlLowMemTest() throws Exception {
-	  this.initLowMemModels();
-		this.jCas.reset();
-		tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
+  /**
+   * Test description parameters to catch errors like Issue 382.
+   */
+  @Test
+  public void testDescriptionParameters() throws Exception {
+    String code = "xq";
+    URI uri = new URI("http://foo");
+    URI uri2 = new URI("http://foo2");
+    URI uri3 = new URI("http://foo3");
+    AnalysisEngineDescription desc;
+
+    desc = MpAnalyzer.getDescription("xq", uri);
+    assertParameterValue(code, desc, MpAnalyzer_ImplBase.PARAM_LANGUAGE_CODE);
+    assertParameterValue(uri.toString(), desc, MpAnalyzer_ImplBase.PARAM_DICTIONARY_URI);
+
+    desc = DependencyParser.getDescription(code, uri);
+    assertParameterValue(code, desc, DependencyParser_ImplBase.PARAM_LANGUAGE_CODE);
+    assertParameterValue(uri.toString(), desc, DependencyParser_ImplBase.PARAM_PARSER_MODEL_URI);
+
+    desc = SemanticRoleLabeler.getDescription(code, uri, uri2, uri3);
+    assertParameterValue(code, desc, SemanticRoleLabeler_ImplBase.PARAM_LANGUAGE_CODE);
+    assertParameterValue(uri.toString(), desc, SemanticRoleLabeler_ImplBase.PARAM_PRED_ID_MODEL_URI);
+    assertParameterValue(
+        uri2.toString(),
+        desc,
+        SemanticRoleLabeler_ImplBase.PARAM_ROLESET_MODEL_URI);
+    assertParameterValue(uri3.toString(), desc, SemanticRoleLabeler_ImplBase.PARAM_SRL_MODEL_URI);
+  }
+
+  private static void assertParameterValue(
+      Object expected,
+      AnalysisEngineDescription desc,
+      String name) {
+    Assert.assertEquals(
+        expected,
+        desc.getAnalysisEngineMetaData().getConfigurationParameterSettings().getParameterValue(name));
+  }
+
+  @Test
+  public void srlLowMemTest() throws Exception {
+    this.initLowMemModels();
+    this.jCas.reset();
+    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
 
     tokenBuilder.buildTokens(
         jCas,
         "John still drives the car Mary gave him in 1982 .",
         "John still drives the car Mary gave him in 1982 .",
         "NNP  RB    VBZ    DT  NN  NNP  VBD  PRP IN CD .");
-		SimplePipeline.runPipeline(jCas, lemmatizer, depparser, srlabeler);
-		
-		// Check dependency relations
+    SimplePipeline.runPipeline(jCas, lemmatizer, depparser, srlabeler);
+
+    // Check dependency relations
     Set<String> expectedDep = Sets.newHashSet(
         "root(TOP, drives)",
         "nsubj(drives, John)",
@@ -108,89 +149,126 @@ public class ClearNlpTest extends CleartkTestBase {
         "nsubj(gave, Mary)",
         "pobj(in, 1982)",
         "punct(drives, .)");
-		Set<String> actualDep = Sets.newHashSet();
-		for (DependencyNode depnode : JCasUtil.select(jCas, DependencyNode.class)) {
-      for (DependencyRelation deprel : JCasUtil.select(depnode.getHeadRelations(), DependencyRelation.class)) {
+    Set<String> actualDep = Sets.newHashSet();
+    for (DependencyNode depnode : JCasUtil.select(jCas, DependencyNode.class)) {
+      for (DependencyRelation deprel : JCasUtil.select(
+          depnode.getHeadRelations(),
+          DependencyRelation.class)) {
         DependencyNode head = deprel.getHead();
         if (head instanceof TopDependencyNode) {
           actualDep.add(String.format("%s(TOP, %s)", deprel.getRelation(), depnode.getCoveredText()));
         } else {
-          actualDep.add(String.format("%s(%s, %s)", deprel.getRelation(), deprel.getHead().getCoveredText(), depnode.getCoveredText()));
+          actualDep.add(String.format(
+              "%s(%s, %s)",
+              deprel.getRelation(),
+              deprel.getHead().getCoveredText(),
+              depnode.getCoveredText()));
         }
       }
-		}
-		// take the subset of actualDep that's being tested (the parser may get some of the others wrong) 
-		actualDep.retainAll(expectedDep);
+    }
+    // take the subset of actualDep that's being tested (the parser may get some of the others
+    // wrong)
+    actualDep.retainAll(expectedDep);
     Assert.assertEquals(expectedDep, actualDep);
-    
+
     // Check SRL relations
-		List<String> expectedSrl = Arrays.asList(
-		    //"A0(drives, John)", "AM-ADV(drives, still)", "A1(drives, gave)", "A1(drives, him)", 
-		    //"AM-LOC(drives, in)", "A0(gave, Mary)", "A1(gave, him)", "AM-LOC(gave, in)");
-		    "A0(drives, John)", "AM-ADV(drives, still)", "A1(drives, gave)", "A0(gave, Mary)");
-		List<String> actualSrl = Lists.newArrayList();
+    List<String> expectedSrl = Arrays.asList(
+    // "A0(drives, John)", "AM-ADV(drives, still)", "A1(drives, gave)", "A1(drives, him)",
+    // "AM-LOC(drives, in)", "A0(gave, Mary)", "A1(gave, him)", "AM-LOC(gave, in)");
+        "A0(drives, John)",
+        "AM-ADV(drives, still)",
+        "A1(drives, gave)",
+        "A0(gave, Mary)");
+    List<String> actualSrl = Lists.newArrayList();
     for (Predicate pred : JCasUtil.select(jCas, Predicate.class)) {
       pred.getArguments();
       for (SemanticArgument arg : JCasUtil.select(pred.getArguments(), SemanticArgument.class)) {
-        actualSrl.add(String.format("%s(%s, %s)", arg.getLabel(), pred.getCoveredText(), arg.getCoveredText()));
+        actualSrl.add(String.format(
+            "%s(%s, %s)",
+            arg.getLabel(),
+            pred.getCoveredText(),
+            arg.getCoveredText()));
       }
     }
-    
+
     Assert.assertEquals(expectedSrl, actualSrl);
-	}
-	
-	@Test
-	public void srlTest() throws Exception {
+  }
+
+  @Test
+  public void srlTest() throws Exception {
     this.assumeBigMemoryTestsEnabled();
     this.assumeLongTestsEnabled();
     this.logger.info(BIG_MEMORY_TEST_MESSAGE);
     this.logger.info(LONG_TEST_MESSAGE);
-    
-	  this.initDefaultModels();
-		this.jCas.reset();
-		tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
+
+    this.initDefaultModels();
+    this.jCas.reset();
+    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
 
     tokenBuilder.buildTokens(
         jCas,
         "John still drives the car Mary gave him in 1982 .",
         "John still drives the car Mary gave him in 1982 .",
         "NNP  RB    VBZ    DT  NN  NNP  VBD  PRP IN CD .");
-		SimplePipeline.runPipeline(jCas, lemmatizer, depparser, srlabeler);
-		
-		// Check dependency relations
-		List<String> expectedDep = Arrays.asList(
-		    "nsubj(drives, John)", "advmod(drives, still)", "root(TOP, drives)", "det(car, the)", "dobj(drives, car)", "nsubj(gave, Mary)", 
-		    "rcmod(car, gave)", "dobj(gave, him)", "prep(gave, in)", "pobj(in, 1982)", "punct(drives, .)");
+    SimplePipeline.runPipeline(jCas, lemmatizer, depparser, srlabeler);
 
-		List<String> actualDep = Lists.newArrayList();
-		for (DependencyNode depnode : JCasUtil.select(jCas, DependencyNode.class)) {
-      for (DependencyRelation deprel : JCasUtil.select(depnode.getHeadRelations(), DependencyRelation.class)) {
+    // Check dependency relations
+    List<String> expectedDep = Arrays.asList(
+        "nsubj(drives, John)",
+        "advmod(drives, still)",
+        "root(TOP, drives)",
+        "det(car, the)",
+        "dobj(drives, car)",
+        "nsubj(gave, Mary)",
+        "rcmod(car, gave)",
+        "dobj(gave, him)",
+        "prep(gave, in)",
+        "pobj(in, 1982)",
+        "punct(drives, .)");
+
+    List<String> actualDep = Lists.newArrayList();
+    for (DependencyNode depnode : JCasUtil.select(jCas, DependencyNode.class)) {
+      for (DependencyRelation deprel : JCasUtil.select(
+          depnode.getHeadRelations(),
+          DependencyRelation.class)) {
         DependencyNode head = deprel.getHead();
         if (head instanceof TopDependencyNode) {
           actualDep.add(String.format("%s(TOP, %s)", deprel.getRelation(), depnode.getCoveredText()));
         } else {
-          actualDep.add(String.format("%s(%s, %s)", deprel.getRelation(), deprel.getHead().getCoveredText(), depnode.getCoveredText()));
+          actualDep.add(String.format(
+              "%s(%s, %s)",
+              deprel.getRelation(),
+              deprel.getHead().getCoveredText(),
+              depnode.getCoveredText()));
         }
-            
-      }
-		}
-    Assert.assertEquals(expectedDep, actualDep);
-    
-		
-    // Check SRL relations
-		List<String> expectedSrl = Arrays.asList(
-		    "A0(drives, John)", "AM-TMP(drives, still)", "A1(drives, car)", "A1(gave, car)", "A0(gave, Mary)", "A2(gave, him)", "AM-TMP(gave, in)");
 
-		List<String> actualSrl = Lists.newArrayList();
+      }
+    }
+    Assert.assertEquals(expectedDep, actualDep);
+
+    // Check SRL relations
+    List<String> expectedSrl = Arrays.asList(
+        "A0(drives, John)",
+        "AM-TMP(drives, still)",
+        "A1(drives, car)",
+        "A1(gave, car)",
+        "A0(gave, Mary)",
+        "A2(gave, him)",
+        "AM-TMP(gave, in)");
+
+    List<String> actualSrl = Lists.newArrayList();
     for (Predicate pred : JCasUtil.select(jCas, Predicate.class)) {
       pred.getArguments();
       for (SemanticArgument arg : JCasUtil.select(pred.getArguments(), SemanticArgument.class)) {
-        actualSrl.add(String.format("%s(%s, %s)", arg.getLabel(), pred.getCoveredText(), arg.getCoveredText()));
+        actualSrl.add(String.format(
+            "%s(%s, %s)",
+            arg.getLabel(),
+            pred.getCoveredText(),
+            arg.getCoveredText()));
       }
     }
-    
+
     Assert.assertEquals(expectedSrl, actualSrl);
-	}
-    
-	
+  }
+
 }
