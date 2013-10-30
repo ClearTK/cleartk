@@ -205,15 +205,22 @@ public class Proplabel {
       for (PropbankRelation rel : ((PropbankCorefRelation) this.relation).getCorefRelations()) {
         Annotation a = rel.convert(view, topNode);
         annotations.add(a);
-        if (a.getBegin() != a.getEnd())
+        if (a.getBegin() != a.getEnd()) {
           substantiveAnnotations.add(a);
+        }
       }
       argument.setCoreferenceAnnotations(new FSArray(view, annotations.size()));
       FSCollectionFactory.fillArrayFS(argument.getCoreferenceAnnotations(), annotations);
 
-      int[] extent = AnnotationUtil.getAnnotationsExtent(substantiveAnnotations);
-      argument.setBegin(extent[0]);
-      argument.setEnd(extent[1]);
+      if (substantiveAnnotations.isEmpty()) {
+        Annotation lastAnnotation = annotations.get(annotations.size() - 1);
+        argument.setBegin(lastAnnotation.getBegin());
+        argument.setEnd(lastAnnotation.getEnd());
+      } else {
+        int[] extent = AnnotationUtil.getAnnotationsExtent(substantiveAnnotations);
+        argument.setBegin(extent[0]);
+        argument.setEnd(extent[1]);
+      }
 
       if (substantiveAnnotations.size() == 1) {
         argument.setAnnotation(substantiveAnnotations.get(0));

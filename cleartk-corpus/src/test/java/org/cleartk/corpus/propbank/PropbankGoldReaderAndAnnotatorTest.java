@@ -25,15 +25,25 @@ package org.cleartk.corpus.propbank;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Iterator;
+
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.CollectionReaderFactory;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.corpus.penntreebank.PennTreebankReader;
+import org.cleartk.corpus.penntreebank.TreebankGoldAnnotator;
+import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.test.CleartkTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.apache.uima.fit.factory.CollectionReaderFactory;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 
 /**
  * <br>
@@ -103,4 +113,43 @@ public class PropbankGoldReaderAndAnnotatorTest extends CleartkTestBase {
     engine.collectionProcessComplete();
   }
 
+  @Test
+  public void testAnnotator() throws Exception {
+    // Issue 385
+    String treeText = Resources.toString(
+        PropbankGoldReaderAndAnnotatorTest.class.getResource("/org/cleartk/corpus/treebank/wsj_0015.mrg"),
+        Charsets.US_ASCII);
+    String propText = "wsj/00/wsj_0015.mrg 1 12 gold order.01 p---p 11:1-ARGM-TMP 12:0-rel 10:0*13:0-ARG1 14:1-ARG0-by";
+    this.jCas.createView(PennTreebankReader.TREEBANK_VIEW);
+    this.jCas.getView(PennTreebankReader.TREEBANK_VIEW).setDocumentText(treeText);
+    this.jCas.createView(PropbankConstants.PROPBANK_VIEW);
+    this.jCas.getView(PropbankConstants.PROPBANK_VIEW).setDocumentText(propText);
+    
+    AggregateBuilder builder = new AggregateBuilder();
+    builder.add(TreebankGoldAnnotator.getDescription());
+    builder.add(AnalysisEngineFactory.createEngineDescription(PropbankGoldAnnotator.class));
+    AnalysisEngine engine = builder.createAggregate();
+    engine.process(this.jCas);
+    Iterator<SemanticArgument> argsIter = JCasUtil.select(this.jCas, SemanticArgument.class).iterator();
+    SemanticArgument argmTmp = argsIter.next();
+    Assert.assertEquals("previously", argmTmp.getCoveredText());
+    Assert.assertEquals("ARGM", argmTmp.getLabel());
+    Assert.assertEquals("TMP", argmTmp.getFeature());
+    Assert.assertEquals(null, argmTmp.getPreposition());
+    // skip "rel" -- should this even be a SemanticArgument? seems like a bug to me
+    argsIter.next();
+    SemanticArgument arg1 = argsIter.next();
+    // note that ARG1 only refers to "-NONE-" annotations so it should be empty
+    // but it should also be here in the iterator if its offsets are set correctly
+    Assert.assertEquals("", arg1.getCoveredText());
+    Assert.assertEquals("ARG1", arg1.getLabel());
+    Assert.assertEquals(null, arg1.getFeature());
+    Assert.assertEquals(null, arg1.getPreposition());
+    SemanticArgument arg0 = argsIter.next();
+    Assert.assertEquals("by the Illinois Commerce Commission", arg0.getCoveredText());
+    Assert.assertEquals("ARG0", arg0.getLabel());
+    Assert.assertEquals(null, arg0.getFeature());
+    Assert.assertEquals("by", arg0.getPreposition());
+    engine.collectionProcessComplete();
+  }
 }
