@@ -27,12 +27,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.uima.fit.util.JCasUtil;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;
 import org.junit.Test;
-import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * Tests for classes in the chunking package.
@@ -112,6 +112,39 @@ public class ChunkingTest extends DefaultTestBase {
   }
 
   @Test
+  public void testBiesoChunkingCreateOutcomes() throws Exception {
+    this.tokenBuilder.buildTokens(this.jCas, "The quick brown fox jumped over the lazy dog ");
+    List<Token> tokens = new ArrayList<Token>(JCasUtil.select(this.jCas, Token.class));
+    // "The quick brown"
+    Chunk foo = new Chunk(this.jCas, tokens.get(0).getBegin(), tokens.get(2).getEnd());
+    foo.setChunkType("foo");
+    foo.addToIndexes();
+    // "fox"
+    Chunk bar = new Chunk(this.jCas, tokens.get(3).getBegin(), tokens.get(3).getEnd());
+    bar.setChunkType("bar");
+    bar.addToIndexes();
+    // " lazy dog "
+    Chunk bar2 = new Chunk(this.jCas, tokens.get(7).getBegin() - 1, tokens.get(8).getEnd() + 1);
+    bar2.setChunkType("bar");
+    bar2.addToIndexes();
+    List<Chunk> chunks = Arrays.asList(foo, bar, bar2);
+
+    BiesoChunking<Token, Chunk> chunking;
+    List<String> expected;
+    List<String> actual;
+
+    chunking = new BiesoChunking<Token, Chunk>(Token.class, Chunk.class, "chunkType");
+    expected = Arrays.asList("B-foo", "I-foo", "E-foo", "S-bar", "O", "O", "O", "B-bar", "E-bar");
+    actual = chunking.createOutcomes(this.jCas, tokens, chunks);
+    Assert.assertEquals(expected, actual);
+
+    chunking = new BiesoChunking<Token, Chunk>(Token.class, Chunk.class);
+    expected = Arrays.asList("B", "I", "E", "S", "O", "O", "O", "B", "E");
+    actual = chunking.createOutcomes(this.jCas, tokens, chunks);
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
   public void testIOChunkingCreateChunks() throws Exception {
     this.tokenBuilder.buildTokens(this.jCas, "The quick brown fox jumped over the lazy dog");
     List<Token> tokens = new ArrayList<Token>(JCasUtil.select(this.jCas, Token.class));
@@ -161,6 +194,34 @@ public class ChunkingTest extends DefaultTestBase {
     chunking = new BioChunking<Token, Chunk>(Token.class, Chunk.class);
     outcomes = Arrays.asList("O", "B", "I", "B", "O", "O", "O", "I", "I");
     expectedTexts = Arrays.asList("quick brown", "fox", "lazy dog");
+    expectedTypes = Arrays.asList(null, null, null);
+    chunks = chunking.createChunks(this.jCas, tokens, outcomes);
+    Assert.assertEquals(expectedTexts, JCasUtil.toText(chunks));
+    Assert.assertEquals(expectedTypes, getChunkTypes(chunks));
+  }
+
+  @Test
+  public void testBiesoChunkingCreateChunks() throws Exception {
+    this.tokenBuilder.buildTokens(this.jCas, "The quick brown fox jumped over the lazy dog");
+    List<Token> tokens = new ArrayList<Token>(JCasUtil.select(this.jCas, Token.class));
+
+    BiesoChunking<Token, Chunk> chunking;
+    List<String> outcomes;
+    List<Chunk> chunks;
+    List<String> expectedTexts;
+    List<String> expectedTypes;
+
+    chunking = new BiesoChunking<Token, Chunk>(Token.class, Chunk.class, "chunkType");
+    outcomes = Arrays.asList("B-foo", "I-foo", "E-foo", "S-bar", "O", "O", "O", "I-bar", "I-bar");
+    expectedTexts = Arrays.asList("The quick brown", "fox", "lazy dog");
+    expectedTypes = Arrays.asList("foo", "bar", "bar");
+    chunks = chunking.createChunks(this.jCas, tokens, outcomes);
+    Assert.assertEquals(expectedTexts, JCasUtil.toText(chunks));
+    Assert.assertEquals(expectedTypes, getChunkTypes(chunks));
+
+    chunking = new BiesoChunking<Token, Chunk>(Token.class, Chunk.class);
+    outcomes = Arrays.asList("B", "I", "E", "B", "O", "O", "O", "B", "E");
+    expectedTexts = Arrays.asList("The quick brown", "fox", "lazy dog");
     expectedTypes = Arrays.asList(null, null, null);
     chunks = chunking.createChunks(this.jCas, tokens, outcomes);
     Assert.assertEquals(expectedTexts, JCasUtil.toText(chunks));

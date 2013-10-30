@@ -89,8 +89,10 @@ public abstract class Chunking_ImplBase<SUB_CHUNK_TYPE extends Annotation, CHUNK
       List<CHUNK_TYPE> chunks);
 
   @Override
-  public List<String> createOutcomes(JCas jCas, List<SUB_CHUNK_TYPE> subChunks, List<CHUNK_TYPE> chunks)
-      throws AnalysisEngineProcessException {
+  public List<String> createOutcomes(
+      JCas jCas,
+      List<SUB_CHUNK_TYPE> subChunks,
+      List<CHUNK_TYPE> chunks) throws AnalysisEngineProcessException {
 
     // get the mapping from sub-chunks to their outcomes
     Map<SUB_CHUNK_TYPE, String> subChunkToOutcome;
@@ -130,8 +132,10 @@ public abstract class Chunking_ImplBase<SUB_CHUNK_TYPE extends Annotation, CHUNK
       String nextLabel);
 
   @Override
-  public List<CHUNK_TYPE> createChunks(JCas jCas, List<SUB_CHUNK_TYPE> subChunks, List<String> outcomes)
-      throws AnalysisEngineProcessException {
+  public List<CHUNK_TYPE> createChunks(
+      JCas jCas,
+      List<SUB_CHUNK_TYPE> subChunks,
+      List<String> outcomes) throws AnalysisEngineProcessException {
 
     // validate parameters
     int nSubChunks = subChunks.size();
@@ -223,9 +227,6 @@ public abstract class Chunking_ImplBase<SUB_CHUNK_TYPE extends Annotation, CHUNK
     public ChunkOutcome(String outcome) {
       this.prefix = outcome.charAt(0);
       this.label = outcome.length() < 2 ? "" : outcome.substring(2);
-      if ("BIO".indexOf(this.prefix) == -1) {
-        throw new IllegalArgumentException("Unrecognized BIO outcome: " + outcome);
-      }
     }
   }
 }
