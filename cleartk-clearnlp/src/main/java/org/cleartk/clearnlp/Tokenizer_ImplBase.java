@@ -36,6 +36,7 @@ import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.util.JCasUtil;
 
+import com.google.common.annotations.Beta;
 import com.googlecode.clearnlp.engine.EngineGetter;
 import com.googlecode.clearnlp.reader.AbstractReader;
 import com.googlecode.clearnlp.tokenization.AbstractTokenizer;
@@ -59,6 +60,7 @@ import com.googlecode.clearnlp.tokenization.AbstractTokenizer;
  * @author Lee Becker
  * 
  */
+@Beta
 public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation> extends
     JCasAnnotator_ImplBase {
   public static final String DEFAULT_DICTIONARY_FILE_NAME = "dictionary-1.2.0.zip";

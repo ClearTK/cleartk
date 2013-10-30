@@ -38,6 +38,7 @@ import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.util.JCasUtil;
 
+import com.google.common.annotations.Beta;
 import com.googlecode.clearnlp.component.AbstractComponent;
 import com.googlecode.clearnlp.dependency.DEPNode;
 import com.googlecode.clearnlp.dependency.DEPTree;
@@ -66,6 +67,7 @@ import com.googlecode.clearnlp.reader.AbstractReader;
  * @author Lee Becker
  * 
  */
+@Beta
 public abstract class MpAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
     JCasAnnotator_ImplBase {
 

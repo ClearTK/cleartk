@@ -6,6 +6,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 
+import com.google.common.annotations.Beta;
+
 /**
  * Defines common set of SRL data type operations used to convert output from semantic role labelers into
  * the target type system
@@ -13,6 +15,7 @@ import org.apache.uima.jcas.tcas.Annotation;
  * @author Lee Becker
  *
  */
+@Beta
 public interface SemanticRoleOps<
     ARGUMENT_TYPE extends TOP,
     ARGUMENT_SPAN_TYPE extends Annotation,

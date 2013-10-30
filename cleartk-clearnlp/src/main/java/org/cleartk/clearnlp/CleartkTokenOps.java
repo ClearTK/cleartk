@@ -7,6 +7,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.token.type.Token;
 import org.apache.uima.fit.util.JCasUtil;
 
+import com.google.common.annotations.Beta;
+
 
 /**
  * Defines common set of token data type operations used to convert output from tokenizers, pos taggers, and lemmatizers into
@@ -15,6 +17,7 @@ import org.apache.uima.fit.util.JCasUtil;
  * @author Lee Becker
  *
  */
+@Beta
 public class CleartkTokenOps implements TokenOps<Token>{
 
   @Override

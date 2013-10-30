@@ -36,6 +36,7 @@ import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.util.JCasUtil;
 
+import com.google.common.annotations.Beta;
 import com.googlecode.clearnlp.component.AbstractComponent;
 import com.googlecode.clearnlp.dependency.DEPTree;
 import com.googlecode.clearnlp.engine.EngineGetter;
@@ -62,6 +63,7 @@ import com.googlecode.clearnlp.reader.AbstractReader;
  * @author Lee Becker
  * 
  */
+@Beta
 public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
     JCasAnnotator_ImplBase {
 

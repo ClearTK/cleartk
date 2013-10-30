@@ -9,6 +9,8 @@ import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.token.type.Token;
 import org.apache.uima.fit.util.FSCollectionFactory;
 
+import com.google.common.annotations.Beta;
+
 /**
  * Defines common set of token data type operations used to convert output from semantic role labelers into
  * the annotations and properties for {@link SemanticArgument} and {@link Predicate}
@@ -16,6 +18,7 @@ import org.apache.uima.fit.util.FSCollectionFactory;
  * @author Lee Becker
  *
  */
+@Beta
 public class CleartkSemanticRoleOps implements SemanticRoleOps<SemanticArgument, Token, Predicate, Token>{
 
   @Override

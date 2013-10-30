@@ -40,6 +40,7 @@ import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.util.JCasUtil;
 
+import com.google.common.annotations.Beta;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.googlecode.clearnlp.component.AbstractComponent;
@@ -69,6 +70,7 @@ import com.googlecode.clearnlp.reader.AbstractReader;
  * @author Lee Becker
  * 
  */
+@Beta
 public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_TYPE extends Annotation, DEPENDENCY_NODE_TYPE extends TOP, DEPENDENCY_ROOT_NODE_TYPE extends DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE extends TOP, ARGUMENT_TYPE extends TOP, PREDICATE_TYPE extends TOP>
     extends JCasAnnotator_ImplBase {
 

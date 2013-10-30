@@ -13,6 +13,7 @@ import org.cleartk.token.type.Token;
 import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.fit.util.JCasUtil;
 
+import com.google.common.annotations.Beta;
 import com.google.common.collect.Lists;
 
 /**
@@ -23,6 +24,7 @@ import com.google.common.collect.Lists;
  * @author Lee Becker
  *
  */
+@Beta
 public class CleartkDependencyOps implements DependencyOps<DependencyNode, Token, TopDependencyNode, Sentence, DependencyRelation> {
 
   @Override

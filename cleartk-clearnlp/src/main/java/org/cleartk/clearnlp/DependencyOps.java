@@ -6,6 +6,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 
+import com.google.common.annotations.Beta;
+
 /**
  * Defines common set of dependency graph data type operations used to convert to and query in
  * the target type system
@@ -13,6 +15,7 @@ import org.apache.uima.jcas.tcas.Annotation;
  * @author Lee Becker
  *
  */
+@Beta
 public interface DependencyOps<
     NODE_TYPE extends TOP,
     NODE_SPAN_TYPE extends Annotation,
