@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -39,6 +41,7 @@ import java.util.TreeSet;
  * 
  */
 
+@Beta
 public class ListSpecification implements Iterable<Integer> {
 
   private List<RangeSpecification> ranges;

@@ -27,6 +27,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -41,6 +43,7 @@ import org.cleartk.syntax.constituent.type.TopTreebankNode;
  * 
  * @author Philipp Wetzler
  */
+@Beta
 public abstract class PropbankRelation {
   /**
    * Parses a relation taken form a Propbank entry and returns its representation as the appropriate

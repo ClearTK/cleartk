@@ -31,6 +31,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.util.AnnotationUtil;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -44,6 +46,7 @@ import org.cleartk.util.AnnotationUtil;
  * 
  * @author Philipp Wetzler
  */
+@Beta
 public class PropbankSplitRelation extends PropbankRelation {
 
   public static PropbankSplitRelation fromString(String s) {

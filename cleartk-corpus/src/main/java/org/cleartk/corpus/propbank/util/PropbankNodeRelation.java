@@ -27,6 +27,8 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -40,6 +42,7 @@ import org.cleartk.syntax.constituent.type.TreebankNode;
  * 
  * @author Philipp Wetzler
  */
+@Beta
 public class PropbankNodeRelation extends PropbankRelation {
 
   public static PropbankNodeRelation fromString(String s) {

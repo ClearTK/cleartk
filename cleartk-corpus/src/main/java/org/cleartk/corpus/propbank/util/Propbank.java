@@ -35,6 +35,8 @@ import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.token.type.Sentence;
 import org.apache.uima.fit.util.FSCollectionFactory;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -49,6 +51,7 @@ import org.apache.uima.fit.util.FSCollectionFactory;
  * 
  * @author Philipp Wetzler, Philip Ogren, Steven Bethard
  */
+@Beta
 public class Propbank {
   /**
    * Parses one Propbank entry and returns its representation as a <em>Propbank</em> object.

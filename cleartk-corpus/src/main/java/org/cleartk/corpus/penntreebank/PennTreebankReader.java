@@ -44,6 +44,8 @@ import org.apache.uima.fit.component.ViewCreatorAnnotator;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.descriptor.SofaCapability;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <p>
  * PennTreebankReader reads in the PennTreebank (PTB) data distributed by the LDC. It simply reads
@@ -127,6 +129,7 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
    * @param wsjSections
    *          The set of sections to include.
    */
+  @Beta
   public static void collectSections(
       File wsjDirectory,
       List<File> treebankFiles,
@@ -197,10 +200,12 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
       return false;
   }
 
+  @Beta
   public void setCorpusDirectoryName(String corpusDirectoryName) {
     this.corpusDirectoryName = corpusDirectoryName;
   }
 
+  @Beta
   public void setSectionsSpecifier(String sectionsString) {
     this.sectionsSpecifier = sectionsString;
   }

@@ -35,6 +35,8 @@ import org.cleartk.util.treebank.TopTreebankNode;
 import org.cleartk.util.treebank.TreebankNode;
 import org.apache.uima.fit.util.FSCollectionFactory;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -44,6 +46,7 @@ import org.apache.uima.fit.util.FSCollectionFactory;
  * @author Philip Ogren
  * 
  */
+@Beta
 public class TreebankNodeConverter {
   public static org.cleartk.syntax.constituent.type.TopTreebankNode convert(
       TopTreebankNode pojoNode,

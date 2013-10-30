@@ -23,6 +23,8 @@
  */
 package org.cleartk.corpus.propbank.util;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
@@ -30,6 +32,7 @@ package org.cleartk.corpus.propbank.util;
  * 
  * <p>
  */
+@Beta
 public class PropbankFormatException extends IllegalArgumentException {
 
   private static final long serialVersionUID = 3194744657398295811L;
