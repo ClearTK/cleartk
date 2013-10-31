@@ -35,7 +35,6 @@ import org.cleartk.classifier.CleartkSequenceAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instances;
 import org.cleartk.classifier.chunking.BioChunking;
-import org.cleartk.classifier.feature.extractor.CharacterCategoryPatternExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
@@ -43,6 +42,7 @@ import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Following;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
+import org.cleartk.classifier.feature.function.CharacterCategoryPatternFunction;
 import org.cleartk.classifier.liblinear.LibLinearStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
@@ -97,7 +97,8 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
     // add features: word, character pattern, stem, pos
     this.tokenFeatureExtractors = Lists.newArrayList();
     this.tokenFeatureExtractors.add(new CoveredTextExtractor<Token>());
-    this.tokenFeatureExtractors.add(new CharacterCategoryPatternExtractor<Token>());
+    NamedFeatureExtractor1<Token> ex = CharacterCategoryPatternFunction.createExtractor();
+    this.tokenFeatureExtractors.add(ex);
     this.tokenFeatureExtractors.add(new TimeWordsExtractor<Token>());
     this.tokenFeatureExtractors.add(new TypePathExtractor<Token>(Token.class, "stem"));
     this.tokenFeatureExtractors.add(new TypePathExtractor<Token>(Token.class, "pos"));
