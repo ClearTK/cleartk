@@ -30,6 +30,8 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -37,20 +39,17 @@ import org.cleartk.classifier.CleartkAnnotator;
 import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
+import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
-import org.cleartk.classifier.feature.extractor.CleartkExtractor.Bag;
-import org.cleartk.classifier.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.classifier.feature.function.CharacterCategoryPatternFunction;
-import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
 import org.cleartk.classifier.liblinear.LibLinearStringOutcomeDataWriter;
 import org.cleartk.timeml.type.Time;
 import org.cleartk.timeml.util.CleartkInternalModelFactory;
 import org.cleartk.timeml.util.TimeWordsExtractor;
 import org.cleartk.token.type.Token;
-import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.collect.Lists;
 
@@ -87,8 +86,8 @@ public class TimeTypeAnnotator extends CleartkAnnotator<String> {
     super.initialize(context);
     this.featuresExtractors = Lists.newArrayList();
     this.featuresExtractors.add(new LastWordExtractor<Time>());
-    this.featuresExtractors.add(
-        new FeatureFunctionExtractor<Time>(new CoveredTextExtractor<Time>(), false, new CharacterCategoryPatternFunction<Time>());
+    FeatureExtractor1<Time> ex = CharacterCategoryPatternFunction.createExtractor();
+    this.featuresExtractors.add(ex);
     this.featuresExtractors.add(new TimeWordsExtractor<Time>());
     this.featuresExtractors.add(new CleartkExtractor<Time, Token>(Token.class, new CoveredTextExtractor<Token>(), new Bag(new Covered())));
   }

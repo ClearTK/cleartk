@@ -97,7 +97,8 @@ public class TimeAnnotator extends CleartkSequenceAnnotator<String> {
     // add features: word, character pattern, stem, pos
     this.tokenFeatureExtractors = Lists.newArrayList();
     this.tokenFeatureExtractors.add(new CoveredTextExtractor<Token>());
-    this.tokenFeatureExtractors.add(new CharacterCategoryPatternFunction<Token>());
+    NamedFeatureExtractor1<Token> ex = CharacterCategoryPatternFunction.createExtractor();
+    this.tokenFeatureExtractors.add(ex);
     this.tokenFeatureExtractors.add(new TimeWordsExtractor<Token>());
     this.tokenFeatureExtractors.add(new TypePathExtractor<Token>(Token.class, "stem"));
     this.tokenFeatureExtractors.add(new TypePathExtractor<Token>(Token.class, "pos"));

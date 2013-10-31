@@ -26,8 +26,11 @@ package org.cleartk.classifier.feature.function;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
+import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
+import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
 
 /**
  * A feature extractor that generates a pattern based on the <a
@@ -70,6 +73,38 @@ public class CharacterCategoryPatternFunction<T extends Annotation> implements F
   private PatternType patternType;
 
   private String name;
+
+  public static <T extends Annotation> NamedFeatureExtractor1<T> createExtractor() {
+    return createExtractor(PatternType.ONE_PER_CHAR);
+  }
+
+  /*
+   * I would have returned a simple FeatureFunctionExtractor using the following code: return new
+   * FeatureFunctionExtractor<T>(new CoveredTextExtractor<T>(), false, new
+   * CharacterCategoryPatternFunction<T>()); but TimeAnnotator wanted a NamedFeatureExtractor1. So I
+   * did the following to maintain backwards compatibility. After all, the converted feature
+   * extractor was a NamedFeatureExtractor1.
+   */
+
+  public static <T extends Annotation> NamedFeatureExtractor1<T> createExtractor(
+      PatternType patternType) {
+    final CharacterCategoryPatternFunction<T> ccpf = new CharacterCategoryPatternFunction<T>(
+        patternType);
+    return new NamedFeatureExtractor1<T>() {
+
+      @Override
+      public List<Feature> extract(JCas view, Annotation focusAnnotation)
+          throws CleartkExtractorException {
+        String text = focusAnnotation.getCoveredText();
+        return ccpf.apply(new Feature(null, text));
+      }
+
+      @Override
+      public String getFeatureName() {
+        return ccpf.getFeatureName();
+      }
+    };
+  }
 
   /**
    * Create the standard feature extractor, where one category is added to the feature value for
