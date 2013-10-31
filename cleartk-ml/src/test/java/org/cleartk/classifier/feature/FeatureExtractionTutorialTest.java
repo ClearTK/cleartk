@@ -39,6 +39,7 @@ import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.classifier.feature.extractor.TypePathExtractor;
 import org.cleartk.classifier.feature.function.CapitalTypeFeatureFunction;
 import org.cleartk.classifier.feature.function.FeatureFunctionExtractor;
+import org.cleartk.classifier.feature.function.FeatureFunctionExtractor.BaseFeatures;
 import org.cleartk.classifier.feature.function.LowerCaseFeatureFunction;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
@@ -116,7 +117,7 @@ public class FeatureExtractionTutorialTest extends DefaultTestBase {
     token = JCasUtil.selectByIndex(jCas, Token.class, 0);
     extractor = new FeatureFunctionExtractor<Token>(
         extractor,
-        false,
+        BaseFeatures.EXCLUDE,
         new LowerCaseFeatureFunction());
     features = extractor.extract(this.jCas, token);
     assertEquals(1, features.size());

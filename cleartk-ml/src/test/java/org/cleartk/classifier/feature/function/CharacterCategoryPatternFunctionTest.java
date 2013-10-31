@@ -32,6 +32,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.classifier.feature.function.CharacterCategoryPatternFunction.PatternType;
+import org.cleartk.classifier.feature.function.FeatureFunctionExtractor.BaseFeatures;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;
@@ -140,7 +141,7 @@ public class CharacterCategoryPatternFunctionTest extends DefaultTestBase {
     List<Feature> expected = Arrays.asList(new Feature(name, value));
     FeatureExtractor1<Token> extractor = new FeatureFunctionExtractor<Token>(
         new CoveredTextExtractor<Token>(),
-        false,
+        BaseFeatures.EXCLUDE,
         ccpf);
 
     List<Feature> actual = extractor.extract(this.jCas, token);

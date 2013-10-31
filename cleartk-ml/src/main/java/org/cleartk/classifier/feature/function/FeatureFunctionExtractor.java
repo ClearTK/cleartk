@@ -44,35 +44,49 @@ import com.google.common.base.Function;
  */
 public class FeatureFunctionExtractor<T extends Annotation> implements FeatureExtractor1<T> {
 
+  /**
+   * Specify what to do with the base features created by the passed in feature extractor.
+   */
+  public static enum BaseFeatures {
+    /**
+     * include the base features in the returned features.
+     */
+    INCLUDE,
+    /**
+     * exclude the base features from the returned features.
+     */
+    EXCLUDE,
+  }
+
   public FeatureFunctionExtractor(
       FeatureExtractor1<T> extractor,
       FeatureFunction... featureFunctions) {
-    this(extractor, true, featureFunctions);
+    this(extractor, BaseFeatures.INCLUDE, featureFunctions);
   }
 
   /**
-   * @param returnBaseFeatures
+   * @param baseFeatures
    *          determines if the base features created by the extractor parameter will be returned by
    *          the extract method.
    */
   public FeatureFunctionExtractor(
       FeatureExtractor1<T> extractor,
-      boolean returnBaseFeatures,
+      BaseFeatures baseFeatures,
       FeatureFunction... featureFunctions) {
     this.extractor = extractor;
-    this.returnBaseFeatures = returnBaseFeatures;
+    this.baseFeatures = baseFeatures;
     this.featureFunctions = featureFunctions;
   }
 
   public List<Feature> extract(JCas jCas, T focusAnnotation) throws CleartkExtractorException {
-    List<Feature> features = new ArrayList<Feature>();
-    List<Feature> baseFeatures = this.extractor.extract(jCas, focusAnnotation);
-    if (returnBaseFeatures)
-      features.addAll(baseFeatures);
+    List<Feature> returnValues = new ArrayList<Feature>();
+    List<Feature> features = this.extractor.extract(jCas, focusAnnotation);
+    if (baseFeatures == BaseFeatures.INCLUDE)
+      returnValues.addAll(features);
     for (Function<Feature, List<Feature>> featureFunction : this.featureFunctions) {
-      features.addAll(apply(featureFunction, baseFeatures));
+      returnValues.addAll(apply(featureFunction, features));
     }
-    return features;
+    return returnValues;
   }
 
   public static List<Feature> apply(
@@ -89,5 +103,5 @@ public class FeatureFunctionExtractor<T extends Annotation> implements FeatureEx
 
   private FeatureFunction[] featureFunctions;
 
-  private boolean returnBaseFeatures;
+  private BaseFeatures baseFeatures;
 }
