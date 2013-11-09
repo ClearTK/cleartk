@@ -37,3 +37,63 @@ Note that the above settings are those that performed best on the TempEval
 
 Steven Bethard. ClearTK-TimeML: A minimalist approach to TempEval 2013.
 SemEval 2013. http://aclweb.org/anthology/S13-2002
+
+
+Running TempEval 2013 experiments
+=================================
+To run experiments on the TempEval 2013 data:
+
+1. Download the TempEval 2013 training data from
+   http://www.cs.york.ac.uk/semeval-2013/task1/index.php?id=data
+   under the "TBAQ-cleaned (NEW VERSION no self-relations)" link.
+
+2. Extract the `TimeBank` and `AQUAINT` directories from the training data
+   archive.
+
+3. Download the annotated TempEval 2013 test data from
+   http://www.cs.york.ac.uk/semeval-2013/task1/index.php?id=data
+   under the "te3-platinumstandard.tar.gz" link.
+
+4. Extract the `te3-platinum` directory from the annotated test data archive.
+
+5. Delete the `README` file from the `te3-platinum` directory.
+
+6. Run `org.cleartk.timeml.eval.TempEval2013Evaluation`. You will need to
+   specify enough memory (e.g. `-mx1g` in your Java VM arguments) and the
+   following program arguments:
+
+       --train-dirs /path/to/TimeBank /path/to/AQUAINT
+       --test-dirs /path/to/te3-platinum
+
+   This will print some evaluation statistics to standard error, and will also
+   write out .tml files to `target/tempeval2013/timeml`.
+
+7. Download the TempEval 2013 scorer from
+   http://www.cs.york.ac.uk/semeval-2013/task1/index.php?id=data
+   under the "Download Evaluation Toolkit" link.
+
+8. Extract the `tools` directory from the scorer archive. 
+
+9. From the `tools` directory, run the scorer:
+
+       python TE3-evaluation.py /path/to/te3-platinum /path/to/target/tempeval2013/timeml
+
+Note that the parameters in step (6) roughly correspond to the TB+AQ model
+reported in:
+
+Steven Bethard. ClearTK-TimeML: A minimalist approach to TempEval 2013.
+SemEval 2013. http://aclweb.org/anthology/S13-2002
+
+The exact performance may have changed slightly due to changes in other parts
+of ClearTK since the TempEval 2013 competition.
+
+To explore models other than the TB+AQ model, `TempEval2013Evaluation` has a
+variety of command line options which can be seen in the `Options` interface
+at the top of the class. If you are exploring other settings, note especially
+the `--tune` option, which will print out performance on a single task for a
+variety of values of the hyperparameters of the classifier. (NOTE: You should
+never `--tune` on the TempEval 2013 test data; use a cross-validation instead
+by leaving off the `--test-dirs` option.) Once you have identified the best
+hyperparameters, you will need to modify the `new Model.Params(...)`
+creation in the `private static final Model` declaration for the model that you
+`--tune`d.
