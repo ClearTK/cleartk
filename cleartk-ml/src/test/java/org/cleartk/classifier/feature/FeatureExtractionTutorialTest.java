@@ -50,6 +50,7 @@ import org.cleartk.classifier.feature.function.LowerCaseFeatureFunction;
 import org.cleartk.test.DefaultTestBase;
 import org.cleartk.type.test.Chunk;
 import org.cleartk.type.test.Lemma;
+import org.cleartk.type.test.Sentence;
 import org.cleartk.type.test.Token;
 import org.junit.Assert;
 import org.junit.Test;
@@ -254,6 +255,16 @@ public class FeatureExtractionTutorialTest extends DefaultTestBase {
     features = extractor.extract(this.jCas, chunk);
     assertEquals(3, features.size());
 
+    assertEquals("Bag_Following_2_5", features.get(0).getName());
+    assertEquals(".", features.get(0).getValue());
+    assertEquals("Bag_Following_2_5", features.get(1).getName());
+    assertEquals("OOB1", features.get(1).getValue());
+    assertEquals("Bag_Following_2_5", features.get(2).getName());
+    assertEquals("OOB2", features.get(2).getValue());
+
+    // you get the same behavior with extractWithin
+    Sentence sentence = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
+    features = extractor.extractWithin(this.jCas, chunk, sentence);
     assertEquals("Bag_Following_2_5", features.get(0).getName());
     assertEquals(".", features.get(0).getValue());
     assertEquals("Bag_Following_2_5", features.get(1).getName());
