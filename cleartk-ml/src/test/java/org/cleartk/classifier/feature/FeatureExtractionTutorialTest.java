@@ -24,6 +24,7 @@
 
 package org.cleartk.classifier.feature;
 
+import static org.cleartk.classifier.ClassifierTestUtil.assertFeature;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -67,8 +68,7 @@ public class FeatureExtractionTutorialTest extends DefaultTestBase {
   @Test
   public void test1() throws Exception {
     Feature feature = new Feature("part-of-speech", "VBZ");
-    assertEquals("part-of-speech", feature.getName());
-    assertEquals("VBZ", feature.getValue());
+    assertFeature("part-of-speech", "VBZ", feature);
   }
 
   // text from http://www.gutenberg.org/files/3177/3177-h/3177-h.htm#linkch05
@@ -179,10 +179,8 @@ public class FeatureExtractionTutorialTest extends DefaultTestBase {
 
     List<Feature> features = extractor.extract(this.jCas, fox);
     assertEquals(2, features.size());
-    assertEquals("Preceding_0_2_1", features.get(0).getName());
-    assertEquals("quick", features.get(0).getValue());
-    assertEquals("Preceding_0_2_0", features.get(1).getName());
-    assertEquals("brown", features.get(1).getValue());
+    assertFeature("Preceding_0_2_1", "quick", features.get(0));
+    assertFeature("Preceding_0_2_0", "brown", features.get(1));
   }
 
   // Get the part-of-speech tags of the 3 tokens after a focus annotation
@@ -206,13 +204,9 @@ public class FeatureExtractionTutorialTest extends DefaultTestBase {
     List<Feature> features = extractor.extract(this.jCas, chunk);
     assertEquals(3, features.size());
 
-    assertEquals("Following_0_3_0_TypePath(Pos)", features.get(0).getName());
-    assertEquals("DT", features.get(0).getValue());
-    assertEquals("Following_0_3_1_TypePath(Pos)", features.get(1).getName());
-    assertEquals("JJ", features.get(1).getValue());
-    assertEquals("Following_0_3_2_TypePath(Pos)", features.get(2).getName());
-    assertEquals("NN", features.get(2).getValue());
-
+    assertFeature("Following_0_3_0_TypePath(Pos)", "DT", features.get(0));
+    assertFeature("Following_0_3_1_TypePath(Pos)", "JJ", features.get(1));
+    assertFeature("Following_0_3_2_TypePath(Pos)", "NN", features.get(2));
   }
 
   // Get the tokens after a focus annotation, beginning 2 after and ending 5 after, as a bag of

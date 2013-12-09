@@ -23,12 +23,11 @@
  */
 package org.cleartk.classifier;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.Instance;
 
 /**
  * <br>
@@ -39,6 +38,20 @@ import org.cleartk.classifier.Instance;
  */
 
 public class ClassifierTestUtil {
+
+  public static void assertFeature(String expectedName, Object expectedValue, Feature actualFeature) {
+    assertEquals(expectedName, actualFeature.getName());
+    assertEquals(expectedValue, actualFeature.getValue());
+  }
+
+  public static void assertFeature(String expectedName, int expectedValue, Feature actualFeature) {
+    assertFeature(expectedName, Integer.valueOf(expectedValue), actualFeature);
+  }
+
+  public static void assertFeature(String expectedName, double expectedValue, Feature actualFeature) {
+    assertEquals(expectedName, actualFeature.getName());
+    assertEquals(expectedValue, (double) actualFeature.getValue(), 0.0001d);
+  }
 
   /**
    * Create a number of random Instance objects that should be easy to classify. This is primarily

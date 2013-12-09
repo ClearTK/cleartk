@@ -183,7 +183,13 @@ public class TfidfExtractor<OUTCOME_T, FOCUS_T extends Annotation> extends
 
     public double getIDF(String term) {
       int df = this.getDF(term);
-      return Math.log((this.totalDocumentCount + 1) / (df + 1));
+
+      // see issue 396 for discussion about the ratio here:
+      // https://code.google.com/p/cleartk/issues/detail?id=396
+      // In short, we add 1 to the document frequency for smoothing purposes so that unseen words
+      // will not generate a NaN. We add 2 to the numerator to make sure that we get a positive
+      // value for words that appear in every document (i.e. when df == totalDocumentCount)
+      return Math.log((this.totalDocumentCount + 2) / (double) (df + 1));
     }
 
     public void save(URI outputURI) throws IOException {
