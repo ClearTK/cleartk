@@ -67,7 +67,7 @@ import com.clearnlp.reader.AbstractReader;
 public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
     JCasAnnotator_ImplBase {
 
-  public static final String DEFAULT_MODEL_FILE_NAME = "ontonotes-en-pos-1.3.0.tgz";
+  public static final String DEFAULT_MODEL_PATH = "general-en";
   
   public static final String PARAM_MODEL_PATH = "modelPath";
   
@@ -75,7 +75,7 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
       name = PARAM_MODEL_PATH,
       mandatory = false,
       description = "This parameter provides the path to the pos tagger model.",
-      defaultValue="general-en")
+      defaultValue=DEFAULT_MODEL_PATH)
   private String modelPath;
 
   
