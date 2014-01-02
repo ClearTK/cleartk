@@ -56,12 +56,12 @@ public class PosTagger extends PosTagger_ImplBase<Token> {
     return AnalysisEngineFactory.createEngineDescription(PosTagger.class);
   }
   
-  public static AnalysisEngineDescription getDescription(String languageCode, URI modelUri) throws ResourceInitializationException {
+  public static AnalysisEngineDescription getDescription(String languageCode, String modelPath) throws ResourceInitializationException {
     return AnalysisEngineFactory.createEngineDescription(PosTagger.class,
         PosTagger_ImplBase.PARAM_LANGUAGE_CODE,
         languageCode,
-        PosTagger_ImplBase.PARAM_MODEL_URI,
-        modelUri);
+        PosTagger_ImplBase.PARAM_MODEL_PATH,
+        modelPath);
   }
 
   public PosTagger() {

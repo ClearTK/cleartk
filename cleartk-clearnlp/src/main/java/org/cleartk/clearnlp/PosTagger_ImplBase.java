@@ -37,12 +37,11 @@ import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
-import com.googlecode.clearnlp.component.AbstractComponent;
-import com.googlecode.clearnlp.dependency.DEPTree;
-import com.googlecode.clearnlp.engine.EngineGetter;
-import com.googlecode.clearnlp.nlp.NLPDecode;
-import com.googlecode.clearnlp.nlp.NLPLib;
-import com.googlecode.clearnlp.reader.AbstractReader;
+import com.clearnlp.component.AbstractComponent;
+import com.clearnlp.dependency.DEPTree;
+import com.clearnlp.nlp.NLPGetter;
+import com.clearnlp.nlp.NLPLib;
+import com.clearnlp.reader.AbstractReader;
 
 /**
  * <br>
@@ -68,7 +67,18 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
     JCasAnnotator_ImplBase {
 
   public static final String DEFAULT_MODEL_FILE_NAME = "ontonotes-en-pos-1.3.0.tgz";
+  
+  public static final String PARAM_MODEL_PATH = "modelPath";
+  
+  @ConfigurationParameter(
+      name = PARAM_MODEL_PATH,
+      mandatory = false,
+      description = "This parameter provides the path to the pos tagger model.",
+      defaultValue="general-en")
+  private String modelPath;
 
+  
+  /*
   public static final String PARAM_MODEL_URI = "modelUri";
 
   @ConfigurationParameter(
@@ -76,6 +86,7 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
       mandatory = false,
       description = "This parameter provides the URI to the pos tagger model.")
   private URI modelUri;
+  */
 
   public static final String PARAM_LANGUAGE_CODE = "languageCode";
 
@@ -109,15 +120,8 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
     try {
-      URL modelURL = (this.modelUri == null)
-          ? PosTagger.class.getResource(DEFAULT_MODEL_FILE_NAME).toURI().toURL()
-          : this.modelUri.toURL();
-
       // Load POS tagger model
-      this.tagger = EngineGetter.getComponent(modelURL.openStream(), languageCode, NLPLib.MODE_POS);
-
-      // Load decoder
-      this.clearNlpDecoder = new NLPDecode();
+      this.tagger = NLPGetter.getComponent(modelPath, languageCode, NLPLib.MODE_POS);
 
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
@@ -138,7 +142,7 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
 
       // As of version 1.3.0, ClearNLP does all processing to go through its own dependency tree
       // structure
-      DEPTree clearNlpDepTree = this.clearNlpDecoder.toDEPTree(tokenStrings);
+      DEPTree clearNlpDepTree = NLPGetter.toDEPTree(tokenStrings);
       this.tagger.process(clearNlpDepTree);
       String[] posTags = clearNlpDepTree.getPOSTags();
 
@@ -152,7 +156,5 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
   }
 
   private AbstractComponent tagger;
-
-  private NLPDecode clearNlpDecoder;
 
 }

@@ -24,7 +24,6 @@
 package org.cleartk.clearnlp;
 
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,39 +45,11 @@ public class PosTaggerTest extends CleartkTestBase {
 	protected TokenBuilder<Token, Sentence> tokenBuilder;
 	protected AnalysisEngineDescription posTagger;
 
-	protected void initLowMemModel() throws ResourceInitializationException {
-	  this.posTagger = PosTagger.getDescription("en", new File("src/test/resources/models/sample-en-pos-1.3.0.tgz").toURI());
-	} 
-	
 	protected void initDefaultModel() throws ResourceInitializationException {
 		  this.posTagger = PosTagger.getDescription();
 	} 
 
-  @Test
-  public void posTaggerLowMemTest() throws Exception {
-    initLowMemModel();
-    
-    
-    this.jCas.reset();
-    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
-
-    this.tokenBuilder.buildTokens(
-        this.jCas,
-        "The brown fox jumped quickly over the lazy dog .",
-        "The brown fox jumped quickly over the lazy dog .");
-    SimplePipeline.runPipeline(jCas, posTagger);
-    
-		//List<String> expected = Arrays.asList("DT NN IN VBN RB IN DT NN NN .".split(" "));
-		List<String> expected = Arrays.asList("DT NN IN JJ NNS CC DT JJ NN .".split(" "));
-    List<String> actual = new ArrayList<String>();
-    for (Token token : JCasUtil.select(this.jCas, Token.class)) {
-      actual.add(token.getPos());
-    }
-    Assert.assertEquals(expected, actual);
-  }	
 	
-	
-
 	@Test
 	public void posTaggerTest() throws Exception {
     this.assumeBigMemoryTestsEnabled();
