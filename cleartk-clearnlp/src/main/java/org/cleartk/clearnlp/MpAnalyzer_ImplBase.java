@@ -23,8 +23,6 @@
  */
 package org.cleartk.clearnlp;
 
-import java.net.URI;
-import java.net.URL;
 import java.util.List;
 
 import org.apache.uima.UimaContext;

@@ -23,8 +23,7 @@
  */
 package org.cleartk.clearnlp;
 
-import java.net.URI;
-import java.net.URL;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,13 +41,13 @@ import com.google.common.annotations.Beta;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import com.googlecode.clearnlp.component.AbstractComponent;
-import com.googlecode.clearnlp.dependency.DEPFeat;
-import com.googlecode.clearnlp.dependency.DEPNode;
-import com.googlecode.clearnlp.dependency.DEPTree;
-import com.googlecode.clearnlp.engine.EngineGetter;
-import com.googlecode.clearnlp.nlp.NLPLib;
-import com.googlecode.clearnlp.reader.AbstractReader;
+import com.clearnlp.component.AbstractComponent;
+import com.clearnlp.dependency.DEPFeat;
+import com.clearnlp.dependency.DEPNode;
+import com.clearnlp.dependency.DEPTree;
+import com.clearnlp.nlp.NLPGetter;
+import com.clearnlp.nlp.NLPLib;
+import com.clearnlp.reader.AbstractReader;
 
 /**
  * <br>
@@ -72,15 +71,17 @@ import com.googlecode.clearnlp.reader.AbstractReader;
 public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_TYPE extends Annotation, DEPENDENCY_NODE_TYPE extends TOP, DEPENDENCY_ROOT_NODE_TYPE extends DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE extends TOP>
     extends JCasAnnotator_ImplBase {
 
-  public static final String DEFAULT_MODEL_FILE_NAME = "ontonotes-en-dep-1.3.0.tgz";
+  public static final String DEFAULT_MODEL_PATH = "general-en";
 
-  public static final String PARAM_PARSER_MODEL_URI = "parserModelUri";
+  public static final String PARAM_PARSER_MODEL_PATH = "parserModelPath";
 
   @ConfigurationParameter(
-      name = PARAM_PARSER_MODEL_URI,
+      name = PARAM_PARSER_MODEL_PATH,
       mandatory = false,
-      description = "This parameter provides the file name of the dependency parser model required by the factory method provided by ClearParserUtil.")
-  private URI parserModelUri;
+      description = "This parameter provides the file name of the dependency parser model required by the factory method provided by ClearParserUtil.",
+      defaultValue=DEFAULT_MODEL_PATH)
+  private String parserModelPath;
+
 
   public static final String PARAM_LANGUAGE_CODE = "languageCode";
 
@@ -118,20 +119,15 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation, 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
-
     try {
-      URL parserModelURL = (this.parserModelUri == null)
-          ? DependencyParser_ImplBase.class.getResource(DEFAULT_MODEL_FILE_NAME).toURI().toURL()
-          : this.parserModelUri.toURL();
-
-      this.parser = EngineGetter.getComponent(
-          parserModelURL.openStream(),
+      this.parser = NLPGetter.getComponent(
+          this.parserModelPath,
           this.languageCode,
           NLPLib.MODE_DEP);
-
-    } catch (Exception e) {
+    } catch (IOException e) {
       throw new ResourceInitializationException(e);
     }
+    
   }
 
   @Override

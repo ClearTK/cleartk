@@ -23,7 +23,6 @@
  */
 package org.cleartk.clearnlp;
 
-import java.net.URI;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -70,12 +69,12 @@ public class DependencyParser extends DependencyParser_ImplBase<Sentence, Token,
     return AnalysisEngineFactory.createEngineDescription(DependencyParser.class);
   }
   
-  public static AnalysisEngineDescription getDescription(String languageCode, URI modelUri) throws ResourceInitializationException {
+  public static AnalysisEngineDescription getDescription(String languageCode, String modelPath) throws ResourceInitializationException {
     return AnalysisEngineFactory.createEngineDescription(DependencyParser.class,
         DependencyParser_ImplBase.PARAM_LANGUAGE_CODE,
         languageCode,
-        DependencyParser_ImplBase.PARAM_PARSER_MODEL_URI,
-        modelUri);
+        DependencyParser_ImplBase.PARAM_PARSER_MODEL_PATH,
+        modelPath);
   }
 
   public DependencyParser() {

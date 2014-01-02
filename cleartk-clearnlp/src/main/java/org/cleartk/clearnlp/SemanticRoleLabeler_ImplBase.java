@@ -23,8 +23,6 @@
  */
 package org.cleartk.clearnlp;
 
-import java.net.URI;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -43,15 +41,15 @@ import org.apache.uima.fit.util.JCasUtil;
 import com.google.common.annotations.Beta;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.googlecode.clearnlp.component.AbstractComponent;
-import com.googlecode.clearnlp.dependency.DEPArc;
-import com.googlecode.clearnlp.dependency.DEPLib;
-import com.googlecode.clearnlp.dependency.DEPNode;
-import com.googlecode.clearnlp.dependency.DEPTree;
-import com.googlecode.clearnlp.engine.EngineGetter;
-import com.googlecode.clearnlp.nlp.NLPDecode;
-import com.googlecode.clearnlp.nlp.NLPLib;
-import com.googlecode.clearnlp.reader.AbstractReader;
+import com.clearnlp.component.AbstractComponent;
+import com.clearnlp.dependency.DEPArc;
+import com.clearnlp.dependency.DEPLib;
+import com.clearnlp.dependency.DEPNode;
+import com.clearnlp.dependency.DEPTree;
+import com.clearnlp.dependency.srl.SRLArc;
+import com.clearnlp.nlp.NLPGetter;
+import com.clearnlp.nlp.NLPLib;
+import com.clearnlp.reader.AbstractReader;
 
 /**
  * <br>
@@ -74,35 +72,44 @@ import com.googlecode.clearnlp.reader.AbstractReader;
 public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_TYPE extends Annotation, DEPENDENCY_NODE_TYPE extends TOP, DEPENDENCY_ROOT_NODE_TYPE extends DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE extends TOP, ARGUMENT_TYPE extends TOP, PREDICATE_TYPE extends TOP>
     extends JCasAnnotator_ImplBase {
 
+  /*
   public static final String DEFAULT_PRED_ID_MODEL_FILE_NAME = "ontonotes-en-pred-1.3.0.tgz";
 
   public static final String DEFAULT_ROLESET_MODEL_FILE_NAME = "ontonotes-en-role-1.3.0.tgz";
 
   public static final String DEFAULT_SRL_MODEL_FILE_NAME = "ontonotes-en-srl-1.3.0.tgz";
+  */
 
-  public static final String PARAM_SRL_MODEL_URI = "srlModelUri";
+  public static final String DEFAULT_PRED_ID_MODEL_PATH = "general-en";
+
+  public static final String DEFAULT_ROLESET_MODEL_PATH = "general-en";
+
+  public static final String DEFAULT_SRL_MODEL_PATH = "general-en";
+
+  public static final String PARAM_SRL_MODEL_PATH = "srlModelPath";
+  @ConfigurationParameter(
+      name = PARAM_SRL_MODEL_PATH,
+      mandatory = false,
+      description = "This parameter provides the path pointing to the semantic role labeler model.  If none is specified it will use the default ontonotes model.",
+      defaultValue=DEFAULT_SRL_MODEL_PATH)
+  private String srlModelPath;
+
+  public static final String PARAM_PRED_ID_MODEL_PATH = "predIdModelPath";
+  @ConfigurationParameter(
+      name = PARAM_PRED_ID_MODEL_PATH,
+      mandatory = false,
+      description = "This parameter provides the path pointing to the predicate identifier model.  If none is specified it will use the default ontonotes model.",
+      defaultValue=DEFAULT_PRED_ID_MODEL_PATH)
+  private String predIdModelPath;
+
+  public static final String PARAM_ROLESET_MODEL_PATH = "rolesetModelPath";
 
   @ConfigurationParameter(
-      name = PARAM_SRL_MODEL_URI,
+      name = PARAM_ROLESET_MODEL_PATH,
       mandatory = false,
-      description = "This parameter provides the URI pointing to the semantic role labeler model.  If none is specified it will use the default ontonotes model.")
-  private URI srlModelUri;
-
-  public static final String PARAM_PRED_ID_MODEL_URI = "predIdModelUri";
-
-  @ConfigurationParameter(
-      name = PARAM_PRED_ID_MODEL_URI,
-      mandatory = false,
-      description = "This parameter provides the URI pointing to the predicate identifier model.  If none is specified it will use the default ontonotes model.")
-  private URI predIdModelUri;
-
-  public static final String PARAM_ROLESET_MODEL_URI = "rolesetModelUri";
-
-  @ConfigurationParameter(
-      name = PARAM_ROLESET_MODEL_URI,
-      mandatory = false,
-      description = "This parameter provides the URI pointing to the role set classifier model.  If none is specified it will use the default ontonotes model.")
-  private URI rolesetModelUri;
+      description = "This parameter provides the path pointing to the role set classifier model.  If none is specified it will use the default ontonotes model.",
+      defaultValue=DEFAULT_ROLESET_MODEL_PATH)
+  private String rolesetModelPath;
 
   public static final String PARAM_LANGUAGE_CODE = "languageCode";
 
@@ -146,31 +153,20 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
     super.initialize(aContext);
 
     try {
-      URL predIdModelURL = (this.predIdModelUri == null)
-          ? SemanticRoleLabeler_ImplBase.class.getResource(DEFAULT_PRED_ID_MODEL_FILE_NAME).toURI().toURL()
-          : this.predIdModelUri.toURL();
-      this.predIdentifier = EngineGetter.getComponent(
-          predIdModelURL.openStream(),
+      this.predIdentifier = NLPGetter.getComponent(
+          this.predIdModelPath,
           languageCode,
           NLPLib.MODE_PRED);
 
-      URL rolesetModelUrl = (this.rolesetModelUri == null)
-          ? SemanticRoleLabeler_ImplBase.class.getResource(DEFAULT_ROLESET_MODEL_FILE_NAME).toURI().toURL()
-          : this.rolesetModelUri.toURL();
-      this.roleSetClassifier = EngineGetter.getComponent(
-          rolesetModelUrl.openStream(),
+      this.roleSetClassifier = NLPGetter.getComponent(
+          this.rolesetModelPath,
           languageCode,
           NLPLib.MODE_ROLE);
 
-      URL srlModelURL = (this.srlModelUri == null)
-          ? SemanticRoleLabeler_ImplBase.class.getResource(DEFAULT_SRL_MODEL_FILE_NAME).toURI().toURL()
-          : this.srlModelUri.toURL();
-      this.srlabeler = EngineGetter.getComponent(
-          srlModelURL.openStream(),
+      this.srlabeler = NLPGetter.getComponent(
+          this.srlModelPath,
           languageCode,
           NLPLib.MODE_SRL);
-
-      this.clearNlpDecoder = new NLPDecode();
 
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
@@ -203,7 +199,7 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
       }
 
       // Build dependency tree from token information
-      DEPTree tree = clearNlpDecoder.toDEPTree(tokenStrings);
+      DEPTree tree = NLPGetter.toDEPTree(tokenStrings);
       // DEPTree tree = new DEPTree();
       for (int i = 1; i < tree.size(); i++) {
         TOKEN_TYPE token = tokens.get(i - 1);
@@ -276,7 +272,7 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
       DEPNode parserNode = tree.get(i);
       TOKEN_TYPE token = tokens.get(i - 1);
 
-      List<DEPArc> semanticHeads = parserNode.getSHeads();
+      List<SRLArc> semanticHeads = parserNode.getSHeads();
       if (semanticHeads.isEmpty()) {
         continue;
       }
@@ -315,6 +311,4 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
   private AbstractComponent roleSetClassifier;
 
   private AbstractComponent srlabeler;
-
-  private NLPDecode clearNlpDecoder;
 }

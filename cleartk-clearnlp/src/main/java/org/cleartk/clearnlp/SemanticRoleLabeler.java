@@ -23,7 +23,6 @@
  */
 package org.cleartk.clearnlp;
 
-import java.net.URI;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.fit.descriptor.TypeCapability;
@@ -72,16 +71,16 @@ public class SemanticRoleLabeler extends SemanticRoleLabeler_ImplBase<Sentence, 
     return AnalysisEngineFactory.createEngineDescription(SemanticRoleLabeler.class);
   }
   
-  public static AnalysisEngineDescription getDescription(String languageCode, URI predIdModelUri, URI rolesetModelUri, URI srlModelUri) throws ResourceInitializationException {
+  public static AnalysisEngineDescription getDescription(String languageCode, String predIdModelPath, String rolesetModelPath, String srlModelPath) throws ResourceInitializationException {
     return AnalysisEngineFactory.createEngineDescription(SemanticRoleLabeler.class, 
       SemanticRoleLabeler_ImplBase.PARAM_LANGUAGE_CODE,
       languageCode,
-      SemanticRoleLabeler_ImplBase.PARAM_PRED_ID_MODEL_URI,
-      predIdModelUri,
-      SemanticRoleLabeler_ImplBase.PARAM_ROLESET_MODEL_URI,
-      rolesetModelUri,
-      SemanticRoleLabeler_ImplBase.PARAM_SRL_MODEL_URI,
-      srlModelUri);
+      SemanticRoleLabeler_ImplBase.PARAM_PRED_ID_MODEL_PATH,
+      predIdModelPath,
+      SemanticRoleLabeler_ImplBase.PARAM_ROLESET_MODEL_PATH,
+      rolesetModelPath,
+      SemanticRoleLabeler_ImplBase.PARAM_SRL_MODEL_PATH,
+      srlModelPath);
   }
 
    public SemanticRoleLabeler() {

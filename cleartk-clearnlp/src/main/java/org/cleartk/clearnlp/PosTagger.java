@@ -23,7 +23,6 @@
  */
 package org.cleartk.clearnlp;
 
-import java.net.URI;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
