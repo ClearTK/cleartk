@@ -37,9 +37,9 @@ import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
-import com.googlecode.clearnlp.engine.EngineGetter;
-import com.googlecode.clearnlp.reader.AbstractReader;
-import com.googlecode.clearnlp.tokenization.AbstractTokenizer;
+import com.clearnlp.nlp.NLPGetter;
+import com.clearnlp.reader.AbstractReader;
+import com.clearnlp.tokenization.AbstractTokenizer;
 
 /**
  * <br>
@@ -103,9 +103,7 @@ public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation> extends
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
     try {
-      URL dictionaryURL = (this.dictionaryUri == null) ? Tokenizer_ImplBase.class.getResource(
-          DEFAULT_DICTIONARY_FILE_NAME).toURI().toURL() : this.dictionaryUri.toURL();
-      this.tokenizer = EngineGetter.getTokenizer(languageCode, dictionaryURL.openStream());
+      this.tokenizer = NLPGetter.getTokenizer(languageCode);
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
     }

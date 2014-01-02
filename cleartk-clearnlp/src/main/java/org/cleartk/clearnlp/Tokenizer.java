@@ -44,7 +44,13 @@ public class Tokenizer extends Tokenizer_ImplBase<Token> {
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
     return AnalysisEngineFactory.createEngineDescription(Tokenizer.class);
   }
-  
+
+  public static AnalysisEngineDescription getDescription(String languageCode) throws ResourceInitializationException {
+    return AnalysisEngineFactory.createEngineDescription(Tokenizer.class,
+        Tokenizer_ImplBase.PARAM_LANGUAGE_CODE,
+        languageCode);
+  }
+
   public static AnalysisEngineDescription getDescription(String languageCode, URI dictionaryUri) throws ResourceInitializationException {
     return AnalysisEngineFactory.createEngineDescription(Tokenizer.class,
         Tokenizer_ImplBase.PARAM_LANGUAGE_CODE,
