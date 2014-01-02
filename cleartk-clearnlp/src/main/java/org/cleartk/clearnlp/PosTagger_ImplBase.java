@@ -38,6 +38,7 @@ import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
 import com.clearnlp.component.AbstractComponent;
+import com.clearnlp.dependency.DEPNode;
 import com.clearnlp.dependency.DEPTree;
 import com.clearnlp.nlp.NLPGetter;
 import com.clearnlp.nlp.NLPLib;
@@ -144,13 +145,14 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
       // structure
       DEPTree clearNlpDepTree = NLPGetter.toDEPTree(tokenStrings);
       this.tagger.process(clearNlpDepTree);
-      String[] posTags = clearNlpDepTree.getPOSTags();
 
       // Note the ClearNLP counts index 0 as the sentence dependency node, so the POS tag indices
       // are shifted by one from the token indices
       for (int i = 0; i < tokens.size(); i++) {
         TOKEN_TYPE token = tokens.get(i);
-        this.tokenOps.setPos(jCas, token, posTags[i + 1]);
+        DEPNode node = clearNlpDepTree.get(i+1);
+        this.tokenOps.setPos(jCas, token, node.pos);
+        this.tokenOps.setLemma(jCas, token, node.lemma);
       }
     }
   }

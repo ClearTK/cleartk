@@ -65,12 +65,16 @@ public class PosTaggerTest extends CleartkTestBase {
 				"The brown fox jumped quickly over the lazy dog .");
 		SimplePipeline.runPipeline(jCas, posTagger);
 		
-    List<String> expected = Arrays.asList("DT JJ NN VBD RB IN DT JJ NN .".split(" "));
-		List<String> actual = new ArrayList<String>();
+    List<String> expectedPos = Arrays.asList("DT JJ NN VBD RB IN DT JJ NN .".split(" "));
+		List<String> actualPos = new ArrayList<String>();
+    List<String> expectedLemma = Arrays.asList("the brown fox jump quickly over the lazy dog .".split(" "));
+		List<String> actualLemma = new ArrayList<String>();
 		for (Token token : JCasUtil.select(this.jCas, Token.class)) {
-			actual.add(token.getPos());
+			actualPos.add(token.getPos());
+			actualLemma.add(token.getLemma());
 		}
-		Assert.assertEquals(expected, actual);
+		Assert.assertEquals(expectedPos, actualPos);
+		Assert.assertEquals(expectedLemma, actualLemma);
 	}
 	
 }
