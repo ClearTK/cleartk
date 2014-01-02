@@ -195,7 +195,6 @@ public class ClearNlpTest extends CleartkTestBase {
 
   @Test
   public void srlTest() throws Exception {
-    System.out.println(java.lang.Runtime.getRuntime().maxMemory()); 
     this.assumeBigMemoryTestsEnabled();
     this.assumeLongTestsEnabled();
     this.logger.info(BIG_MEMORY_TEST_MESSAGE);
