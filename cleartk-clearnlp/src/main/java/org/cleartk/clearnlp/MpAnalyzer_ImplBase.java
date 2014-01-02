@@ -39,13 +39,12 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
-import com.googlecode.clearnlp.component.AbstractComponent;
-import com.googlecode.clearnlp.dependency.DEPNode;
-import com.googlecode.clearnlp.dependency.DEPTree;
-import com.googlecode.clearnlp.engine.EngineGetter;
-import com.googlecode.clearnlp.nlp.NLPDecode;
-import com.googlecode.clearnlp.nlp.NLPLib;
-import com.googlecode.clearnlp.reader.AbstractReader;
+import com.clearnlp.component.AbstractComponent;
+import com.clearnlp.dependency.DEPNode;
+import com.clearnlp.dependency.DEPTree;
+import com.clearnlp.nlp.NLPGetter;
+import com.clearnlp.nlp.NLPLib;
+import com.clearnlp.reader.AbstractReader;
 
 /**
  * <br>
@@ -82,6 +81,7 @@ public abstract class MpAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
       defaultValue = AbstractReader.LANG_EN)
   private String languageCode;
 
+  /*
   public static final String PARAM_DICTIONARY_URI = "dictionaryUri";
 
   @ConfigurationParameter(
@@ -89,6 +89,7 @@ public abstract class MpAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
       mandatory = false,
       description = "This parameter provides the URI to the morphological analyzer dictionary used for lemmatizing.")
   private URI dictionaryUri;
+  */
 
   public static final String PARAM_WINDOW_CLASS = "windowClass";
 
@@ -111,14 +112,12 @@ public abstract class MpAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
     return AnalysisEngineFactory.createEngineDescription(MpAnalyzer_ImplBase.class);
   }
 
-  public static AnalysisEngineDescription getDescription(String langCode, URI dictionaryUri)
+  public static AnalysisEngineDescription getDescription(String langCode) 
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createEngineDescription(
         MpAnalyzer_ImplBase.class,
         MpAnalyzer_ImplBase.PARAM_LANGUAGE_CODE,
-        langCode,
-        MpAnalyzer_ImplBase.PARAM_DICTIONARY_URI,
-        dictionaryUri);
+        langCode);
 
   }
 
@@ -133,17 +132,13 @@ public abstract class MpAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
     super.initialize(context);
 
     try {
-      URL mpAnalyzerDictionaryURL = (this.dictionaryUri == null)
-          ? MpAnalyzer_ImplBase.class.getResource(DEFAULT_DICTIONARY_FILE_NAME).toURI().toURL()
-          : dictionaryUri.toURL();
 
       // initialize ClearNLP components
-      this.mpAnalyzer = EngineGetter.getComponent(
-          mpAnalyzerDictionaryURL.openStream(),
+      this.mpAnalyzer = NLPGetter.getComponent(
+          "",
           languageCode,
           NLPLib.MODE_MORPH);
-      this.clearNlpDecoder = new NLPDecode();
-
+      
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
     }
@@ -158,7 +153,7 @@ public abstract class MpAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
 
       // All processing in ClearNLP goes through the DEPTree structures,
       // so populate it with token and POS tag info
-      DEPTree depTree = this.clearNlpDecoder.toDEPTree(tokenStrings);
+      DEPTree depTree = NLPGetter.toDEPTree(tokenStrings);
       for (int i = 1; i < depTree.size(); i++) {
         TOKEN_TYPE token = tokens.get(i - 1);
         DEPNode node = depTree.get(i);
@@ -177,7 +172,5 @@ public abstract class MpAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
   }
 
   private AbstractComponent mpAnalyzer;
-
-  private NLPDecode clearNlpDecoder;
 
 }

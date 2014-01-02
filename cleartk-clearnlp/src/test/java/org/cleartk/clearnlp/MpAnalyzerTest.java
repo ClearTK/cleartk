@@ -64,7 +64,7 @@ public class MpAnalyzerTest extends CleartkTestBase {
 
     mpAnalyzer.process(jCas);
 
-    List<String> expected = Arrays.asList("jump jump jump jumper happy happy happy".split(" "));
+    List<String> expected = Arrays.asList("jump jump jumped jumper happy happier happiest".split(" "));
     List<String> actual = new ArrayList<String>();
     for (Token token : JCasUtil.select(this.jCas, Token.class)) {
       actual.add(token.getLemma());

@@ -61,10 +61,9 @@ public class MpAnalyzer extends MpAnalyzer_ImplBase<Token> {
 		return AnalysisEngineFactory.createEngineDescription(MpAnalyzer.class);
 	}
 	
-	public static AnalysisEngineDescription getDescription(String langCode, URI dictionaryUri) throws ResourceInitializationException {
+	public static AnalysisEngineDescription getDescription(String langCode) throws ResourceInitializationException {
 	  return AnalysisEngineFactory.createEngineDescription(MpAnalyzer.class, 
-	      MpAnalyzer_ImplBase.PARAM_LANGUAGE_CODE, langCode,
-	      MpAnalyzer_ImplBase.PARAM_DICTIONARY_URI, dictionaryUri);
+	      MpAnalyzer_ImplBase.PARAM_LANGUAGE_CODE, langCode);
 	}
 
   public MpAnalyzer() {
