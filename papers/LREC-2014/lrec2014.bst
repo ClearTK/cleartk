@@ -1,11 +1,13 @@
-% BibTeX lrec2006.bst
-% This version was made by modifying `acl.bst', which was made 
+% BibTeX lrec2014.bst
+% This version was made by modyfing `lrec2006.bst' which was made
+% by modifying `acl.bst', which was made 
 % by modifying `aaai-named' format. See `acl.bst' for history
 % of previous modifications 
 
-% The only difference introduced is that the first author 
-% is listed with his/her surname before  his/her first name.
-
+% Two differences introduced in this file:
+% The surname of authors is listed first, before their first name initials (see FUNCTION {format.names}) 
+% The year of publication (which appears directly after the author names)
+%   is inside parenthesis (see FUNCTION {format.year.label})
 
 %   Citation format: [author-last-name, year]
 %		     [author-last-name and author-last-name, year]
@@ -209,7 +211,8 @@ FUNCTION {format.names}
   numnames 'namesleft :=
     { namesleft #0 > }
 
-    { s nameptr "{ff~}{vv~}{ll}{, jj}" format.name$ 't :=
+    %{ s nameptr "{ff~}{vv~}{ll}{, jj}" format.name$ 't :=	
+    { s nameptr "{vv~}{ll}{, jj}{, f.}" format.name$ 't :=
 
       nameptr #1 >
 	{ namesleft #1 >
@@ -400,7 +403,8 @@ FUNCTION {format.pages}
 }
 
 FUNCTION {format.year.label}
-{ year extra.label *
+{ %year extra.label *
+  "(" year * extra.label * ")" *
 }
 
 FUNCTION {format.vol.num.pages}
@@ -1304,5 +1308,3 @@ FUNCTION {end.bib}
 }
 
 EXECUTE {end.bib}
-
-

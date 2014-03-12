@@ -1,20 +1,20 @@
 %
-% lrec2006.sty
+% lrec2014.sty
 %
 \typeout{}
-\typeout{LREC 2006 Proceedings style -- Februar 2006}
+\typeout{LREC 2014 Proceedings style -- Februar 2014}
 \typeout{}
 %
 % ----------------------------------------------------------------------
 % INTRO
 %
-% This is the LaTeX style file for LREC 2006. It is a
-% modification of the lrec2000.sty which was based on
+% This is the LaTeX style file for LREC 2014. It is a copy of 
+% the lrec2006.sty which is a modification of the lrec2000.sty which was based on
 % several similar files like colacl.sty for COLING-ACL, and
 % lrec98.cls, by A.Rubio-P.Garcia, for the Granada LREC.
 %
-% lrec2006.sty is designed for use as a package or option with the
-% standard LaTeX article class, and the BibTeX style lrec2006.bst. 
+% lrec2014.sty is designed for use as a package or option with the
+% standard LaTeX article class, and the BibTeX style lrec2014.bst. 
 %
 % Author/title and citation formatting differs slightly from standard
 % LaTeX; see AUTHOR FORMATS and CITATION FORMATS below for more
@@ -84,7 +84,7 @@
 % ------------
 %
 % If the title and author information does not fit in the area allocated,
-% place \setlength\titlebox{<new height>} after \usepackage{lrec2006},
+% place \setlength\titlebox{<new height>} after \usepackage{lrec2014},
 % where <new height> can be something larger than 2.0in
 %
 % ----------------------------------------------------------------------
@@ -102,7 +102,7 @@
 % ----------------------------------------------------------------------
 % IF IT DOESN'T WORK
 %
-% The error message "File `lrec2006.sty' not found." indicates that this
+% The error message "File `lrec2014.sty' not found." indicates that this
 % file has not been installed in a location which is visible to your 
 % LaTeX.  Try putting it in the same directory as your paper, and
 % running LaTeX there.  Consult your `Local Guide' documentation or
@@ -196,7 +196,7 @@
 
 
 \def\title#1{\gdef\@title{#1}}
-\def\name#1{\gdef\@name{#1\\}}
+\def\name#1{\gdef\@name{#1}} %no space between author and affiliation
 \def\address#1{\gdef\@address{#1\\}}
 \def\abstract#1{\gdef\@abstract{
   {\bf \normalsize \abstractname\vspace{-.5em}\vspace{0.2cm}}
@@ -274,7 +274,7 @@
 % gjr: reduced vertical space between entries (plus was .33em)
 %
 \def\thebibliography#1{%
-  \section{References}    % References section will be numbered in lrec2006.sty
+  \section{References}    % References section will be numbered in lrec2014.sty
   \list{}{\setlength{\labelwidth}{0pt}
           \setlength{\leftmargin}{0.35cm}
           \setlength{\itemsep}{0.11ex plus 0.11ex}
@@ -305,6 +305,12 @@
 \renewcommand{\thesubsection}{\thesection\arabic{subsection}.}
 \renewcommand{\thesubsubsection}{\thesubsection\arabic{subsubsection}.}
 
+% fontsize 11 for subsections
+\newcommand*{\SmallTitleFont}{%
+      \usefont{\encodingdefault}{\rmdefault}{b}{n}%
+      \fontsize{11}{12}%
+      \selectfont}
+
 \def\Keywords{
 {\bf{Keywords}:\,\relax%
 }}
@@ -320,7 +326,7 @@
                   {-2.0ex plus -0.5ex minus -0.3ex}%
                   %{-1.4ex plus -0.4ex minus -0.2ex}%
                   {0.6ex plus 0.2ex minus 0.1ex}%
-                  {\normalsize\bf\raggedright}}
+                  {\SmallTitleFont\bf\raggedright}}
 \def\subsubsection{%
     \@startsection{subsubsection}{3}{\z@}%
                   {-2.0ex plus -0.5ex minus -0.3ex}%
@@ -392,7 +398,7 @@
 
 
 % ----------------------------------------------------------------------
-% End of lrec2006.sty
+% End of lrec2014.sty
 % ----------------------------------------------------------------------
 
 
