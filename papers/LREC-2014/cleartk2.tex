@@ -58,7 +58,7 @@ In this paper, we reflect on key lessons learned over the last 5 years, and how 
 
 \section{Annotators should be conceptually simple}
 \label{sec:annotators}
-A core aspect of UIMA is the Annotator, which provides a \code{process()} method that inspects the document (a \code{JCas} in UIMA), performs analyses, and stores resulting annotations.  This is a familiar construct, even to novice UIMA users, as there are analogs in other frameworks, e.g. Stanford CoreNLP's \code{CoreMap}\footnote{http://nlp.stanford.edu/software/corenlp.shtml} and GATE's \code{Document}\footnote{http://gate.ac.uk/ie/}.  Our experience suggests that annotators' process methods should orchestrate the core analysis code in ways that are as straightforward and intuitive as possible.  ClearTK in previous iterations has suffered from over-abstraction of analysis code away from the process method -- resulting in difficult to understand code.
+A core aspect of UIMA is the Annotator, which provides a \code{process()} method that inspects the document (a \code{JCas} in UIMA), performs analyses, and stores resulting annotations.  This is a familiar construct, even to novice UIMA users, as there are analogs in other frameworks, e.g. Stanford CoreNLP's \code{CoreMap}\footnote{http://nlp.stanford.edu/software/corenlp.shtml} and GATE's \code{Document} \cite{Cunningham2011a}.  Our experience suggests that annotators' process methods should orchestrate the core analysis code in ways that are as straightforward and intuitive as possible.  ClearTK in previous iterations has suffered from over-abstraction of analysis code away from the process method -- resulting in difficult to understand code.
 
 In the first versions of ClearTK, developers were required to write two separate annotators: one for writing training data and another for classification.  In practice, the bulk of the code in both annotators shared the same feature extraction steps.  Consequently, this overlapping functionality was structured to remove this redundancy.  The first version of this abstraction used a call-back approach where users only had to implement the feature extraction code.  However, users found the call-back style unintuitive as it diverged heavily from the UIMA \code{process()} conventions.  
 Thus we redesigned this abstraction into \code{ClassifierAnnotator}, which allows users to write their feature extraction code in the standard \code{process()} method, but requires them to handle two cases: training mode and classification mode.  Though this change requires additional coordination with a single annotator, it is conceptually simpler to learn.
@@ -95,7 +95,7 @@ In exchange for some duplication (e.g. if training and testing used the same pre
 
 Feature transformation (e.g. normalizing feature values to z-scores or scaling term counts by inverse document frequency) is another example of structuring concerns around pipelines.
 In early versions of ClearTK, these kinds of transformations required running a specialized pipeline separately before the real pipeline to collect the sufficient statistics.
-This was confusing to users because (1) two pipelines were required for what was conceptually a single pipeline and (2) feature transformations conceptually happens after training data is written, not before.
+This was confusing to users because (1) two pipelines were required for what was conceptually a single pipeline and (2) feature transformations conceptually happen after training data is written, not before.
 ClearTK 1.2 introduced \code{TrainableFeatureExtractor}s where a user instead:
 \begin{itemize}
 \item Runs the original pipeline for writing training data. The \code{TrainableFeatureExtractor} will flag features that need additional post-processing.
@@ -167,9 +167,14 @@ Thus, to get new potential users of ClearTK up to speed, we have found it helpfu
 Then, the new users can focus on the core problems that ClearTK is designed for: extracting features and using the classifier in the \code{process(JCas)} method of the annotator.
 We applied exactly this approach with new users of ClearTK, and successfully developed both a student response analysis system for SemEval-2013 \cite{okoye-bethard-sumner:2013:SemEval-2013}, and a relation extraction system for Apache cTAKES \cite{dligach2013discovering}.
 
-\section{Conclusion}
+\section{Discussion}
 The development of the ClearTK framework has revealed a number of key design patterns for NLP frameworks that can help new users to more quickly understand and adopt a framework.
-At their core, these patterns suggest aiming for intuitive interfaces that leverage the existing knowledge of users, and trying to minimize the number of conceptual dependencies between the various parts of the framework.
+At their core, these patterns suggest aiming for intuitive interfaces that leverage existing user knowledge, and trying to minimize the number of conceptual dependencies between the various parts of the framework.
+
+While the design patterns discussed here are driven by the specific needs of the ClearTK framework as it integrates machine learning into UIMA, we believe that these patterns could be generally useful across NLP frameworks such as Stanford CoreNLP, GATE and NLTK \cite{BirdKleinLoper09}.
+For example, while Stanford CoreNLP does well from the perspective of having a simple annotator interface and encouraging readable pipelines, it does not support type system agnostic code -- all code using Stanford CoreNLP must translate to and from a fixed set of annotation types.
+Or, for example, while NLTK does well at arranging its modules to allow users to import only the parts of NLTK that they need, a lot of functionality is packaged into the corpus readers rather than providing generic corpus parsing annotators that can be easily combined.
+These are not serious flaws that would prevent the use of any of these frameworks, but are potential avenues for improvement as the frameworks themselves evolve.
 
 \section*{Acknowledgements}
 This research was supported in part by the Strategic Health IT Advanced Research Projects (SHARP) Program (90TR002) from the Office of the National Coordinator for Health Information Technology, and by Grant Number R01LM010090 from the National Library Of Medicine. The content is solely the responsibility of the authors and does not necessarily represent the official views of the Office of the National Coordinator for Health Information Technology, the National Library Of Medicine or the National Institutes of Health.
