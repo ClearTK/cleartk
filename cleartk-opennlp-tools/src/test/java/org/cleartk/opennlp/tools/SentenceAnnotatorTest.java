@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.opennlp;
+package org.cleartk.opennlp.tools;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,6 +37,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.ConfigurationParameterFactory;
 import org.apache.uima.fit.util.JCasUtil;
+import org.cleartk.opennlp.tools.SentenceAnnotator;
 import org.cleartk.token.type.Sentence;
 import org.junit.Before;
 import org.junit.Test;

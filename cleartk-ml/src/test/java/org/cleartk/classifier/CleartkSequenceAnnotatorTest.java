@@ -40,7 +40,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.classifier.jar.GenericJarClassifierFactory;
 import org.cleartk.classifier.util.InstanceFactory;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Test;
 import org.apache.uima.fit.factory.UimaContextFactory;
 

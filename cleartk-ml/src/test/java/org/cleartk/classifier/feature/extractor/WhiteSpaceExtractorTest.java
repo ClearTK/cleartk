@@ -35,8 +35,8 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.test.DefaultTestBase;
-import org.cleartk.type.test.Token;
+import org.cleartk.test.util.DefaultTestBase;
+import org.cleartk.test.util.type.Token;
 import org.junit.Test;
 
 /**

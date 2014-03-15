@@ -31,7 +31,7 @@ import org.cleartk.classifier.Feature;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DefaultDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;

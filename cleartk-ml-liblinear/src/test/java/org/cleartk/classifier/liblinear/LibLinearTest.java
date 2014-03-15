@@ -39,7 +39,7 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.liblinear.ExampleInstanceFactory.BooleanAnnotator;
 import org.cleartk.classifier.liblinear.ExampleInstanceFactory.StringAnnotator;
 import org.cleartk.classifier.liblinear.encoder.FeatureNodeArrayEncoder;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.apache.uima.fit.factory.UimaContextFactory;

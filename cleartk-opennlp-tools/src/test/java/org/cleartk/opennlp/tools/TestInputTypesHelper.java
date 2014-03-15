@@ -21,15 +21,16 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
+package org.cleartk.opennlp.tools;
 
-package org.cleartk.syntax.opennlp.parser;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.cleartk.syntax.opennlp.ParserAnnotator;
-
-import com.google.common.annotations.Beta;
-
-import opennlp.tools.parser.ParserModel;
-import opennlp.tools.postag.POSTagger;
+import org.apache.uima.jcas.JCas;
+import org.cleartk.opennlp.tools.parser.InputTypesHelper;
+import org.cleartk.test.util.type.Sentence;
+import org.cleartk.test.util.type.Token;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -38,24 +39,26 @@ import opennlp.tools.postag.POSTagger;
  * <p>
  * 
  * @author Philip Ogren
- * 
- *         This class provides a simple extension to {@link opennlp.tools.parser.chunking.Parser}
- *         which has an additional constructor which takes a POSTagger which replaces the POSTagger
- *         that will be loaded from the {@link ParserModel}. This is used by {@link ParserAnnotator}
- *         in conjunction with the {@link CasPosTagger} so that the parser can make use of
- *         part-of-speech tags in the CAS.
- * 
  */
-@Beta
-public class Parser extends opennlp.tools.parser.chunking.Parser {
 
-  public Parser(ParserModel model, int beamSize, double advancePercentage) {
-    super(model, beamSize, advancePercentage);
+public class TestInputTypesHelper extends InputTypesHelper<Token, Sentence> {
+
+  public List<Token> getTokens(JCas jCas, Sentence sentence) {
+    return JCasUtil.selectCovered(jCas, Token.class, sentence);
   }
 
-  public Parser(ParserModel model, int beamSize, double advancePercentage, POSTagger tagger) {
-    super(model, beamSize, advancePercentage);
-    this.tagger = tagger;
+  @Override
+  public String getPosTag(Token token) {
+    return token.getPos();
+  }
+
+  @Override
+  public void setPosTag(Token token, String tag) {
+    token.setPos(tag);
+  }
+
+  public List<Sentence> getSentences(JCas jCas) {
+    return new ArrayList<Sentence>(JCasUtil.select(jCas, Sentence.class));
   }
 
 }

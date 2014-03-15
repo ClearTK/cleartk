@@ -35,7 +35,7 @@ import org.cleartk.classifier.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.classifier.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.classifier.test.DefaultStringTestDataWriterFactory;
 import org.cleartk.classifier.test.StringTestDataWriter;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.apache.uima.fit.factory.UimaContextFactory;

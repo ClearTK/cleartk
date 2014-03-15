@@ -37,7 +37,7 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.libsvm.ExampleInstanceFactory.BooleanAnnotator;
 import org.cleartk.classifier.libsvm.ExampleInstanceFactory.StringAnnotator;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.apache.uima.fit.factory.UimaContextFactory;

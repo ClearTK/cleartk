@@ -36,7 +36,7 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.cleartk.token.TokenComponents;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Subtoken;

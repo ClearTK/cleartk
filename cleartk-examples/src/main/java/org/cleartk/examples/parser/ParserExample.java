@@ -27,9 +27,9 @@ package org.cleartk.examples.parser;
 import java.io.File;
 
 import org.apache.uima.fit.pipeline.SimplePipeline;
-import org.cleartk.syntax.opennlp.ParserAnnotator;
-import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
-import org.cleartk.syntax.opennlp.SentenceAnnotator;
+import org.cleartk.opennlp.tools.ParserAnnotator;
+import org.cleartk.opennlp.tools.PosTaggerAnnotator;
+import org.cleartk.opennlp.tools.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;

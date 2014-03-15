@@ -33,8 +33,8 @@ import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
 import org.cleartk.classifier.feature.function.CharacterCategoryPatternFunction.PatternType;
 import org.cleartk.classifier.feature.function.FeatureFunctionExtractor.BaseFeatures;
-import org.cleartk.test.DefaultTestBase;
-import org.cleartk.type.test.Token;
+import org.cleartk.test.util.DefaultTestBase;
+import org.cleartk.test.util.type.Token;
 import org.junit.Assert;
 import org.junit.Test;
 

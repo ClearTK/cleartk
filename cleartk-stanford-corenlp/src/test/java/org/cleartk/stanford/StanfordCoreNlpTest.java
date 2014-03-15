@@ -34,7 +34,7 @@ import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.dependency.type.DependencyNode;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
-import org.cleartk.test.CleartkTestBase;
+import org.cleartk.test.util.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.junit.Assert;

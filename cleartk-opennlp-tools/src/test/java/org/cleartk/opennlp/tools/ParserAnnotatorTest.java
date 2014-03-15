@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.opennlp;
+package org.cleartk.opennlp.tools;
 
 import java.util.Collection;
 import java.util.logging.Level;
@@ -31,10 +31,11 @@ import opennlp.tools.cmdline.CLI;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.cleartk.opennlp.tools.ParserAnnotator;
+import org.cleartk.opennlp.tools.parser.DefaultOutputTypesHelper;
+import org.cleartk.opennlp.tools.parser.ParserWrapper_ImplBase;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.syntax.opennlp.parser.DefaultOutputTypesHelper;
-import org.cleartk.syntax.opennlp.parser.ParserWrapper_ImplBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
@@ -134,9 +135,9 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
         TestInputTypesHelper.class.getName(),
         ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
         DefaultOutputTypesHelper.class.getName());
-    TokenBuilder<org.cleartk.type.test.Token, org.cleartk.type.test.Sentence> tokBuilder = new TokenBuilder<org.cleartk.type.test.Token, org.cleartk.type.test.Sentence>(
-        org.cleartk.type.test.Token.class,
-        org.cleartk.type.test.Sentence.class);
+    TokenBuilder<org.cleartk.test.util.type.Token, org.cleartk.test.util.type.Sentence> tokBuilder = new TokenBuilder<org.cleartk.test.util.type.Token, org.cleartk.test.util.type.Sentence>(
+        org.cleartk.test.util.type.Token.class,
+        org.cleartk.test.util.type.Sentence.class);
     tokBuilder.buildTokens(
         jCas,
         "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair.",

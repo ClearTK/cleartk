@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.opennlp.parser;
+package org.cleartk.opennlp.tools.parser;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ import opennlp.tools.postag.POSTagger;
 import opennlp.tools.util.Sequence;
 
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.syntax.opennlp.ParserAnnotator;
+import org.cleartk.opennlp.tools.ParserAnnotator;
 
 import com.google.common.annotations.Beta;
 

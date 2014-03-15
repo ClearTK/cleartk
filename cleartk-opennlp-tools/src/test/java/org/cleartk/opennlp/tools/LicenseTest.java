@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2011, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,44 +21,29 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.opennlp;
+package org.cleartk.opennlp.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.uima.jcas.JCas;
-import org.cleartk.syntax.opennlp.parser.InputTypesHelper;
-import org.cleartk.type.test.Sentence;
-import org.cleartk.type.test.Token;
-import org.apache.uima.fit.util.JCasUtil;
+import org.cleartk.test.util.LicenseTestUtil;
+import org.junit.Test;
 
 /**
  * <br>
- * Copyright (c) 2011, Regents of the University of Colorado <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * <p>
- * 
- * @author Philip Ogren
  */
 
-public class TestInputTypesHelper extends InputTypesHelper<Token, Sentence> {
+public class LicenseTest {
 
-  public List<Token> getTokens(JCas jCas, Sentence sentence) {
-    return JCasUtil.selectCovered(jCas, Token.class, sentence);
+  @Test
+  public void testLicenseStatedInSource() throws Exception {
+    LicenseTestUtil.testJavaFiles("src/main/java");
   }
 
-  @Override
-  public String getPosTag(Token token) {
-    return token.getPos();
-  }
+  @Test
+  public void testLicenseStatedInTestSource() throws Exception {
+    LicenseTestUtil.testJavaFiles("src/test/java");
 
-  @Override
-  public void setPosTag(Token token, String tag) {
-    token.setPos(tag);
-  }
-
-  public List<Sentence> getSentences(JCas jCas) {
-    return new ArrayList<Sentence>(JCasUtil.select(jCas, Sentence.class));
   }
 
 }

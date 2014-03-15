@@ -24,6 +24,7 @@
 
 package org.cleartk.test;
 
+import org.cleartk.test.util.DefaultTestBase;
 import org.cleartk.test.util.TypeTestUtil;
 import org.junit.Test;
 

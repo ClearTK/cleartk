@@ -29,7 +29,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil.TreebankNodePath;
-import org.cleartk.test.CleartkTestBase;
+import org.cleartk.test.util.CleartkTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.apache.uima.fit.util.JCasUtil;

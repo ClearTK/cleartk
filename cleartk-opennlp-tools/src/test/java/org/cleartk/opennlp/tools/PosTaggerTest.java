@@ -21,45 +21,41 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.opennlp;
+package org.cleartk.opennlp.tools;
 
-import opennlp.uima.postag.POSModelResourceImpl;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.token.type.Sentence;
+import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.cleartk.opennlp.tools.PosTagger;
 import org.cleartk.token.type.Token;
+import org.junit.Assert;
+import org.junit.Test;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.apache.uima.fit.factory.ExternalResourceFactory;
-
-import com.google.common.annotations.Beta;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
- * An OpenNLP {@link opennlp.tools.postag.POSTagger} that uses the ClearTK type system.
- * 
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * @author Steven Bethard
  */
-@Beta
-public class PosTagger {
-  public static AnalysisEngineDescription getDescription(String languageCode)
-      throws ResourceInitializationException {
-    String modelPath = String.format("/models/%s-pos-maxent.bin", languageCode);
-    return AnalysisEngineFactory.createEngineDescription(
-        opennlp.uima.postag.POSTagger.class,
-        opennlp.uima.util.UimaUtil.MODEL_PARAMETER,
-        ExternalResourceFactory.createExternalResourceDescription(
-            POSModelResourceImpl.class,
-            PosTagger.class.getResource(modelPath).toString()),
-        opennlp.uima.util.UimaUtil.SENTENCE_TYPE_PARAMETER,
-        Sentence.class.getName(),
-        opennlp.uima.util.UimaUtil.TOKEN_TYPE_PARAMETER,
-        Token.class.getName(),
-        opennlp.uima.util.UimaUtil.POS_FEATURE_PARAMETER,
-        "pos");
-  }
+public class PosTaggerTest extends OpennlpTestBase {
 
+  @Test
+  public void test() throws Exception {
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(PosTagger.getDescription("en"));
+    this.tokenBuilder.buildTokens(
+        this.jCas,
+        "The brown fox jumped quickly over the lazy dog.",
+        "The brown fox jumped quickly over the lazy dog .");
+    engine.process(this.jCas);
+
+    List<String> expected = Arrays.asList("DT JJ NN VBD RB IN DT JJ NN .".split(" "));
+    List<String> actual = new ArrayList<String>();
+    for (Token token : JCasUtil.select(this.jCas, Token.class)) {
+      actual.add(token.getPos());
+    }
+    Assert.assertEquals(expected, actual);
+  }
 }

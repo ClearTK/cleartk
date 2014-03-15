@@ -27,8 +27,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.classifier.Feature;
-import org.cleartk.test.DefaultTestBase;
-import org.cleartk.type.test.Token;
+import org.cleartk.test.util.DefaultTestBase;
+import org.cleartk.test.util.type.Token;
 import org.junit.Test;
 import org.apache.uima.fit.util.JCasUtil;
 

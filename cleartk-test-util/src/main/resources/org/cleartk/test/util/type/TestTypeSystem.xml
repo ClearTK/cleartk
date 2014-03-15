@@ -26,12 +26,12 @@ POSSIBILITY OF SUCH DAMAGE.</description>
   <vendor/>
   <types>
     <typeDescription>
-      <name>org.cleartk.type.test.Sentence</name>
+      <name>org.cleartk.test.util.type.Sentence</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.cleartk.type.test.Token</name>
+      <name>org.cleartk.test.util.type.Token</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -43,29 +43,29 @@ POSSIBILITY OF SUCH DAMAGE.</description>
         <featureDescription>
           <name>lemma</name>
           <description/>
-          <rangeTypeName>org.cleartk.type.test.Lemma</rangeTypeName>
+          <rangeTypeName>org.cleartk.test.util.type.Lemma</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>posTag</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.cleartk.type.test.PosTag</elementType>
+          <elementType>org.cleartk.test.util.type.PosTag</elementType>
         </featureDescription>
         <featureDescription>
           <name>depRel</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.cleartk.type.test.DependencyRelation</elementType>
+          <elementType>org.cleartk.test.util.type.DependencyRelation</elementType>
         </featureDescription>
         <featureDescription>
           <name>orthogr</name>
           <description/>
-          <rangeTypeName>org.cleartk.type.test.Orthography</rangeTypeName>
+          <rangeTypeName>org.cleartk.test.util.type.Orthography</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.cleartk.type.test.Lemma</name>
+      <name>org.cleartk.test.util.type.Lemma</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -82,7 +82,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.cleartk.type.test.Chunk</name>
+      <name>org.cleartk.test.util.type.Chunk</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -94,7 +94,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.cleartk.type.test.PosTag</name>
+      <name>org.cleartk.test.util.type.PosTag</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -111,14 +111,14 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.cleartk.type.test.DependencyRelation</name>
+      <name>org.cleartk.test.util.type.DependencyRelation</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
         <featureDescription>
           <name>head</name>
           <description/>
-          <rangeTypeName>org.cleartk.type.test.Token</rangeTypeName>
+          <rangeTypeName>org.cleartk.test.util.type.Token</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>projective</name>
@@ -133,7 +133,7 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.cleartk.type.test.Header</name>
+      <name>org.cleartk.test.util.type.Header</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -141,12 +141,12 @@ POSSIBILITY OF SUCH DAMAGE.</description>
           <name>authors</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>org.cleartk.type.test.AuthorInfo</elementType>
+          <elementType>org.cleartk.test.util.type.AuthorInfo</elementType>
         </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.cleartk.type.test.AuthorInfo</name>
+      <name>org.cleartk.test.util.type.AuthorInfo</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -158,17 +158,17 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       </features>
     </typeDescription>
     <typeDescription>
-      <name>org.cleartk.type.test.Orthography</name>
+      <name>org.cleartk.test.util.type.Orthography</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.cleartk.type.test.Language</name>
+      <name>org.cleartk.test.util.type.Language</name>
       <description/>
       <supertypeName>uima.cas.String</supertypeName>
     </typeDescription>
     <typeDescription>
-      <name>org.cleartk.type.test.NamedEntityMention</name>
+      <name>org.cleartk.test.util.type.NamedEntityMention</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>

@@ -36,8 +36,8 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor;
 import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
 import org.cleartk.classifier.feature.transform.TransformableFeature;
-import org.cleartk.test.DefaultTestBase;
-import org.cleartk.type.test.Token;
+import org.cleartk.test.util.DefaultTestBase;
+import org.cleartk.test.util.type.Token;
 import org.junit.Test;
 
 /**

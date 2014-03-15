@@ -26,7 +26,7 @@ package org.cleartk.util.ae.linewriter;
 import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.type.test.Token;
+import org.cleartk.test.util.type.Token;
 
 /**
  * <br>

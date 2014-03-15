@@ -40,10 +40,10 @@ import org.cleartk.classifier.feature.extractor.CleartkExtractor.LastCovered;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Ngram;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Ngrams;
 import org.cleartk.classifier.feature.extractor.CleartkExtractor.Preceding;
-import org.cleartk.test.DefaultTestBase;
-import org.cleartk.type.test.Chunk;
-import org.cleartk.type.test.Sentence;
-import org.cleartk.type.test.Token;
+import org.cleartk.test.util.DefaultTestBase;
+import org.cleartk.test.util.type.Chunk;
+import org.cleartk.test.util.type.Sentence;
+import org.cleartk.test.util.type.Token;
 import org.junit.Assert;
 import org.junit.Test;
 

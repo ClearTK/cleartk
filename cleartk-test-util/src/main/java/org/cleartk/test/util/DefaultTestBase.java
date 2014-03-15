@@ -1,5 +1,5 @@
-/* 
- * Copyright (c) 2012, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -22,27 +22,27 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.syntax.opennlp.parser;
+package org.cleartk.test.util;
 
-import java.util.List;
-
-import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
-
-import com.google.common.annotations.Beta;
+import org.cleartk.test.util.type.Sentence;
+import org.cleartk.test.util.type.Token;
+import org.junit.Before;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
 
 /**
  * <br>
- * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @author Philip Ogren
  */
-@Beta
-public interface OutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, PARSE_TYPE, TOP_NODE_TYPE extends Annotation> {
+public class DefaultTestBase extends CleartkTestBase {
 
-  public TOP_NODE_TYPE addParse(
-      JCas jCas,
-      PARSE_TYPE parse,
-      SENTENCE_TYPE sentence,
-      List<TOKEN_TYPE> tokens);
+  protected TokenBuilder<Token, Sentence> tokenBuilder;
 
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
+  }
 }

@@ -50,7 +50,7 @@ import org.cleartk.classifier.svmlight.rank.SvmLightRankBuilder;
 import org.cleartk.classifier.svmlight.rank.SvmLightRankDataWriter;
 import org.cleartk.classifier.util.featurevector.FeatureVector;
 import org.cleartk.classifier.util.featurevector.SparseFeatureVector;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.apache.uima.fit.factory.UimaContextFactory;

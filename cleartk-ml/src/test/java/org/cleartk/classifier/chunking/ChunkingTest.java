@@ -28,9 +28,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.uima.fit.util.JCasUtil;
-import org.cleartk.test.DefaultTestBase;
-import org.cleartk.type.test.Chunk;
-import org.cleartk.type.test.Token;
+import org.cleartk.test.util.DefaultTestBase;
+import org.cleartk.test.util.type.Chunk;
+import org.cleartk.test.util.type.Token;
 import org.junit.Assert;
 import org.junit.Test;
 

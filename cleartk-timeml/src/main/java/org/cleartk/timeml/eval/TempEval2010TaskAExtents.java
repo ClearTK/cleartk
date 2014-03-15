@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
+import org.cleartk.opennlp.tools.PosTaggerAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010GoldAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010Writer;
 import org.cleartk.timeml.time.TimeAnnotator;

@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.syntax.opennlp.parser;
+package org.cleartk.opennlp.tools.parser;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -46,7 +46,7 @@ public abstract class ParserWrapper_ImplBase<TOKEN_TYPE extends Annotation, SENT
 
   @ConfigurationParameter(
       name = PARAM_INPUT_TYPES_HELPER_CLASS_NAME,
-      defaultValue = "org.cleartk.syntax.opennlp.parser.DefaultInputTypesHelper",
+      defaultValue = "org.cleartk.opennlp.tools.parser.DefaultInputTypesHelper",
       mandatory = true)
   protected String inputTypesHelperClassName;
 

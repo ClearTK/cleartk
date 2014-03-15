@@ -41,7 +41,7 @@ import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
 import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Test;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.testing.util.HideOutput;

@@ -31,10 +31,10 @@ import java.util.Iterator;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.cleartk.test.DefaultTestBase;
-import org.cleartk.type.test.Chunk;
-import org.cleartk.type.test.NamedEntityMention;
-import org.cleartk.type.test.Sentence;
+import org.cleartk.test.util.DefaultTestBase;
+import org.cleartk.test.util.type.Chunk;
+import org.cleartk.test.util.type.NamedEntityMention;
+import org.cleartk.test.util.type.Sentence;
 import org.cleartk.util.type.Parenthetical;
 import org.junit.Test;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;

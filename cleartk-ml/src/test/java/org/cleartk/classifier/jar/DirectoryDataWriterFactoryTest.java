@@ -26,7 +26,7 @@ package org.cleartk.classifier.jar;
 import org.apache.uima.UimaContext;
 import org.apache.uima.fit.factory.UimaContextFactory;
 import org.apache.uima.fit.factory.initializable.InitializableFactory;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 

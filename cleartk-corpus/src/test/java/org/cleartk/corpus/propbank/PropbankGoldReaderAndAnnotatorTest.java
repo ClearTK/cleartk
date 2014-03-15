@@ -38,7 +38,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.corpus.penntreebank.TreebankGoldAnnotator;
 import org.cleartk.srl.type.SemanticArgument;
-import org.cleartk.test.CleartkTestBase;
+import org.cleartk.test.util.CleartkTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 

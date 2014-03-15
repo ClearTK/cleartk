@@ -41,7 +41,7 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.tksvmlight.TreeKernelSvmBooleanOutcomeClassifier;
 import org.cleartk.classifier.tksvmlight.TreeKernelSvmStringOutcomeClassifier;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

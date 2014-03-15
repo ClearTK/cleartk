@@ -29,7 +29,7 @@ import org.apache.commons.io.FileUtils;
 import org.cleartk.classifier.Instance;
 import org.cleartk.classifier.baseline.MostFrequentStringClassifierBuilder;
 import org.cleartk.classifier.baseline.MostFrequentStringDataWriter;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.apache.uima.fit.factory.UimaContextFactory;

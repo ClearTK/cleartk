@@ -1,4 +1,4 @@
-/* 
+/** 
  * Copyright (c) 2012, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,45 +21,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.opennlp.parser;
+package org.cleartk.opennlp.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.uima.jcas.JCas;
+import org.cleartk.test.util.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.apache.uima.fit.util.JCasUtil;
-
-import com.google.common.annotations.Beta;
+import org.junit.Before;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
 
 /**
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
- * 
- * @author Philip Ogren
  */
-@Beta
-public class DefaultInputTypesHelper extends InputTypesHelper<Token, Sentence> {
+public class OpennlpTestBase extends CleartkTestBase {
 
-  public List<Token> getTokens(JCas jCas, Sentence sentence) {
-    return JCasUtil.selectCovered(jCas, Token.class, sentence);
+  protected TokenBuilder<Token, Sentence> tokenBuilder;
+
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
   }
-
-  @Override
-  public String getPosTag(Token token) {
-    return token.getPos();
-  }
-
-  @Override
-  public void setPosTag(Token token, String tag) {
-    token.setPos(tag);
-  }
-
-  public List<Sentence> getSentences(JCas jCas) {
-    return new ArrayList<Sentence>(JCasUtil.select(jCas, Sentence.class));
-  }
-
 }

@@ -47,7 +47,7 @@ import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.tksvmlight.model.TreeKernel;
 import org.cleartk.classifier.tksvmlight.model.TreeKernel.ForestSumMethod;
 import org.cleartk.classifier.tksvmlight.model.TreeKernel.KernelType;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

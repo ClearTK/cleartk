@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.apache.uima.collection.CollectionReader;
 import org.cleartk.classifier.jar.JarClassifierBuilder;
-import org.cleartk.syntax.opennlp.SentenceAnnotator;
+import org.cleartk.opennlp.tools.SentenceAnnotator;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;

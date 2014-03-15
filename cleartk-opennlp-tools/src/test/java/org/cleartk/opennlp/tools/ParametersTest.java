@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.opennlp;
+package org.cleartk.opennlp.tools;
 
 import org.cleartk.test.util.ParametersTestUtil;
 import org.junit.Test;
