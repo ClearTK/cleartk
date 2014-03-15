@@ -16,22 +16,29 @@
  * with the cleartk-syntax-berkeley project or visit 
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
  */
-package org.cleartk.syntax.berkeley;
+package org.cleartk.berkeleyparser;
 
-import org.cleartk.test.util.ParametersTestUtil;
+import org.cleartk.test.util.LicenseTestUtil;
 import org.junit.Test;
 
 /**
  * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * @author Philip Ogren
+ * <p>
  */
-public class ParametersTest {
+
+public class LicenseTest {
 
   @Test
-  public void testParameterNames() throws ClassNotFoundException {
-    ParametersTestUtil.testParameterDefinitions("src/main/java");
+  public void testLicenseStatedInSource() throws Exception {
+    LicenseTestUtil.testJavaFilesGPL("src/main/java");
   }
+
+  @Test
+  public void testLicenseStatedInTestSource() throws Exception {
+    LicenseTestUtil.testJavaFilesGPL("src/test/java");
+
+  }
+
 }

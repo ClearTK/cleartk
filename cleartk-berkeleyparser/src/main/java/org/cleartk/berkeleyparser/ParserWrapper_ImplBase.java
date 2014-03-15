@@ -17,7 +17,7 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
  */
 
-package org.cleartk.syntax.berkeley;
+package org.cleartk.berkeleyparser;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -39,7 +39,7 @@ public abstract class ParserWrapper_ImplBase<TOKEN_TYPE extends Annotation, SENT
 
   @ConfigurationParameter(
 	  name = PARAM_INPUT_TYPES_HELPER_CLASS_NAME,
-      defaultValue = "org.cleartk.syntax.berkeley.DefaultInputTypesHelper",
+      defaultValue = "org.cleartk.berkeleyparser.DefaultInputTypesHelper",
       mandatory = true)
   protected String inputTypesHelperClassName;
 

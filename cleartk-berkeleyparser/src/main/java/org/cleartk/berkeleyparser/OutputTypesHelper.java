@@ -1,5 +1,5 @@
-/** 
- * Copyright (c) 2011, Regents of the University of Colorado 
+/* 
+ * Copyright (c) 2012, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * This program is free software; you can redistribute it and/or
@@ -16,29 +16,26 @@
  * with the cleartk-syntax-berkeley project or visit 
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
  */
-package org.cleartk.syntax.berkeley;
 
-import org.cleartk.test.util.LicenseTestUtil;
-import org.junit.Test;
+package org.cleartk.berkeleyparser;
+
+import java.util.List;
+
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 
 /**
  * <br>
- * Copyright (c) 2010, Regents of the University of Colorado <br>
+ * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
  */
 
-public class LicenseTest {
+public interface OutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, PARSE_TYPE, TOP_NODE_TYPE extends Annotation> {
 
-  @Test
-  public void testLicenseStatedInSource() throws Exception {
-    LicenseTestUtil.testJavaFilesGPL("src/main/java");
-  }
-
-  @Test
-  public void testLicenseStatedInTestSource() throws Exception {
-    LicenseTestUtil.testJavaFilesGPL("src/test/java");
-
-  }
+  public TOP_NODE_TYPE addParse(
+      JCas jCas,
+      PARSE_TYPE parse,
+      SENTENCE_TYPE sentence,
+      List<TOKEN_TYPE> tokens);
 
 }

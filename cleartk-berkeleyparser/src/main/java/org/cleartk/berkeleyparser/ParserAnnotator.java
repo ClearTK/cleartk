@@ -17,7 +17,7 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
  */
 
-package org.cleartk.syntax.berkeley;
+package org.cleartk.berkeleyparser;
 
 import java.io.IOException;
 import java.io.InputStream;

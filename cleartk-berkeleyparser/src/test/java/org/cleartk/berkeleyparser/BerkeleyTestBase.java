@@ -1,5 +1,5 @@
-/* 
- * Copyright (c) 2012, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * This program is free software; you can redistribute it and/or
@@ -16,43 +16,29 @@
  * with the cleartk-syntax-berkeley project or visit 
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
  */
-package org.cleartk.syntax.berkeley;
 
-import java.util.ArrayList;
-import java.util.List;
+package org.cleartk.berkeleyparser;
 
-import org.apache.uima.jcas.JCas;
+import org.cleartk.test.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.apache.uima.fit.util.JCasUtil;
+import org.junit.Before;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
 
 /**
  * <br>
- * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
  * 
  * @author Philip Ogren
  */
+public class BerkeleyTestBase extends CleartkTestBase {
 
-public class DefaultInputTypesHelper extends InputTypesHelper<Token, Sentence> {
+  protected TokenBuilder<Token, Sentence> tokenBuilder;
 
-  public List<Token> getTokens(JCas jCas, Sentence sentence) {
-    return JCasUtil.selectCovered(jCas, Token.class, sentence);
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
   }
-
-  @Override
-  public String getPosTag(Token token) {
-    return token.getPos();
-  }
-
-  @Override
-  public void setPosTag(Token token, String tag) {
-    token.setPos(tag);
-  }
-
-  public List<Sentence> getSentences(JCas jCas) {
-    return new ArrayList<Sentence>(JCasUtil.select(jCas, Sentence.class));
-  }
-
 }

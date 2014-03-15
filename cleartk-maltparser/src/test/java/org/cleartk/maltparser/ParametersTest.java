@@ -21,9 +21,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.dependency.malt;
+package org.cleartk.maltparser;
 
-import org.cleartk.test.util.LicenseTestUtil;
+import org.cleartk.test.util.ParametersTestUtil;
 import org.junit.Test;
 
 /**
@@ -31,17 +31,10 @@ import org.junit.Test;
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-public class LicenseTest {
+public class ParametersTest {
 
   @Test
-  public void testLicenseStatedInSource() throws Exception {
-    LicenseTestUtil.testJavaFiles("src/main/java");
+  public void testParameterNames() throws ClassNotFoundException {
+    ParametersTestUtil.testParameterDefinitions("src/main/java");
   }
-
-  @Test
-  public void testLicenseStatedInTestSource() throws Exception {
-    LicenseTestUtil.testJavaFiles("src/test/java");
-
-  }
-
 }

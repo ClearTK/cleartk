@@ -17,10 +17,11 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
  */
 
-package org.cleartk.syntax.berkeley;
+package org.cleartk.berkeleyparser;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.cleartk.berkeleyparser.ParserAnnotator;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.junit.Assert;

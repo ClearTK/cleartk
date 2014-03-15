@@ -16,7 +16,7 @@
  * with the cleartk-syntax-berkeley project or visit 
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
  */
-package org.cleartk.syntax.berkeley;
+package org.cleartk.berkeleyparser;
 
 import java.util.ArrayList;
 import java.util.List;
