@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.dependency.malt;
+package org.cleartk.maltparser;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -36,6 +36,7 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.cleartk.maltparser.MaltParser;
 import org.cleartk.syntax.dependency.type.DependencyNode;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.test.CleartkTestBase;
