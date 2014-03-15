@@ -65,7 +65,7 @@ import org.cleartk.classifier.libsvm.LibSvmStringOutcomeDataWriter;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.examples.type.UsenetDocument;
-import org.cleartk.syntax.opennlp.SentenceAnnotator;
+import org.cleartk.opennlp.tools.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;

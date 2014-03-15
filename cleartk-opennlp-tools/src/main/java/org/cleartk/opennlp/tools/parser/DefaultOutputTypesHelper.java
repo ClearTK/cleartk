@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.syntax.opennlp.parser;
+package org.cleartk.opennlp.tools.parser;
 
 import java.util.ArrayList;
 import java.util.List;

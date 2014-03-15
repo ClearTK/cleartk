@@ -33,7 +33,7 @@ import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
 import org.cleartk.classifier.jar.Train;
 import org.cleartk.classifier.mallet.MalletCrfStringOutcomeDataWriter;
 import org.cleartk.examples.chunking.util.MascGoldAnnotator;
-import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
+import org.cleartk.opennlp.tools.PosTaggerAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
 import org.apache.uima.fit.factory.AggregateBuilder;

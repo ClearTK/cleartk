@@ -1,4 +1,4 @@
-/*
+/** 
  * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,29 +21,29 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.opennlp;
 
-import org.cleartk.test.util.LicenseTestUtil;
-import org.junit.Test;
+package org.cleartk.opennlp.tools;
+
+import org.cleartk.test.CleartkTestBase;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Token;
+import org.junit.Before;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
 
 /**
  * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
+ * 
+ * @author Philip Ogren
  */
+public class OpennlpSyntaxTestBase extends CleartkTestBase {
 
-public class LicenseTest {
+  protected TokenBuilder<Token, Sentence> tokenBuilder;
 
-  @Test
-  public void testLicenseStatedInSource() throws Exception {
-    LicenseTestUtil.testJavaFiles("src/main/java");
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
   }
-
-  @Test
-  public void testLicenseStatedInTestSource() throws Exception {
-    LicenseTestUtil.testJavaFiles("src/test/java");
-
-  }
-
 }

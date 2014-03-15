@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.opennlp;
+package org.cleartk.opennlp.tools;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,12 +39,12 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.syntax.opennlp.parser.CasPosTagger;
-import org.cleartk.syntax.opennlp.parser.DefaultOutputTypesHelper;
-import org.cleartk.syntax.opennlp.parser.InputTypesHelper;
-import org.cleartk.syntax.opennlp.parser.OutputTypesHelper;
-import org.cleartk.syntax.opennlp.parser.Parser;
-import org.cleartk.syntax.opennlp.parser.ParserWrapper_ImplBase;
+import org.cleartk.opennlp.tools.parser.CasPosTagger;
+import org.cleartk.opennlp.tools.parser.DefaultOutputTypesHelper;
+import org.cleartk.opennlp.tools.parser.InputTypesHelper;
+import org.cleartk.opennlp.tools.parser.OutputTypesHelper;
+import org.cleartk.opennlp.tools.parser.Parser;
+import org.cleartk.opennlp.tools.parser.ParserWrapper_ImplBase;
 import org.cleartk.util.IoUtil;
 import org.cleartk.util.ParamUtil;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;

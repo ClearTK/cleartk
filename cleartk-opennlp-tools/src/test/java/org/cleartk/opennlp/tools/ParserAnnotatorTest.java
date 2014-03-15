@@ -21,7 +21,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.opennlp;
+package org.cleartk.opennlp.tools;
 
 import java.util.Collection;
 import java.util.logging.Level;
@@ -31,10 +31,11 @@ import opennlp.tools.cmdline.CLI;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.cleartk.opennlp.tools.ParserAnnotator;
+import org.cleartk.opennlp.tools.parser.DefaultOutputTypesHelper;
+import org.cleartk.opennlp.tools.parser.ParserWrapper_ImplBase;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.syntax.opennlp.parser.DefaultOutputTypesHelper;
-import org.cleartk.syntax.opennlp.parser.ParserWrapper_ImplBase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;

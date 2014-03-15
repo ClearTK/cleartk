@@ -1,4 +1,4 @@
-/** 
+/* 
  * Copyright (c) 2012, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,26 +21,35 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.opennlp;
+package org.cleartk.opennlp.tools.parser;
 
-import org.cleartk.test.CleartkTestBase;
-import org.cleartk.token.type.Sentence;
-import org.cleartk.token.type.Token;
-import org.junit.Before;
-import org.apache.uima.fit.testing.factory.TokenBuilder;
+import java.util.List;
+
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
+
+import com.google.common.annotations.Beta;
 
 /**
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
+ * <p>
+ * 
+ * InputTypesHelper allows constituent wrappers to abstract away the input token and sentence types
+ * that it expects. The default implementation uses the ClearTK token and sentence types, but by
+ * extending this class you could specify your own input types from your type system.
+ * 
+ * @author Philip Ogren
  */
-public class OpennlpTestBase extends CleartkTestBase {
+@Beta
+public abstract class InputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> {
+  public abstract List<TOKEN_TYPE> getTokens(JCas jCas, SENTENCE_TYPE sentence);
 
-  protected TokenBuilder<Token, Sentence> tokenBuilder;
+  public abstract List<SENTENCE_TYPE> getSentences(JCas jCas);
 
-  @Before
-  public void setUp() throws Exception {
-    super.setUp();
-    tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
-  }
+  public abstract String getPosTag(TOKEN_TYPE token);
+
+  public abstract void setPosTag(TOKEN_TYPE token, String tag);
+
 }

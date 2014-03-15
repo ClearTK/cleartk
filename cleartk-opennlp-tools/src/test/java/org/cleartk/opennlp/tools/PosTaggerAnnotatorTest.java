@@ -1,5 +1,5 @@
-/* 
- * Copyright (c) 2012, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2007-2008, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,45 +21,43 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.opennlp.parser;
+package org.cleartk.opennlp.tools;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import org.apache.uima.jcas.JCas;
-import org.cleartk.token.type.Sentence;
+import org.apache.uima.UIMAException;
+import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.cleartk.opennlp.tools.PosTaggerAnnotator;
 import org.cleartk.token.type.Token;
+import org.junit.Assert;
+import org.junit.Test;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.util.JCasUtil;
-
-import com.google.common.annotations.Beta;
 
 /**
  * <br>
- * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
- * 
- * @author Philip Ogren
  */
-@Beta
-public class DefaultInputTypesHelper extends InputTypesHelper<Token, Sentence> {
+public class PosTaggerAnnotatorTest extends OpennlpSyntaxTestBase {
 
-  public List<Token> getTokens(JCas jCas, Sentence sentence) {
-    return JCasUtil.selectCovered(jCas, Token.class, sentence);
+  @Test
+  public void testSimple() throws UIMAException {
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(PosTaggerAnnotator.getDescription());
+    tokenBuilder.buildTokens(
+        jCas,
+        "The brown fox jumped quickly over the lazy dog.",
+        "The brown fox jumped quickly over the lazy dog .");
+    engine.process(jCas);
+
+    List<String> expected = Arrays.asList("DT JJ NN VBD RB IN DT JJ NN .".split(" "));
+    List<String> actual = new ArrayList<String>();
+    for (Token token : JCasUtil.select(jCas, Token.class)) {
+      actual.add(token.getPos());
+    }
+    Assert.assertEquals(expected, actual);
+
   }
-
-  @Override
-  public String getPosTag(Token token) {
-    return token.getPos();
-  }
-
-  @Override
-  public void setPosTag(Token token, String tag) {
-    token.setPos(tag);
-  }
-
-  public List<Sentence> getSentences(JCas jCas) {
-    return new ArrayList<Sentence>(JCasUtil.select(jCas, Sentence.class));
-  }
-
 }

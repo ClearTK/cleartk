@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2007-2008, Regents of the University of Colorado 
+ * Copyright (c) 2012, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,42 +21,45 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.syntax.opennlp;
+package org.cleartk.opennlp.tools;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import opennlp.uima.postag.POSModelResourceImpl;
 
-import org.apache.uima.UIMAException;
-import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.junit.Assert;
-import org.junit.Test;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.fit.factory.ExternalResourceFactory;
+
+import com.google.common.annotations.Beta;
 
 /**
+ * An OpenNLP {@link opennlp.tools.postag.POSTagger} that uses the ClearTK type system.
+ * 
  * <br>
- * Copyright (c) 2007-2008, Regents of the University of Colorado <br>
+ * Copyright (c) 2012, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @author Steven Bethard
  */
-public class PosTaggerAnnotatorTest extends OpennlpSyntaxTestBase {
-
-  @Test
-  public void testSimple() throws UIMAException {
-    AnalysisEngine engine = AnalysisEngineFactory.createEngine(PosTaggerAnnotator.getDescription());
-    tokenBuilder.buildTokens(
-        jCas,
-        "The brown fox jumped quickly over the lazy dog.",
-        "The brown fox jumped quickly over the lazy dog .");
-    engine.process(jCas);
-
-    List<String> expected = Arrays.asList("DT JJ NN VBD RB IN DT JJ NN .".split(" "));
-    List<String> actual = new ArrayList<String>();
-    for (Token token : JCasUtil.select(jCas, Token.class)) {
-      actual.add(token.getPos());
-    }
-    Assert.assertEquals(expected, actual);
-
+@Beta
+public class PosTagger {
+  public static AnalysisEngineDescription getDescription(String languageCode)
+      throws ResourceInitializationException {
+    String modelPath = String.format("/models/%s-pos-maxent.bin", languageCode);
+    return AnalysisEngineFactory.createEngineDescription(
+        opennlp.uima.postag.POSTagger.class,
+        opennlp.uima.util.UimaUtil.MODEL_PARAMETER,
+        ExternalResourceFactory.createExternalResourceDescription(
+            POSModelResourceImpl.class,
+            PosTagger.class.getResource(modelPath).toString()),
+        opennlp.uima.util.UimaUtil.SENTENCE_TYPE_PARAMETER,
+        Sentence.class.getName(),
+        opennlp.uima.util.UimaUtil.TOKEN_TYPE_PARAMETER,
+        Token.class.getName(),
+        opennlp.uima.util.UimaUtil.POS_FEATURE_PARAMETER,
+        "pos");
   }
+
 }

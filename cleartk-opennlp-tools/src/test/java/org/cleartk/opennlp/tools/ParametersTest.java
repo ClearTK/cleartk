@@ -1,5 +1,5 @@
-/* 
- * Copyright (c) 2012, Regents of the University of Colorado 
+/*
+ * Copyright (c) 2010, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,28 +21,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
+package org.cleartk.opennlp.tools;
 
-package org.cleartk.syntax.opennlp.parser;
-
-import java.util.List;
-
-import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
-
-import com.google.common.annotations.Beta;
+import org.cleartk.test.util.ParametersTestUtil;
+import org.junit.Test;
 
 /**
  * <br>
- * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @author Philip Ogren
  */
-@Beta
-public interface OutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, PARSE_TYPE, TOP_NODE_TYPE extends Annotation> {
+public class ParametersTest {
 
-  public TOP_NODE_TYPE addParse(
-      JCas jCas,
-      PARSE_TYPE parse,
-      SENTENCE_TYPE sentence,
-      List<TOKEN_TYPE> tokens);
-
+  @Test
+  public void testParameterNames() throws ClassNotFoundException {
+    ParametersTestUtil.testParameterDefinitions("src/main/java");
+  }
 }
