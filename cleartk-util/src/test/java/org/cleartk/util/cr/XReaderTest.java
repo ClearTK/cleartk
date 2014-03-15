@@ -139,8 +139,11 @@ public class XReaderTest extends DefaultTestBase {
 
   }
 
+  // last time I ran this, I had to comment out a couple of lines in CleartkTestBase that
+  // set up the temp output directory.
   public static void main(String[] args) throws Exception {
     XReaderTest xrt = new XReaderTest();
+    xrt.setUp();
     xrt.buildTestXmiFiles();
   }
 

@@ -1,1 +1,1 @@
-classpath*:org/cleartk/type/test/TestTypeSystem.xml
+classpath*:org/cleartk/test/util/type/TestTypeSystem.xml
