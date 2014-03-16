@@ -31,10 +31,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.uima.jcas.JCas;
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
+import org.cleartk.ml.Feature;
+import org.cleartk.ml.feature.extractor.CleartkExtractorException;
+import org.cleartk.ml.feature.extractor.CoveredTextExtractor;
+import org.cleartk.ml.feature.extractor.NamedFeatureExtractor1;
 import org.cleartk.token.type.Token;
 
 /**

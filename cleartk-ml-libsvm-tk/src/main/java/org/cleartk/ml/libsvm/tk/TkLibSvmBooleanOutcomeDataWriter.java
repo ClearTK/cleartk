@@ -26,7 +26,7 @@ package org.cleartk.ml.libsvm.tk;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import org.cleartk.classifier.tksvmlight.TreeKernelSvmBooleanOutcomeDataWriter;
+import org.cleartk.ml.tksvmlight.TreeKernelSvmBooleanOutcomeDataWriter;
 
 /**
  * The data writer for tree kernel svm light.

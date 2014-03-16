@@ -31,7 +31,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import org.cleartk.classifier.Feature;
+import org.cleartk.ml.Feature;
 
 import com.google.common.annotations.Beta;
 

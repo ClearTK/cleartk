@@ -27,9 +27,9 @@ package org.cleartk.summarization.classifier;
 import java.util.List;
 import java.util.Map;
 
-import org.cleartk.classifier.Classifier;
-import org.cleartk.classifier.CleartkProcessingException;
-import org.cleartk.classifier.Feature;
+import org.cleartk.ml.Classifier;
+import org.cleartk.ml.CleartkProcessingException;
+import org.cleartk.ml.Feature;
 import org.cleartk.summarization.SummarizationModel_ImplBase;
 
 import com.google.common.annotations.Beta;

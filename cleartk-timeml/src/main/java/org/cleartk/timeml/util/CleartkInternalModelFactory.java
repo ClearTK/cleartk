@@ -29,13 +29,13 @@ import java.util.MissingResourceException;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.SequenceDataWriter;
-import org.cleartk.classifier.jar.DefaultDataWriterFactory;
-import org.cleartk.classifier.jar.DefaultSequenceDataWriterFactory;
-import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
-import org.cleartk.classifier.jar.GenericJarClassifierFactory;
-import org.cleartk.classifier.jar.JarClassifierBuilder;
+import org.cleartk.ml.DataWriter;
+import org.cleartk.ml.SequenceDataWriter;
+import org.cleartk.ml.jar.DefaultDataWriterFactory;
+import org.cleartk.ml.jar.DefaultSequenceDataWriterFactory;
+import org.cleartk.ml.jar.DirectoryDataWriterFactory;
+import org.cleartk.ml.jar.GenericJarClassifierFactory;
+import org.cleartk.ml.jar.JarClassifierBuilder;
 import org.apache.uima.fit.factory.ResourceCreationSpecifierFactory;
 
 /**

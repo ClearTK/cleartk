@@ -27,11 +27,11 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.uima.collection.CollectionReader;
-import org.cleartk.classifier.jar.DefaultDataWriterFactory;
-import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
-import org.cleartk.classifier.jar.JarClassifierBuilder;
-import org.cleartk.classifier.libsvm.LibSvmStringOutcomeDataWriter;
 import org.cleartk.examples.documentclassification.advanced.GoldDocumentCategoryAnnotator;
+import org.cleartk.ml.jar.DefaultDataWriterFactory;
+import org.cleartk.ml.jar.DirectoryDataWriterFactory;
+import org.cleartk.ml.jar.JarClassifierBuilder;
+import org.cleartk.ml.libsvm.LibSvmStringOutcomeDataWriter;
 import org.cleartk.opennlp.tools.SentenceAnnotator;
 import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
