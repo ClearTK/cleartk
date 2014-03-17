@@ -144,7 +144,47 @@ In ClearTK 1.2, we simplified this abstraction, resulting in a single evaluation
 \item Train a model given a \code{CollectionReader}
 \item Test a model given a \code{CollectionReader}
 \end{enumerate}
+A partial example of such an evaluation class is shown in \Cref{fig:evaluation-code}.
 In exchange for some duplication (e.g. if training and testing used the same preprocessing) developers are rewarded with more interpretable, self-contained pictures of the training and testing pipelines.
+\begin{figure*}
+\begin{lstlisting}
+public class EvaluateNamedEntityChunker extends
+    Evaluation_ImplBase<File, AnnotationStatistics<String>> {
+
+  ...
+  protected CollectionReader getCollectionReader(List<File> files) throws Exception {
+    return CollectionReaderFactory.createReader(UriCollectionReader.getDescriptionFromFiles(files));
+  }
+  ...
+  public void train(CollectionReader collectionReader, File outputDirectory) throws Exception {
+    // assemble the training pipeline
+    AggregateBuilder aggregate = new AggregateBuilder();
+    // an annotator that loads the text from the training file URIs
+    aggregate.add(UriToDocumentTextAnnotator.getDescription());
+    // an annotator that parses and loads MASC named entity annotations (and tokens)
+    aggregate.add(MascGoldAnnotator.getDescription());
+    // an annotator that adds part-of-speech tags
+    aggregate.add(PosTaggerAnnotator.getDescription());
+    // our NamedEntityChunker annotator, configured to write Mallet CRF training data
+    aggregate.add(AnalysisEngineFactory.createEngineDescription(
+        NamedEntityChunker.class,
+        CleartkSequenceAnnotator.PARAM_IS_TRAINING,
+        true,
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        outputDirectory,
+        DefaultSequenceDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        MalletCrfStringOutcomeDataWriter.class));
+    // run the pipeline over the training corpus
+    SimplePipeline.runPipeline(collectionReader, aggregate.createAggregateDescription());
+    // train a Mallet CRF model on the training data
+    Train.main(outputDirectory);
+  }
+  ...
+}
+\end{lstlisting}
+\caption{The \code{getCollectionReader} and \code{train} methods of a ClearTK evaluation class}
+\label{fig:evaluation-code}
+\end{figure*}
 
 Feature transformation (e.g. normalizing feature values to z-scores or scaling term counts by inverse document frequency) is another example of structuring concerns around pipelines.
 In early versions of ClearTK, these kinds of transformations required running a specialized pipeline separately before the real pipeline to collect the sufficient statistics.
@@ -170,6 +210,7 @@ The solution to this problem is to view these TreeBank and TimeML readers not as
 ClearTK now recommends only one \code{CollectionReader}, \code{URICollectionReader}, which does nothing more than create a \code{JCas} containing the source's Uniform Resource Identifier (URI).
 Reading the text or annotations over the text is the responsibility of subsequent annotators.
 This approach to developing readers has several advantages, including more parallizable pipelines (which UIMA-AS can take advantage of) and added accessibility by leveraging users' existing familiarity with UIMA annotators.
+\Cref{fig:evaluation-code} shows an example usage of \code{URICollectionReader}.
 
 
 \section{Code should be type system agnostic}
