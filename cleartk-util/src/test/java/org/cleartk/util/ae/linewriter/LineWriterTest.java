@@ -403,6 +403,7 @@ public class LineWriterTest extends DefaultTestBase {
     String spacedTokens = "What if we built a large , wooden badger ?\nHmm? ";
     tokenBuilder.buildTokens(jCas, "What if we built\na large, wooden badger? Hmm?", spacedTokens);
     ViewUriUtil.setURI(jCas, new File("identifier").toURI());
+
     engine.process(jCas);
     engine.collectionProcessComplete();
 
