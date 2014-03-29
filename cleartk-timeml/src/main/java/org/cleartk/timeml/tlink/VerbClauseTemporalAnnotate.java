@@ -33,7 +33,7 @@ import org.cleartk.opennlp.tools.ParserAnnotator;
 import org.cleartk.opennlp.tools.PosTaggerAnnotator;
 import org.cleartk.opennlp.tools.SentenceAnnotator;
 import org.cleartk.corpus.timeml.TempEval2007Writer;
-import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
+import org.cleartk.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;

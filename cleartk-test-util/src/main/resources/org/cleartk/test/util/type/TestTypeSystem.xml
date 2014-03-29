@@ -172,5 +172,11 @@ POSSIBILITY OF SUCH DAMAGE.</description>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
+        <typeDescription>
+      <name>org.cleartk.test.util.type.Parenthetical</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+    </typeDescription>
+    
   </types>
 </typeSystemDescription>

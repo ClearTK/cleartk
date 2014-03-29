@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011, Regents of the University of Colorado 
+ * Copyright (c) 2013, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,59 +21,60 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.eval;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.cleartk.opennlp.tools.PosTaggerAnnotator;
-import org.cleartk.corpus.timeml.TempEval2010GoldAnnotator;
-import org.cleartk.corpus.timeml.TempEval2010Writer;
-import org.cleartk.snowball.DefaultSnowballStemmer;
-import org.cleartk.timeml.time.TimeAnnotator;
-import org.cleartk.timeml.type.Time;
+package org.cleartk.ml.opennlp.maxent.encoder;
 
 /**
- * TempEval 2010 task A: time extents
- * 
- * Best reported token-level scores in TempEval 2010:
- * <ul>
- * <li>precision: 0.92</li>
- * <li>recall: 0.91</li>
- * <li>F1: 0.86</li>
- * </ul>
+ * A class that holds the String[] and float[] that represent features in OpenNLP Maxent.
  * 
  * <br>
- * Copyright (c) 2011, Regents of the University of Colorado <br>
+ * Copyright (c) 2013, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
  * @author Steven Bethard
  */
-public class TempEval2010TaskAExtents extends TempEval2010Main {
+public class ContextValues {
 
-  public static void main(String[] args) throws Exception {
-    new TempEval2010TaskAExtents().runMain(args);
+  private int size;
+
+  private String[] context;
+
+  private float[] values;
+
+  public ContextValues(String[] context, float[] values) {
+    if (context.length != values.length) {
+      throw new IllegalArgumentException(String.format(
+          "invalid lengths: %s != %s",
+          context.length,
+          values.length));
+    }
+    this.size = context.length;
+    this.context = context;
+    this.values = values;
   }
 
-  @Override
-  protected TempEval2010Evaluation getEvaluation(File trainDir, File testDir, File outputDir)
-      throws Exception {
+  public String[] getContext() {
+    return context;
+  }
 
-    List<ModelInfo<Time>> infos = new ArrayList<ModelInfo<Time>>();
-    infos.add(new TimeModelInfo(null, TimeAnnotator.FACTORY));
+  public float[] getValues() {
+    return values;
+  }
 
-    return new TempEval2010Evaluation(
-        trainDir,
-        testDir,
-        outputDir,
-        Arrays.asList(TempEval2010GoldAnnotator.PARAM_TEXT_VIEWS),
-        TempEval2010GoldAnnotator.PARAM_TIME_EXTENT_VIEWS,
-        TempEval2010Writer.PARAM_TIME_EXTENT_VIEW,
-        Arrays.asList(
-            DefaultSnowballStemmer.getDescription("English"),
-            PosTaggerAnnotator.getDescription()),
-        infos);
+  public String toMaxentString() {
+    StringBuilder builder = new StringBuilder();
+    if (this.size == 0) {
+      builder.append("null=0.0");
+    }
+    for (int i = 0; i < this.size; ++i) {
+      if (i > 0) {
+        builder.append(' ');
+      }
+      if (this.values[i] == 1.0f) {
+        builder.append(this.context[i]);
+      } else {
+        builder.append(this.context[i]).append('=').append(this.values[i]);
+      }
+    }
+    return builder.toString();
   }
 }

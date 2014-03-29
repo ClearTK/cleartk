@@ -1,4 +1,4 @@
-/*
+/** 
  * Copyright (c) 2011, Regents of the University of Colorado 
  * All rights reserved.
  * 
@@ -21,59 +21,28 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.timeml.eval;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+package org.cleartk.test.util;
 
-import org.cleartk.opennlp.tools.PosTaggerAnnotator;
-import org.cleartk.corpus.timeml.TempEval2010GoldAnnotator;
-import org.cleartk.corpus.timeml.TempEval2010Writer;
-import org.cleartk.snowball.DefaultSnowballStemmer;
-import org.cleartk.timeml.time.TimeAnnotator;
-import org.cleartk.timeml.type.Time;
+import org.cleartk.test.util.DefaultTestBase;
+import org.cleartk.test.util.TypeTestUtil;
+import org.junit.Test;
 
 /**
- * TempEval 2010 task A: time extents
- * 
- * Best reported token-level scores in TempEval 2010:
- * <ul>
- * <li>precision: 0.92</li>
- * <li>recall: 0.91</li>
- * <li>F1: 0.86</li>
- * </ul>
- * 
  * <br>
- * Copyright (c) 2011, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2011, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * @author Steven Bethard
+ * 
+ * @author Philip Ogren
  */
-public class TempEval2010TaskAExtents extends TempEval2010Main {
 
-  public static void main(String[] args) throws Exception {
-    new TempEval2010TaskAExtents().runMain(args);
+public class TypeSystemTest extends DefaultTestBase {
+
+  @Test
+  public void testTypeSystem() throws Exception {
+
+    TypeTestUtil.testTypeSystem(jCas);
   }
 
-  @Override
-  protected TempEval2010Evaluation getEvaluation(File trainDir, File testDir, File outputDir)
-      throws Exception {
-
-    List<ModelInfo<Time>> infos = new ArrayList<ModelInfo<Time>>();
-    infos.add(new TimeModelInfo(null, TimeAnnotator.FACTORY));
-
-    return new TempEval2010Evaluation(
-        trainDir,
-        testDir,
-        outputDir,
-        Arrays.asList(TempEval2010GoldAnnotator.PARAM_TEXT_VIEWS),
-        TempEval2010GoldAnnotator.PARAM_TIME_EXTENT_VIEWS,
-        TempEval2010Writer.PARAM_TIME_EXTENT_VIEW,
-        Arrays.asList(
-            DefaultSnowballStemmer.getDescription("English"),
-            PosTaggerAnnotator.getDescription()),
-        infos);
-  }
 }

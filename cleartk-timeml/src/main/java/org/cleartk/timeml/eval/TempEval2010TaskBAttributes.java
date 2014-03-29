@@ -31,13 +31,13 @@ import java.util.List;
 import org.cleartk.opennlp.tools.PosTaggerAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010GoldAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010Writer;
+import org.cleartk.snowball.DefaultSnowballStemmer;
 import org.cleartk.timeml.event.EventAspectAnnotator;
 import org.cleartk.timeml.event.EventClassAnnotator;
 import org.cleartk.timeml.event.EventModalityAnnotator;
 import org.cleartk.timeml.event.EventPolarityAnnotator;
 import org.cleartk.timeml.event.EventTenseAnnotator;
 import org.cleartk.timeml.type.Event;
-import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 
 /**
  * TempEval 2010 task B: event attributes

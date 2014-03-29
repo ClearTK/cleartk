@@ -66,7 +66,7 @@ import org.cleartk.ml.jar.GenericJarClassifierFactory;
 import org.cleartk.ml.jar.JarClassifierBuilder;
 import org.cleartk.ml.libsvm.LibSvmStringOutcomeDataWriter;
 import org.cleartk.opennlp.tools.SentenceAnnotator;
-import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
+import org.cleartk.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;

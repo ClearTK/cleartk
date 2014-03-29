@@ -32,9 +32,9 @@ import org.cleartk.opennlp.tools.ParserAnnotator;
 import org.cleartk.opennlp.tools.PosTaggerAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010GoldAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010Writer;
+import org.cleartk.snowball.DefaultSnowballStemmer;
 import org.cleartk.timeml.tlink.TemporalLinkMainEventToNextSentenceMainEventAnnotator;
 import org.cleartk.timeml.type.TemporalLink;
-import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 
 /**
  * TempEval 2010 task E: main event to next sentence main event

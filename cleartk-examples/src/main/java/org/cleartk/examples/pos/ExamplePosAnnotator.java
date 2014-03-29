@@ -49,7 +49,7 @@ import org.cleartk.ml.feature.function.CharacterNgramFeatureFunction.Orientation
 import org.cleartk.ml.jar.DefaultDataWriterFactory;
 import org.cleartk.ml.jar.DirectoryDataWriterFactory;
 import org.cleartk.ml.jar.GenericJarClassifierFactory;
-import org.cleartk.ml.opennlp.MaxentStringOutcomeDataWriter;
+import org.cleartk.ml.opennlp.maxent.MaxentStringOutcomeDataWriter;
 import org.cleartk.ml.viterbi.DefaultOutcomeFeatureExtractor;
 import org.cleartk.ml.viterbi.ViterbiDataWriterFactory;
 import org.cleartk.token.type.Sentence;

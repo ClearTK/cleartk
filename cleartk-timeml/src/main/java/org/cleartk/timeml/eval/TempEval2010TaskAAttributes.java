@@ -31,9 +31,9 @@ import java.util.List;
 import org.cleartk.opennlp.tools.PosTaggerAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010GoldAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010Writer;
+import org.cleartk.snowball.DefaultSnowballStemmer;
 import org.cleartk.timeml.time.TimeTypeAnnotator;
 import org.cleartk.timeml.type.Time;
-import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 
 /**
  * TempEval 2010 task A: time attributes
