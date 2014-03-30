@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Regents of the University of Colorado 
+ * Copyright (c) 2014, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -40,8 +40,10 @@ import com.google.common.annotations.Beta;
  * This is a simple annotator for writing out XMI files, used by the parsing examples.
  * 
  * <br>
- * Copyright (c) 2013, Regents of the University of Colorado <br>
+ * Copyright (c) 2014, Regents of the University of Colorado <br>
  * All rights reserved.
+ * 
+ * @author Philip Ogren
  */
 
 @Beta
