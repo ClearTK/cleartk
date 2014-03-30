@@ -38,8 +38,8 @@ import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.corpus.penntreebank.TreebankGoldAnnotator;
 import org.cleartk.eval.EvaluationConstants;
-import org.cleartk.examples.XmiWriter;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
+import org.cleartk.util.ae.XmiWriter;
 import org.cleartk.util.cr.UriCollectionReader;
 
 import com.lexicalscope.jewel.cli.CliFactory;

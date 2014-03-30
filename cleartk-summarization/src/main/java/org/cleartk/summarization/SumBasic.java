@@ -26,19 +26,20 @@ package org.cleartk.summarization;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
-import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.util.XMLSerializer;
 import org.cleartk.ml.CleartkAnnotator;
 import org.cleartk.ml.jar.DefaultDataWriterFactory;
 import org.cleartk.ml.jar.DirectoryDataWriterFactory;
@@ -53,12 +54,8 @@ import org.cleartk.summarization.classifier.SumBasicDataWriter;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ViewUriUtil;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
+import org.cleartk.util.ae.XmiWriter;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
-import org.apache.uima.fit.descriptor.ConfigurationParameter;
-import org.apache.uima.fit.factory.AggregateBuilder;
-import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.xml.sax.SAXException;
 
 import com.google.common.annotations.Beta;
@@ -190,8 +187,8 @@ public class SumBasic extends Summarize_ImplBase<File> {
 
     // Save off xmis for re-reading
     builder.add(AnalysisEngineFactory.createEngineDescription(
-        XMIWriter.class,
-        XMIAnnotator.PARAM_XMI_DIRECTORY,
+        XmiWriter.class,
+        XmiWriter.PARAM_OUTPUT_DIRECTORY,
         xmiDirectory.getPath()));
 
     return builder;
@@ -202,7 +199,7 @@ public class SumBasic extends Summarize_ImplBase<File> {
 
     builder.add(AnalysisEngineFactory.createEngineDescription(
         XMIReader.class,
-        XMIAnnotator.PARAM_XMI_DIRECTORY,
+        XMIReader.PARAM_XMI_DIRECTORY,
         this.xmiDirectory));
 
     // This will extract the features for summarization
@@ -312,9 +309,7 @@ public class SumBasic extends Summarize_ImplBase<File> {
     summarizer.extract();
   }
 
-  // Following XMI readers and writers are used to save re-running the proprocessing during
-  // summarization extraction.
-  public static abstract class XMIAnnotator extends JCasAnnotator_ImplBase {
+  public static class XMIReader extends JCasAnnotator_ImplBase {
 
     @ConfigurationParameter(name = PARAM_XMI_DIRECTORY, mandatory = true)
     protected File xmiDirectory;
@@ -328,44 +323,12 @@ public class SumBasic extends Summarize_ImplBase<File> {
       return new File(this.xmiDirectory, xmi + ".xmi");
     }
 
-  }
-
-  public static class XMIReader extends XMIAnnotator {
-
     @Override
     public void process(JCas jCas) throws AnalysisEngineProcessException {
       try {
         FileInputStream stream = new FileInputStream(this.getFile(jCas));
         try {
           XmiCasDeserializer.deserialize(stream, jCas.getCas());
-        } finally {
-          stream.close();
-        }
-      } catch (SAXException e) {
-        throw new AnalysisEngineProcessException(e);
-      } catch (IOException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-  }
-
-  public static class XMIWriter extends XMIAnnotator {
-
-    @Override
-    public void initialize(UimaContext context) throws ResourceInitializationException {
-      super.initialize(context);
-      if (!this.xmiDirectory.exists()) {
-        this.xmiDirectory.mkdirs();
-      }
-    }
-
-    @Override
-    public void process(JCas jCas) throws AnalysisEngineProcessException {
-      XmiCasSerializer ser = new XmiCasSerializer(jCas.getTypeSystem());
-      try {
-        FileOutputStream stream = new FileOutputStream(this.getFile(jCas));
-        try {
-          ser.serialize(jCas.getCas(), new XMLSerializer(stream, false).getContentHandler());
         } finally {
           stream.close();
         }

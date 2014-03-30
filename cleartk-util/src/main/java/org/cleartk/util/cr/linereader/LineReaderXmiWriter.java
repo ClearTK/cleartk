@@ -21,20 +21,20 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.examples;
+package org.cleartk.util.cr.linereader;
 
 import java.io.File;
-import java.io.IOException;
+import java.net.URI;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
-import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.apache.uima.fit.util.CasIOUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.ViewUriUtil;
+import org.cleartk.util.ae.XmiWriter;
+
+import com.google.common.annotations.Beta;
 
 /**
  * This is a simple annotator for writing out XMI files, used by the parsing examples.
@@ -43,32 +43,23 @@ import org.cleartk.util.ViewUriUtil;
  * Copyright (c) 2013, Regents of the University of Colorado <br>
  * All rights reserved.
  */
-public class XmiWriter extends JCasAnnotator_ImplBase {
+
+@Beta
+public class LineReaderXmiWriter extends XmiWriter {
 
   public static AnalysisEngineDescription getDescription(File outputDirectory)
       throws ResourceInitializationException {
     return AnalysisEngineFactory.createEngineDescription(
-        XmiWriter.class,
+        LineReaderXmiWriter.class,
         XmiWriter.PARAM_OUTPUT_DIRECTORY,
         outputDirectory);
   }
 
-  public static final String PARAM_OUTPUT_DIRECTORY = "outputDirectory";
-
-  @ConfigurationParameter(name = PARAM_OUTPUT_DIRECTORY)
-  private File outputDirectory;
-
-  @Override
-  public void process(JCas jCas) throws AnalysisEngineProcessException {
-    try {
-      CasIOUtil.writeXmi(jCas, this.getOutputFile(this.outputDirectory, jCas));
-    } catch (IOException e) {
-      throw new AnalysisEngineProcessException(e);
-    }
+  protected File getXmiFile(JCas jCas) throws AnalysisEngineProcessException {
+    URI uri = ViewUriUtil.getURI(jCas);
+    String fileName = uri.toString();
+    fileName = fileName.substring(fileName.lastIndexOf('/'));
+    fileName = fileName.replace('#', '.');
+    return new File(this.outputDirectory, fileName + ".xmi");
   }
-
-  protected File getOutputFile(File dir, JCas jCas) throws AnalysisEngineProcessException {
-    return new File(dir, new File(ViewUriUtil.getURI(jCas)).getName());
-  }
-
 }

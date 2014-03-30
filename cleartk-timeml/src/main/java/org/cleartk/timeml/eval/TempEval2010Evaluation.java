@@ -25,7 +25,6 @@ package org.cleartk.timeml.eval;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,13 +34,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
-import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.collection.CollectionReader;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
@@ -50,8 +47,6 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.pipeline.JCasIterator;
 import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.util.XMLSerializer;
 import org.cleartk.corpus.timeml.TempEval2010CollectionReader;
 import org.cleartk.corpus.timeml.TempEval2010GoldAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010Writer;
@@ -59,6 +54,7 @@ import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
 import org.cleartk.ml.jar.JarClassifierBuilder;
 import org.cleartk.util.ViewUriUtil;
+import org.cleartk.util.ae.XmiWriter;
 import org.xml.sax.SAXException;
 
 /**
@@ -125,7 +121,7 @@ public class TempEval2010Evaluation extends
     AggregateBuilder builder = new AggregateBuilder();
     builder.add(AnalysisEngineFactory.createEngineDescription(
         XMIReader.class,
-        XMIAnnotator.PARAM_XMI_DIRECTORY,
+        XMIReader.PARAM_XMI_DIRECTORY,
         this.getXMIDirectory(directory, Stage.TRAIN).getPath()));
     for (ModelInfo<?> modelInfo : this.modelInfos) {
       File outputDir = modelInfo.getModelSubdirectory(directory);
@@ -161,7 +157,7 @@ public class TempEval2010Evaluation extends
     AggregateBuilder builder = new AggregateBuilder();
     builder.add(AnalysisEngineFactory.createEngineDescription(
         XMIReader.class,
-        XMIAnnotator.PARAM_XMI_DIRECTORY,
+        XMIReader.PARAM_XMI_DIRECTORY,
         this.getXMIDirectory(directory, Stage.TEST).getPath()));
     for (ModelInfo<?> modelInfo : this.modelInfos) {
       File modelFile = JarClassifierBuilder.getModelJarFile(modelInfo.getModelSubdirectory(directory));
@@ -271,8 +267,8 @@ public class TempEval2010Evaluation extends
         builder.add(desc);
       }
       builder.add(AnalysisEngineFactory.createEngineDescription(
-          XMIWriter.class,
-          XMIAnnotator.PARAM_XMI_DIRECTORY,
+          XmiWriter.class,
+          XmiWriter.PARAM_OUTPUT_DIRECTORY,
           xmiDirectory.getPath()));
       SimplePipeline.runPipeline(reader, builder.createAggregateDescription());
     }
@@ -280,7 +276,7 @@ public class TempEval2010Evaluation extends
     return xmiDirectory;
   }
 
-  public static abstract class XMIAnnotator extends JCasAnnotator_ImplBase {
+  public static class XMIReader extends JCasAnnotator_ImplBase {
 
     @ConfigurationParameter(
         name = PARAM_XMI_DIRECTORY,
@@ -292,11 +288,6 @@ public class TempEval2010Evaluation extends
     protected File getFile(JCas jCas) throws AnalysisEngineProcessException {
       return new File(this.xmiDirectory, ViewUriUtil.getURI(jCas).getFragment() + ".xmi");
     }
-
-  }
-
-  public static class XMIReader extends XMIAnnotator {
-
     @Override
     public void process(JCas jCas) throws AnalysisEngineProcessException {
       try {
@@ -314,31 +305,4 @@ public class TempEval2010Evaluation extends
     }
   }
 
-  public static class XMIWriter extends XMIAnnotator {
-
-    @Override
-    public void initialize(UimaContext context) throws ResourceInitializationException {
-      super.initialize(context);
-      if (!this.xmiDirectory.exists()) {
-        this.xmiDirectory.mkdirs();
-      }
-    }
-
-    @Override
-    public void process(JCas jCas) throws AnalysisEngineProcessException {
-      XmiCasSerializer ser = new XmiCasSerializer(jCas.getTypeSystem());
-      try {
-        FileOutputStream stream = new FileOutputStream(this.getFile(jCas));
-        try {
-          ser.serialize(jCas.getCas(), new XMLSerializer(stream, false).getContentHandler());
-        } finally {
-          stream.close();
-        }
-      } catch (SAXException e) {
-        throw new AnalysisEngineProcessException(e);
-      } catch (IOException e) {
-        throw new AnalysisEngineProcessException(e);
-      }
-    }
-  }
 }
