@@ -1,7 +1,6 @@
-#Mon Jan 30 22:05:33 MST 2012
 eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
-encoding//src/main/java/org/cleartk/classifier/encoder/outcome/StringArrayToStringArrayEncoder.java=UTF-8
+encoding//src/main/java/org/cleartk/ml/encoder/outcome/StringArrayToStringArrayEncoder.java=UTF-8
 encoding//src/main/resources=UTF-8
 encoding//src/test/java=UTF-8
 encoding//src/test/resources=UTF-8

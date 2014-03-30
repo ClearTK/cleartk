@@ -36,9 +36,9 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
-import org.cleartk.test.DefaultTestBase;
-import org.cleartk.type.test.Sentence;
-import org.cleartk.type.test.Token;
+import org.cleartk.test.util.DefaultTestBase;
+import org.cleartk.test.util.type.Sentence;
+import org.cleartk.test.util.type.Token;
 import org.cleartk.util.ViewUriUtil;
 import org.cleartk.util.ae.linewriter.annotation.CoveredTextAnnotationWriter;
 import org.cleartk.util.ae.linewriter.block.BlankLineBlockWriter;
@@ -403,6 +403,7 @@ public class LineWriterTest extends DefaultTestBase {
     String spacedTokens = "What if we built a large , wooden badger ?\nHmm? ";
     tokenBuilder.buildTokens(jCas, "What if we built\na large, wooden badger? Hmm?", spacedTokens);
     ViewUriUtil.setURI(jCas, new File("identifier").toURI());
+
     engine.process(jCas);
     engine.collectionProcessComplete();
 

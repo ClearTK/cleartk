@@ -43,9 +43,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.transform.InstanceStream;
+import org.cleartk.ml.Feature;
+import org.cleartk.ml.Instance;
+import org.cleartk.ml.feature.transform.InstanceStream;
 
 import com.google.common.annotations.Beta;
 import com.google.common.base.Function;

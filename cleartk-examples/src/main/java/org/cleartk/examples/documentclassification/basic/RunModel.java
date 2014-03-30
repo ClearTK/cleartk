@@ -26,11 +26,11 @@ package org.cleartk.examples.documentclassification.basic;
 import java.io.File;
 
 import org.apache.uima.collection.CollectionReader;
-import org.cleartk.classifier.CleartkAnnotator;
-import org.cleartk.classifier.jar.GenericJarClassifierFactory;
-import org.cleartk.classifier.jar.JarClassifierBuilder;
-import org.cleartk.syntax.opennlp.SentenceAnnotator;
-import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
+import org.cleartk.ml.CleartkAnnotator;
+import org.cleartk.ml.jar.GenericJarClassifierFactory;
+import org.cleartk.ml.jar.JarClassifierBuilder;
+import org.cleartk.opennlp.tools.SentenceAnnotator;
+import org.cleartk.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;

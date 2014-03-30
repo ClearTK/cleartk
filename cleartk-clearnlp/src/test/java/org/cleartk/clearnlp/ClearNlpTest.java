@@ -36,7 +36,7 @@ import org.cleartk.srl.type.SemanticArgument;
 import org.cleartk.syntax.dependency.type.DependencyNode;
 import org.cleartk.syntax.dependency.type.DependencyRelation;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
-import org.cleartk.test.CleartkTestBase;
+import org.cleartk.test.util.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.junit.Assert;

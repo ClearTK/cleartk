@@ -37,18 +37,18 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.fit.testing.util.HideOutput;
 import org.apache.uima.pear.util.FileUtil;
-import org.cleartk.classifier.jar.DefaultDataWriterFactory;
-import org.cleartk.classifier.jar.DirectoryDataWriterFactory;
-import org.cleartk.classifier.jar.GenericJarClassifierFactory;
-import org.cleartk.classifier.jar.JarClassifierBuilder;
-import org.cleartk.classifier.libsvm.LibSvmStringOutcomeDataWriter;
-import org.cleartk.classifier.opennlp.MaxentStringOutcomeDataWriter;
-import org.cleartk.classifier.svmlight.SvmLightStringOutcomeDataWriter;
 import org.cleartk.corpus.penntreebank.PennTreebankReader;
 import org.cleartk.corpus.penntreebank.TreebankGoldAnnotator;
 import org.cleartk.examples.ExamplesTestBase;
+import org.cleartk.ml.jar.DefaultDataWriterFactory;
+import org.cleartk.ml.jar.DirectoryDataWriterFactory;
+import org.cleartk.ml.jar.GenericJarClassifierFactory;
+import org.cleartk.ml.jar.JarClassifierBuilder;
+import org.cleartk.ml.libsvm.LibSvmStringOutcomeDataWriter;
+import org.cleartk.ml.opennlp.maxent.MaxentStringOutcomeDataWriter;
+import org.cleartk.ml.svmlight.SvmLightStringOutcomeDataWriter;
+import org.cleartk.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.breakit.BreakIteratorAnnotatorFactory;
-import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.cr.FilesCollectionReader;
 import org.junit.Test;
@@ -162,7 +162,7 @@ public class NonSequenceExamplePosAnnotatorTest extends ExamplesTestBase {
     }
 
     HideOutput hider = new HideOutput();
-    org.cleartk.classifier.jar.Train.main(args);
+    org.cleartk.ml.jar.Train.main(args);
     hider.restoreOutput();
 
     AnalysisEngineDescription taggerDescription = AnalysisEngineFactory.createEngineDescription(

@@ -28,10 +28,10 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.apache.uima.jcas.JCas;
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.FeatureExtractor1;
-import org.cleartk.classifier.feature.extractor.FeatureExtractor2;
+import org.cleartk.ml.Feature;
+import org.cleartk.ml.feature.extractor.CleartkExtractorException;
+import org.cleartk.ml.feature.extractor.FeatureExtractor1;
+import org.cleartk.ml.feature.extractor.FeatureExtractor2;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 

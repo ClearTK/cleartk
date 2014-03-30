@@ -33,8 +33,8 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.testing.util.HideOutput;
 import org.apache.uima.fit.util.JCasUtil;
-import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.examples.ExamplesTestBase;
+import org.cleartk.ml.jar.JarClassifierBuilder;
 import org.cleartk.token.type.Token;
 import org.junit.Test;
 

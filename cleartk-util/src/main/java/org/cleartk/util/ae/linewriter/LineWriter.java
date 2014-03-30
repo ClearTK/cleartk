@@ -348,14 +348,11 @@ public class LineWriter<ANNOTATION_TYPE extends Annotation, BLOCK_TYPE extends A
           out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));
         }
       } else if (blockAnnotationType != null) {
-        FSIterator<Annotation> blocks = jCas.getAnnotationIndex(blockAnnotationType).iterator();
-        while (blocks.hasNext()) {
-          BLOCK_TYPE blockAnnotation = (BLOCK_TYPE) blocks.next();
+        for (Annotation block : JCasUtil.select(jCas, blockAnnotationClass)) {
+          BLOCK_TYPE blockAnnotation = (BLOCK_TYPE) block;
           out.print(blockWriter.writeBlock(jCas, blockAnnotation));
-          FSIterator<Annotation> outputAnnotations = jCas.getAnnotationIndex(outputAnnotationType).subiterator(
-              blockAnnotation);
-          while (outputAnnotations.hasNext()) {
-            ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) outputAnnotations.next();
+          for (Annotation output : JCasUtil.selectCovered(outputAnnotationClass, blockAnnotation)) {
+            ANNOTATION_TYPE outputAnnotation = (ANNOTATION_TYPE) output;
             out.println(annotationWriter.writeAnnotation(jCas, outputAnnotation));
           }
         }

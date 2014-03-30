@@ -25,13 +25,13 @@ package org.cleartk.feature.syntax;
 
 import java.util.List;
 
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.CleartkExtractorException;
-import org.cleartk.classifier.feature.extractor.CoveredTextExtractor;
-import org.cleartk.classifier.feature.extractor.TypePathExtractor;
+import org.cleartk.ml.Feature;
+import org.cleartk.ml.feature.extractor.CleartkExtractorException;
+import org.cleartk.ml.feature.extractor.CoveredTextExtractor;
+import org.cleartk.ml.feature.extractor.TypePathExtractor;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
 

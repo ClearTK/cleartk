@@ -28,13 +28,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.cleartk.syntax.opennlp.ParserAnnotator;
-import org.cleartk.syntax.opennlp.PosTaggerAnnotator;
+import org.cleartk.opennlp.tools.ParserAnnotator;
+import org.cleartk.opennlp.tools.PosTaggerAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010GoldAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010Writer;
+import org.cleartk.snowball.DefaultSnowballStemmer;
 import org.cleartk.timeml.event.EventAnnotator;
 import org.cleartk.timeml.type.Event;
-import org.cleartk.token.stem.snowball.DefaultSnowballStemmer;
 
 /**
  * TempEval 2010 task B: event extents

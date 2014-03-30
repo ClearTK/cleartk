@@ -23,8 +23,8 @@
  */
 package org.cleartk.ml.libsvm.tk;
 
-import org.cleartk.classifier.tksvmlight.TreeKernelSvmStringOutcomeClassifier;
-import org.cleartk.classifier.tksvmlight.TreeKernelSvmStringOutcomeClassifierBuilder;
+import org.cleartk.ml.tksvmlight.TreeKernelSvmStringOutcomeClassifier;
+import org.cleartk.ml.tksvmlight.TreeKernelSvmStringOutcomeClassifierBuilder;
 
 /**
  * A class that provided interfaces to package and unpackage a

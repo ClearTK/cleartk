@@ -26,11 +26,11 @@ package org.cleartk.summarization.classifier;
 import java.io.File;
 import java.io.IOException;
 
-import org.cleartk.classifier.CleartkProcessingException;
-import org.cleartk.classifier.DataWriter;
-import org.cleartk.classifier.Instance;
-import org.cleartk.classifier.feature.transform.InstanceDataWriter;
-import org.cleartk.classifier.jar.DirectoryDataWriter;
+import org.cleartk.ml.CleartkProcessingException;
+import org.cleartk.ml.DataWriter;
+import org.cleartk.ml.Instance;
+import org.cleartk.ml.feature.transform.InstanceDataWriter;
+import org.cleartk.ml.jar.DirectoryDataWriter;
 import org.cleartk.summarization.SummarizationModel_ImplBase;
 
 import com.google.common.annotations.Beta;

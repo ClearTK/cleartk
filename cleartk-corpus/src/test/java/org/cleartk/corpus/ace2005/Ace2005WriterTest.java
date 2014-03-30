@@ -35,7 +35,7 @@ import org.cleartk.ne.type.Ace2005Document;
 import org.cleartk.ne.type.Chunk;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.test.DefaultTestBase;
+import org.cleartk.test.util.DefaultTestBase;
 import org.cleartk.util.ViewUriUtil;
 import org.junit.Assert;
 import org.junit.Test;

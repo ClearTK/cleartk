@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.uima.jcas.JCas;
-import org.cleartk.classifier.Feature;
-import org.cleartk.classifier.feature.extractor.NamedFeatureExtractor1;
+import org.cleartk.ml.Feature;
+import org.cleartk.ml.feature.extractor.NamedFeatureExtractor1;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.apache.uima.fit.util.JCasUtil;
 

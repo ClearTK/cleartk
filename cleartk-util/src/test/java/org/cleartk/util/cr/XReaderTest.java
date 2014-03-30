@@ -38,8 +38,8 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.XMLSerializer;
-import org.cleartk.test.DefaultTestBase;
-import org.cleartk.type.test.Token;
+import org.cleartk.test.util.DefaultTestBase;
+import org.cleartk.test.util.type.Token;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -139,8 +139,11 @@ public class XReaderTest extends DefaultTestBase {
 
   }
 
+  // last time I ran this, I had to comment out a couple of lines in CleartkTestBase that
+  // set up the temp output directory.
   public static void main(String[] args) throws Exception {
     XReaderTest xrt = new XReaderTest();
+    xrt.setUp();
     xrt.buildTestXmiFiles();
   }
 

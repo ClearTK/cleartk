@@ -25,11 +25,11 @@ package org.cleartk.ml.libsvm.tk;
 
 import org.chboston.cnlp.kernel.CustomKernel;
 import org.chboston.cnlp.libsvm.svm_node;
-import org.cleartk.classifier.svmlight.model.Kernel;
-import org.cleartk.classifier.tksvmlight.TreeFeatureVector;
-import org.cleartk.classifier.tksvmlight.TreeKernelSvmBooleanOutcomeClassifier;
-import org.cleartk.classifier.tksvmlight.model.CompositeKernel;
-import org.cleartk.classifier.tksvmlight.model.TreeKernel;
+import org.cleartk.ml.svmlight.model.Kernel;
+import org.cleartk.ml.tksvmlight.TreeFeatureVector;
+import org.cleartk.ml.tksvmlight.TreeKernelSvmBooleanOutcomeClassifier;
+import org.cleartk.ml.tksvmlight.model.CompositeKernel;
+import org.cleartk.ml.tksvmlight.model.TreeKernel;
 
 /**
  * A class that provided interfaces to train, package and unpackage a

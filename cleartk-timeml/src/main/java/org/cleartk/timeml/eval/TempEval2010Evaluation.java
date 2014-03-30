@@ -52,12 +52,12 @@ import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.XMLSerializer;
-import org.cleartk.classifier.jar.JarClassifierBuilder;
 import org.cleartk.corpus.timeml.TempEval2010CollectionReader;
 import org.cleartk.corpus.timeml.TempEval2010GoldAnnotator;
 import org.cleartk.corpus.timeml.TempEval2010Writer;
 import org.cleartk.eval.AnnotationStatistics;
 import org.cleartk.eval.Evaluation_ImplBase;
+import org.cleartk.ml.jar.JarClassifierBuilder;
 import org.cleartk.util.ViewUriUtil;
 import org.xml.sax.SAXException;
 

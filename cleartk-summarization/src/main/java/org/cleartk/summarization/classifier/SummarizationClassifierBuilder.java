@@ -30,8 +30,8 @@ import java.io.InputStream;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 
-import org.cleartk.classifier.jar.JarClassifierBuilder;
-import org.cleartk.classifier.jar.JarStreams;
+import org.cleartk.ml.jar.JarClassifierBuilder;
+import org.cleartk.ml.jar.JarStreams;
 import org.cleartk.summarization.SummarizationModel_ImplBase;
 
 import com.google.common.annotations.Beta;
