@@ -204,7 +204,7 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
     out.print(comboOperator); out.println(" # kernel parameter -C");
     out.println("1 # Kernel paramter -F -- don't know what this does");
     out.print(secondaryKernel); out.println(" # kernel parameter -S (secondary kernel)");
-    out.print(kType); out.println(" # kernel parameter -D");
+    out.print(treeComparisonMethod); out.println(" # kernel parameter -D");
     out.print(normalize); out.println(" # kernel parameter -N");
     out.print("S"); out.println(" # kernel parameter -V");
     out.print("S"); out.println(" # kernel parameter -W");
