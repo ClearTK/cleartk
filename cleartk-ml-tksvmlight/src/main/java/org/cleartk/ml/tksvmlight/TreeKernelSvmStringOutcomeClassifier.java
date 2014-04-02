@@ -33,6 +33,7 @@ import org.cleartk.ml.encoder.outcome.OutcomeEncoder;
 import org.cleartk.ml.jar.Classifier_ImplBase;
 import org.cleartk.ml.tksvmlight.model.TreeKernelSvmModel;
 
+import com.google.common.annotations.Beta;
 import com.google.common.base.Functions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -45,6 +46,7 @@ import com.google.common.collect.Ordering;
  * @author Daryl Lonnon
  * @author Tim Miller
  */
+@Beta
 public class TreeKernelSvmStringOutcomeClassifier extends
     Classifier_ImplBase<TreeFeatureVector, String, Integer> {
 

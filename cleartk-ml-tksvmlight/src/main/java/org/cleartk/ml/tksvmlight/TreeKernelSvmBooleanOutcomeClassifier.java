@@ -33,6 +33,7 @@ import org.cleartk.ml.encoder.outcome.OutcomeEncoder;
 import org.cleartk.ml.jar.Classifier_ImplBase;
 import org.cleartk.ml.tksvmlight.model.TreeKernelSvmModel;
 
+import com.google.common.annotations.Beta;
 import com.google.common.collect.Maps;
 
 /**
@@ -43,6 +44,7 @@ import com.google.common.collect.Maps;
  * @author Daryl Lonnon
  * @author Tim Miller
  */
+@Beta
 public class TreeKernelSvmBooleanOutcomeClassifier 
   extends
   Classifier_ImplBase<TreeFeatureVector, Boolean, Boolean> {

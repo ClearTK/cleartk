@@ -31,6 +31,8 @@ import org.cleartk.ml.tksvmlight.TreeKernelSvmBooleanOutcomeClassifier;
 import org.cleartk.ml.tksvmlight.model.CompositeKernel;
 import org.cleartk.ml.tksvmlight.model.TreeKernel;
 
+import com.google.common.annotations.Beta;
+
 /**
  * A class that provided interfaces to train, package and unpackage a
  * {@link TreeKernelSvmBooleanOutcomeClassifier} into a jar file.
@@ -41,7 +43,7 @@ import org.cleartk.ml.tksvmlight.model.TreeKernel;
  * 
  * @author Tim Miller
  */
-
+@Beta
 public class CustomCompositeKernel extends CompositeKernel implements CustomKernel<TreeFeatureVector> {
 
   public CustomCompositeKernel(Kernel fk, TreeKernel tk, ComboOperator op,

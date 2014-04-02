@@ -34,6 +34,8 @@ import org.cleartk.ml.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.ml.jar.JarStreams;
 import org.cleartk.ml.tksvmlight.model.TreeKernelSvmModel;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
@@ -42,6 +44,7 @@ import org.cleartk.ml.tksvmlight.model.TreeKernelSvmModel;
  * @author Daryl Lonnon
  * @author Tim Miller
  */
+@Beta
 public abstract class TreeKernelSvmStringOutcomeClassifierBuilder
     extends
     ClassifierBuilder_ImplBase<TreeKernelSvmStringOutcomeClassifier, TreeFeatureVector, String, Integer> {

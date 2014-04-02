@@ -42,6 +42,8 @@ import org.cleartk.ml.encoder.features.StringEncoder;
 import org.cleartk.ml.encoder.outcome.StringToIntegerOutcomeEncoder;
 import org.cleartk.ml.jar.DataWriter_ImplBase;
 
+import com.google.common.annotations.Beta;
+
 /**
  * <br>
  * Copyright (c) 2009, Regents of the University of Colorado <br>
@@ -50,7 +52,7 @@ import org.cleartk.ml.jar.DataWriter_ImplBase;
  * @author Daryl Lonnon
  * @author Tim Miller
  */
-
+@Beta
 public abstract class TreeKernelSvmStringOutcomeDataWriter<CLASSIFIER_BUILDER_TYPE extends TreeKernelSvmStringOutcomeClassifierBuilder>
     extends
     DataWriter_ImplBase<CLASSIFIER_BUILDER_TYPE, TreeFeatureVector, String, Integer> {
