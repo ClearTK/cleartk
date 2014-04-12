@@ -82,9 +82,28 @@ public class MinMaxNormalizationExtractor<OUTCOME_T, FOCUS_T extends Annotation>
   protected Feature transform(Feature feature) {
     String featureName = feature.getName();
     MinMaxPair stats = this.minMaxMap.get(featureName);
+
+    double mmn = 0.5d; // this is the default value we will return if we've never seen the feature
+                       // before
+
     double value = ((Number) feature.getValue()).doubleValue();
-    return new Feature("MINMAX_NORMED_" + featureName, (value - stats.min)
-        / (stats.max - stats.min));
+    // this is the typical case
+    if (stats != null && stats.min < stats.max) {
+      mmn = (value - stats.min) / (stats.max - stats.min);
+    }
+    // this is an edge case that could happen when the value is always the same
+    if (stats != null && stats.min == stats.max) {
+      if (value == stats.min) {
+        mmn = 0.5d;
+      } else {
+        mmn = value < stats.min ? 0 : 1;
+      }
+    }
+    mmn = Math.max(0, mmn); // if mmn is negative, then return zero (this would happen if the
+                            // feature value was a the smallest value yet seen)
+    mmn = Math.min(1, mmn); // if mmn is more than one, then return 1 (this would happen if the
+                            // feature value was the largest value yet seen)
+    return new Feature("MINMAX_NORMED_" + featureName, mmn);
   }
 
   @Override

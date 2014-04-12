@@ -49,7 +49,7 @@ import org.junit.Test;
  * 
  */
 
-public class TfidifExtractorTest extends DefaultTestBase {
+public class TfidfExtractorTest extends DefaultTestBase {
 
   @Test
   public void testBasic() throws Exception {
