@@ -24,9 +24,11 @@
 
 package org.cleartk.util.cr.linereader;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReaderDescription;
@@ -66,19 +68,35 @@ public class LineReaderXmiWriterTest extends DefaultTestBase {
     AnalysisEngineDescription xmiWriter = LineReaderXmiWriter.getDescription(outputDir);
 
     SimplePipeline.runPipeline(reader, xmiWriter);
+    List<File> errorFiles = new ArrayList<File>();
+    String[] fileNames = new String[] {
+        "a-test1.txt.1.xmi",
+        "a-test1.txt.2.xmi",
+        "a-test1.txt.3.xmi",
+        "a-test1.txt.4.xmi",
+        "a-test1.txt.5.xmi",
+        "a-test1.txt.6.xmi",
+        "a-test1.txt.7.xmi",
+        "a-test1.txt.8.xmi",
+        "b-test2.dat.9.xmi",
+        "b-test2.dat.10.xmi",
+        "b-test2.dat.11.xmi",
+        "b-test2.dat.12.xmi" };
+    for (String fileName : fileNames) {
+      File file = new File(outputDir, fileName);
+      if (!file.exists()) {
+        errorFiles.add(file);
+      }
+    }
 
-    assertTrue(new File(outputDir, "a-test1.txt.1.xmi").exists());
-    assertTrue(new File(outputDir, "a-test1.txt.2.xmi").exists());
-    assertTrue(new File(outputDir, "a-test1.txt.3.xmi").exists());
-    assertTrue(new File(outputDir, "a-test1.txt.4.xmi").exists());
-    assertTrue(new File(outputDir, "a-test1.txt.5.xmi").exists());
-    assertTrue(new File(outputDir, "a-test1.txt.6.xmi").exists());
-    assertTrue(new File(outputDir, "a-test1.txt.7.xmi").exists());
-    assertTrue(new File(outputDir, "a-test1.txt.8.xmi").exists());
-    assertTrue(new File(outputDir, "b-test2.dat.9.xmi").exists());
-    assertTrue(new File(outputDir, "b-test2.dat.10.xmi").exists());
-    assertTrue(new File(outputDir, "b-test2.dat.11.xmi").exists());
-    assertTrue(new File(outputDir, "b-test2.dat.12.xmi").exists());
+    if (errorFiles.size() > 0) {
+      StringBuilder message = new StringBuilder(
+          "expected the following files but they were missing: ");
+      for (File errorFile : errorFiles) {
+        message.append("\n" + errorFile.getPath());
+      }
+      fail(message.toString());
+    }
 
   }
 }
