@@ -62,7 +62,7 @@ public class TreeKernel {
   private boolean normalize = false;
   
   private boolean useCache = true;
-  private int cacheHits = 0;
+//  private int cacheHits = 0;
   HashMap<SimpleDepTree,HashMap<SimpleDepTree,Double>> cache = new HashMap<SimpleDepTree, HashMap<SimpleDepTree,Double>>();
   
   private ConcurrentHashMap<String, Double> normalizers = new ConcurrentHashMap<String, Double>();
@@ -288,7 +288,7 @@ public class TreeKernel {
     if(!node1.cat.equals(node2.cat)) return 0.0;
     
     if(useCache && cache.containsKey(node1) && cache.get(node1).containsKey(node2)){
-      cacheHits++;
+//      cacheHits++;
       return cache.get(node1).get(node2);
     }
     
