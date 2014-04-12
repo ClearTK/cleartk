@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -35,11 +36,11 @@ import org.cleartk.ml.CleartkAnnotator;
 import org.cleartk.ml.Feature;
 import org.cleartk.ml.Instance;
 import org.cleartk.ml.feature.extractor.CleartkExtractor;
-import org.cleartk.ml.feature.extractor.CoveredTextExtractor;
 import org.cleartk.ml.feature.extractor.CleartkExtractor.Count;
 import org.cleartk.ml.feature.extractor.CleartkExtractor.Covered;
+import org.cleartk.ml.feature.extractor.CoveredTextExtractor;
 import org.cleartk.token.type.Token;
-import org.apache.uima.fit.util.JCasUtil;
+import org.cleartk.util.ViewUriUtil;
 
 /**
  * <br>
@@ -85,6 +86,7 @@ public class BasicDocumentClassificationAnnotator extends CleartkAnnotator<Strin
       UsenetDocument document = new UsenetDocument(jCas, 0, jCas.getDocumentText().length());
       document.setCategory(category);
       document.addToIndexes();
+      System.out.println(ViewUriUtil.getURI(jCas) + ": " + category);
     }
   }
 }
