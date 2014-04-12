@@ -272,7 +272,7 @@ public class AnnotationStatistics<OUTCOME_TYPE extends Comparable<? super OUTCOM
     return this.referenceOutcomes.count(outcome);
   }
 
-  public int countFalseNegatives(OUTCOME_TYPE... positiveOutcomes) {
+  public int countFalseNegatives(@SuppressWarnings("unchecked") OUTCOME_TYPE... positiveOutcomes) {
     int numReferenceOutcomes = this.countReferenceOutcomes();
     int numPredictedOutcomes = this.countPredictedOutcomes();
     if (numReferenceOutcomes != numPredictedOutcomes) {
@@ -291,7 +291,7 @@ public class AnnotationStatistics<OUTCOME_TYPE extends Comparable<? super OUTCOM
     return totalFalseNegatives;
   }
 
-  public int countFalsePositives(OUTCOME_TYPE... positiveOutcomes) {
+  public int countFalsePositives(@SuppressWarnings("unchecked") OUTCOME_TYPE... positiveOutcomes) {
     int numReferenceOutcomes = this.countReferenceOutcomes();
     int numPredictedOutcomes = this.countPredictedOutcomes();
     if (numReferenceOutcomes != numPredictedOutcomes) {
@@ -311,7 +311,7 @@ public class AnnotationStatistics<OUTCOME_TYPE extends Comparable<? super OUTCOM
     return totalFalsePositives;
   }
 
-  public int countTrueNegatives(OUTCOME_TYPE... positiveOutcomes) {
+  public int countTrueNegatives(@SuppressWarnings("unchecked") OUTCOME_TYPE... positiveOutcomes) {
     int numReferenceOutcomes = this.countReferenceOutcomes();
     int numPredictedOutcomes = this.countPredictedOutcomes();
     if (numReferenceOutcomes != numPredictedOutcomes) {
@@ -332,7 +332,7 @@ public class AnnotationStatistics<OUTCOME_TYPE extends Comparable<? super OUTCOM
 
   }
 
-  public int countTruePositives(OUTCOME_TYPE... positiveOutcomes) {
+  public int countTruePositives(@SuppressWarnings("unchecked") OUTCOME_TYPE... positiveOutcomes) {
     int numReferenceOutcomes = this.countReferenceOutcomes();
     int numPredictedOutcomes = this.countPredictedOutcomes();
     if (numReferenceOutcomes != numPredictedOutcomes) {
