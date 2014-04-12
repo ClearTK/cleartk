@@ -25,18 +25,24 @@ package org.cleartk.examples.documentclassification.basic;
 
 import java.io.File;
 
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.collection.CollectionReader;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.factory.AggregateBuilder;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.jcas.JCas;
+import org.cleartk.examples.type.UsenetDocument;
 import org.cleartk.ml.CleartkAnnotator;
 import org.cleartk.ml.jar.GenericJarClassifierFactory;
 import org.cleartk.ml.jar.JarClassifierBuilder;
 import org.cleartk.opennlp.tools.SentenceAnnotator;
 import org.cleartk.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
+import org.cleartk.util.ViewUriUtil;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.apache.uima.fit.factory.AggregateBuilder;
-import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.apache.uima.fit.pipeline.SimplePipeline;
 
 import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
@@ -104,6 +110,19 @@ public class RunModel {
     // //////////////////////////////////////////////////////////////////////////////
     // Run pipeline and classify documents
     // //////////////////////////////////////////////////////////////////////////////
-    SimplePipeline.runPipeline(reader, builder.createAggregateDescription());
+    SimplePipeline.runPipeline(
+        reader,
+        builder.createAggregateDescription(),
+        AnalysisEngineFactory.createEngineDescription(PrintClassificationsAnnotator.class));
+  }
+
+  public static class PrintClassificationsAnnotator extends JCasAnnotator_ImplBase {
+
+    @Override
+    public void process(JCas jCas) throws AnalysisEngineProcessException {
+      UsenetDocument document = JCasUtil.select(jCas, UsenetDocument.class).iterator().next();
+      System.out.println("classified " + ViewUriUtil.getURI(jCas) + " as " + document.getCategory()
+          + ".");
+    }
   }
 }

@@ -40,7 +40,6 @@ import org.cleartk.ml.feature.extractor.CleartkExtractor.Count;
 import org.cleartk.ml.feature.extractor.CleartkExtractor.Covered;
 import org.cleartk.ml.feature.extractor.CoveredTextExtractor;
 import org.cleartk.token.type.Token;
-import org.cleartk.util.ViewUriUtil;
 
 /**
  * <br>
@@ -86,7 +85,6 @@ public class BasicDocumentClassificationAnnotator extends CleartkAnnotator<Strin
       UsenetDocument document = new UsenetDocument(jCas, 0, jCas.getDocumentText().length());
       document.setCategory(category);
       document.addToIndexes();
-      System.out.println(ViewUriUtil.getURI(jCas) + ": " + category);
     }
   }
 }
