@@ -40,6 +40,19 @@ public class CleartkEncoderException extends CleartkProcessingException {
 
   private static final long serialVersionUID = 1L;
 
+  public static CleartkEncoderException invalidFeatureVectorValue(
+      Throwable cause,
+      int index,
+      double value) {
+    String key = KEY_PREFIX + "invalidFeatureVectorValue";
+    return new CleartkEncoderException(
+        cause,
+        CleartkProcessingException.DEFAULT_RESOURCE_BUNDLE,
+        key,
+        index,
+        value);
+  }
+
   public static CleartkEncoderException invalidFeatureVectorValue(int index, double value) {
     String key = KEY_PREFIX + "invalidFeatureVectorValue";
     return new CleartkEncoderException(
@@ -61,7 +74,7 @@ public class CleartkEncoderException extends CleartkProcessingException {
       String resourceBundleName,
       String messageKey,
       Object... arguments) {
-    super(resourceBundleName, messageKey, arguments, cause);
+    super(cause, resourceBundleName, messageKey, arguments);
   }
 
   public CleartkEncoderException(String resourceBundleName, String messageKey, Object... arguments) {

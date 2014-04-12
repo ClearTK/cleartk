@@ -57,12 +57,14 @@ public class CleartkProcessingException extends AnalysisEngineProcessException {
   }
 
   public static CleartkProcessingException unsupportedOperationSetParameter(
+      Throwable cause,
       Object object,
       String methodName,
       String paramName,
       Object paramValue) {
     String key = KEY_PREFIX + "unsupportedOperationSetParameter";
     return new CleartkProcessingException(
+        cause,
         DEFAULT_RESOURCE_BUNDLE,
         key,
         object.getClass().getName(),

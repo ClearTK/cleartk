@@ -30,7 +30,6 @@ import java.util.List;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.ml.CleartkProcessingException;
 import org.cleartk.ml.encoder.CleartkEncoderException;
 import org.cleartk.ml.encoder.features.FeatureEncoder;
 import org.cleartk.ml.feature.extractor.CleartkExtractorException;
@@ -67,6 +66,7 @@ public class CleartkExceptionsTest {
     Assert.assertTrue(e.getMessage(), e.getMessage().contains("0101"));
 
     e = CleartkProcessingException.unsupportedOperationSetParameter(
+        new NullPointerException(),
         "OBJECT",
         "METHOD",
         "PARAM",
@@ -152,9 +152,11 @@ public class CleartkExceptionsTest {
 
   @Test
   public void testCleartkEncoderException() {
-    CleartkEncoderException e;
 
-    e = CleartkEncoderException.invalidFeatureVectorValue(42, -1.0);
+    CleartkEncoderException e = CleartkEncoderException.invalidFeatureVectorValue(
+        new NullPointerException(),
+        42,
+        -1.0);
     Assert.assertTrue(e.getMessage(), e.getMessage().contains("valid"));
     Assert.assertTrue(e.getMessage(), e.getMessage().contains("42:-1"));
 

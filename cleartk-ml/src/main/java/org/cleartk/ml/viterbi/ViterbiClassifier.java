@@ -31,6 +31,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.fit.component.initialize.ConfigurationParameterInitializer;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.initializable.Initializable;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.ml.Classifier;
 import org.cleartk.ml.CleartkProcessingException;
@@ -39,9 +42,6 @@ import org.cleartk.ml.SequenceClassifier;
 import org.cleartk.util.CleartkInitializationException;
 import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
-import org.apache.uima.fit.component.initialize.ConfigurationParameterInitializer;
-import org.apache.uima.fit.descriptor.ConfigurationParameter;
-import org.apache.uima.fit.factory.initializable.Initializable;
 
 import com.google.common.base.Functions;
 import com.google.common.base.Objects;
@@ -122,6 +122,7 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
         return viterbi(features);
       } catch (UnsupportedOperationException uoe) {
         throw CleartkProcessingException.unsupportedOperationSetParameter(
+            uoe,
             delegatedClassifier,
             "score",
             PARAM_STACK_SIZE,

@@ -98,7 +98,7 @@ public class FeatureVectorFeaturesEncoder extends
           }
         }
       } catch (InvalidFeatureVectorValueException e) {
-        throw CleartkEncoderException.invalidFeatureVectorValue(e.getIndex(), e.getValue());
+        throw CleartkEncoderException.invalidFeatureVectorValue(e, e.getIndex(), e.getValue());
       }
     }
 
