@@ -187,6 +187,7 @@ public class RunTkSvmLightTest extends DefaultTestBase {
 
     long start = System.currentTimeMillis();
     final int NUM_ITERATIONS = 1000000;
+    @SuppressWarnings("unused")
     double sim = 0.0;
     for(int i = 0; i < NUM_ITERATIONS; i++){
       sim += sst.evaluate(tf1, tf2);
