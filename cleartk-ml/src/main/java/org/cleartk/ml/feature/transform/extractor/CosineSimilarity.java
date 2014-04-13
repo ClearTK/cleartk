@@ -62,7 +62,7 @@ public class CosineSimilarity implements SimilarityFunction {
   public static double magnitude(Map<String, Double> vector) {
     double mag = 0.0;
     for (double v : vector.values()) {
-      mag = v * v;
+      mag += v * v;
     }
     return Math.sqrt(mag);
   }
