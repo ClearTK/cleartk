@@ -84,7 +84,14 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T, FOCUS_T extends Annotation> 
     String featureName = feature.getName();
     MeanStddevTuple stats = this.meanStddevMap.get(featureName);
     double value = ((Number) feature.getValue()).doubleValue();
-    return new Feature("ZMUS_" + featureName, (value - stats.mean) / stats.stddev);
+
+    double zmus = 0.0d;
+    if (stats != null && stats.stddev > 0) {
+      zmus = (value - stats.mean) / stats.stddev;
+      return new Feature("ZMUS_" + featureName, zmus);
+    } else {
+      return null;
+    }
   }
 
   @Override
@@ -95,7 +102,9 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T, FOCUS_T extends Annotation> 
     if (this.isTrained) {
       // We have trained / loaded a ZMUS model, so now fix up the values
       for (Feature feature : extracted) {
-        result.add(this.transform(feature));
+        Feature transformedFeature = this.transform(feature);
+        if (transformedFeature != null)
+          result.add(transformedFeature);
       }
     } else {
       // We haven't trained this extractor yet, so just mark the existing features
@@ -223,12 +232,13 @@ public class ZeroMeanUnitStddevExtractor<OUTCOME_T, FOCUS_T extends Annotation> 
       } else {
         meanNew = meanOld + (x - meanOld) / numSamples;
         varNew = varOld + (x - meanOld) * (x - meanNew);
-
         // set up for next iteration
         meanOld = meanNew;
         varOld = varNew;
       }
     }
+
+    // 1-2 * 1-1.5 = .5
 
     public void clear() {
       this.numSamples = 0;
