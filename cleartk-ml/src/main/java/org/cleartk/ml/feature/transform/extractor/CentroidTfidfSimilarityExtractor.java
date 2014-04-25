@@ -163,11 +163,11 @@ public class CentroidTfidfSimilarityExtractor<OUTCOME_T, FOCUS_T extends Annotat
           }
         }
       }
+    }
 
-      for (Map.Entry<String, Double> entry : newCentroidMap.entrySet()) {
-        double mean = entry.getValue() / numDocuments;
-        newCentroidMap.put(entry.getKey(), mean);
-      }
+    for (Map.Entry<String, Double> entry : newCentroidMap.entrySet()) {
+      double mean = entry.getValue() / numDocuments;
+      newCentroidMap.put(entry.getKey(), mean);
     }
     return newCentroidMap;
   }
