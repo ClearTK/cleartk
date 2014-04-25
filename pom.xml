@@ -20,7 +20,7 @@
 		<module>cleartk-ml-tksvmlight</module>
 		<module>cleartk-ml-liblinear</module>
 		<module>cleartk-ml-libsvm</module>
-    <module>cleartk-ml-libsvm-tk</module>
+		<module>cleartk-ml-libsvm-tk</module>
 		<module>cleartk-ml-mallet</module>
 		<module>cleartk-ml-crfsuite</module>
 		<module>cleartk-ml-weka</module>
@@ -144,11 +144,11 @@
 				<artifactId>cleartk-ml-libsvm</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-ml-libsvm-tk</artifactId>
-        <version>${project.version}</version>
-      </dependency>
+			<dependency>
+				<groupId>org.cleartk</groupId>
+				<artifactId>cleartk-ml-libsvm-tk</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.cleartk</groupId>
 				<artifactId>cleartk-ml-mallet</artifactId>
@@ -231,6 +231,387 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	<profiles>
+		<profile>
+			<id>javadoc</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.9.1</version>
+						<executions>
+							<execution>
+								<id>javadoc-javadoc</id>
+								<phase>package</phase>
+								<goals>
+									<goal>javadoc</goal>
+								</goals>
+								<configuration>
+									<!-- switch on dependency-driven aggregation -->
+									<includeDependencySources>true</includeDependencySources>
+
+									<!-- include ONLY ClearTK dependencies -->
+									<dependencySourceIncludes>
+										<dependencySourceInclude>org.cleartk:*</dependencySourceInclude>
+									</dependencySourceIncludes>
+
+									<!-- Suppress timestamp for minimal diffs when re-generating -->
+									<notimestamp>true</notimestamp>
+
+									<!-- Allow tags added by JCasGen -->
+									<tags>
+										<tag>
+											<name>generated</name>
+											<placement>a</placement>
+											<head>Generated</head>
+										</tag>
+										<tag>
+											<name>ordered</name>
+											<placement>a</placement>
+											<head>Ordered</head>
+										</tag>
+										<tag>
+											<name>modifiable</name>
+											<placement>a</placement>
+											<head>Modifiable</head>
+										</tag>
+									</tags>
+
+									<!-- Link to standard Java HTML javadoc -->
+									<linksource>true</linksource>
+
+									<!-- Don't include deprecated APIs -->
+									<nodeprecated>true</nodeprecated>
+
+									<!-- Links to all dependency javadocs -->
+									<links>
+<!--
+				<groupId>org.jdom</groupId>
+				<artifactId>jdom</artifactId>
+				<groupId>com.lexicalscope.jewelcli</groupId>
+				<artifactId>jewelcli</artifactId>
+				<groupId>org.apache.uima</groupId>
+				<artifactId>uimaj-core</artifactId>
+				<groupId>org.apache.uima</groupId>
+				<artifactId>uimaj-document-annotation</artifactId>
+				<groupId>org.apache.uima</groupId>
+				<artifactId>uimafit-core</artifactId>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+  -->
+										<!-- berkeley parser -->
+										<!-- (none available) -->
+										<!-- commons-io -->
+										<link>http://commons.apache.org/io/apidocs/</link>
+
+										<!-- commons-lang -->
+										<link>http://commons.apache.org/lang/apidocs/</link>
+
+										<!-- commons-logging -->
+										<link>http://commons.apache.org/logging/apidocs/</link>
+
+										<!-- guava -->
+										<link>http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/</link>
+
+											<!-- jVinci, uima-* -->
+										<link>http://uima.apache.org/d/uimaj-2.3.1/api/</link>
+
+										<!-- jdom -->
+										<link>http://www.jdom.org/docs/apidocs/</link>
+
+										<!-- joda-time -->
+										<link>http://joda-time.sourceforge.net/apidocs</link>
+
+										<!-- jsr173_api -->
+										<!-- (none available) -->
+
+										<!-- jsr305 -->
+										<link>http://findbugs.sourceforge.net/api/</link>
+
+										<!-- junit -->
+										<link>http://junit.org/apidocs/</link>
+
+										<!-- jwnl -->
+										<!-- (none available) -->
+
+										<!-- liblinear -->
+										<!-- (none available) -->
+
+										<!-- libsvm -->
+										<!-- (none available) -->
+
+										<!-- log4j -->
+										<link>http://logging.apache.org/log4j/1.2/apidocs/</link>
+
+										<!-- lucene-snowball -->
+										<link>http://lucene.apache.org/java/3_0_3/api/all/</link>
+
+										<!-- mallet -->
+										<link>http://mallet.cs.umass.edu/api/</link>
+
+										<!-- malt -->
+										<link>http://maltparser.org/api/</link>
+
+										<!-- opennlp-maxent -->
+										<link>http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-maxent/</link>
+
+										<!-- opennlp-tools -->
+										<link>http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-tools/</link>
+
+										<!-- spring-core -->
+										<link>http://static.springsource.org/spring/docs/3.0.3.RELEASE/javadoc-api/</link>
+
+										<!-- stanford-corenlp -->
+										<link>http://nlp.stanford.edu/nlp/javadoc/javanlp/</link>
+
+										<!-- stax -->
+										<!-- (none available) -->
+
+										<!-- stax-api -->
+										<!-- (none available) -->
+
+										<!-- trove4j -->
+										<link>http://trove4j.sourceforge.net/javadocs/</link>
+
+										<!-- uimafit -->
+										<link>http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/</link>
+
+										<!-- xalan -->
+										<link>http://xml.apache.org/xalan-j/apidocs/</link>
+
+										<!-- xerces -->
+										<link>https://xerces.apache.org/xerces2-j/javadocs/api/</link>
+
+										<!-- xml-apis -->
+										<!-- (none available) -->
+
+										<!-- xom -->
+										<link>http://xom.nu/apidocs/</link>
+									</links>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<!-- basic util modules -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-test-util</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-util</artifactId>
+				</dependency>
+				<!-- machine learning modules -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-opennlp-maxent</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-svmlight</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-tksvmlight</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-libsvm</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-mallet</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-weka</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-crfsuite</artifactId>
+				</dependency>
+				<!-- evaluation module -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-eval</artifactId>
+				</dependency>
+				<!-- type system -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-type-system</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-corpus</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-feature</artifactId>
+				</dependency>
+				<!-- wrappers for external components -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-snowball</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-opennlp-tools</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-berkeleyparser</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-maltparser</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-stanford-corenlp</artifactId>
+				</dependency>
+				<!-- home-grown components -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-token</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-summarization</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-timeml</artifactId>
+				</dependency>
+				<!-- Skip cleartk-examples; its javadoc should never be released -->
+			</dependencies>
+		</profile>
+		<profile>
+			<id>zip</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>distro-assembly</id>
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+								<configuration>
+									<descriptors>
+										<descriptor>zip.xml</descriptor>
+									</descriptors>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<!-- basic util modules -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-test-util</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-util</artifactId>
+				</dependency>
+				<!-- machine learning modules -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-opennlp-maxent</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-svmlight</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-tksvmlight</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-libsvm</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-mallet</artifactId>
+				</dependency>
+				<!-- omit because of GPL licensing issues <dependency> <groupId>org.cleartk</groupId> 
+					<artifactId>cleartk-ml-weka</artifactId> </dependency> -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-ml-crfsuite</artifactId>
+				</dependency>
+				<!-- evaluation module -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-eval</artifactId>
+				</dependency>
+				<!-- type system -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-type-system</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-corpus</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-feature</artifactId>
+				</dependency>
+				<!-- wrappers for external components -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-snowball</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-opennlp-tools</artifactId>
+				</dependency>
+				<!-- omit because of GPL licensing issues <dependency> <groupId>org.cleartk</groupId> 
+					<artifactId>cleartk-berkeleyparser</artifactId> </dependency> -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-maltparser</artifactId>
+				</dependency>
+				<!-- omit because of GPL licensing issues <dependency> <groupId>org.cleartk</groupId> 
+					<artifactId>cleartk-stanford-corenlp</artifactId> </dependency> -->
+				<!-- home-grown components -->
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-token</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-summarization</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>org.cleartk</groupId>
+					<artifactId>cleartk-timeml</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+
 	<build>
 		<pluginManagement>
 			<plugins>

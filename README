@@ -114,4 +114,12 @@ this projects, please manually download them from our googlecode hosted maven re
 
 http://cleartk.googlecode.com/svn/repo/org/cleartk/cleartk-syntax-dependency-malt/
   
+
+###################
+Creating a zip file
+###################
+to create cleartk-release-<version>-SNAPSHOT-bin.zip perform the following maven command
+from cleartk trunk:
+
+mvn -DskipTests -Pzip package
   
