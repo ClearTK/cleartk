@@ -285,24 +285,6 @@
 
 									<!-- Links to all dependency javadocs -->
 									<links>
-<!--
-				<groupId>org.jdom</groupId>
-				<artifactId>jdom</artifactId>
-				<groupId>com.lexicalscope.jewelcli</groupId>
-				<artifactId>jewelcli</artifactId>
-				<groupId>org.apache.uima</groupId>
-				<artifactId>uimaj-core</artifactId>
-				<groupId>org.apache.uima</groupId>
-				<artifactId>uimaj-document-annotation</artifactId>
-				<groupId>org.apache.uima</groupId>
-				<artifactId>uimafit-core</artifactId>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<groupId>commons-io</groupId>
-				<artifactId>commons-io</artifactId>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-  -->
 										<!-- berkeley parser -->
 										<!-- (none available) -->
 										<!-- commons-io -->
@@ -398,103 +380,6 @@
 					</plugin>
 				</plugins>
 			</build>
-			<dependencies>
-				<!-- basic util modules -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-test-util</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-util</artifactId>
-				</dependency>
-				<!-- machine learning modules -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml-opennlp-maxent</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml-svmlight</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml-tksvmlight</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml-libsvm</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml-mallet</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml-weka</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml-crfsuite</artifactId>
-				</dependency>
-				<!-- evaluation module -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-eval</artifactId>
-				</dependency>
-				<!-- type system -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-type-system</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-corpus</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-feature</artifactId>
-				</dependency>
-				<!-- wrappers for external components -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-snowball</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-opennlp-tools</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-berkeleyparser</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-maltparser</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-stanford-corenlp</artifactId>
-				</dependency>
-				<!-- home-grown components -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-token</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-summarization</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-timeml</artifactId>
-				</dependency>
-				<!-- Skip cleartk-examples; its javadoc should never be released -->
-			</dependencies>
 		</profile>
 		<profile>
 			<id>zip</id>
