@@ -1,0 +1,143 @@
+\documentclass[final]{beamer}
+\mode<presentation>
+{
+  \usetheme{Cleartk}
+}
+\usepackage{color}
+\usepackage{times}
+\usepackage{amsmath,amssymb}
+\usepackage{sfmath} % for sans serif math fonts; wget http://dtrx.de/od/tex/sfmath.sty
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[size=custom,height=91.44,width=60.96,scale=1.0]{beamerposter}
+\usepackage{booktabs,array}
+\usepackage{listings}
+\usepackage{xspace}
+\usepackage{fp}
+\usepackage{ifthen}
+
+\listfiles
+\newcommand*{\signstream}{SignStream\texttrademark\xspace}
+
+\graphicspath{{/u/figures/}}
+
+% Display a grid to help align images
+%\beamertemplategridbackground[1cm]
+
+\title{\Huge ClearTK 2.0: Design Patterns for Machine Learning in UIMA\\[0.2ex]}
+
+\author{Steven Bethard \inst{1}, Philip Ogren \inst{2}, Lee Becker\inst{2}}
+\institute[] % (optional, but mostly needed)
+{
+  \inst{1}%
+  University of Alabama at Birmingham, Birmingham, AL, USA
+  \\
+  \inst{2}%
+  University of Colorado Boulder, Boulder, CO, USA
+}
+
+\date[May. 29th, 2014]{May. 29th, 2014}
+
+\begin{document}
+\begin{frame}{} 
+\vspace{-1cm}
+\begin{columns}[t]
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \begin{column}{.45\linewidth}
+    
+    \begin{block}{Overview}
+      \begin{itemize}
+      \item ClearTK makes statistical machine learning within the UIMA framework more manageable by providing:
+
+        \begin{itemize}
+        \item A common interface and wrappers for ML libraries such as: SVMlight, LIBSVM, LIBLINEAR, OpenNLP MaxEnt and Mallet
+        \item A rich feature extraction library
+        \item Infrastructure for using and evaluating ML classifiers
+        \item A variety of wrappers for existing NLP libraries (Stanford, CLEAR Parser, etc\ldots)
+        \end{itemize}
+
+      \item We reflect on 5 years of code-base evolution to:
+        \begin{itemize}
+        \item Reflect on best practices for training statistical NLP components in UIMA
+        \item Discuss design patterns that make developing annotators more accessible to new users
+        \end{itemize}
+      \end{itemize}
+    \end{block}
+    
+    \begin{block}{Annotators should be conceptually simple}
+      \begin{itemize}
+      \item 
+        \begin{itemize}
+        \item 
+        \end{itemize}
+      \item 
+      \item 
+        \begin{itemize}
+        \item 
+        \item 
+        \item 
+        \end{itemize}
+      \end{itemize}
+
+      \begin{center}
+        \includegraphics[width=.2\linewidth]{images/camera0}
+        \,
+        \includegraphics[width=.2\linewidth]{images/camera1}
+        \,
+        \includegraphics[width=.2\linewidth]{images/camera2}
+      \end{center}
+    \end{block}
+
+    \begin{block}{Pipelines should look like pipelines}
+      \begin{itemize}
+      \item 
+      \item 
+      \end{itemize}
+    \end{block}
+    
+    \begin{block}{Collection readers should be minimal}
+      \begin{itemize}
+      \item 
+      \end{itemize}
+      
+      \vskip1ex
+      \centering
+      \includegraphics[width=.75\linewidth]{images/dai}
+      \vskip2ex
+      \includegraphics[width=.45\linewidth]{images/dai-search}
+      \,
+      \includegraphics[width=.45\linewidth]{images/dai-results}
+
+
+    \end{block}
+  \end{column}
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % Begin second column
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \begin{column}{.45\linewidth}
+    \begin{block}{Code should be type system agnostic}
+    \end{block}
+
+    \begin{block}{Modules should match natural subsets}
+    \end{block}
+
+    \begin{block}{Users need help past the UIMA overhead}
+    \end{block}
+    
+   
+  \end{column}
+
+\end{columns}
+\vfill
+\end{frame}
+
+\end{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-PDF-mode: t
