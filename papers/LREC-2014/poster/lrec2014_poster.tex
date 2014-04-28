@@ -18,6 +18,8 @@
 
 \listfiles
 \newcommand*{\signstream}{SignStream\texttrademark\xspace}
+\newcommand{\code}[1]{\texttt{\small #1}}
+
 
 \graphicspath{{/u/figures/}}
 
@@ -57,26 +59,28 @@
         \item A variety of wrappers for existing NLP libraries (Stanford, CLEAR Parser, etc\ldots)
         \end{itemize}
 
-      \item We reflect on 5 years of code-base evolution to:
+      \item Today we reflect on 5 years of code-base evolution to:
         \begin{itemize}
-        \item Reflect on best practices for training statistical NLP components in UIMA
-        \item Discuss design patterns that make developing annotators more accessible to new users
+        \item recommend best practices for making NLP frameworks better suited to development of components that rely on machine learning 
+        \item share design patterns for making NLP frameworks more robust to diverse uses
+        \item discuss lessons learned in making NLP frameworks more accessible to the programmer
         \end{itemize}
       \end{itemize}
     \end{block}
     
     \begin{block}{Annotators should be conceptually simple}
       \begin{itemize}
-      \item 
+      \item Previous versions of ClearTK obfuscated away well understood UIMA conventions.
+      \item The improved \code{ClassifierAnnotator} interface encourages annotator developers to:
         \begin{itemize}
-        \item 
+        \item put feature extraction code in the well understood \code{process} method.
+        \item make explicit annotator functionality in both training and classification modes.
         \end{itemize}
-      \item 
-      \item 
+      \item We made the BIO chunking APIs more accessible by:
         \begin{itemize}
-        \item 
-        \item 
-        \item 
+        \item inheriting from the already-known \code{ClassifierAnnotator}
+        \item eliminating specialized interfaces
+        \item providing simple utility objects for converting between chunk labels and token labels
         \end{itemize}
       \end{itemize}
 
@@ -90,10 +94,9 @@
     \end{block}
 
     \begin{block}{Pipelines should look like pipelines}
-      \begin{itemize}
-      \item 
-      \item 
-      \end{itemize}
+      \item Early ClearTK evaluation infrastructure consisted of a myriad of loosely-coupled classes and methods
+      \item Improved evaluation APIs have only three methods: Read, Train, and Test.
+      \item \code{TrainableFeatureExtractors} take advantage of the ClearTK users' familiarity with the notions of training and classifying by providing \code{train} and \code{transform} functionality
     \end{block}
     
     \begin{block}{Collection readers should be minimal}
