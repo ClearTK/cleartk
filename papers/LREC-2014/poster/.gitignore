@@ -1,0 +1,13 @@
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.sw*
+*.toc
+*.nav
+*.out
+*.snm
+lrec2014_poster.pdf
