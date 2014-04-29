@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.uima.fit.factory.UimaContextFactory;
+import org.apache.uima.fit.testing.util.HideOutput;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.ml.CleartkAnnotator;
 import org.cleartk.ml.CleartkProcessingException;
@@ -44,23 +46,14 @@ import org.cleartk.ml.encoder.features.StringEncoder;
 import org.cleartk.ml.jar.DefaultDataWriterFactory;
 import org.cleartk.ml.jar.DirectoryDataWriterFactory;
 import org.cleartk.ml.jar.Train;
-import org.cleartk.ml.tksvmlight.TkSvmLightBooleanOutcomeClassifierBuilder;
-import org.cleartk.ml.tksvmlight.TkSvmLightBooleanOutcomeDataWriter;
-import org.cleartk.ml.tksvmlight.TkSvmLightStringOutcomeClassifierBuilder;
-import org.cleartk.ml.tksvmlight.TkSvmLightStringOutcomeDataWriter;
-import org.cleartk.ml.tksvmlight.TreeFeatureVector;
-import org.cleartk.ml.tksvmlight.TreeFeatureVectorFeaturesEncoder;
-import org.cleartk.ml.tksvmlight.TreeKernelSvmBooleanOutcomeClassifier;
-import org.cleartk.ml.tksvmlight.TreeKernelSvmStringOutcomeClassifier;
 import org.cleartk.ml.tksvmlight.model.TreeKernel;
 import org.cleartk.ml.tksvmlight.model.TreeKernel.ForestSumMethod;
 import org.cleartk.ml.tksvmlight.model.TreeKernel.KernelType;
 import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.apache.uima.fit.factory.UimaContextFactory;
-import org.apache.uima.fit.testing.util.HideOutput;
 
 import com.google.common.collect.Lists;
 
@@ -240,6 +233,7 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     }
   }
   
+  @Ignore
   @Test
   public void testTKSVMlight() throws Exception {
     this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, TK_SVMLIGHT_TESTS_PROPERTY_VALUE);
@@ -284,6 +278,7 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     }
   }
 
+  @Ignore
   @Test
   public void testOVATKSVMlight() throws Exception {
     this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, TK_SVMLIGHT_TESTS_PROPERTY_VALUE);
