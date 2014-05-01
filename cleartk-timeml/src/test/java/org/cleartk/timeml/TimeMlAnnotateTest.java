@@ -29,6 +29,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -62,6 +63,7 @@ public class TimeMlAnnotateTest extends TimeMlTestBase{
     FileUtils.deleteDirectory(this.tempDir);
   }
 
+  @Ignore
   @Test
   public void test() throws Exception {
     assumeBigMemoryTestsEnabled();

@@ -28,18 +28,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-
-
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.test.util.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.apache.uima.fit.pipeline.SimplePipeline;
-import org.apache.uima.fit.testing.factory.TokenBuilder;
-import org.apache.uima.fit.util.JCasUtil;
 
 public class PosTaggerTest extends CleartkTestBase {
 	protected TokenBuilder<Token, Sentence> tokenBuilder;
@@ -49,7 +48,7 @@ public class PosTaggerTest extends CleartkTestBase {
 		  this.posTagger = PosTagger.getDescription();
 	} 
 
-	
+	@Ignore
 	@Test
 	public void posTaggerTest() throws Exception {
     this.assumeBigMemoryTestsEnabled();

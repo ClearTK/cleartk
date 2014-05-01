@@ -30,7 +30,6 @@ import org.apache.uima.fit.testing.factory.TokenBuilder;
 import org.apache.uima.fit.util.JCasUtil;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.stanford.corenlp.StanfordCoreNlpAnnotator;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.dependency.type.DependencyNode;
@@ -40,6 +39,7 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -60,6 +60,7 @@ public class StanfordCoreNlpTest extends CleartkTestBase {
     tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
   }
 
+  @Ignore
   @Test
   public void test() throws Throwable {
     this.assumeBigMemoryTestsEnabled();
