@@ -115,8 +115,9 @@
               \item ClearTK 2.0 recommends the following practices:
                       \begin{itemize}
                       \item Use only the \code{URICollectionReader}
-                      \item Implement JCas/Annotation population via multiple Annotators.
+                      \item Implement file format parsing in one or more AnalysisEngines
                       \end{itemize}
+              \item Now new file formats do not require a new reader.
       \end{itemize}
       
       %\vskip1ex
@@ -154,7 +155,7 @@
             \begin{itemize}
                     \item ClearTK 1.0 organized modules around types of annotations and corpora.
                     \item Old organization created unncessary dependencies between similar but unrelated components (BerkeleyParser and MaltParser for example)
-                    \item ClearTK 1.2 utilizes this more natural module organization:
+                    \item ClearTK 2.0 utilizes this more natural module organization:
                             \begin{itemize}
                                     \item Type system agnostic ML libraries and feature extractors
                                     \item ClearTK's base NLP type system
