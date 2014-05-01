@@ -28,7 +28,7 @@
 
 \title{\Huge ClearTK 2.0: Design Patterns for Machine Learning in UIMA\\[0.2ex]}
 
-\author{Steven Bethard \inst{1}, Philip Ogren \inst{2}, Lee Becker\inst{2}}
+\author{Steven Bethard\inst{1}, Philip Ogren\inst{2}, Lee Becker\inst{2}}
 \institute[] % (optional, but mostly needed)
 {
   \inst{1}%
@@ -70,47 +70,62 @@
     
     \begin{block}{Annotators should be conceptually simple}
       \begin{itemize}
-      \item Previous versions of ClearTK obfuscated away well understood UIMA conventions.
-      \item The improved \code{ClassifierAnnotator} interface encourages annotator developers to:
-        \begin{itemize}
-        \item put feature extraction code in the well understood \code{process} method.
-        \item make explicit annotator functionality in both training and classification modes.
-        \end{itemize}
-      \item We made the BIO chunking APIs more accessible by:
-        \begin{itemize}
-        \item inheriting from the already-known \code{ClassifierAnnotator}
-        \item eliminating specialized interfaces
-        \item providing simple utility objects for converting between chunk labels and token labels
-        \end{itemize}
+      \item The fundamental unit of work in UIMA occurs in the Annotator's \code{process} method.
+      \item Previous versions of ClearTK over-abstracted and over-obfuscated this well understood convention.
+      \item The improved \code{ClassifierAnnotator} interface now encourages Annotator developers to:
+          \begin{itemize}
+          \item put feature extraction code in the well understood \code{process} method.
+          \item make explicit annotator functionality in both training and classification modes.
+          \end{itemize}
+      \item BIO chunking APIs were simplified by:
+          \begin{itemize}
+          \item inheriting from the already known \code{ClassifierAnnotator}
+          \item eliminating specialized interfaces
+          \item providing simple utility objects for converting between chunk labels and token labels
+          \end{itemize}
       \end{itemize}
 
-      \begin{center}
-        \includegraphics[width=.2\linewidth]{images/camera0}
-        \,
-        \includegraphics[width=.2\linewidth]{images/camera1}
-        \,
-        \includegraphics[width=.2\linewidth]{images/camera2}
-      \end{center}
+      %\begin{center}
+      %  \includegraphics[width=.2\linewidth]{images/camera0}
+      %  \,
+      %  \includegraphics[width=.2\linewidth]{images/camera1}
+      %  \,
+      %  \includegraphics[width=.2\linewidth]{images/camera2}
+      %\end{center}
     \end{block}
 
     \begin{block}{Pipelines should look like pipelines}
-      \item Early ClearTK evaluation infrastructure consisted of a myriad of loosely-coupled classes and methods
-      \item Improved evaluation APIs have only three methods: Read, Train, and Test.
-      \item \code{TrainableFeatureExtractors} take advantage of the ClearTK users' familiarity with the notions of training and classifying by providing \code{train} and \code{transform} functionality
+      \begin{itemize}
+      \item UIMA users tend to think in terms of the pipelines.  
+      \item When creating non-standard flows, it is better to design interfaces for overriding pipelines instead of customizing specific behavior.
+          
+          \begin{itemize}
+          \item Original ClearTK evaluation flows required overriding of multiple loosely-coupled classes and methods.
+          \item Improved evaluation APIs have only three methods: Read, Train, and Test.
+          \item For feature transformation and normalization, ClearTK's \code{TrainableFeatureExtractors} provides pipeline-like stubs in the \code{train} and \code{transform} methods.
+          \end{itemize}
+      \end{itemize}
     \end{block}
     
     \begin{block}{Collection readers should be minimal}
       \begin{itemize}
-      \item 
+              \item UIMA's allows only a single \code{CollectionReader} per pipeline.  This limits flexibility in import of multiple annotation layers.
+              \item Previously ClearTK provided a variety of custom CollectionReaders
+              \item New tasks/new data required new Collection Readers. This presented a major barrier of entry for novice users.
+              \item ClearTK 2.0 recommends the following practices:
+                      \begin{itemize}
+                      \item Use only the \code{URICollectionReader}
+                      \item Implement JCas/Annotation population via multiple Annotators.
+                      \end{itemize}
       \end{itemize}
       
-      \vskip1ex
-      \centering
-      \includegraphics[width=.75\linewidth]{images/dai}
-      \vskip2ex
-      \includegraphics[width=.45\linewidth]{images/dai-search}
-      \,
-      \includegraphics[width=.45\linewidth]{images/dai-results}
+      %\vskip1ex
+      %\centering
+      %\includegraphics[width=.75\linewidth]{images/dai}
+      %\vskip2ex
+      %\includegraphics[width=.45\linewidth]{images/dai-search}
+      %\,
+      %\includegraphics[width=.45\linewidth]{images/dai-results}
 
 
     \end{block}
@@ -122,12 +137,59 @@
 
   \begin{column}{.45\linewidth}
     \begin{block}{Code should be type system agnostic}
+    \begin{itemize}
+            \item The type system defines all of the annotations and attributes that may be added to a document
+            \item Poor programming practice would make code strictly dependent on the type system
+            \item ClearTK avoids this pitfall by:
+                    \begin{itemize}
+                            \item Designing the machine learning framework completely free of the type system
+                            \item Defining interfaces for operations on common types such as tokens, sentences and parses
+                            \item Implementing Annotators and wrappers built atop these type interfaces.
+                    \end{itemize}
+    \end{itemize}
+                    
     \end{block}
 
     \begin{block}{Modules should match natural subsets}
+            \begin{itemize}
+                    \item ClearTK 1.0 organized modules around types of annotations and corpora.
+                    \item Old organization created unncessary dependencies between similar but unrelated components (BerkeleyParser and MaltParser for example)
+                    \item ClearTK 1.2 utilizes this more natural module organization:
+                            \begin{itemize}
+                                    \item Type system agnostic ML libraries and feature extractors
+                                    \item ClearTK's base NLP type system
+                                    \item Type-system specific feature extractors
+                                    \item Corpora readers based on the ClearTK type system
+                                    \item Wrappers for non-UIMA components
+                            \end{itemize}
+            \end{itemize}
     \end{block}
 
     \begin{block}{Users need help past the UIMA overhead}
+
+            \begin{itemize}
+                    \item Most new users to ClearTK simply want to extract features and train a classifier
+                    \item Conversely UIMA's expects a developer to first:
+                            \begin{itemize}
+                                    \item declare a type system
+                                    \item configure autogeneration of Java classes from the type system
+                                    \item write an import path for training data
+                                    \item manage parameters for annotator initialization
+                                    \item instantiate the AnalysisEngine for execution
+                                    \item \ldots
+                            \end{itemize}
+                    \item Learning model:
+                            \begin{itemize}
+                                    \item Experts create UIMA scaffold
+                                    \item Allow novices to focus on implementing \code{process} methods and feature extraction
+                            \end{itemize}
+
+            \end{itemize}
+    \end{block}
+
+    \begin{block}{Acknowledgments}
+            This research was supported in part by the Strategic Health IT Advanced Research Projects (SHARP) Program (90TR002) from the Office of the National Coordinator for Health Information Technology, and by Grant Number R01LM010090 from the National Library Of Medicine. The content is solely the responsibility of the authors and does not necessarily represent the official views of the Office of the National Coordinator for Health Information Technology, the National Library Of Medicine or the National Institutes of Health.
+
     \end{block}
     
    
