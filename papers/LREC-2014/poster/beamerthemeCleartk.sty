@@ -18,17 +18,20 @@
 
 \definecolor{arsenic}{rgb}{0.23, 0.27, 0.29}
 \definecolor{amber}{rgb}{1.0, 0.75, 0.0}
+\definecolor{i6colorscheme3}{rgb}{0.625, 0.64, 0.70}
+\definecolor{i6colorscheme4}{rgb}{0.625, 0.64, 0.70}
+\definecolor{i6colorscheme6}{rgb}{0.625, 0.64, 0.70}
  
 \colorlet{i6colorscheme1}{arsenic}
 %\definecolor{i6colorscheme1}{rgb}{.23 .27 .29}  %  e.g. for headline background
 %\definecolor{i6colorscheme1}{HTML}{535967}  %  e.g. for headline background
 %\definecolor{i6colorscheme2}{HTML}{0e0f12}  %  e.g. title in headline
 %\colorlet{i6colorscheme2}{amber}
-\definecolor{i6colorscheme3}{HTML}{a0a5b2}  %  e.g. for poster background
-\definecolor{i6colorscheme4}{HTML}{5d5d5d}  %  e.g. for block background
-\definecolor{i6colorscheme5}{HTML}{FFFF00}  %  e.g. title in headline, separation lines
+%\definecolor{i6colorscheme3}{HTML}{a0a5b2}  %  e.g. for poster background
+%\definecolor{i6colorscheme4}{HTML}{5d5d5d}  %  e.g. for block background
+%\definecolor{i6colorscheme5}{HTML}{FFFF00}  %  e.g. title in headline, separation lines
 \colorlet{i6colorscheme5}{amber}
-\definecolor{i6colorscheme6}{HTML}{535967}  %  e.g. for alert
+%\definecolor{i6colorscheme6}{HTML}{535967}  %  e.g. for alert
 
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -111,9 +114,9 @@
         \hskip2ex
         \vskip4ex
         \raggedright
-        \usebeamercolor{title in headline}{\color{fg}\textbf{\LARGE{\inserttitle}}\\[1ex]}
-        \usebeamercolor{author in headline}{\color{fg}\Large{\insertauthor}\\[1ex]}
-        \usebeamercolor{institute in headline}{\color{fg}\Large{\insertinstitute}\\[1ex]}     
+        \usebeamercolor{title in headline}{\color{fg}\textbf{\LARGE{\inserttitle}}}
+        \usebeamercolor{author in headline}{\color{fg}\Large{\insertauthor}} \\ 
+        \usebeamercolor{institute in headline}{\color{fg}\Large{\insertinstitute}}     
       \end{column}
 
     \end{columns}
@@ -147,7 +150,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mode<all>
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Local Variables: 
