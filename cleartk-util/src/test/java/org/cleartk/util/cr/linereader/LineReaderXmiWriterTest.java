@@ -24,17 +24,17 @@
 
 package org.cleartk.util.cr.linereader;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.cleartk.test.util.DefaultTestBase;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -68,8 +68,8 @@ public class LineReaderXmiWriterTest extends DefaultTestBase {
     AnalysisEngineDescription xmiWriter = LineReaderXmiWriter.getDescription(outputDir);
 
     SimplePipeline.runPipeline(reader, xmiWriter);
-    List<File> errorFiles = new ArrayList<File>();
-    String[] fileNames = new String[] {
+    Set<String> actualFiles = new HashSet<>(Arrays.asList(outputDir.list()));
+    Set<String> expectedFiles = new HashSet<>(Arrays.asList(
         "a-test1.txt.1.xmi",
         "a-test1.txt.2.xmi",
         "a-test1.txt.3.xmi",
@@ -81,22 +81,8 @@ public class LineReaderXmiWriterTest extends DefaultTestBase {
         "b-test2.dat.9.xmi",
         "b-test2.dat.10.xmi",
         "b-test2.dat.11.xmi",
-        "b-test2.dat.12.xmi" };
-    for (String fileName : fileNames) {
-      File file = new File(outputDir, fileName);
-      if (!file.exists()) {
-        errorFiles.add(file);
-      }
-    }
+        "b-test2.dat.12.xmi"));
 
-    if (errorFiles.size() > 0) {
-      StringBuilder message = new StringBuilder(
-          "expected the following files but they were missing: ");
-      for (File errorFile : errorFiles) {
-        message.append("\n" + errorFile.getPath());
-      }
-      fail(message.toString());
-    }
-
+    Assert.assertEquals(expectedFiles, actualFiles);
   }
 }
