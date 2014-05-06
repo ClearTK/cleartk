@@ -147,6 +147,17 @@
 					</tags>
 				</configuration>
 			</plugin>
+			<!--
+			Don't deploy cleartk-examples
+			http://maven.apache.org/plugins/maven-deploy-plugin/faq.html#skip
+			 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>
