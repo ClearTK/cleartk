@@ -59,7 +59,6 @@ import org.cleartk.snowball.DefaultSnowballStemmer;
 import org.cleartk.token.tokenizer.TokenAnnotator;
 import org.cleartk.util.ae.UriToDocumentTextAnnotator;
 import org.cleartk.util.cr.UriCollectionReader;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -115,7 +114,6 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
 
   }
 
-  @Ignore
   @Test
   public void testMalletCRF() throws Exception {
     this.assumeLongTestsEnabled();
@@ -209,7 +207,6 @@ public class ExamplePosClassifierTest extends ExamplesTestBase {
         firstLine);
   }
 
-  @Ignore
   @Test
   public void testMalletC45() throws Exception {
     this.assumeLongTestsEnabled();

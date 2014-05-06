@@ -41,7 +41,6 @@ import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
@@ -194,7 +193,6 @@ public class ClearNlpTest extends CleartkTestBase {
 //    Assert.assertEquals(expectedSrl, actualSrl);
 //  }
 
-  @Ignore
   @Test
   public void srlTest() throws Exception {
     this.assumeBigMemoryTestsEnabled();

@@ -36,16 +36,16 @@ import java.util.List;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.apache.uima.fit.testing.factory.TokenBuilder;
-import org.apache.uima.fit.util.JCasUtil;
+import org.cleartk.maltparser.MaltParser;
 import org.cleartk.syntax.dependency.type.DependencyNode;
 import org.cleartk.syntax.dependency.type.TopDependencyNode;
 import org.cleartk.test.util.CleartkTestBase;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -54,7 +54,6 @@ import org.junit.Test;
  */
 public class MaltParserTest extends CleartkTestBase {
 
-  @Ignore
   @Test
   public void test() throws UIMAException {
     this.assumeBigMemoryTestsEnabled();

@@ -31,17 +31,17 @@ import opennlp.tools.cmdline.CLI;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.apache.uima.fit.testing.factory.TokenBuilder;
-import org.apache.uima.fit.testing.util.DisableLogging;
-import org.apache.uima.fit.util.JCasUtil;
+import org.cleartk.opennlp.tools.ParserAnnotator;
 import org.cleartk.opennlp.tools.parser.DefaultOutputTypesHelper;
 import org.cleartk.opennlp.tools.parser.ParserWrapper_ImplBase;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.testing.factory.TokenBuilder;
+import org.apache.uima.fit.testing.util.DisableLogging;
+import org.apache.uima.fit.util.JCasUtil;
 
 /**
  * <br>
@@ -244,7 +244,6 @@ public class ParserAnnotatorTest extends OpennlpSyntaxTestBase {
     }
   }
 
-  @Ignore
   @Test
   public void testDescriptor() throws UIMAException {
     this.assumeBigMemoryTestsEnabled();
