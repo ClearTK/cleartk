@@ -1,0 +1,321 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/* <a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (c) 2011, Regents of the University of Colorado <a name="line.2"></a>
+<span class="sourceLineNo">003</span> * All rights reserved.<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * <a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * <a name="line.7"></a>
+<span class="sourceLineNo">008</span> * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<span class="sourceLineNo">009</span> * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<span class="sourceLineNo">010</span> * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<span class="sourceLineNo">011</span> * <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<span class="sourceLineNo">023</span> */<a name="line.23"></a>
+<span class="sourceLineNo">024</span>package org.cleartk.ml.feature.function;<a name="line.24"></a>
+<span class="sourceLineNo">025</span><a name="line.25"></a>
+<span class="sourceLineNo">026</span>import java.util.Collections;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import java.util.List;<a name="line.27"></a>
+<span class="sourceLineNo">028</span><a name="line.28"></a>
+<span class="sourceLineNo">029</span>import org.apache.uima.jcas.JCas;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import org.apache.uima.jcas.tcas.Annotation;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import org.cleartk.ml.Feature;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.cleartk.ml.feature.extractor.CleartkExtractorException;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.cleartk.ml.feature.extractor.NamedFeatureExtractor1;<a name="line.33"></a>
+<span class="sourceLineNo">034</span><a name="line.34"></a>
+<span class="sourceLineNo">035</span>/**<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * A feature extractor that generates a pattern based on the &lt;a<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * href="http://unicode.org/reports/tr49/"&gt;Unicode categories&lt;/a&gt; of each of the characters in the<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * annotation text. For example, "A-z0" is an uppercase letter, followed by a dash, followed by a<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * lowercase letter, followed by a digit, and so would get the pattern "LuPdLlNd".<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * <a name="line.40"></a>
+<span class="sourceLineNo">041</span> * &lt;br&gt;<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * Copyright (c) 2011, Regents of the University of Colorado &lt;br&gt;<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * All rights reserved.<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * <a name="line.44"></a>
+<span class="sourceLineNo">045</span> * @author Steven Bethard<a name="line.45"></a>
+<span class="sourceLineNo">046</span> */<a name="line.46"></a>
+<span class="sourceLineNo">047</span>public class CharacterCategoryPatternFunction&lt;T extends Annotation&gt; implements FeatureFunction {<a name="line.47"></a>
+<span class="sourceLineNo">048</span><a name="line.48"></a>
+<span class="sourceLineNo">049</span>  /**<a name="line.49"></a>
+<span class="sourceLineNo">050</span>   * The type of pattern to generate in feature values.<a name="line.50"></a>
+<span class="sourceLineNo">051</span>   */<a name="line.51"></a>
+<span class="sourceLineNo">052</span>  public static enum PatternType {<a name="line.52"></a>
+<span class="sourceLineNo">053</span>    /**<a name="line.53"></a>
+<span class="sourceLineNo">054</span>     * The standard pattern, where one category abbreviation is added to the feature value for each<a name="line.54"></a>
+<span class="sourceLineNo">055</span>     * character in the text.<a name="line.55"></a>
+<span class="sourceLineNo">056</span>     */<a name="line.56"></a>
+<span class="sourceLineNo">057</span>    ONE_PER_CHAR,<a name="line.57"></a>
+<span class="sourceLineNo">058</span>    /**<a name="line.58"></a>
+<span class="sourceLineNo">059</span>     * A simplified pattern, where if the same category appears many times in a row, the category is<a name="line.59"></a>
+<span class="sourceLineNo">060</span>     * added to the feature value only once. For example "XX00" would get the pattern "LuNd" since<a name="line.60"></a>
+<span class="sourceLineNo">061</span>     * there are two uppercase letters followed by two digits.<a name="line.61"></a>
+<span class="sourceLineNo">062</span>     */<a name="line.62"></a>
+<span class="sourceLineNo">063</span>    REPEATS_MERGED,<a name="line.63"></a>
+<span class="sourceLineNo">064</span>    /**<a name="line.64"></a>
+<span class="sourceLineNo">065</span>     * Similar to REPEATS_MERGED, but distinguishes between the same category appearing once and<a name="line.65"></a>
+<span class="sourceLineNo">066</span>     * more than once in a row. If the same category appears twice or more in a row, then we will<a name="line.66"></a>
+<span class="sourceLineNo">067</span>     * mark that category with a Kleene plus '+'. For example "X000" would get the pattern "LuNd+"<a name="line.67"></a>
+<span class="sourceLineNo">068</span>     * since there is a single uppercase letter followed by more than one digit.<a name="line.68"></a>
+<span class="sourceLineNo">069</span>     */<a name="line.69"></a>
+<span class="sourceLineNo">070</span>    REPEATS_AS_KLEENE_PLUS<a name="line.70"></a>
+<span class="sourceLineNo">071</span>  }<a name="line.71"></a>
+<span class="sourceLineNo">072</span><a name="line.72"></a>
+<span class="sourceLineNo">073</span>  private PatternType patternType;<a name="line.73"></a>
+<span class="sourceLineNo">074</span><a name="line.74"></a>
+<span class="sourceLineNo">075</span>  private String name;<a name="line.75"></a>
+<span class="sourceLineNo">076</span><a name="line.76"></a>
+<span class="sourceLineNo">077</span>  public static &lt;T extends Annotation&gt; NamedFeatureExtractor1&lt;T&gt; createExtractor() {<a name="line.77"></a>
+<span class="sourceLineNo">078</span>    return createExtractor(PatternType.ONE_PER_CHAR);<a name="line.78"></a>
+<span class="sourceLineNo">079</span>  }<a name="line.79"></a>
+<span class="sourceLineNo">080</span><a name="line.80"></a>
+<span class="sourceLineNo">081</span>  /*<a name="line.81"></a>
+<span class="sourceLineNo">082</span>   * I would have returned a simple FeatureFunctionExtractor using the following code: return new<a name="line.82"></a>
+<span class="sourceLineNo">083</span>   * FeatureFunctionExtractor&lt;T&gt;(new CoveredTextExtractor&lt;T&gt;(), false, new<a name="line.83"></a>
+<span class="sourceLineNo">084</span>   * CharacterCategoryPatternFunction&lt;T&gt;()); but TimeAnnotator wanted a NamedFeatureExtractor1. So I<a name="line.84"></a>
+<span class="sourceLineNo">085</span>   * did the following to maintain backwards compatibility. After all, the converted feature<a name="line.85"></a>
+<span class="sourceLineNo">086</span>   * extractor was a NamedFeatureExtractor1.<a name="line.86"></a>
+<span class="sourceLineNo">087</span>   */<a name="line.87"></a>
+<span class="sourceLineNo">088</span><a name="line.88"></a>
+<span class="sourceLineNo">089</span>  public static &lt;T extends Annotation&gt; NamedFeatureExtractor1&lt;T&gt; createExtractor(<a name="line.89"></a>
+<span class="sourceLineNo">090</span>      PatternType patternType) {<a name="line.90"></a>
+<span class="sourceLineNo">091</span>    final CharacterCategoryPatternFunction&lt;T&gt; ccpf = new CharacterCategoryPatternFunction&lt;T&gt;(<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        patternType);<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    return new NamedFeatureExtractor1&lt;T&gt;() {<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>      @Override<a name="line.95"></a>
+<span class="sourceLineNo">096</span>      public List&lt;Feature&gt; extract(JCas view, Annotation focusAnnotation)<a name="line.96"></a>
+<span class="sourceLineNo">097</span>          throws CleartkExtractorException {<a name="line.97"></a>
+<span class="sourceLineNo">098</span>        String text = focusAnnotation.getCoveredText();<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        return ccpf.apply(new Feature(null, text));<a name="line.99"></a>
+<span class="sourceLineNo">100</span>      }<a name="line.100"></a>
+<span class="sourceLineNo">101</span><a name="line.101"></a>
+<span class="sourceLineNo">102</span>      @Override<a name="line.102"></a>
+<span class="sourceLineNo">103</span>      public String getFeatureName() {<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        return ccpf.getFeatureName();<a name="line.104"></a>
+<span class="sourceLineNo">105</span>      }<a name="line.105"></a>
+<span class="sourceLineNo">106</span>    };<a name="line.106"></a>
+<span class="sourceLineNo">107</span>  }<a name="line.107"></a>
+<span class="sourceLineNo">108</span><a name="line.108"></a>
+<span class="sourceLineNo">109</span>  /**<a name="line.109"></a>
+<span class="sourceLineNo">110</span>   * Create the standard feature extractor, where one category is added to the feature value for<a name="line.110"></a>
+<span class="sourceLineNo">111</span>   * each character in the text. See {@link PatternType#ONE_PER_CHAR}.<a name="line.111"></a>
+<span class="sourceLineNo">112</span>   */<a name="line.112"></a>
+<span class="sourceLineNo">113</span>  public CharacterCategoryPatternFunction() {<a name="line.113"></a>
+<span class="sourceLineNo">114</span>    this(PatternType.ONE_PER_CHAR);<a name="line.114"></a>
+<span class="sourceLineNo">115</span>  }<a name="line.115"></a>
+<span class="sourceLineNo">116</span><a name="line.116"></a>
+<span class="sourceLineNo">117</span>  /**<a name="line.117"></a>
+<span class="sourceLineNo">118</span>   * Create a feature extractor with the specified pattern type. See {@link PatternType} for the<a name="line.118"></a>
+<span class="sourceLineNo">119</span>   * acceptable pattern types.<a name="line.119"></a>
+<span class="sourceLineNo">120</span>   * <a name="line.120"></a>
+<span class="sourceLineNo">121</span>   * @param patternType<a name="line.121"></a>
+<span class="sourceLineNo">122</span>   *          The type of pattern to generate in feature values.<a name="line.122"></a>
+<span class="sourceLineNo">123</span>   */<a name="line.123"></a>
+<span class="sourceLineNo">124</span>  public CharacterCategoryPatternFunction(PatternType patternType) {<a name="line.124"></a>
+<span class="sourceLineNo">125</span>    this.patternType = patternType;<a name="line.125"></a>
+<span class="sourceLineNo">126</span>    switch (this.patternType) {<a name="line.126"></a>
+<span class="sourceLineNo">127</span>      case ONE_PER_CHAR:<a name="line.127"></a>
+<span class="sourceLineNo">128</span>        this.name = "CharPattern";<a name="line.128"></a>
+<span class="sourceLineNo">129</span>        break;<a name="line.129"></a>
+<span class="sourceLineNo">130</span>      case REPEATS_MERGED:<a name="line.130"></a>
+<span class="sourceLineNo">131</span>        this.name = "CharPatternRepeatsMerged";<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        break;<a name="line.132"></a>
+<span class="sourceLineNo">133</span>      case REPEATS_AS_KLEENE_PLUS:<a name="line.133"></a>
+<span class="sourceLineNo">134</span>        this.name = "CharPatternRepeatsAsKleenePlus";<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        break;<a name="line.135"></a>
+<span class="sourceLineNo">136</span>    }<a name="line.136"></a>
+<span class="sourceLineNo">137</span>  }<a name="line.137"></a>
+<span class="sourceLineNo">138</span><a name="line.138"></a>
+<span class="sourceLineNo">139</span>  public String getFeatureName() {<a name="line.139"></a>
+<span class="sourceLineNo">140</span>    return this.name;<a name="line.140"></a>
+<span class="sourceLineNo">141</span>  }<a name="line.141"></a>
+<span class="sourceLineNo">142</span><a name="line.142"></a>
+<span class="sourceLineNo">143</span>  @Override<a name="line.143"></a>
+<span class="sourceLineNo">144</span>  public List&lt;Feature&gt; apply(Feature feature) {<a name="line.144"></a>
+<span class="sourceLineNo">145</span>    String featureName = Feature.createName(getFeatureName(), feature.getName());<a name="line.145"></a>
+<span class="sourceLineNo">146</span>    Object featureValue = feature.getValue();<a name="line.146"></a>
+<span class="sourceLineNo">147</span>    if (featureValue == null)<a name="line.147"></a>
+<span class="sourceLineNo">148</span>      return Collections.emptyList();<a name="line.148"></a>
+<span class="sourceLineNo">149</span>    else if (featureValue instanceof String) {<a name="line.149"></a>
+<span class="sourceLineNo">150</span>      String text = featureValue.toString();<a name="line.150"></a>
+<span class="sourceLineNo">151</span>      StringBuilder builder = new StringBuilder();<a name="line.151"></a>
+<span class="sourceLineNo">152</span>      String lastType = null;<a name="line.152"></a>
+<span class="sourceLineNo">153</span>      boolean multipleRepeats = false;<a name="line.153"></a>
+<span class="sourceLineNo">154</span>      for (int i = 0; i &lt; text.length(); i += 1) {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>        char c = text.charAt(i);<a name="line.155"></a>
+<span class="sourceLineNo">156</span>        String type = classifyChar(c);<a name="line.156"></a>
+<span class="sourceLineNo">157</span>        switch (this.patternType) {<a name="line.157"></a>
+<span class="sourceLineNo">158</span>          case ONE_PER_CHAR:<a name="line.158"></a>
+<span class="sourceLineNo">159</span>            builder.append(type);<a name="line.159"></a>
+<span class="sourceLineNo">160</span>            break;<a name="line.160"></a>
+<span class="sourceLineNo">161</span>          case REPEATS_MERGED:<a name="line.161"></a>
+<span class="sourceLineNo">162</span>            if (!type.equals(lastType)) {<a name="line.162"></a>
+<span class="sourceLineNo">163</span>              builder.append(type);<a name="line.163"></a>
+<span class="sourceLineNo">164</span>            }<a name="line.164"></a>
+<span class="sourceLineNo">165</span>            break;<a name="line.165"></a>
+<span class="sourceLineNo">166</span>          case REPEATS_AS_KLEENE_PLUS:<a name="line.166"></a>
+<span class="sourceLineNo">167</span>            if (!type.equals(lastType)) {<a name="line.167"></a>
+<span class="sourceLineNo">168</span>              builder.append(type);<a name="line.168"></a>
+<span class="sourceLineNo">169</span>              multipleRepeats = false;<a name="line.169"></a>
+<span class="sourceLineNo">170</span>            } else if (!multipleRepeats) {<a name="line.170"></a>
+<span class="sourceLineNo">171</span>              builder.append('+');<a name="line.171"></a>
+<span class="sourceLineNo">172</span>              multipleRepeats = true;<a name="line.172"></a>
+<span class="sourceLineNo">173</span>            }<a name="line.173"></a>
+<span class="sourceLineNo">174</span>        }<a name="line.174"></a>
+<span class="sourceLineNo">175</span>        lastType = type;<a name="line.175"></a>
+<span class="sourceLineNo">176</span>      }<a name="line.176"></a>
+<span class="sourceLineNo">177</span>      return Collections.singletonList(new Feature(featureName, builder.toString()));<a name="line.177"></a>
+<span class="sourceLineNo">178</span>    }<a name="line.178"></a>
+<span class="sourceLineNo">179</span>    return Collections.emptyList();<a name="line.179"></a>
+<span class="sourceLineNo">180</span>  }<a name="line.180"></a>
+<span class="sourceLineNo">181</span><a name="line.181"></a>
+<span class="sourceLineNo">182</span>  protected String classifyChar(char c) {<a name="line.182"></a>
+<span class="sourceLineNo">183</span>    int typeInt = Character.getType(c);<a name="line.183"></a>
+<span class="sourceLineNo">184</span>    switch (typeInt) {<a name="line.184"></a>
+<span class="sourceLineNo">185</span>      case Character.CONTROL:<a name="line.185"></a>
+<span class="sourceLineNo">186</span>        return "CC";<a name="line.186"></a>
+<span class="sourceLineNo">187</span>      case Character.FORMAT:<a name="line.187"></a>
+<span class="sourceLineNo">188</span>        return "Cf";<a name="line.188"></a>
+<span class="sourceLineNo">189</span>      case Character.UNASSIGNED:<a name="line.189"></a>
+<span class="sourceLineNo">190</span>        return "Cn";<a name="line.190"></a>
+<span class="sourceLineNo">191</span>      case Character.PRIVATE_USE:<a name="line.191"></a>
+<span class="sourceLineNo">192</span>        return "Co";<a name="line.192"></a>
+<span class="sourceLineNo">193</span>      case Character.SURROGATE:<a name="line.193"></a>
+<span class="sourceLineNo">194</span>        return "Cs";<a name="line.194"></a>
+<span class="sourceLineNo">195</span>      case Character.LOWERCASE_LETTER:<a name="line.195"></a>
+<span class="sourceLineNo">196</span>        return "Ll";<a name="line.196"></a>
+<span class="sourceLineNo">197</span>      case Character.MODIFIER_LETTER:<a name="line.197"></a>
+<span class="sourceLineNo">198</span>        return "Lm";<a name="line.198"></a>
+<span class="sourceLineNo">199</span>      case Character.OTHER_LETTER:<a name="line.199"></a>
+<span class="sourceLineNo">200</span>        return "Lo";<a name="line.200"></a>
+<span class="sourceLineNo">201</span>      case Character.TITLECASE_LETTER:<a name="line.201"></a>
+<span class="sourceLineNo">202</span>        return "Lt";<a name="line.202"></a>
+<span class="sourceLineNo">203</span>      case Character.UPPERCASE_LETTER:<a name="line.203"></a>
+<span class="sourceLineNo">204</span>        return "Lu";<a name="line.204"></a>
+<span class="sourceLineNo">205</span>      case Character.COMBINING_SPACING_MARK:<a name="line.205"></a>
+<span class="sourceLineNo">206</span>        return "Mc";<a name="line.206"></a>
+<span class="sourceLineNo">207</span>      case Character.ENCLOSING_MARK:<a name="line.207"></a>
+<span class="sourceLineNo">208</span>        return "Me";<a name="line.208"></a>
+<span class="sourceLineNo">209</span>      case Character.NON_SPACING_MARK:<a name="line.209"></a>
+<span class="sourceLineNo">210</span>        return "Mn";<a name="line.210"></a>
+<span class="sourceLineNo">211</span>      case Character.DECIMAL_DIGIT_NUMBER:<a name="line.211"></a>
+<span class="sourceLineNo">212</span>        return "Nd";<a name="line.212"></a>
+<span class="sourceLineNo">213</span>      case Character.LETTER_NUMBER:<a name="line.213"></a>
+<span class="sourceLineNo">214</span>        return "Nl";<a name="line.214"></a>
+<span class="sourceLineNo">215</span>      case Character.OTHER_NUMBER:<a name="line.215"></a>
+<span class="sourceLineNo">216</span>        return "No";<a name="line.216"></a>
+<span class="sourceLineNo">217</span>      case Character.CONNECTOR_PUNCTUATION:<a name="line.217"></a>
+<span class="sourceLineNo">218</span>        return "Pc";<a name="line.218"></a>
+<span class="sourceLineNo">219</span>      case Character.DASH_PUNCTUATION:<a name="line.219"></a>
+<span class="sourceLineNo">220</span>        return "Pd";<a name="line.220"></a>
+<span class="sourceLineNo">221</span>      case Character.END_PUNCTUATION:<a name="line.221"></a>
+<span class="sourceLineNo">222</span>        return "Pe";<a name="line.222"></a>
+<span class="sourceLineNo">223</span>      case Character.FINAL_QUOTE_PUNCTUATION:<a name="line.223"></a>
+<span class="sourceLineNo">224</span>        return "Pf";<a name="line.224"></a>
+<span class="sourceLineNo">225</span>      case Character.INITIAL_QUOTE_PUNCTUATION:<a name="line.225"></a>
+<span class="sourceLineNo">226</span>        return "Pi";<a name="line.226"></a>
+<span class="sourceLineNo">227</span>      case Character.OTHER_PUNCTUATION:<a name="line.227"></a>
+<span class="sourceLineNo">228</span>        return "Po";<a name="line.228"></a>
+<span class="sourceLineNo">229</span>      case Character.START_PUNCTUATION:<a name="line.229"></a>
+<span class="sourceLineNo">230</span>        return "Ps";<a name="line.230"></a>
+<span class="sourceLineNo">231</span>      case Character.CURRENCY_SYMBOL:<a name="line.231"></a>
+<span class="sourceLineNo">232</span>        return "Sc";<a name="line.232"></a>
+<span class="sourceLineNo">233</span>      case Character.MODIFIER_SYMBOL:<a name="line.233"></a>
+<span class="sourceLineNo">234</span>        return "Sk";<a name="line.234"></a>
+<span class="sourceLineNo">235</span>      case Character.MATH_SYMBOL:<a name="line.235"></a>
+<span class="sourceLineNo">236</span>        return "Sm";<a name="line.236"></a>
+<span class="sourceLineNo">237</span>      case Character.OTHER_SYMBOL:<a name="line.237"></a>
+<span class="sourceLineNo">238</span>        return "So";<a name="line.238"></a>
+<span class="sourceLineNo">239</span>      case Character.LINE_SEPARATOR:<a name="line.239"></a>
+<span class="sourceLineNo">240</span>        return "Zl";<a name="line.240"></a>
+<span class="sourceLineNo">241</span>      case Character.PARAGRAPH_SEPARATOR:<a name="line.241"></a>
+<span class="sourceLineNo">242</span>        return "Zp";<a name="line.242"></a>
+<span class="sourceLineNo">243</span>      case Character.SPACE_SEPARATOR:<a name="line.243"></a>
+<span class="sourceLineNo">244</span>        return "Zs";<a name="line.244"></a>
+<span class="sourceLineNo">245</span>      default:<a name="line.245"></a>
+<span class="sourceLineNo">246</span>        throw new RuntimeException("Unknown character type: " + typeInt);<a name="line.246"></a>
+<span class="sourceLineNo">247</span>    }<a name="line.247"></a>
+<span class="sourceLineNo">248</span>  }<a name="line.248"></a>
+<span class="sourceLineNo">249</span>}<a name="line.249"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

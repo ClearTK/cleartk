@@ -1,0 +1,477 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- NewPage -->
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<title>CleartkDependencyOps (ClearTK 2.0.0 API)</title>
+<link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
+</head>
+<body>
+<script type="text/javascript"><!--
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="CleartkDependencyOps (ClearTK 2.0.0 API)";
+    }
+//-->
+</script>
+<noscript>
+<div>JavaScript is disabled on your browser.</div>
+</noscript>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+<!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/CleartkDependencyOps.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../index-all.html">Index</a></li>
+<li><a href="../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li>Prev Class</li>
+<li><a href="../../../org/cleartk/clearnlp/CleartkSemanticRoleOps.html" title="class in org.cleartk.clearnlp"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../index.html?org/cleartk/clearnlp/CleartkDependencyOps.html" target="_top">Frames</a></li>
+<li><a href="CleartkDependencyOps.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_top">
+<li><a href="../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_top");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_top">
+<!--   -->
+</a></div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+<!-- ======== START OF CLASS DATA ======== -->
+<div class="header">
+<div class="subTitle">org.cleartk.clearnlp</div>
+<h2 title="Class CleartkDependencyOps" class="title">Class CleartkDependencyOps</h2>
+</div>
+<div class="contentContainer">
+<ul class="inheritance">
+<li><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
+<li>
+<ul class="inheritance">
+<li>org.cleartk.clearnlp.CleartkDependencyOps</li>
+</ul>
+</li>
+</ul>
+<div class="description">
+<ul class="blockList">
+<li class="blockList">
+<dl>
+<dt>All Implemented Interfaces:</dt>
+<dd><a href="../../../org/cleartk/clearnlp/DependencyOps.html" title="interface in org.cleartk.clearnlp">DependencyOps</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode,org.cleartk.token.type.Token,org.cleartk.syntax.dependency.type.TopDependencyNode,org.cleartk.token.type.Sentence,org.cleartk.syntax.dependency.type.DependencyRelation&gt;</dd>
+</dl>
+<hr>
+<br>
+<pre><a href="http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/com/google/common/annotations/Beta.html?is-external=true" title="class or interface in com.google.common.annotations">@Beta</a>
+public class <a href="../../../src-html/org/cleartk/clearnlp/CleartkDependencyOps.html#line.28">CleartkDependencyOps</a>
+extends <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>
+implements <a href="../../../org/cleartk/clearnlp/DependencyOps.html" title="interface in org.cleartk.clearnlp">DependencyOps</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode,org.cleartk.token.type.Token,org.cleartk.syntax.dependency.type.TopDependencyNode,org.cleartk.token.type.Sentence,org.cleartk.syntax.dependency.type.DependencyRelation&gt;</pre>
+<div class="block">Defines common set of dependency graph data type operations used to convert and query ClearTK dependency types
+ such as <code>TopDependencyNode</code>, <code>DependencyNode</code> and <code>DependencyRelation</code></div>
+<dl><dt><span class="strong">Author:</span></dt>
+  <dd>Lee Becker</dd></dl>
+</li>
+</ul>
+</div>
+<div class="summary">
+<ul class="blockList">
+<li class="blockList">
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_summary">
+<!--   -->
+</a>
+<h3>Constructor Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
+<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Constructor and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><strong><a href="../../../org/cleartk/clearnlp/CleartkDependencyOps.html#CleartkDependencyOps()">CleartkDependencyOps</a></strong>()</code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- ========== METHOD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_summary">
+<!--   -->
+</a>
+<h3>Method Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
+<caption><span>Methods</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>org.cleartk.syntax.dependency.type.DependencyNode</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/clearnlp/CleartkDependencyOps.html#createNode(org.apache.uima.jcas.JCas, org.cleartk.token.type.Token)">createNode</a></strong>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                    org.cleartk.token.type.Token&nbsp;token)</code>
+<div class="block">Creates a new dependency node for the specified span</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>org.cleartk.syntax.dependency.type.DependencyRelation</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/clearnlp/CleartkDependencyOps.html#createRelation(org.apache.uima.jcas.JCas, org.cleartk.syntax.dependency.type.DependencyNode, org.cleartk.syntax.dependency.type.DependencyNode, java.lang.String)">createRelation</a></strong>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                            org.cleartk.syntax.dependency.type.DependencyNode&nbsp;head,
+                            org.cleartk.syntax.dependency.type.DependencyNode&nbsp;child,
+                            <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;relation)</code>
+<div class="block">Creates a relation between the two nodes.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>org.cleartk.syntax.dependency.type.TopDependencyNode</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/clearnlp/CleartkDependencyOps.html#createRootNode(org.apache.uima.jcas.JCas, org.cleartk.token.type.Sentence)">createRootNode</a></strong>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                            org.cleartk.token.type.Sentence&nbsp;sentence)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>org.cleartk.syntax.dependency.type.DependencyNode</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/clearnlp/CleartkDependencyOps.html#getHead(org.apache.uima.jcas.JCas, org.cleartk.syntax.dependency.type.DependencyRelation)">getHead</a></strong>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+              org.cleartk.syntax.dependency.type.DependencyRelation&nbsp;relation)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code><a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;org.cleartk.syntax.dependency.type.DependencyRelation&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/clearnlp/CleartkDependencyOps.html#getHeadRelations(org.apache.uima.jcas.JCas, org.cleartk.syntax.dependency.type.DependencyNode)">getHeadRelations</a></strong>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                                org.cleartk.syntax.dependency.type.DependencyNode&nbsp;node)</code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a></code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/clearnlp/CleartkDependencyOps.html#getLabel(org.apache.uima.jcas.JCas, org.cleartk.syntax.dependency.type.DependencyRelation)">getLabel</a></strong>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                org.cleartk.syntax.dependency.type.DependencyRelation&nbsp;relation)</code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code><a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/clearnlp/CleartkDependencyOps.html#selectNodes(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation)">selectNodes</a></strong>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                      <a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</a>&nbsp;coveringAnnotation)</code>
+<div class="block">Selects all dependency nodes within the annotation, excluding the root node.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>org.cleartk.syntax.dependency.type.TopDependencyNode</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/clearnlp/CleartkDependencyOps.html#selectRootNode(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation)">selectRootNode</a></strong>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                            <a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</a>&nbsp;coveringAnnotation)</code>
+<div class="block">Selects the single root node within the annotation.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/clearnlp/CleartkDependencyOps.html#setChildRelations(org.apache.uima.jcas.JCas, org.cleartk.syntax.dependency.type.DependencyNode, java.util.List)">setChildRelations</a></strong>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                                  org.cleartk.syntax.dependency.type.DependencyNode&nbsp;node,
+                                  <a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;org.cleartk.syntax.dependency.type.DependencyRelation&gt;&nbsp;childRelations)</code>
+<div class="block">Sets the head relations for a given node.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><strong><a href="../../../org/cleartk/clearnlp/CleartkDependencyOps.html#setHeadRelations(org.apache.uima.jcas.JCas, org.cleartk.syntax.dependency.type.DependencyNode, java.util.List)">setHeadRelations</a></strong>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                                org.cleartk.syntax.dependency.type.DependencyNode&nbsp;node,
+                                <a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;org.cleartk.syntax.dependency.type.DependencyRelation&gt;&nbsp;headRelations)</code>
+<div class="block">Sets the head relations for a given node.</div>
+</td>
+</tr>
+</table>
+<ul class="blockList">
+<li class="blockList"><a name="methods_inherited_from_class_java.lang.Object">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;java.lang.<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
+<code><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="details">
+<ul class="blockList">
+<li class="blockList">
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_detail">
+<!--   -->
+</a>
+<h3>Constructor Detail</h3>
+<a name="CleartkDependencyOps()">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>CleartkDependencyOps</h4>
+<pre>public&nbsp;<a href="../../../src-html/org/cleartk/clearnlp/CleartkDependencyOps.html#line.28">CleartkDependencyOps</a>()</pre>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ============ METHOD DETAIL ========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_detail">
+<!--   -->
+</a>
+<h3>Method Detail</h3>
+<a name="createNode(org.apache.uima.jcas.JCas, org.cleartk.token.type.Token)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createNode</h4>
+<pre>public&nbsp;org.cleartk.syntax.dependency.type.DependencyNode&nbsp;<a href="../../../src-html/org/cleartk/clearnlp/CleartkDependencyOps.html#line.71">createNode</a>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                                                           org.cleartk.token.type.Token&nbsp;token)</pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#createNode(org.apache.uima.jcas.JCas, NODE_SPAN_TYPE)">DependencyOps</a></code></strong></div>
+<div class="block">Creates a new dependency node for the specified span</div>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#createNode(org.apache.uima.jcas.JCas, NODE_SPAN_TYPE)">createNode</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html" title="interface in org.cleartk.clearnlp">DependencyOps</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode,org.cleartk.token.type.Token,org.cleartk.syntax.dependency.type.TopDependencyNode,org.cleartk.token.type.Sentence,org.cleartk.syntax.dependency.type.DependencyRelation&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="createRelation(org.apache.uima.jcas.JCas, org.cleartk.syntax.dependency.type.DependencyNode, org.cleartk.syntax.dependency.type.DependencyNode, java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createRelation</h4>
+<pre>public&nbsp;org.cleartk.syntax.dependency.type.DependencyRelation&nbsp;<a href="../../../src-html/org/cleartk/clearnlp/CleartkDependencyOps.html#line.76">createRelation</a>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                                                                   org.cleartk.syntax.dependency.type.DependencyNode&nbsp;head,
+                                                                   org.cleartk.syntax.dependency.type.DependencyNode&nbsp;child,
+                                                                   <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;relation)</pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#createRelation(org.apache.uima.jcas.JCas, NODE_TYPE, NODE_TYPE, java.lang.String)">DependencyOps</a></code></strong></div>
+<div class="block">Creates a relation between the two nodes.  If dealing with a type system where the relation is a separate object,
+ this will likely create a new relation object.  For graphs that have the relation built into the node, this will likely
+ just set labels on head and child relation fields</div>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#createRelation(org.apache.uima.jcas.JCas, NODE_TYPE, NODE_TYPE, java.lang.String)">createRelation</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html" title="interface in org.cleartk.clearnlp">DependencyOps</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode,org.cleartk.token.type.Token,org.cleartk.syntax.dependency.type.TopDependencyNode,org.cleartk.token.type.Sentence,org.cleartk.syntax.dependency.type.DependencyRelation&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="createRootNode(org.apache.uima.jcas.JCas, org.cleartk.token.type.Sentence)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createRootNode</h4>
+<pre>public&nbsp;org.cleartk.syntax.dependency.type.TopDependencyNode&nbsp;<a href="../../../src-html/org/cleartk/clearnlp/CleartkDependencyOps.html#line.66">createRootNode</a>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                                                                  org.cleartk.token.type.Sentence&nbsp;sentence)</pre>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#createRootNode(org.apache.uima.jcas.JCas, ROOT_NODE_SPAN_TYPE)">createRootNode</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html" title="interface in org.cleartk.clearnlp">DependencyOps</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode,org.cleartk.token.type.Token,org.cleartk.syntax.dependency.type.TopDependencyNode,org.cleartk.token.type.Sentence,org.cleartk.syntax.dependency.type.DependencyRelation&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="getHead(org.apache.uima.jcas.JCas, org.cleartk.syntax.dependency.type.DependencyRelation)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getHead</h4>
+<pre>public&nbsp;org.cleartk.syntax.dependency.type.DependencyNode&nbsp;<a href="../../../src-html/org/cleartk/clearnlp/CleartkDependencyOps.html#line.56">getHead</a>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                                                        org.cleartk.syntax.dependency.type.DependencyRelation&nbsp;relation)</pre>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#getHead(org.apache.uima.jcas.JCas, RELATION_TYPE)">getHead</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html" title="interface in org.cleartk.clearnlp">DependencyOps</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode,org.cleartk.token.type.Token,org.cleartk.syntax.dependency.type.TopDependencyNode,org.cleartk.token.type.Sentence,org.cleartk.syntax.dependency.type.DependencyRelation&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="getHeadRelations(org.apache.uima.jcas.JCas, org.cleartk.syntax.dependency.type.DependencyNode)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getHeadRelations</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;org.cleartk.syntax.dependency.type.DependencyRelation&gt;&nbsp;<a href="../../../src-html/org/cleartk/clearnlp/CleartkDependencyOps.html#line.51">getHeadRelations</a>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                                                                           org.cleartk.syntax.dependency.type.DependencyNode&nbsp;node)</pre>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#getHeadRelations(org.apache.uima.jcas.JCas, NODE_TYPE)">getHeadRelations</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html" title="interface in org.cleartk.clearnlp">DependencyOps</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode,org.cleartk.token.type.Token,org.cleartk.syntax.dependency.type.TopDependencyNode,org.cleartk.token.type.Sentence,org.cleartk.syntax.dependency.type.DependencyRelation&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="getLabel(org.apache.uima.jcas.JCas, org.cleartk.syntax.dependency.type.DependencyRelation)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getLabel</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/org/cleartk/clearnlp/CleartkDependencyOps.html#line.61">getLabel</a>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+              org.cleartk.syntax.dependency.type.DependencyRelation&nbsp;relation)</pre>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#getLabel(org.apache.uima.jcas.JCas, RELATION_TYPE)">getLabel</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html" title="interface in org.cleartk.clearnlp">DependencyOps</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode,org.cleartk.token.type.Token,org.cleartk.syntax.dependency.type.TopDependencyNode,org.cleartk.token.type.Sentence,org.cleartk.syntax.dependency.type.DependencyRelation&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="selectNodes(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>selectNodes</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode&gt;&nbsp;<a href="../../../src-html/org/cleartk/clearnlp/CleartkDependencyOps.html#line.40">selectNodes</a>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                                                                  <a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</a>&nbsp;coveringAnnotation)</pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#selectNodes(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation)">DependencyOps</a></code></strong></div>
+<div class="block">Selects all dependency nodes within the annotation, excluding the root node.
+ 
+ Nodes should be ordered by their offsets.</div>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#selectNodes(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation)">selectNodes</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html" title="interface in org.cleartk.clearnlp">DependencyOps</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode,org.cleartk.token.type.Token,org.cleartk.syntax.dependency.type.TopDependencyNode,org.cleartk.token.type.Sentence,org.cleartk.syntax.dependency.type.DependencyRelation&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="selectRootNode(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>selectRootNode</h4>
+<pre>public&nbsp;org.cleartk.syntax.dependency.type.TopDependencyNode&nbsp;<a href="../../../src-html/org/cleartk/clearnlp/CleartkDependencyOps.html#line.31">selectRootNode</a>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                                                                  <a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/tcas/Annotation.html?is-external=true" title="class or interface in org.apache.uima.jcas.tcas">Annotation</a>&nbsp;coveringAnnotation)</pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#selectRootNode(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation)">DependencyOps</a></code></strong></div>
+<div class="block">Selects the single root node within the annotation. Should error on more than one root node.</div>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#selectRootNode(org.apache.uima.jcas.JCas, org.apache.uima.jcas.tcas.Annotation)">selectRootNode</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html" title="interface in org.cleartk.clearnlp">DependencyOps</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode,org.cleartk.token.type.Token,org.cleartk.syntax.dependency.type.TopDependencyNode,org.cleartk.token.type.Sentence,org.cleartk.syntax.dependency.type.DependencyRelation&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="setChildRelations(org.apache.uima.jcas.JCas, org.cleartk.syntax.dependency.type.DependencyNode, java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setChildRelations</h4>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/org/cleartk/clearnlp/CleartkDependencyOps.html#line.94">setChildRelations</a>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                     org.cleartk.syntax.dependency.type.DependencyNode&nbsp;node,
+                     <a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;org.cleartk.syntax.dependency.type.DependencyRelation&gt;&nbsp;childRelations)</pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#setChildRelations(org.apache.uima.jcas.JCas, NODE_TYPE, java.util.List)">DependencyOps</a></code></strong></div>
+<div class="block">Sets the head relations for a given node.  This is only important if the type system supports multi-child dependency parses</div>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#setChildRelations(org.apache.uima.jcas.JCas, NODE_TYPE, java.util.List)">setChildRelations</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html" title="interface in org.cleartk.clearnlp">DependencyOps</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode,org.cleartk.token.type.Token,org.cleartk.syntax.dependency.type.TopDependencyNode,org.cleartk.token.type.Sentence,org.cleartk.syntax.dependency.type.DependencyRelation&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="setHeadRelations(org.apache.uima.jcas.JCas, org.cleartk.syntax.dependency.type.DependencyNode, java.util.List)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>setHeadRelations</h4>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/org/cleartk/clearnlp/CleartkDependencyOps.html#line.85">setHeadRelations</a>(<a href="http://uima.apache.org/d/uimaj-2.3.1/api/org/apache/uima/jcas/JCas.html?is-external=true" title="class or interface in org.apache.uima.jcas">JCas</a>&nbsp;jCas,
+                    org.cleartk.syntax.dependency.type.DependencyNode&nbsp;node,
+                    <a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;org.cleartk.syntax.dependency.type.DependencyRelation&gt;&nbsp;headRelations)</pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#setHeadRelations(org.apache.uima.jcas.JCas, NODE_TYPE, java.util.List)">DependencyOps</a></code></strong></div>
+<div class="block">Sets the head relations for a given node.  This is only important if the type system supports multi-head dependency parses</div>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="../../../org/cleartk/clearnlp/DependencyOps.html#setHeadRelations(org.apache.uima.jcas.JCas, NODE_TYPE, java.util.List)">setHeadRelations</a></code>&nbsp;in interface&nbsp;<code><a href="../../../org/cleartk/clearnlp/DependencyOps.html" title="interface in org.cleartk.clearnlp">DependencyOps</a>&lt;org.cleartk.syntax.dependency.type.DependencyNode,org.cleartk.token.type.Token,org.cleartk.syntax.dependency.type.TopDependencyNode,org.cleartk.token.type.Sentence,org.cleartk.syntax.dependency.type.DependencyRelation&gt;</code></dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- ========= END OF CLASS DATA ========= -->
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+<!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/CleartkDependencyOps.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../index-all.html">Index</a></li>
+<li><a href="../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li>Prev Class</li>
+<li><a href="../../../org/cleartk/clearnlp/CleartkSemanticRoleOps.html" title="class in org.cleartk.clearnlp"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../index.html?org/cleartk/clearnlp/CleartkDependencyOps.html" target="_top">Frames</a></li>
+<li><a href="CleartkDependencyOps.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_bottom">
+<li><a href="../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_bottom");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_bottom">
+<!--   -->
+</a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; 2014. All rights reserved.</small></p>
+</body>
+</html>

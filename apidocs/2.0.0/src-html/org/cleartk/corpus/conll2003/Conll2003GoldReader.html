@@ -1,0 +1,401 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/** <a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (c) 2007-2008, Regents of the University of Colorado <a name="line.2"></a>
+<span class="sourceLineNo">003</span> * All rights reserved.<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * <a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * <a name="line.7"></a>
+<span class="sourceLineNo">008</span> * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<span class="sourceLineNo">009</span> * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<span class="sourceLineNo">010</span> * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<span class="sourceLineNo">011</span> * <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<span class="sourceLineNo">023</span> */<a name="line.23"></a>
+<span class="sourceLineNo">024</span>package org.cleartk.corpus.conll2003;<a name="line.24"></a>
+<span class="sourceLineNo">025</span><a name="line.25"></a>
+<span class="sourceLineNo">026</span>import java.io.BufferedReader;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import java.io.File;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import java.io.FileNotFoundException;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import java.io.FileReader;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import java.io.IOException;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import java.net.URI;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import java.net.URISyntaxException;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import java.util.ArrayList;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import java.util.List;<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
+<span class="sourceLineNo">036</span>import org.apache.uima.UimaContext;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import org.apache.uima.collection.CollectionException;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import org.apache.uima.jcas.JCas;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import org.apache.uima.jcas.cas.FSArray;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import org.apache.uima.jcas.tcas.Annotation;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import org.apache.uima.resource.ResourceInitializationException;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>import org.apache.uima.util.Progress;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>import org.apache.uima.util.ProgressImpl;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>import org.cleartk.ne.type.Chunk;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>import org.cleartk.ne.type.NamedEntity;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import org.cleartk.ne.type.NamedEntityMention;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import org.cleartk.token.type.Sentence;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>import org.cleartk.token.type.Token;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>import org.cleartk.util.ViewUriUtil;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>import org.apache.uima.fit.descriptor.ConfigurationParameter;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import org.apache.uima.fit.descriptor.SofaCapability;<a name="line.52"></a>
+<span class="sourceLineNo">053</span><a name="line.53"></a>
+<span class="sourceLineNo">054</span>/**<a name="line.54"></a>
+<span class="sourceLineNo">055</span> * &lt;br&gt;<a name="line.55"></a>
+<span class="sourceLineNo">056</span> * Copyright (c) 2007-2008, Regents of the University of Colorado &lt;br&gt;<a name="line.56"></a>
+<span class="sourceLineNo">057</span> * All rights reserved.<a name="line.57"></a>
+<span class="sourceLineNo">058</span> * <a name="line.58"></a>
+<span class="sourceLineNo">059</span> * <a name="line.59"></a>
+<span class="sourceLineNo">060</span> * @author Philip Ogren<a name="line.60"></a>
+<span class="sourceLineNo">061</span> * <a name="line.61"></a>
+<span class="sourceLineNo">062</span> * <a name="line.62"></a>
+<span class="sourceLineNo">063</span> *         This collection reader reads in the CoNLL 2003 named entity data. The data can be<a name="line.63"></a>
+<span class="sourceLineNo">064</span> *         retrieved from http://www.cnts.ua.ac.be/conll2003/ner/<a name="line.64"></a>
+<span class="sourceLineNo">065</span> * <a name="line.65"></a>
+<span class="sourceLineNo">066</span> */<a name="line.66"></a>
+<span class="sourceLineNo">067</span>@SofaCapability(outputSofas = ViewUriUtil.URI)<a name="line.67"></a>
+<span class="sourceLineNo">068</span>public class Conll2003GoldReader extends JCasCollectionReader_ImplBase {<a name="line.68"></a>
+<span class="sourceLineNo">069</span>  <a name="line.69"></a>
+<span class="sourceLineNo">070</span>  public static final String PARAM_DATA_FILE_NAME = "dataFileName";<a name="line.70"></a>
+<span class="sourceLineNo">071</span><a name="line.71"></a>
+<span class="sourceLineNo">072</span>  @ConfigurationParameter(<a name="line.72"></a>
+<span class="sourceLineNo">073</span>      name = PARAM_DATA_FILE_NAME,<a name="line.73"></a>
+<span class="sourceLineNo">074</span>      mandatory = true, description = "Points to CoNLL data (e.g. ner/eng.train).")<a name="line.74"></a>
+<span class="sourceLineNo">075</span>  private String dataFileName;<a name="line.75"></a>
+<span class="sourceLineNo">076</span><a name="line.76"></a>
+<span class="sourceLineNo">077</span>  public static final String PARAM_LOAD_NAMED_ENTITIES = "loadNamedEntities";<a name="line.77"></a>
+<span class="sourceLineNo">078</span><a name="line.78"></a>
+<span class="sourceLineNo">079</span>  @ConfigurationParameter(<a name="line.79"></a>
+<span class="sourceLineNo">080</span>      name = PARAM_LOAD_NAMED_ENTITIES,<a name="line.80"></a>
+<span class="sourceLineNo">081</span>      mandatory = true, description = "determines if the named entities are loaded (i.e. named entity mention annotations are created) or if just plain text from the files is loaded.", defaultValue = "true")<a name="line.81"></a>
+<span class="sourceLineNo">082</span>  private boolean loadNamedEntities;<a name="line.82"></a>
+<span class="sourceLineNo">083</span><a name="line.83"></a>
+<span class="sourceLineNo">084</span>  public static final String DOCSTART = "-DOCSTART-";<a name="line.84"></a>
+<span class="sourceLineNo">085</span><a name="line.85"></a>
+<span class="sourceLineNo">086</span>  BufferedReader reader;<a name="line.86"></a>
+<span class="sourceLineNo">087</span><a name="line.87"></a>
+<span class="sourceLineNo">088</span>  boolean hasNext = true;<a name="line.88"></a>
+<span class="sourceLineNo">089</span><a name="line.89"></a>
+<span class="sourceLineNo">090</span>  int documentIndex = 0;<a name="line.90"></a>
+<span class="sourceLineNo">091</span><a name="line.91"></a>
+<span class="sourceLineNo">092</span>  int entityIdIndex = 0;<a name="line.92"></a>
+<span class="sourceLineNo">093</span><a name="line.93"></a>
+<span class="sourceLineNo">094</span>  public void initialize(UimaContext context) throws ResourceInitializationException {<a name="line.94"></a>
+<span class="sourceLineNo">095</span><a name="line.95"></a>
+<span class="sourceLineNo">096</span>    try {<a name="line.96"></a>
+<span class="sourceLineNo">097</span>      File conllFile = new File(dataFileName);<a name="line.97"></a>
+<span class="sourceLineNo">098</span>      reader = new BufferedReader(new FileReader(conllFile));<a name="line.98"></a>
+<span class="sourceLineNo">099</span>      // advance the reader past the first occurrence of a document start and<a name="line.99"></a>
+<span class="sourceLineNo">100</span>      // blank line.<a name="line.100"></a>
+<span class="sourceLineNo">101</span>      String line;<a name="line.101"></a>
+<span class="sourceLineNo">102</span>      while ((line = reader.readLine()) != null) {<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        if (line.trim().startsWith(DOCSTART)) {<a name="line.103"></a>
+<span class="sourceLineNo">104</span>          reader.readLine(); // read the blank line<a name="line.104"></a>
+<span class="sourceLineNo">105</span>          break;<a name="line.105"></a>
+<span class="sourceLineNo">106</span>        }<a name="line.106"></a>
+<span class="sourceLineNo">107</span>      }<a name="line.107"></a>
+<span class="sourceLineNo">108</span><a name="line.108"></a>
+<span class="sourceLineNo">109</span>      sentenceTokens = new ArrayList&lt;Token&gt;();<a name="line.109"></a>
+<span class="sourceLineNo">110</span>      sentenceChunks = new ArrayList&lt;Chunk&gt;();<a name="line.110"></a>
+<span class="sourceLineNo">111</span>      chunkTokens = new ArrayList&lt;Token&gt;();<a name="line.111"></a>
+<span class="sourceLineNo">112</span>      namedEntityTokens = new ArrayList&lt;Token&gt;();<a name="line.112"></a>
+<span class="sourceLineNo">113</span>    } catch (FileNotFoundException fnfe) {<a name="line.113"></a>
+<span class="sourceLineNo">114</span>      throw new ResourceInitializationException(fnfe);<a name="line.114"></a>
+<span class="sourceLineNo">115</span>    } catch (IOException ioe) {<a name="line.115"></a>
+<span class="sourceLineNo">116</span>      throw new ResourceInitializationException(ioe);<a name="line.116"></a>
+<span class="sourceLineNo">117</span>    }<a name="line.117"></a>
+<span class="sourceLineNo">118</span>  }<a name="line.118"></a>
+<span class="sourceLineNo">119</span><a name="line.119"></a>
+<span class="sourceLineNo">120</span>  List&lt;String&gt; documentData; // contains every line from for the current document<a name="line.120"></a>
+<span class="sourceLineNo">121</span><a name="line.121"></a>
+<span class="sourceLineNo">122</span>  StringBuffer documentText; // collects the text of the tokens and then we set the document text<a name="line.122"></a>
+<span class="sourceLineNo">123</span>                             // with contents<a name="line.123"></a>
+<span class="sourceLineNo">124</span><a name="line.124"></a>
+<span class="sourceLineNo">125</span>  int sentenceStart; // the start (character offset) of the current sentence<a name="line.125"></a>
+<span class="sourceLineNo">126</span><a name="line.126"></a>
+<span class="sourceLineNo">127</span>  List&lt;Token&gt; sentenceTokens; // the tokens for the current sentence<a name="line.127"></a>
+<span class="sourceLineNo">128</span><a name="line.128"></a>
+<span class="sourceLineNo">129</span>  List&lt;Chunk&gt; sentenceChunks; // the chunks for the current sentence<a name="line.129"></a>
+<span class="sourceLineNo">130</span><a name="line.130"></a>
+<span class="sourceLineNo">131</span>  int tokenPosition; // the index of the current token<a name="line.131"></a>
+<span class="sourceLineNo">132</span><a name="line.132"></a>
+<span class="sourceLineNo">133</span>  int chunkStart; // the start (char offset) of the current chunk<a name="line.133"></a>
+<span class="sourceLineNo">134</span><a name="line.134"></a>
+<span class="sourceLineNo">135</span>  String currentChunkType; // the type of the current chunk (including the I- or B- prefix)<a name="line.135"></a>
+<span class="sourceLineNo">136</span><a name="line.136"></a>
+<span class="sourceLineNo">137</span>  List&lt;Token&gt; chunkTokens; // the tokens for the current chunk<a name="line.137"></a>
+<span class="sourceLineNo">138</span><a name="line.138"></a>
+<span class="sourceLineNo">139</span>  int namedEntityStart; // the start (char offset) of the current named entity<a name="line.139"></a>
+<span class="sourceLineNo">140</span><a name="line.140"></a>
+<span class="sourceLineNo">141</span>  String currentNamedEntityType; // the type of the current named entity (including the I- or B-<a name="line.141"></a>
+<span class="sourceLineNo">142</span>                                 // prefix)<a name="line.142"></a>
+<span class="sourceLineNo">143</span><a name="line.143"></a>
+<span class="sourceLineNo">144</span>  List&lt;Token&gt; namedEntityTokens; // the tokens for the current named entity<a name="line.144"></a>
+<span class="sourceLineNo">145</span><a name="line.145"></a>
+<span class="sourceLineNo">146</span>  public void getNext(JCas jCas) throws IOException, CollectionException {<a name="line.146"></a>
+<span class="sourceLineNo">147</span>    // read in the data for the next document from the reader<a name="line.147"></a>
+<span class="sourceLineNo">148</span>    documentData = new ArrayList&lt;String&gt;();<a name="line.148"></a>
+<span class="sourceLineNo">149</span>    String line;<a name="line.149"></a>
+<span class="sourceLineNo">150</span>    while ((line = reader.readLine()) != null &amp;&amp; !line.startsWith(DOCSTART)) {<a name="line.150"></a>
+<span class="sourceLineNo">151</span>      documentData.add(line.trim());<a name="line.151"></a>
+<span class="sourceLineNo">152</span>    }<a name="line.152"></a>
+<span class="sourceLineNo">153</span><a name="line.153"></a>
+<span class="sourceLineNo">154</span>    if (line == null)<a name="line.154"></a>
+<span class="sourceLineNo">155</span>      hasNext = false;<a name="line.155"></a>
+<span class="sourceLineNo">156</span>    else<a name="line.156"></a>
+<span class="sourceLineNo">157</span>      line = reader.readLine().trim(); // advance past the blank line that follows<a name="line.157"></a>
+<span class="sourceLineNo">158</span>                                       // "-DOCSTART- -X- O O"<a name="line.158"></a>
+<span class="sourceLineNo">159</span>    // (we don't want an empty sentence on the front end!)<a name="line.159"></a>
+<span class="sourceLineNo">160</span>    documentText = new StringBuffer();<a name="line.160"></a>
+<span class="sourceLineNo">161</span><a name="line.161"></a>
+<span class="sourceLineNo">162</span>    initSentence();<a name="line.162"></a>
+<span class="sourceLineNo">163</span>    tokenPosition = 0;<a name="line.163"></a>
+<span class="sourceLineNo">164</span>    chunkStart = 0;<a name="line.164"></a>
+<span class="sourceLineNo">165</span>    currentChunkType = "";<a name="line.165"></a>
+<span class="sourceLineNo">166</span>    chunkTokens.clear();<a name="line.166"></a>
+<span class="sourceLineNo">167</span>    namedEntityStart = 0;<a name="line.167"></a>
+<span class="sourceLineNo">168</span>    currentNamedEntityType = "";<a name="line.168"></a>
+<span class="sourceLineNo">169</span>    namedEntityTokens.clear();<a name="line.169"></a>
+<span class="sourceLineNo">170</span><a name="line.170"></a>
+<span class="sourceLineNo">171</span>    for (String dataLine : documentData) {<a name="line.171"></a>
+<span class="sourceLineNo">172</span>      if (dataLine.trim().equals("")) {<a name="line.172"></a>
+<span class="sourceLineNo">173</span>        createChunk(jCas);<a name="line.173"></a>
+<span class="sourceLineNo">174</span>        currentChunkType = "";<a name="line.174"></a>
+<span class="sourceLineNo">175</span>        createNamedEntity(jCas);<a name="line.175"></a>
+<span class="sourceLineNo">176</span>        currentNamedEntityType = "";<a name="line.176"></a>
+<span class="sourceLineNo">177</span><a name="line.177"></a>
+<span class="sourceLineNo">178</span>        Sentence sentence = new Sentence(jCas, sentenceStart, documentText.length());<a name="line.178"></a>
+<span class="sourceLineNo">179</span>        sentence.addToIndexes();<a name="line.179"></a>
+<span class="sourceLineNo">180</span><a name="line.180"></a>
+<span class="sourceLineNo">181</span>        initSentence();<a name="line.181"></a>
+<span class="sourceLineNo">182</span>      } else {<a name="line.182"></a>
+<span class="sourceLineNo">183</span>        String[] dataPieces = dataLine.split(" ");<a name="line.183"></a>
+<span class="sourceLineNo">184</span>        String tok = dataPieces[0];<a name="line.184"></a>
+<span class="sourceLineNo">185</span>        String pos = dataPieces[1];<a name="line.185"></a>
+<span class="sourceLineNo">186</span>        String chunkType = dataPieces[2];<a name="line.186"></a>
+<span class="sourceLineNo">187</span>        if (currentChunkType.equals(""))<a name="line.187"></a>
+<span class="sourceLineNo">188</span>          initChunk(chunkType);<a name="line.188"></a>
+<span class="sourceLineNo">189</span>        String namedEntityType = dataPieces[3];<a name="line.189"></a>
+<span class="sourceLineNo">190</span>        if (currentNamedEntityType.equals(""))<a name="line.190"></a>
+<span class="sourceLineNo">191</span>          initNamedEntity(namedEntityType);<a name="line.191"></a>
+<span class="sourceLineNo">192</span><a name="line.192"></a>
+<span class="sourceLineNo">193</span>        Token token = new Token(jCas, documentText.length(), documentText.length() + tok.length());<a name="line.193"></a>
+<span class="sourceLineNo">194</span>        token.setPos(pos);<a name="line.194"></a>
+<span class="sourceLineNo">195</span>        token.addToIndexes();<a name="line.195"></a>
+<span class="sourceLineNo">196</span><a name="line.196"></a>
+<span class="sourceLineNo">197</span>        boolean chunkStartsWithB = startsWithB(currentChunkType, chunkType);<a name="line.197"></a>
+<span class="sourceLineNo">198</span>        if (!chunkType.equals(currentChunkType) &amp;&amp; !chunkStartsWithB) {<a name="line.198"></a>
+<span class="sourceLineNo">199</span>          createChunk(jCas);<a name="line.199"></a>
+<span class="sourceLineNo">200</span>          initChunk(chunkType);<a name="line.200"></a>
+<span class="sourceLineNo">201</span>        }<a name="line.201"></a>
+<span class="sourceLineNo">202</span><a name="line.202"></a>
+<span class="sourceLineNo">203</span>        boolean namedEntityStartsWithB = startsWithB(currentNamedEntityType, namedEntityType);<a name="line.203"></a>
+<span class="sourceLineNo">204</span><a name="line.204"></a>
+<span class="sourceLineNo">205</span>        if (!namedEntityType.equals(currentNamedEntityType) &amp;&amp; !namedEntityStartsWithB) {<a name="line.205"></a>
+<span class="sourceLineNo">206</span>          createNamedEntity(jCas);<a name="line.206"></a>
+<span class="sourceLineNo">207</span>          initNamedEntity(namedEntityType);<a name="line.207"></a>
+<span class="sourceLineNo">208</span>        }<a name="line.208"></a>
+<span class="sourceLineNo">209</span><a name="line.209"></a>
+<span class="sourceLineNo">210</span>        sentenceTokens.add(token);<a name="line.210"></a>
+<span class="sourceLineNo">211</span>        chunkTokens.add(token);<a name="line.211"></a>
+<span class="sourceLineNo">212</span>        namedEntityTokens.add(token);<a name="line.212"></a>
+<span class="sourceLineNo">213</span>        documentText.append(tok + " ");<a name="line.213"></a>
+<span class="sourceLineNo">214</span>      }<a name="line.214"></a>
+<span class="sourceLineNo">215</span>    }<a name="line.215"></a>
+<span class="sourceLineNo">216</span><a name="line.216"></a>
+<span class="sourceLineNo">217</span>    jCas.setDocumentText(documentText.toString());<a name="line.217"></a>
+<span class="sourceLineNo">218</span><a name="line.218"></a>
+<span class="sourceLineNo">219</span>    URI fileURI = new File(dataFileName).toURI();<a name="line.219"></a>
+<span class="sourceLineNo">220</span>    String fragment = String.valueOf(documentIndex);<a name="line.220"></a>
+<span class="sourceLineNo">221</span>    URI uri;<a name="line.221"></a>
+<span class="sourceLineNo">222</span>    try {<a name="line.222"></a>
+<span class="sourceLineNo">223</span>      uri = new URI(fileURI.getScheme(), fileURI.getHost(), fileURI.getPath(), fragment);<a name="line.223"></a>
+<span class="sourceLineNo">224</span>    } catch (URISyntaxException e) {<a name="line.224"></a>
+<span class="sourceLineNo">225</span>      // should never reach this; fragment should always be valid since it's just a number<a name="line.225"></a>
+<span class="sourceLineNo">226</span>      throw new RuntimeException(e);<a name="line.226"></a>
+<span class="sourceLineNo">227</span>    }<a name="line.227"></a>
+<span class="sourceLineNo">228</span>    ViewUriUtil.setURI(jCas, uri);<a name="line.228"></a>
+<span class="sourceLineNo">229</span>    ++documentIndex;<a name="line.229"></a>
+<span class="sourceLineNo">230</span><a name="line.230"></a>
+<span class="sourceLineNo">231</span>  }<a name="line.231"></a>
+<span class="sourceLineNo">232</span><a name="line.232"></a>
+<span class="sourceLineNo">233</span>  private void initSentence() {<a name="line.233"></a>
+<span class="sourceLineNo">234</span>    sentenceStart = documentText.length();<a name="line.234"></a>
+<span class="sourceLineNo">235</span>    sentenceTokens.clear();<a name="line.235"></a>
+<span class="sourceLineNo">236</span>    sentenceChunks.clear();<a name="line.236"></a>
+<span class="sourceLineNo">237</span>  }<a name="line.237"></a>
+<span class="sourceLineNo">238</span><a name="line.238"></a>
+<span class="sourceLineNo">239</span>  private void createChunk(JCas jCas) {<a name="line.239"></a>
+<span class="sourceLineNo">240</span>    if (!currentChunkType.equals("O")) {<a name="line.240"></a>
+<span class="sourceLineNo">241</span>      Chunk chunk = new Chunk(jCas, chunkStart, documentText.length() - 1);<a name="line.241"></a>
+<span class="sourceLineNo">242</span>      chunk.setChunkType(currentChunkType.substring(2));<a name="line.242"></a>
+<span class="sourceLineNo">243</span>      chunk.addToIndexes();<a name="line.243"></a>
+<span class="sourceLineNo">244</span>      sentenceChunks.add(chunk);<a name="line.244"></a>
+<span class="sourceLineNo">245</span>    }<a name="line.245"></a>
+<span class="sourceLineNo">246</span>  }<a name="line.246"></a>
+<span class="sourceLineNo">247</span><a name="line.247"></a>
+<span class="sourceLineNo">248</span>  private void initChunk(String chunkType) {<a name="line.248"></a>
+<span class="sourceLineNo">249</span>    chunkStart = documentText.length();<a name="line.249"></a>
+<span class="sourceLineNo">250</span>    chunkTokens.clear();<a name="line.250"></a>
+<span class="sourceLineNo">251</span>    currentChunkType = chunkType;<a name="line.251"></a>
+<span class="sourceLineNo">252</span>  }<a name="line.252"></a>
+<span class="sourceLineNo">253</span><a name="line.253"></a>
+<span class="sourceLineNo">254</span>  private void createNamedEntity(JCas jCas) {<a name="line.254"></a>
+<span class="sourceLineNo">255</span>    if (!currentNamedEntityType.equals("O") &amp;&amp; loadNamedEntities) {<a name="line.255"></a>
+<span class="sourceLineNo">256</span>      NamedEntity ne = new NamedEntity(jCas);<a name="line.256"></a>
+<span class="sourceLineNo">257</span>      ne.setEntityClass("SPC");<a name="line.257"></a>
+<span class="sourceLineNo">258</span>      ne.setEntityId("" + entityIdIndex++);<a name="line.258"></a>
+<span class="sourceLineNo">259</span>      ne.setEntityType(currentNamedEntityType.substring(2));<a name="line.259"></a>
+<span class="sourceLineNo">260</span>      ne.setEntitySubtype(currentNamedEntityType.substring(2));<a name="line.260"></a>
+<span class="sourceLineNo">261</span>      ne.addToIndexes();<a name="line.261"></a>
+<span class="sourceLineNo">262</span><a name="line.262"></a>
+<span class="sourceLineNo">263</span>      NamedEntityMention nem = new NamedEntityMention(<a name="line.263"></a>
+<span class="sourceLineNo">264</span>          jCas,<a name="line.264"></a>
+<span class="sourceLineNo">265</span>          namedEntityStart,<a name="line.265"></a>
+<span class="sourceLineNo">266</span>          documentText.length() - 1);<a name="line.266"></a>
+<span class="sourceLineNo">267</span>      nem.setMentionType("NAM");<a name="line.267"></a>
+<span class="sourceLineNo">268</span>      Annotation annotation = new Annotation(jCas, namedEntityStart, documentText.length() - 1);<a name="line.268"></a>
+<span class="sourceLineNo">269</span>      annotation.addToIndexes();<a name="line.269"></a>
+<span class="sourceLineNo">270</span>      // Chunk chunk = new Chunk(jCas, namedEntityStart, documentText.length()-1);<a name="line.270"></a>
+<span class="sourceLineNo">271</span>      // chunk.setTokens(UIMAUtil.toFSArray(jCas, namedEntityTokens));<a name="line.271"></a>
+<span class="sourceLineNo">272</span>      // chunk.setChunkType("CoNLL NEM annotation");<a name="line.272"></a>
+<span class="sourceLineNo">273</span>      // chunk.addToIndexes();<a name="line.273"></a>
+<span class="sourceLineNo">274</span>      nem.setAnnotation(annotation);<a name="line.274"></a>
+<span class="sourceLineNo">275</span>      nem.setHead(annotation);<a name="line.275"></a>
+<span class="sourceLineNo">276</span>      nem.setMentionedEntity(ne);<a name="line.276"></a>
+<span class="sourceLineNo">277</span>      nem.addToIndexes();<a name="line.277"></a>
+<span class="sourceLineNo">278</span><a name="line.278"></a>
+<span class="sourceLineNo">279</span>      ne.setMentions(new FSArray(jCas, 1));<a name="line.279"></a>
+<span class="sourceLineNo">280</span>      ne.setMentions(0, nem);<a name="line.280"></a>
+<span class="sourceLineNo">281</span>    }<a name="line.281"></a>
+<span class="sourceLineNo">282</span>  }<a name="line.282"></a>
+<span class="sourceLineNo">283</span><a name="line.283"></a>
+<span class="sourceLineNo">284</span>  private void initNamedEntity(String namedEntityType) {<a name="line.284"></a>
+<span class="sourceLineNo">285</span>    namedEntityStart = documentText.length();<a name="line.285"></a>
+<span class="sourceLineNo">286</span>    namedEntityTokens.clear();<a name="line.286"></a>
+<span class="sourceLineNo">287</span>    currentNamedEntityType = namedEntityType;<a name="line.287"></a>
+<span class="sourceLineNo">288</span>  }<a name="line.288"></a>
+<span class="sourceLineNo">289</span><a name="line.289"></a>
+<span class="sourceLineNo">290</span>  /**<a name="line.290"></a>
+<span class="sourceLineNo">291</span>   * Determines if the read type is the same as the current type with the only difference being that<a name="line.291"></a>
+<span class="sourceLineNo">292</span>   * the current type (bType) starts with "B-" and the read type starts with "I-".<a name="line.292"></a>
+<span class="sourceLineNo">293</span>   * <a name="line.293"></a>
+<span class="sourceLineNo">294</span>   * @param bType<a name="line.294"></a>
+<span class="sourceLineNo">295</span>   *          - the current type for the chunk or named entity<a name="line.295"></a>
+<span class="sourceLineNo">296</span>   * @param iType<a name="line.296"></a>
+<span class="sourceLineNo">297</span>   *          - the read chunk or named entity type for the token being examined.<a name="line.297"></a>
+<span class="sourceLineNo">298</span>   * @return true if we should consder iType to be the same as bType so we know not to make a new<a name="line.298"></a>
+<span class="sourceLineNo">299</span>   *         chunk or named entity.<a name="line.299"></a>
+<span class="sourceLineNo">300</span>   */<a name="line.300"></a>
+<span class="sourceLineNo">301</span>  private boolean startsWithB(String bType, String iType) {<a name="line.301"></a>
+<span class="sourceLineNo">302</span>    if (bType.startsWith("B") &amp;&amp; iType.startsWith("I")<a name="line.302"></a>
+<span class="sourceLineNo">303</span>        &amp;&amp; iType.substring(1).equals(bType.substring(1))) {<a name="line.303"></a>
+<span class="sourceLineNo">304</span>      return true;<a name="line.304"></a>
+<span class="sourceLineNo">305</span>    }<a name="line.305"></a>
+<span class="sourceLineNo">306</span>    return false;<a name="line.306"></a>
+<span class="sourceLineNo">307</span>  }<a name="line.307"></a>
+<span class="sourceLineNo">308</span><a name="line.308"></a>
+<span class="sourceLineNo">309</span>  public void close() throws IOException {<a name="line.309"></a>
+<span class="sourceLineNo">310</span>    reader.close();<a name="line.310"></a>
+<span class="sourceLineNo">311</span>  }<a name="line.311"></a>
+<span class="sourceLineNo">312</span><a name="line.312"></a>
+<span class="sourceLineNo">313</span>  public Progress[] getProgress() {<a name="line.313"></a>
+<span class="sourceLineNo">314</span>    return new Progress[] { new ProgressImpl(documentIndex, 5000, Progress.ENTITIES) };<a name="line.314"></a>
+<span class="sourceLineNo">315</span>  }<a name="line.315"></a>
+<span class="sourceLineNo">316</span><a name="line.316"></a>
+<span class="sourceLineNo">317</span>  public boolean hasNext() throws IOException, CollectionException {<a name="line.317"></a>
+<span class="sourceLineNo">318</span>    return hasNext;<a name="line.318"></a>
+<span class="sourceLineNo">319</span>  }<a name="line.319"></a>
+<span class="sourceLineNo">320</span><a name="line.320"></a>
+<span class="sourceLineNo">321</span>  public void setDataFileName(String dataFileName) {<a name="line.321"></a>
+<span class="sourceLineNo">322</span>    this.dataFileName = dataFileName;<a name="line.322"></a>
+<span class="sourceLineNo">323</span>  }<a name="line.323"></a>
+<span class="sourceLineNo">324</span><a name="line.324"></a>
+<span class="sourceLineNo">325</span>  public void setLoadNamedEntities(boolean loadNamedEntities) {<a name="line.325"></a>
+<span class="sourceLineNo">326</span>    this.loadNamedEntities = loadNamedEntities;<a name="line.326"></a>
+<span class="sourceLineNo">327</span>  }<a name="line.327"></a>
+<span class="sourceLineNo">328</span><a name="line.328"></a>
+<span class="sourceLineNo">329</span>}<a name="line.329"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

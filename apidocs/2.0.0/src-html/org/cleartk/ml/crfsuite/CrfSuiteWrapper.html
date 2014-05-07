@@ -1,0 +1,380 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/** <a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright 2011-2012<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * Ubiquitous Knowledge Processing (UKP) Lab<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * Technische Universität Darmstadt<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * All rights reserved.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * <a name="line.6"></a>
+<span class="sourceLineNo">007</span> * This program is free software; you can redistribute it and/or<a name="line.7"></a>
+<span class="sourceLineNo">008</span> * modify it under the terms of the GNU General Public License<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * as published by the Free Software Foundation; either version 2<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * of the License, or (at your option) any later version.<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * This program is distributed in the hope that it will be useful,<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * but WITHOUT ANY WARRANTY; without even the implied warranty of<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * GNU General Public License for more details.<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * <a name="line.16"></a>
+<span class="sourceLineNo">017</span> * For a complete copy of the license please see the file LICENSE distributed <a name="line.17"></a>
+<span class="sourceLineNo">018</span> * with the cleartk-syntax-berkeley project or visit <a name="line.18"></a>
+<span class="sourceLineNo">019</span> * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * <a name="line.20"></a>
+<span class="sourceLineNo">021</span> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.22"></a>
+<span class="sourceLineNo">023</span> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.24"></a>
+<span class="sourceLineNo">025</span> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.30"></a>
+<span class="sourceLineNo">031</span> * POSSIBILITY OF SUCH DAMAGE. <a name="line.31"></a>
+<span class="sourceLineNo">032</span> */<a name="line.32"></a>
+<span class="sourceLineNo">033</span><a name="line.33"></a>
+<span class="sourceLineNo">034</span>package org.cleartk.ml.crfsuite;<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
+<span class="sourceLineNo">036</span>import static org.cleartk.util.PlatformDetection.ARCH_X86_32;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import static org.cleartk.util.PlatformDetection.ARCH_X86_64;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import static org.cleartk.util.PlatformDetection.OS_WINDOWS;<a name="line.38"></a>
+<span class="sourceLineNo">039</span><a name="line.39"></a>
+<span class="sourceLineNo">040</span>import java.io.BufferedWriter;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import java.io.File;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>import java.io.FileWriter;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>import java.io.IOException;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>import java.io.InputStream;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>import java.net.URL;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import java.net.URLDecoder;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import java.util.ArrayList;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>import java.util.List;<a name="line.48"></a>
+<span class="sourceLineNo">049</span><a name="line.49"></a>
+<span class="sourceLineNo">050</span>import org.apache.uima.UIMAFramework;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>import org.apache.uima.util.Level;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import org.apache.uima.util.Logger;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>import org.cleartk.ml.Feature;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>import org.cleartk.ml.encoder.CleartkEncoderException;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>import org.cleartk.ml.encoder.features.FeaturesEncoder;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>import org.cleartk.ml.encoder.features.NameNumber;<a name="line.56"></a>
+<span class="sourceLineNo">057</span>import org.cleartk.ml.encoder.outcome.OutcomeEncoder;<a name="line.57"></a>
+<span class="sourceLineNo">058</span>import org.cleartk.util.InputStreamHandler;<a name="line.58"></a>
+<span class="sourceLineNo">059</span>import org.cleartk.util.PlatformDetection;<a name="line.59"></a>
+<span class="sourceLineNo">060</span><a name="line.60"></a>
+<span class="sourceLineNo">061</span>import de.tudarmstadt.ukp.dkpro.core.api.resources.ResourceUtils;<a name="line.61"></a>
+<span class="sourceLineNo">062</span><a name="line.62"></a>
+<span class="sourceLineNo">063</span>/**<a name="line.63"></a>
+<span class="sourceLineNo">064</span> * &lt;br&gt;<a name="line.64"></a>
+<span class="sourceLineNo">065</span> * Copyright (c) 2011-2012, Technische Universität Darmstadt &lt;br&gt;<a name="line.65"></a>
+<span class="sourceLineNo">066</span> * All rights reserved.<a name="line.66"></a>
+<span class="sourceLineNo">067</span> * <a name="line.67"></a>
+<span class="sourceLineNo">068</span> * <a name="line.68"></a>
+<span class="sourceLineNo">069</span> * @author Martin Riedl<a name="line.69"></a>
+<span class="sourceLineNo">070</span> */<a name="line.70"></a>
+<span class="sourceLineNo">071</span><a name="line.71"></a>
+<span class="sourceLineNo">072</span>public class CrfSuiteWrapper {<a name="line.72"></a>
+<span class="sourceLineNo">073</span>  static Logger logger = UIMAFramework.getLogger(CrfSuiteWrapper.class);<a name="line.73"></a>
+<span class="sourceLineNo">074</span><a name="line.74"></a>
+<span class="sourceLineNo">075</span>  private File executable;<a name="line.75"></a>
+<span class="sourceLineNo">076</span><a name="line.76"></a>
+<span class="sourceLineNo">077</span>  public CrfSuiteWrapper() {<a name="line.77"></a>
+<span class="sourceLineNo">078</span>    Executables exec = new Executables();<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    if (exec.isInstalled()) {<a name="line.79"></a>
+<span class="sourceLineNo">080</span>      logger.log(Level.FINE, "The CRFSuite is installed on the system");<a name="line.80"></a>
+<span class="sourceLineNo">081</span>      executable = new File(exec.getExecutableName());<a name="line.81"></a>
+<span class="sourceLineNo">082</span>    } else {<a name="line.82"></a>
+<span class="sourceLineNo">083</span><a name="line.83"></a>
+<span class="sourceLineNo">084</span>      this.executable = exec.getExecutable();<a name="line.84"></a>
+<span class="sourceLineNo">085</span>      if (!exec.isInstalled(this.executable.getAbsolutePath())) {<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        logger.log(<a name="line.86"></a>
+<span class="sourceLineNo">087</span>            Level.WARNING,<a name="line.87"></a>
+<span class="sourceLineNo">088</span>            "The CRFSuite binary is not available for the current operation system, please install it!");<a name="line.88"></a>
+<span class="sourceLineNo">089</span>      } else {<a name="line.89"></a>
+<span class="sourceLineNo">090</span>        logger.log(Level.FINE, "The CRFSuite binary is successfully extracted");<a name="line.90"></a>
+<span class="sourceLineNo">091</span>      }<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    }<a name="line.92"></a>
+<span class="sourceLineNo">093</span>  }<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>  class Executables {<a name="line.95"></a>
+<span class="sourceLineNo">096</span>    PlatformDetection pd = new PlatformDetection();<a name="line.96"></a>
+<span class="sourceLineNo">097</span><a name="line.97"></a>
+<span class="sourceLineNo">098</span>    public Executables() {<a name="line.98"></a>
+<span class="sourceLineNo">099</span><a name="line.99"></a>
+<span class="sourceLineNo">100</span>      // windows 64 should also be able to execute win32 files --&gt; change<a name="line.100"></a>
+<span class="sourceLineNo">101</span>      // it to win 32, this can be fixed, when a win 64 Bit executable is<a name="line.101"></a>
+<span class="sourceLineNo">102</span>      // available<a name="line.102"></a>
+<span class="sourceLineNo">103</span>      if (pd.getOs().equals(OS_WINDOWS) &amp;&amp; pd.getArch().equals(ARCH_X86_64)) {<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        pd.setArch(ARCH_X86_32);<a name="line.104"></a>
+<span class="sourceLineNo">105</span>      }<a name="line.105"></a>
+<span class="sourceLineNo">106</span>    }<a name="line.106"></a>
+<span class="sourceLineNo">107</span><a name="line.107"></a>
+<span class="sourceLineNo">108</span>    public String getExecutablePath() {<a name="line.108"></a>
+<span class="sourceLineNo">109</span><a name="line.109"></a>
+<span class="sourceLineNo">110</span>      String[] path = new String[] { "crfsuite", pd.toString(), "bin" };<a name="line.110"></a>
+<span class="sourceLineNo">111</span>      String sep = "/";<a name="line.111"></a>
+<span class="sourceLineNo">112</span>      String p = "";<a name="line.112"></a>
+<span class="sourceLineNo">113</span>      for (String s : path) {<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        p += s + sep;<a name="line.114"></a>
+<span class="sourceLineNo">115</span>      }<a name="line.115"></a>
+<span class="sourceLineNo">116</span>      return p;<a name="line.116"></a>
+<span class="sourceLineNo">117</span><a name="line.117"></a>
+<span class="sourceLineNo">118</span>    }<a name="line.118"></a>
+<span class="sourceLineNo">119</span><a name="line.119"></a>
+<span class="sourceLineNo">120</span>    public boolean isInstalled() {<a name="line.120"></a>
+<span class="sourceLineNo">121</span>      return isInstalled("crfsuite");<a name="line.121"></a>
+<span class="sourceLineNo">122</span>    }<a name="line.122"></a>
+<span class="sourceLineNo">123</span><a name="line.123"></a>
+<span class="sourceLineNo">124</span>    public boolean isInstalled(String path) {<a name="line.124"></a>
+<span class="sourceLineNo">125</span>      ProcessBuilder builder = new ProcessBuilder(path, "-h");<a name="line.125"></a>
+<span class="sourceLineNo">126</span>      builder.redirectErrorStream();<a name="line.126"></a>
+<span class="sourceLineNo">127</span>      Process p;<a name="line.127"></a>
+<span class="sourceLineNo">128</span><a name="line.128"></a>
+<span class="sourceLineNo">129</span>      try {<a name="line.129"></a>
+<span class="sourceLineNo">130</span>        p = builder.start();<a name="line.130"></a>
+<span class="sourceLineNo">131</span>        InputStreamHandler&lt;StringBuffer&gt; output = InputStreamHandler.getInputStreamAsBufferedString(p.getInputStream());<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        try {<a name="line.132"></a>
+<span class="sourceLineNo">133</span>          p.waitFor();<a name="line.133"></a>
+<span class="sourceLineNo">134</span>          output.join();<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        } catch (InterruptedException e) {<a name="line.135"></a>
+<span class="sourceLineNo">136</span>          logger.log(Level.WARNING, e.getMessage());<a name="line.136"></a>
+<span class="sourceLineNo">137</span>        }<a name="line.137"></a>
+<span class="sourceLineNo">138</span>        StringBuffer buffer = output.getBuffer();<a name="line.138"></a>
+<span class="sourceLineNo">139</span>        if (buffer.length() &lt; 8) {<a name="line.139"></a>
+<span class="sourceLineNo">140</span>          logger.log(Level.WARNING, "CRFSuite could not be executed!");<a name="line.140"></a>
+<span class="sourceLineNo">141</span>        }<a name="line.141"></a>
+<span class="sourceLineNo">142</span>        return buffer.length() &gt;= 8 &amp;&amp; buffer.substring(0, 8).equals("CRFSuite");<a name="line.142"></a>
+<span class="sourceLineNo">143</span>      } catch (IOException e) {<a name="line.143"></a>
+<span class="sourceLineNo">144</span>        // Path is not available<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        logger.log(Level.FINE, e.getMessage());<a name="line.145"></a>
+<span class="sourceLineNo">146</span>      }<a name="line.146"></a>
+<span class="sourceLineNo">147</span>      return false;<a name="line.147"></a>
+<span class="sourceLineNo">148</span>    }<a name="line.148"></a>
+<span class="sourceLineNo">149</span><a name="line.149"></a>
+<span class="sourceLineNo">150</span>    public String getExecutableName() {<a name="line.150"></a>
+<span class="sourceLineNo">151</span>      return "crfsuite" + pd.getExecutableSuffix();<a name="line.151"></a>
+<span class="sourceLineNo">152</span>    }<a name="line.152"></a>
+<span class="sourceLineNo">153</span><a name="line.153"></a>
+<span class="sourceLineNo">154</span>    public File getExecutable() {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>      String loc = getExecutablePath() + getExecutableName();<a name="line.155"></a>
+<span class="sourceLineNo">156</span>      URL crfExecUrl = getClass().getResource(loc);<a name="line.156"></a>
+<span class="sourceLineNo">157</span>      crfExecUrl = ClassLoader.getSystemResource(loc);<a name="line.157"></a>
+<span class="sourceLineNo">158</span>      logger.log(Level.FINE, "CrfSuite Location " + loc);<a name="line.158"></a>
+<span class="sourceLineNo">159</span>      logger.log(Level.FINE, "CrfSuite Url: " + crfExecUrl);<a name="line.159"></a>
+<span class="sourceLineNo">160</span>      File f;<a name="line.160"></a>
+<span class="sourceLineNo">161</span>      try {<a name="line.161"></a>
+<span class="sourceLineNo">162</span>        if (crfExecUrl != null) {<a name="line.162"></a>
+<span class="sourceLineNo">163</span>          f = new File(ResourceUtils.getUrlAsFile(crfExecUrl, true).toURI().getPath());<a name="line.163"></a>
+<span class="sourceLineNo">164</span>          if (!f.exists()) {<a name="line.164"></a>
+<span class="sourceLineNo">165</span>            f = new File(URLDecoder.decode(f.getAbsolutePath(), ("UTF-8")));<a name="line.165"></a>
+<span class="sourceLineNo">166</span>          }<a name="line.166"></a>
+<span class="sourceLineNo">167</span>          f.setExecutable(true);<a name="line.167"></a>
+<span class="sourceLineNo">168</span>          return f;<a name="line.168"></a>
+<span class="sourceLineNo">169</span>        }<a name="line.169"></a>
+<span class="sourceLineNo">170</span>        logger.log(Level.WARNING, "The executable could not be found at " + loc);<a name="line.170"></a>
+<span class="sourceLineNo">171</span>        return null;<a name="line.171"></a>
+<span class="sourceLineNo">172</span>      } catch (IOException e) {<a name="line.172"></a>
+<span class="sourceLineNo">173</span>        e.printStackTrace();<a name="line.173"></a>
+<span class="sourceLineNo">174</span><a name="line.174"></a>
+<span class="sourceLineNo">175</span>        return null;<a name="line.175"></a>
+<span class="sourceLineNo">176</span>      }<a name="line.176"></a>
+<span class="sourceLineNo">177</span><a name="line.177"></a>
+<span class="sourceLineNo">178</span>    }<a name="line.178"></a>
+<span class="sourceLineNo">179</span><a name="line.179"></a>
+<span class="sourceLineNo">180</span>  }<a name="line.180"></a>
+<span class="sourceLineNo">181</span><a name="line.181"></a>
+<span class="sourceLineNo">182</span>  public void trainClassifier(String model, String trainingDataFile, String[] args)<a name="line.182"></a>
+<span class="sourceLineNo">183</span>      throws IOException {<a name="line.183"></a>
+<span class="sourceLineNo">184</span><a name="line.184"></a>
+<span class="sourceLineNo">185</span>    StringBuffer cmd = new StringBuffer();<a name="line.185"></a>
+<span class="sourceLineNo">186</span>    cmd.append(executable.getPath());<a name="line.186"></a>
+<span class="sourceLineNo">187</span>    cmd.append(" ");<a name="line.187"></a>
+<span class="sourceLineNo">188</span>    cmd.append("learn");<a name="line.188"></a>
+<span class="sourceLineNo">189</span>    cmd.append(" ");<a name="line.189"></a>
+<span class="sourceLineNo">190</span>    cmd.append("-m");<a name="line.190"></a>
+<span class="sourceLineNo">191</span>    cmd.append(" ");<a name="line.191"></a>
+<span class="sourceLineNo">192</span>    cmd.append(model);<a name="line.192"></a>
+<span class="sourceLineNo">193</span>    cmd.append(" ");<a name="line.193"></a>
+<span class="sourceLineNo">194</span>    for (String a : args) {<a name="line.194"></a>
+<span class="sourceLineNo">195</span>      cmd.append(a);<a name="line.195"></a>
+<span class="sourceLineNo">196</span>      cmd.append(" ");<a name="line.196"></a>
+<span class="sourceLineNo">197</span>    }<a name="line.197"></a>
+<span class="sourceLineNo">198</span>    cmd.append(trainingDataFile);<a name="line.198"></a>
+<span class="sourceLineNo">199</span>    Process p = Runtime.getRuntime().exec(cmd.toString());<a name="line.199"></a>
+<span class="sourceLineNo">200</span><a name="line.200"></a>
+<span class="sourceLineNo">201</span>    InputStream stdIn = p.getInputStream();<a name="line.201"></a>
+<span class="sourceLineNo">202</span>    InputStreamHandler&lt;List&lt;String&gt;&gt; ishIn = InputStreamHandler.getInputStreamAsList(stdIn);<a name="line.202"></a>
+<span class="sourceLineNo">203</span><a name="line.203"></a>
+<span class="sourceLineNo">204</span>    InputStream stdErr = p.getErrorStream();<a name="line.204"></a>
+<span class="sourceLineNo">205</span>    InputStreamHandler&lt;StringBuffer&gt; ishErr = InputStreamHandler.getInputStreamAsBufferedString(stdErr);<a name="line.205"></a>
+<span class="sourceLineNo">206</span><a name="line.206"></a>
+<span class="sourceLineNo">207</span>    try {<a name="line.207"></a>
+<span class="sourceLineNo">208</span>      p.waitFor();<a name="line.208"></a>
+<span class="sourceLineNo">209</span>      ishIn.join();<a name="line.209"></a>
+<span class="sourceLineNo">210</span>      ishErr.join();<a name="line.210"></a>
+<span class="sourceLineNo">211</span>    } catch (InterruptedException e) {<a name="line.211"></a>
+<span class="sourceLineNo">212</span>      logger.log(Level.WARNING, e.getMessage());<a name="line.212"></a>
+<span class="sourceLineNo">213</span>    }<a name="line.213"></a>
+<span class="sourceLineNo">214</span><a name="line.214"></a>
+<span class="sourceLineNo">215</span>    logger.log(Level.WARNING, ishErr.getBuffer().toString().replaceAll("(^\\[)|([,])|(]$)", "\n"));<a name="line.215"></a>
+<span class="sourceLineNo">216</span>    logger.log(Level.INFO, ishIn.getBuffer().toString().replaceAll("(^\\[)|([,])|(]$)", "\n"));<a name="line.216"></a>
+<span class="sourceLineNo">217</span>    stdErr.close();<a name="line.217"></a>
+<span class="sourceLineNo">218</span>    stdIn.close();<a name="line.218"></a>
+<span class="sourceLineNo">219</span><a name="line.219"></a>
+<span class="sourceLineNo">220</span>  }<a name="line.220"></a>
+<span class="sourceLineNo">221</span><a name="line.221"></a>
+<span class="sourceLineNo">222</span>  public List&lt;String&gt; classifyFeatures(String featureFile, String modelFile, int featureSize)<a name="line.222"></a>
+<span class="sourceLineNo">223</span>      throws IOException {<a name="line.223"></a>
+<span class="sourceLineNo">224</span>    return classifyFeatures(new File(featureFile), new File(modelFile), featureSize);<a name="line.224"></a>
+<span class="sourceLineNo">225</span>  }<a name="line.225"></a>
+<span class="sourceLineNo">226</span><a name="line.226"></a>
+<span class="sourceLineNo">227</span>  public List&lt;String&gt; classifyFeatures(File featureFile, File modelFile, int featureSize)<a name="line.227"></a>
+<span class="sourceLineNo">228</span>      throws IOException {<a name="line.228"></a>
+<span class="sourceLineNo">229</span>    List&lt;String&gt; result = new ArrayList&lt;String&gt;();<a name="line.229"></a>
+<span class="sourceLineNo">230</span>    result = classifyFeatures(modelFile, featureFile);<a name="line.230"></a>
+<span class="sourceLineNo">231</span>    if (result.size() != featureSize) {<a name="line.231"></a>
+<span class="sourceLineNo">232</span>      throw new IllegalStateException(<a name="line.232"></a>
+<span class="sourceLineNo">233</span>          "The number of extracted classified labels is not equivalent with the number of instanzes ("<a name="line.233"></a>
+<span class="sourceLineNo">234</span>              + result.size() + "!=" + featureSize + ")");<a name="line.234"></a>
+<span class="sourceLineNo">235</span>    }<a name="line.235"></a>
+<span class="sourceLineNo">236</span><a name="line.236"></a>
+<span class="sourceLineNo">237</span>    return result;<a name="line.237"></a>
+<span class="sourceLineNo">238</span><a name="line.238"></a>
+<span class="sourceLineNo">239</span>  }<a name="line.239"></a>
+<span class="sourceLineNo">240</span><a name="line.240"></a>
+<span class="sourceLineNo">241</span>  public List&lt;String&gt; classifyFeatures(<a name="line.241"></a>
+<span class="sourceLineNo">242</span>      List&lt;List&lt;Feature&gt;&gt; features,<a name="line.242"></a>
+<span class="sourceLineNo">243</span>      OutcomeEncoder&lt;String, String&gt; outcomeEncoder,<a name="line.243"></a>
+<span class="sourceLineNo">244</span>      FeaturesEncoder&lt;List&lt;NameNumber&gt;&gt; featuresEncoder,<a name="line.244"></a>
+<span class="sourceLineNo">245</span>      File modelFile) throws IOException {<a name="line.245"></a>
+<span class="sourceLineNo">246</span><a name="line.246"></a>
+<span class="sourceLineNo">247</span>    File featureFile = File.createTempFile("features", ".crfsuite");<a name="line.247"></a>
+<span class="sourceLineNo">248</span>    featureFile.deleteOnExit();<a name="line.248"></a>
+<span class="sourceLineNo">249</span>    logger.log(Level.FINE, "Write features to classify to " + featureFile.getAbsolutePath());<a name="line.249"></a>
+<span class="sourceLineNo">250</span>    try {<a name="line.250"></a>
+<span class="sourceLineNo">251</span>      BufferedWriter out = new BufferedWriter(new FileWriter(featureFile));<a name="line.251"></a>
+<span class="sourceLineNo">252</span>      for (List&lt;Feature&gt; f : features) {<a name="line.252"></a>
+<span class="sourceLineNo">253</span>        List&lt;NameNumber&gt; fe;<a name="line.253"></a>
+<span class="sourceLineNo">254</span>        fe = featuresEncoder.encodeAll(f);<a name="line.254"></a>
+<span class="sourceLineNo">255</span>        for (NameNumber nn : fe) {<a name="line.255"></a>
+<span class="sourceLineNo">256</span>          out.append(nn.name);<a name="line.256"></a>
+<span class="sourceLineNo">257</span>          out.append("\t");<a name="line.257"></a>
+<span class="sourceLineNo">258</span>        }<a name="line.258"></a>
+<span class="sourceLineNo">259</span>        out.append("\n");<a name="line.259"></a>
+<span class="sourceLineNo">260</span>      }<a name="line.260"></a>
+<span class="sourceLineNo">261</span><a name="line.261"></a>
+<span class="sourceLineNo">262</span>      out.close();<a name="line.262"></a>
+<span class="sourceLineNo">263</span>      return classifyFeatures(featureFile, modelFile, features.size());<a name="line.263"></a>
+<span class="sourceLineNo">264</span>    } catch (CleartkEncoderException e) {<a name="line.264"></a>
+<span class="sourceLineNo">265</span>      logger.log(Level.WARNING, e.getMessage());<a name="line.265"></a>
+<span class="sourceLineNo">266</span>    }<a name="line.266"></a>
+<span class="sourceLineNo">267</span>    return null;<a name="line.267"></a>
+<span class="sourceLineNo">268</span><a name="line.268"></a>
+<span class="sourceLineNo">269</span>  }<a name="line.269"></a>
+<span class="sourceLineNo">270</span><a name="line.270"></a>
+<span class="sourceLineNo">271</span>  private List&lt;String&gt; classifyFeatures(File modelFile, File featureFile) throws IOException {<a name="line.271"></a>
+<span class="sourceLineNo">272</span>    List&lt;String&gt; posTags = new ArrayList&lt;String&gt;();<a name="line.272"></a>
+<span class="sourceLineNo">273</span>    StringBuffer cmd = new StringBuffer();<a name="line.273"></a>
+<span class="sourceLineNo">274</span><a name="line.274"></a>
+<span class="sourceLineNo">275</span>    cmd.append(executable.getPath());<a name="line.275"></a>
+<span class="sourceLineNo">276</span>    cmd.append(" tag -m ");<a name="line.276"></a>
+<span class="sourceLineNo">277</span>    cmd.append(modelFile.getAbsolutePath());<a name="line.277"></a>
+<span class="sourceLineNo">278</span>    cmd.append(" ");<a name="line.278"></a>
+<span class="sourceLineNo">279</span>    cmd.append(featureFile.getAbsolutePath());<a name="line.279"></a>
+<span class="sourceLineNo">280</span>    cmd.append(" ");<a name="line.280"></a>
+<span class="sourceLineNo">281</span>    Process p = Runtime.getRuntime().exec(cmd.toString());<a name="line.281"></a>
+<span class="sourceLineNo">282</span><a name="line.282"></a>
+<span class="sourceLineNo">283</span>    InputStream stdIn = p.getInputStream();<a name="line.283"></a>
+<span class="sourceLineNo">284</span>    InputStreamHandler&lt;List&lt;String&gt;&gt; ishIn = InputStreamHandler.getInputStreamAsList(stdIn);<a name="line.284"></a>
+<span class="sourceLineNo">285</span><a name="line.285"></a>
+<span class="sourceLineNo">286</span>    InputStream stdErr = p.getErrorStream();<a name="line.286"></a>
+<span class="sourceLineNo">287</span>    InputStreamHandler&lt;StringBuffer&gt; ishErr = InputStreamHandler.getInputStreamAsBufferedString(stdErr);<a name="line.287"></a>
+<span class="sourceLineNo">288</span><a name="line.288"></a>
+<span class="sourceLineNo">289</span>    try {<a name="line.289"></a>
+<span class="sourceLineNo">290</span>      p.waitFor();<a name="line.290"></a>
+<span class="sourceLineNo">291</span>      ishIn.join();<a name="line.291"></a>
+<span class="sourceLineNo">292</span>      ishErr.join();<a name="line.292"></a>
+<span class="sourceLineNo">293</span>    } catch (InterruptedException e) {<a name="line.293"></a>
+<span class="sourceLineNo">294</span>      logger.log(Level.WARNING, e.getMessage());<a name="line.294"></a>
+<span class="sourceLineNo">295</span>    }<a name="line.295"></a>
+<span class="sourceLineNo">296</span>    logger.log(Level.WARNING, ishErr.getBuffer().toString().replaceAll("(^\\[)|([,])|(]$)", "\n"));<a name="line.296"></a>
+<span class="sourceLineNo">297</span>    posTags = ishIn.getBuffer();<a name="line.297"></a>
+<span class="sourceLineNo">298</span>    if (posTags.size() &gt; 0) {<a name="line.298"></a>
+<span class="sourceLineNo">299</span>      if (posTags.get(posTags.size() - 1).trim().length() == 0) {<a name="line.299"></a>
+<span class="sourceLineNo">300</span>        posTags.remove(posTags.size() - 1);<a name="line.300"></a>
+<span class="sourceLineNo">301</span>      }<a name="line.301"></a>
+<span class="sourceLineNo">302</span>    }<a name="line.302"></a>
+<span class="sourceLineNo">303</span>    stdErr.close();<a name="line.303"></a>
+<span class="sourceLineNo">304</span>    stdIn.close();<a name="line.304"></a>
+<span class="sourceLineNo">305</span>    return posTags;<a name="line.305"></a>
+<span class="sourceLineNo">306</span>  }<a name="line.306"></a>
+<span class="sourceLineNo">307</span><a name="line.307"></a>
+<span class="sourceLineNo">308</span>}<a name="line.308"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

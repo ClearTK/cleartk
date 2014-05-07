@@ -1,0 +1,372 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- NewPage -->
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<title>RegexFileFilter (ClearTK 2.0.0 API)</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<script type="text/javascript"><!--
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="RegexFileFilter (ClearTK 2.0.0 API)";
+    }
+//-->
+</script>
+<noscript>
+<div>JavaScript is disabled on your browser.</div>
+</noscript>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+<!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/RegexFileFilter.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../index-all.html">Index</a></li>
+<li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li><a href="../../../../org/cleartk/util/cr/FilesCollectionReader.html" title="class in org.cleartk.util.cr"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/cleartk/util/cr/UriCollectionReader.html" title="class in org.cleartk.util.cr"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../index.html?org/cleartk/util/cr/RegexFileFilter.html" target="_top">Frames</a></li>
+<li><a href="RegexFileFilter.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_top">
+<li><a href="../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_top");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_top">
+<!--   -->
+</a></div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+<!-- ======== START OF CLASS DATA ======== -->
+<div class="header">
+<div class="subTitle">org.cleartk.util.cr</div>
+<h2 title="Class RegexFileFilter" class="title">Class RegexFileFilter</h2>
+</div>
+<div class="contentContainer">
+<ul class="inheritance">
+<li><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
+<li>
+<ul class="inheritance">
+<li><a href="http://commons.apache.org/io/apidocs/org/apache/commons/io/filefilter/AbstractFileFilter.html?is-external=true" title="class or interface in org.apache.commons.io.filefilter">org.apache.commons.io.filefilter.AbstractFileFilter</a></li>
+<li>
+<ul class="inheritance">
+<li>org.cleartk.util.cr.RegexFileFilter</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="description">
+<ul class="blockList">
+<li class="blockList">
+<dl>
+<dt>All Implemented Interfaces:</dt>
+<dd><a href="http://docs.oracle.com/javase/7/docs/api/java/io/FileFilter.html?is-external=true" title="class or interface in java.io">FileFilter</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/io/FilenameFilter.html?is-external=true" title="class or interface in java.io">FilenameFilter</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/io/Serializable.html?is-external=true" title="class or interface in java.io">Serializable</a>, <a href="http://commons.apache.org/io/apidocs/org/apache/commons/io/filefilter/IOFileFilter.html?is-external=true" title="class or interface in org.apache.commons.io.filefilter">IOFileFilter</a></dd>
+</dl>
+<hr>
+<br>
+<pre>public class <a href="../../../../src-html/org/cleartk/util/cr/RegexFileFilter.html#line.59">RegexFileFilter</a>
+extends <a href="http://commons.apache.org/io/apidocs/org/apache/commons/io/filefilter/AbstractFileFilter.html?is-external=true" title="class or interface in org.apache.commons.io.filefilter">AbstractFileFilter</a>
+implements <a href="http://docs.oracle.com/javase/7/docs/api/java/io/Serializable.html?is-external=true" title="class or interface in java.io">Serializable</a></pre>
+<div class="block">Filters files using supplied regular expression(s).
+ <p/>
+ See java.util.regex.Pattern for regex matching rules
+ <p/>
+ 
+ <p/>
+ e.g.
+ 
+ <pre>
+ File dir = new File(&quot;.&quot;);
+ FileFilter fileFilter = new RegexFileFilter(&quot;&circ;.*[tT]est(-\\d+)?\\.java$&quot;);
+ File[] files = dir.listFiles(fileFilter);
+ for (int i = 0; i &lt; files.length; i++) {
+   System.out.println(files[i]);
+ }
+ </pre></div>
+<dl><dt><span class="strong">Since:</span></dt>
+  <dd>Commons IO 1.4</dd>
+<dt><span class="strong">Version:</span></dt>
+  <dd>$Revision$</dd>
+<dt><span class="strong">Author:</span></dt>
+  <dd>Oliver Siegmar</dd>
+<dt><span class="strong">See Also:</span></dt><dd><a href="../../../../serialized-form.html#org.cleartk.util.cr.RegexFileFilter">Serialized Form</a></dd></dl>
+</li>
+</ul>
+</div>
+<div class="summary">
+<ul class="blockList">
+<li class="blockList">
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_summary">
+<!--   -->
+</a>
+<h3>Constructor Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
+<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Constructor and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><strong><a href="../../../../org/cleartk/util/cr/RegexFileFilter.html#RegexFileFilter(java.util.regex.Pattern)">RegexFileFilter</a></strong>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>&nbsp;pattern)</code>
+<div class="block">Construct a new regular expression filter for a compiled regular expression</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><code><strong><a href="../../../../org/cleartk/util/cr/RegexFileFilter.html#RegexFileFilter(java.lang.String)">RegexFileFilter</a></strong>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;pattern)</code>
+<div class="block">Construct a new regular expression filter.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><strong><a href="../../../../org/cleartk/util/cr/RegexFileFilter.html#RegexFileFilter(java.lang.String, int)">RegexFileFilter</a></strong>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;pattern,
+                              int&nbsp;flags)</code>
+<div class="block">Construct a new regular expression filter with the specified flags.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><code><strong><a href="../../../../org/cleartk/util/cr/RegexFileFilter.html#RegexFileFilter(java.lang.String, org.apache.commons.io.IOCase)">RegexFileFilter</a></strong>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;pattern,
+                              <a href="http://commons.apache.org/io/apidocs/org/apache/commons/io/IOCase.html?is-external=true" title="class or interface in org.apache.commons.io">IOCase</a>&nbsp;caseSensitivity)</code>
+<div class="block">Construct a new regular expression filter with the specified flags case sensitivity.</div>
+</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- ========== METHOD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_summary">
+<!--   -->
+</a>
+<h3>Method Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
+<caption><span>Methods</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/cleartk/util/cr/RegexFileFilter.html#accept(java.io.File, java.lang.String)">accept</a></strong>(<a href="http://docs.oracle.com/javase/7/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</a>&nbsp;dir,
+            <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)</code>
+<div class="block">Checks to see if the filename matches one of the regular expressions.</div>
+</td>
+</tr>
+</table>
+<ul class="blockList">
+<li class="blockList"><a name="methods_inherited_from_class_org.apache.commons.io.filefilter.AbstractFileFilter">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.apache.commons.io.filefilter.<a href="http://commons.apache.org/io/apidocs/org/apache/commons/io/filefilter/AbstractFileFilter.html?is-external=true" title="class or interface in org.apache.commons.io.filefilter">AbstractFileFilter</a></h3>
+<code><a href="http://commons.apache.org/io/apidocs/org/apache/commons/io/filefilter/AbstractFileFilter.html?is-external=true#accept(java.io.File)" title="class or interface in org.apache.commons.io.filefilter">accept</a>, <a href="http://commons.apache.org/io/apidocs/org/apache/commons/io/filefilter/AbstractFileFilter.html?is-external=true#toString()" title="class or interface in org.apache.commons.io.filefilter">toString</a></code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a name="methods_inherited_from_class_java.lang.Object">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;java.lang.<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
+<code><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="details">
+<ul class="blockList">
+<li class="blockList">
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_detail">
+<!--   -->
+</a>
+<h3>Constructor Detail</h3>
+<a name="RegexFileFilter(java.util.regex.Pattern)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>RegexFileFilter</h4>
+<pre>public&nbsp;<a href="../../../../src-html/org/cleartk/util/cr/RegexFileFilter.html#line.131">RegexFileFilter</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true" title="class or interface in java.util.regex">Pattern</a>&nbsp;pattern)</pre>
+<div class="block">Construct a new regular expression filter for a compiled regular expression</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>pattern</code> - regular expression to match</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></code> - if the pattern is null</dd></dl>
+</li>
+</ul>
+<a name="RegexFileFilter(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>RegexFileFilter</h4>
+<pre>public&nbsp;<a href="../../../../src-html/org/cleartk/util/cr/RegexFileFilter.html#line.77">RegexFileFilter</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;pattern)</pre>
+<div class="block">Construct a new regular expression filter.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>pattern</code> - regular string expression to match</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></code> - if the pattern is null</dd></dl>
+</li>
+</ul>
+<a name="RegexFileFilter(java.lang.String, int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>RegexFileFilter</h4>
+<pre>public&nbsp;<a href="../../../../src-html/org/cleartk/util/cr/RegexFileFilter.html#line.116">RegexFileFilter</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;pattern,
+               int&nbsp;flags)</pre>
+<div class="block">Construct a new regular expression filter with the specified flags.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>pattern</code> - regular string expression to match</dd><dd><code>flags</code> - pattern flags - e.g. <a href="http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html?is-external=true#CASE_INSENSITIVE" title="class or interface in java.util.regex"><code>Pattern.CASE_INSENSITIVE</code></a></dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></code> - if the pattern is null</dd></dl>
+</li>
+</ul>
+<a name="RegexFileFilter(java.lang.String, org.apache.commons.io.IOCase)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>RegexFileFilter</h4>
+<pre>public&nbsp;<a href="../../../../src-html/org/cleartk/util/cr/RegexFileFilter.html#line.95">RegexFileFilter</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;pattern,
+               <a href="http://commons.apache.org/io/apidocs/org/apache/commons/io/IOCase.html?is-external=true" title="class or interface in org.apache.commons.io">IOCase</a>&nbsp;caseSensitivity)</pre>
+<div class="block">Construct a new regular expression filter with the specified flags case sensitivity.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>pattern</code> - regular string expression to match</dd><dd><code>caseSensitivity</code> - how to handle case sensitivity, null means case-sensitive</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></code> - if the pattern is null</dd></dl>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ============ METHOD DETAIL ========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_detail">
+<!--   -->
+</a>
+<h3>Method Detail</h3>
+<a name="accept(java.io.File, java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>accept</h4>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../../src-html/org/cleartk/util/cr/RegexFileFilter.html#line.149">accept</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/io/File.html?is-external=true" title="class or interface in java.io">File</a>&nbsp;dir,
+             <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)</pre>
+<div class="block">Checks to see if the filename matches one of the regular expressions.</div>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="http://docs.oracle.com/javase/7/docs/api/java/io/FilenameFilter.html?is-external=true#accept(java.io.File, java.lang.String)" title="class or interface in java.io">accept</a></code>&nbsp;in interface&nbsp;<code><a href="http://docs.oracle.com/javase/7/docs/api/java/io/FilenameFilter.html?is-external=true" title="class or interface in java.io">FilenameFilter</a></code></dd>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="http://commons.apache.org/io/apidocs/org/apache/commons/io/filefilter/IOFileFilter.html?is-external=true#accept(java.io.File, java.lang.String)" title="class or interface in org.apache.commons.io.filefilter">accept</a></code>&nbsp;in interface&nbsp;<code><a href="http://commons.apache.org/io/apidocs/org/apache/commons/io/filefilter/IOFileFilter.html?is-external=true" title="class or interface in org.apache.commons.io.filefilter">IOFileFilter</a></code></dd>
+<dt><strong>Overrides:</strong></dt>
+<dd><code><a href="http://commons.apache.org/io/apidocs/org/apache/commons/io/filefilter/AbstractFileFilter.html?is-external=true#accept(java.io.File, java.lang.String)" title="class or interface in org.apache.commons.io.filefilter">accept</a></code>&nbsp;in class&nbsp;<code><a href="http://commons.apache.org/io/apidocs/org/apache/commons/io/filefilter/AbstractFileFilter.html?is-external=true" title="class or interface in org.apache.commons.io.filefilter">AbstractFileFilter</a></code></dd>
+<dt><span class="strong">Parameters:</span></dt><dd><code>dir</code> - the file directory</dd><dd><code>name</code> - the filename</dd>
+<dt><span class="strong">Returns:</span></dt><dd>true if the filename matches one of the regular expressions</dd></dl>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- ========= END OF CLASS DATA ========= -->
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+<!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/RegexFileFilter.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../index-all.html">Index</a></li>
+<li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li><a href="../../../../org/cleartk/util/cr/FilesCollectionReader.html" title="class in org.cleartk.util.cr"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/cleartk/util/cr/UriCollectionReader.html" title="class in org.cleartk.util.cr"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../index.html?org/cleartk/util/cr/RegexFileFilter.html" target="_top">Frames</a></li>
+<li><a href="RegexFileFilter.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_bottom">
+<li><a href="../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_bottom");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_bottom">
+<!--   -->
+</a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; 2014. All rights reserved.</small></p>
+</body>
+</html>

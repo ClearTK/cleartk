@@ -1,0 +1,360 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- NewPage -->
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<title>MaxentClassifier_ImplBase (ClearTK 2.0.0 API)</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<script type="text/javascript"><!--
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="MaxentClassifier_ImplBase (ClearTK 2.0.0 API)";
+    }
+//-->
+</script>
+<noscript>
+<div>JavaScript is disabled on your browser.</div>
+</noscript>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+<!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/MaxentClassifier_ImplBase.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../../index-all.html">Index</a></li>
+<li><a href="../../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li><a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentBooleanOutcomeDataWriter.html" title="class in org.cleartk.ml.opennlp.maxent"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifierBuilder_ImplBase.html" title="class in org.cleartk.ml.opennlp.maxent"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../../index.html?org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html" target="_top">Frames</a></li>
+<li><a href="MaxentClassifier_ImplBase.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_top">
+<li><a href="../../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_top");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#field_summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li><a href="#field_detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_top">
+<!--   -->
+</a></div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+<!-- ======== START OF CLASS DATA ======== -->
+<div class="header">
+<div class="subTitle">org.cleartk.ml.opennlp.maxent</div>
+<h2 title="Class MaxentClassifier_ImplBase" class="title">Class MaxentClassifier_ImplBase&lt;OUTCOME_TYPE&gt;</h2>
+</div>
+<div class="contentContainer">
+<ul class="inheritance">
+<li><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
+<li>
+<ul class="inheritance">
+<li><a href="../../../../../org/cleartk/ml/jar/EncodingJarClassifier.html" title="class in org.cleartk.ml.jar">org.cleartk.ml.jar.EncodingJarClassifier</a>&lt;ENCODED_FEATURES_TYPE,OUTCOME_TYPE,ENCODED_OUTCOME_TYPE&gt;</li>
+<li>
+<ul class="inheritance">
+<li><a href="../../../../../org/cleartk/ml/jar/Classifier_ImplBase.html" title="class in org.cleartk.ml.jar">org.cleartk.ml.jar.Classifier_ImplBase</a>&lt;<a href="../../../../../org/cleartk/ml/opennlp/maxent/encoder/ContextValues.html" title="class in org.cleartk.ml.opennlp.maxent.encoder">ContextValues</a>,OUTCOME_TYPE,<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</li>
+<li>
+<ul class="inheritance">
+<li>org.cleartk.ml.opennlp.maxent.MaxentClassifier_ImplBase&lt;OUTCOME_TYPE&gt;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="description">
+<ul class="blockList">
+<li class="blockList">
+<dl>
+<dt>All Implemented Interfaces:</dt>
+<dd><a href="../../../../../org/cleartk/ml/Classifier.html" title="interface in org.cleartk.ml">Classifier</a>&lt;OUTCOME_TYPE&gt;</dd>
+</dl>
+<dl>
+<dt>Direct Known Subclasses:</dt>
+<dd><a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentBooleanOutcomeClassifier.html" title="class in org.cleartk.ml.opennlp.maxent">MaxentBooleanOutcomeClassifier</a>, <a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentStringOutcomeClassifier.html" title="class in org.cleartk.ml.opennlp.maxent">MaxentStringOutcomeClassifier</a></dd>
+</dl>
+<hr>
+<br>
+<pre>public abstract class <a href="../../../../../src-html/org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html#line.49">MaxentClassifier_ImplBase</a>&lt;OUTCOME_TYPE&gt;
+extends <a href="../../../../../org/cleartk/ml/jar/Classifier_ImplBase.html" title="class in org.cleartk.ml.jar">Classifier_ImplBase</a>&lt;<a href="../../../../../org/cleartk/ml/opennlp/maxent/encoder/ContextValues.html" title="class in org.cleartk.ml.opennlp.maxent.encoder">ContextValues</a>,OUTCOME_TYPE,<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</pre>
+<div class="block"><br>
+ Copyright (c) 2007-2011, Regents of the University of Colorado <br>
+ All rights reserved.</div>
+<dl><dt><span class="strong">Author:</span></dt>
+  <dd>Philip Ogren, Steven Bethard</dd></dl>
+</li>
+</ul>
+</div>
+<div class="summary">
+<ul class="blockList">
+<li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field_summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>protected <a href="http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-maxent/opennlp/model/MaxentModel.html?is-external=true" title="class or interface in opennlp.model">MaxentModel</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html#model">model</a></strong></code>&nbsp;</td>
+</tr>
+</table>
+<ul class="blockList">
+<li class="blockList"><a name="fields_inherited_from_class_org.cleartk.ml.jar.EncodingJarClassifier">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.cleartk.ml.jar.<a href="../../../../../org/cleartk/ml/jar/EncodingJarClassifier.html" title="class in org.cleartk.ml.jar">EncodingJarClassifier</a></h3>
+<code><a href="../../../../../org/cleartk/ml/jar/EncodingJarClassifier.html#featuresEncoder">featuresEncoder</a>, <a href="../../../../../org/cleartk/ml/jar/EncodingJarClassifier.html#outcomeEncoder">outcomeEncoder</a></code></li>
+</ul>
+</li>
+</ul>
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_summary">
+<!--   -->
+</a>
+<h3>Constructor Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
+<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Constructor and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><strong><a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html#MaxentClassifier_ImplBase(org.cleartk.ml.encoder.features.FeaturesEncoder, org.cleartk.ml.encoder.outcome.OutcomeEncoder, opennlp.model.MaxentModel)">MaxentClassifier_ImplBase</a></strong>(<a href="../../../../../org/cleartk/ml/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.ml.encoder.features">FeaturesEncoder</a>&lt;<a href="../../../../../org/cleartk/ml/opennlp/maxent/encoder/ContextValues.html" title="class in org.cleartk.ml.opennlp.maxent.encoder">ContextValues</a>&gt;&nbsp;featuresEncoder,
+                                                  <a href="../../../../../org/cleartk/ml/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.ml.encoder.outcome">OutcomeEncoder</a>&lt;<a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html" title="type parameter in MaxentClassifier_ImplBase">OUTCOME_TYPE</a>,<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;outcomeEncoder,
+                                                  <a href="http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-maxent/opennlp/model/MaxentModel.html?is-external=true" title="class or interface in opennlp.model">MaxentModel</a>&nbsp;model)</code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- ========== METHOD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_summary">
+<!--   -->
+</a>
+<h3>Method Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
+<caption><span>Methods</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code><a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html" title="type parameter in MaxentClassifier_ImplBase">OUTCOME_TYPE</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html#classify(java.util.List)">classify</a></strong>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../../org/cleartk/ml/Feature.html" title="class in org.cleartk.ml">Feature</a>&gt;&nbsp;features)</code>
+<div class="block">Classifies a list of features.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code><a href="http://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html" title="type parameter in MaxentClassifier_ImplBase">OUTCOME_TYPE</a>,<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html#score(java.util.List)">score</a></strong>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../../org/cleartk/ml/Feature.html" title="class in org.cleartk.ml">Feature</a>&gt;&nbsp;features)</code>
+<div class="block">Classify a list of features, and return the scores for each of the outcomes</div>
+</td>
+</tr>
+</table>
+<ul class="blockList">
+<li class="blockList"><a name="methods_inherited_from_class_java.lang.Object">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;java.lang.<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
+<code><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</a>, <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="details">
+<ul class="blockList">
+<li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field_detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="model">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>model</h4>
+<pre>protected&nbsp;<a href="http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-maxent/opennlp/model/MaxentModel.html?is-external=true" title="class or interface in opennlp.model">MaxentModel</a> <a href="../../../../../src-html/org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html#line.52">model</a></pre>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_detail">
+<!--   -->
+</a>
+<h3>Constructor Detail</h3>
+<a name="MaxentClassifier_ImplBase(org.cleartk.ml.encoder.features.FeaturesEncoder, org.cleartk.ml.encoder.outcome.OutcomeEncoder, opennlp.model.MaxentModel)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>MaxentClassifier_ImplBase</h4>
+<pre>public&nbsp;<a href="../../../../../src-html/org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html#line.54">MaxentClassifier_ImplBase</a>(<a href="../../../../../org/cleartk/ml/encoder/features/FeaturesEncoder.html" title="interface in org.cleartk.ml.encoder.features">FeaturesEncoder</a>&lt;<a href="../../../../../org/cleartk/ml/opennlp/maxent/encoder/ContextValues.html" title="class in org.cleartk.ml.opennlp.maxent.encoder">ContextValues</a>&gt;&nbsp;featuresEncoder,
+                         <a href="../../../../../org/cleartk/ml/encoder/outcome/OutcomeEncoder.html" title="interface in org.cleartk.ml.encoder.outcome">OutcomeEncoder</a>&lt;<a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html" title="type parameter in MaxentClassifier_ImplBase">OUTCOME_TYPE</a>,<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;outcomeEncoder,
+                         <a href="http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-maxent/opennlp/model/MaxentModel.html?is-external=true" title="class or interface in opennlp.model">MaxentModel</a>&nbsp;model)</pre>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ============ METHOD DETAIL ========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_detail">
+<!--   -->
+</a>
+<h3>Method Detail</h3>
+<a name="classify(java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>classify</h4>
+<pre>public&nbsp;<a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html" title="type parameter in MaxentClassifier_ImplBase">OUTCOME_TYPE</a>&nbsp;<a href="../../../../../src-html/org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html#line.62">classify</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../../org/cleartk/ml/Feature.html" title="class in org.cleartk.ml">Feature</a>&gt;&nbsp;features)
+                      throws <a href="../../../../../org/cleartk/ml/CleartkProcessingException.html" title="class in org.cleartk.ml">CleartkProcessingException</a></pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/cleartk/ml/Classifier.html#classify(java.util.List)">Classifier</a></code></strong></div>
+<div class="block">Classifies a list of features.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>features</code> - a list of features to be classified</dd>
+<dt><span class="strong">Returns:</span></dt><dd>the classification made</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code><a href="../../../../../org/cleartk/ml/CleartkProcessingException.html" title="class in org.cleartk.ml">CleartkProcessingException</a></code></dd></dl>
+</li>
+</ul>
+<a name="score(java.util.List)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>score</h4>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/Map.html?is-external=true" title="class or interface in java.util">Map</a>&lt;<a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html" title="type parameter in MaxentClassifier_ImplBase">OUTCOME_TYPE</a>,<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Double.html?is-external=true" title="class or interface in java.lang">Double</a>&gt;&nbsp;<a href="../../../../../src-html/org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html#line.71">score</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../../../org/cleartk/ml/Feature.html" title="class in org.cleartk.ml">Feature</a>&gt;&nbsp;features)
+                               throws <a href="../../../../../org/cleartk/ml/CleartkProcessingException.html" title="class in org.cleartk.ml">CleartkProcessingException</a></pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/cleartk/ml/Classifier.html#score(java.util.List)">Classifier</a></code></strong></div>
+<div class="block">Classify a list of features, and return the scores for each of the outcomes</div>
+<dl>
+<dt><strong>Specified by:</strong></dt>
+<dd><code><a href="../../../../../org/cleartk/ml/Classifier.html#score(java.util.List)">score</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/cleartk/ml/Classifier.html" title="interface in org.cleartk.ml">Classifier</a>&lt;<a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html" title="type parameter in MaxentClassifier_ImplBase">OUTCOME_TYPE</a>&gt;</code></dd>
+<dt><strong>Overrides:</strong></dt>
+<dd><code><a href="../../../../../org/cleartk/ml/jar/Classifier_ImplBase.html#score(java.util.List)">score</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../org/cleartk/ml/jar/Classifier_ImplBase.html" title="class in org.cleartk.ml.jar">Classifier_ImplBase</a>&lt;<a href="../../../../../org/cleartk/ml/opennlp/maxent/encoder/ContextValues.html" title="class in org.cleartk.ml.opennlp.maxent.encoder">ContextValues</a>,<a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html" title="type parameter in MaxentClassifier_ImplBase">OUTCOME_TYPE</a>,<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;</code></dd>
+<dt><span class="strong">Parameters:</span></dt><dd><code>features</code> - a list of features to be classified</dd>
+<dt><span class="strong">Returns:</span></dt><dd>a map from outcomes to classification scores</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code><a href="../../../../../org/cleartk/ml/CleartkProcessingException.html" title="class in org.cleartk.ml">CleartkProcessingException</a></code></dd></dl>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- ========= END OF CLASS DATA ========= -->
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+<!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/MaxentClassifier_ImplBase.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../../index-all.html">Index</a></li>
+<li><a href="../../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li><a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentBooleanOutcomeDataWriter.html" title="class in org.cleartk.ml.opennlp.maxent"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../../org/cleartk/ml/opennlp/maxent/MaxentClassifierBuilder_ImplBase.html" title="class in org.cleartk.ml.opennlp.maxent"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../../index.html?org/cleartk/ml/opennlp/maxent/MaxentClassifier_ImplBase.html" target="_top">Frames</a></li>
+<li><a href="MaxentClassifier_ImplBase.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_bottom">
+<li><a href="../../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_bottom");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#field_summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li><a href="#field_detail">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_bottom">
+<!--   -->
+</a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; 2014. All rights reserved.</small></p>
+</body>
+</html>

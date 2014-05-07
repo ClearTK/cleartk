@@ -1,0 +1,237 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * Copyright (c) 2011, Regents of the University of Colorado <a name="line.2"></a>
+<span class="sourceLineNo">003</span> * All rights reserved.<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * <a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Redistribution and use in source and binary forms, with or without<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * modification, are permitted provided that the following conditions are met:<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * <a name="line.7"></a>
+<span class="sourceLineNo">008</span> * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. <a name="line.8"></a>
+<span class="sourceLineNo">009</span> * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. <a name="line.9"></a>
+<span class="sourceLineNo">010</span> * Neither the name of the University of Colorado at Boulder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. <a name="line.10"></a>
+<span class="sourceLineNo">011</span> * <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * POSSIBILITY OF SUCH DAMAGE. <a name="line.22"></a>
+<span class="sourceLineNo">023</span> */<a name="line.23"></a>
+<span class="sourceLineNo">024</span>package org.cleartk.timeml.tlink;<a name="line.24"></a>
+<span class="sourceLineNo">025</span><a name="line.25"></a>
+<span class="sourceLineNo">026</span>import static org.cleartk.syntax.constituent.type.TreebankNodeUtil.selectHighestCoveredTreebankNode;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import static org.cleartk.syntax.constituent.type.TreebankNodeUtil.selectMatchingLeaf;<a name="line.27"></a>
+<span class="sourceLineNo">028</span><a name="line.28"></a>
+<span class="sourceLineNo">029</span>import java.util.ArrayList;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import java.util.List;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import java.util.regex.Pattern;<a name="line.31"></a>
+<span class="sourceLineNo">032</span><a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.apache.uima.UimaContext;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import org.apache.uima.analysis_engine.AnalysisEngineDescription;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import org.apache.uima.jcas.JCas;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import org.apache.uima.resource.ResourceInitializationException;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import org.cleartk.ml.feature.extractor.CleartkExtractor;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import org.cleartk.ml.feature.extractor.CoveredTextExtractor;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import org.cleartk.ml.feature.extractor.FeatureExtractor1;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import org.cleartk.ml.feature.extractor.FeatureExtractor2;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import org.cleartk.ml.feature.extractor.TypePathExtractor;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>import org.cleartk.ml.feature.extractor.CleartkExtractor.Bag;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>import org.cleartk.ml.feature.extractor.CleartkExtractor.Covered;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>import org.cleartk.ml.feature.extractor.CleartkExtractor.Following;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>import org.cleartk.ml.feature.extractor.CleartkExtractor.Ngram;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import org.cleartk.ml.feature.extractor.CleartkExtractor.Preceding;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import org.cleartk.ml.liblinear.LibLinearStringOutcomeDataWriter;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>import org.cleartk.syntax.constituent.type.TreebankNode;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>import org.cleartk.syntax.constituent.type.TreebankNodeUtil;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>import org.cleartk.timeml.type.Anchor;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>import org.cleartk.timeml.type.Event;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import org.cleartk.timeml.type.Time;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>import org.cleartk.timeml.util.CleartkInternalModelFactory;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>import org.cleartk.feature.FilteringExtractor;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>import org.cleartk.token.type.Sentence;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>import org.cleartk.token.type.Token;<a name="line.56"></a>
+<span class="sourceLineNo">057</span>import org.apache.uima.fit.factory.AnalysisEngineFactory;<a name="line.57"></a>
+<span class="sourceLineNo">058</span>import org.apache.uima.fit.util.JCasUtil;<a name="line.58"></a>
+<span class="sourceLineNo">059</span><a name="line.59"></a>
+<span class="sourceLineNo">060</span>import com.google.common.collect.Lists;<a name="line.60"></a>
+<span class="sourceLineNo">061</span><a name="line.61"></a>
+<span class="sourceLineNo">062</span>/**<a name="line.62"></a>
+<span class="sourceLineNo">063</span> * &lt;br&gt;<a name="line.63"></a>
+<span class="sourceLineNo">064</span> * Copyright (c) 2011, Regents of the University of Colorado &lt;br&gt;<a name="line.64"></a>
+<span class="sourceLineNo">065</span> * All rights reserved.<a name="line.65"></a>
+<span class="sourceLineNo">066</span> * <a name="line.66"></a>
+<span class="sourceLineNo">067</span> * @author Steven Bethard<a name="line.67"></a>
+<span class="sourceLineNo">068</span> */<a name="line.68"></a>
+<span class="sourceLineNo">069</span>public class TemporalLinkEventToSameSentenceTimeAnnotator extends<a name="line.69"></a>
+<span class="sourceLineNo">070</span>    TemporalLinkAnnotator_ImplBase&lt;Event, Time&gt; {<a name="line.70"></a>
+<span class="sourceLineNo">071</span><a name="line.71"></a>
+<span class="sourceLineNo">072</span>  public static final CleartkInternalModelFactory FACTORY = new CleartkInternalModelFactory() {<a name="line.72"></a>
+<span class="sourceLineNo">073</span>    @Override<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    public Class&lt;?&gt; getAnnotatorClass() {<a name="line.74"></a>
+<span class="sourceLineNo">075</span>      return TemporalLinkEventToSameSentenceTimeAnnotator.class;<a name="line.75"></a>
+<span class="sourceLineNo">076</span>    }<a name="line.76"></a>
+<span class="sourceLineNo">077</span><a name="line.77"></a>
+<span class="sourceLineNo">078</span>    @Override<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    public Class&lt;?&gt; getDataWriterClass() {<a name="line.79"></a>
+<span class="sourceLineNo">080</span>      return LibLinearStringOutcomeDataWriter.class;<a name="line.80"></a>
+<span class="sourceLineNo">081</span>    }<a name="line.81"></a>
+<span class="sourceLineNo">082</span><a name="line.82"></a>
+<span class="sourceLineNo">083</span>    @Override<a name="line.83"></a>
+<span class="sourceLineNo">084</span>    public AnalysisEngineDescription getBaseDescription() throws ResourceInitializationException {<a name="line.84"></a>
+<span class="sourceLineNo">085</span>      return AnalysisEngineFactory.createEngineDescription(TemporalLinkEventToSameSentenceTimeAnnotator.class);<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    }<a name="line.86"></a>
+<span class="sourceLineNo">087</span>  };<a name="line.87"></a>
+<span class="sourceLineNo">088</span><a name="line.88"></a>
+<span class="sourceLineNo">089</span>  public TemporalLinkEventToSameSentenceTimeAnnotator() {<a name="line.89"></a>
+<span class="sourceLineNo">090</span>    super(Event.class, Time.class, "INCLUDES", "IS_INCLUDED");<a name="line.90"></a>
+<span class="sourceLineNo">091</span>  }<a name="line.91"></a>
+<span class="sourceLineNo">092</span><a name="line.92"></a>
+<span class="sourceLineNo">093</span>  private static final Pattern SUBORDINATE_PATH_PATTERN = Pattern.compile("^((NP|PP|ADVP)&gt;)*((VP|SBAR|S)&gt;)*(S|SBAR|VP|NP)(&lt;(VP|SBAR|S))*(&lt;(NP|PP|ADVP))*$");<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>  @Override<a name="line.95"></a>
+<span class="sourceLineNo">096</span>  public void initialize(UimaContext context) throws ResourceInitializationException {<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    super.initialize(context);<a name="line.97"></a>
+<span class="sourceLineNo">098</span><a name="line.98"></a>
+<span class="sourceLineNo">099</span>    final FeatureExtractor1&lt;Token&gt; prepOrVerbExtractor = new FilteringExtractor&lt;Token&gt;(<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        Token.class,<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        new CoveredTextExtractor&lt;Token&gt;()) {<a name="line.101"></a>
+<span class="sourceLineNo">102</span>      @Override<a name="line.102"></a>
+<span class="sourceLineNo">103</span>      protected boolean accept(Token token) {<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        return token.getPos().equals("TO") || token.getPos().equals("IN")<a name="line.104"></a>
+<span class="sourceLineNo">105</span>            || token.getPos().startsWith("VB");<a name="line.105"></a>
+<span class="sourceLineNo">106</span>      }<a name="line.106"></a>
+<span class="sourceLineNo">107</span>    };<a name="line.107"></a>
+<span class="sourceLineNo">108</span><a name="line.108"></a>
+<span class="sourceLineNo">109</span>    <a name="line.109"></a>
+<span class="sourceLineNo">110</span>    List&lt;FeatureExtractor1&lt;Event&gt;&gt; srcExtractors = Lists.newArrayList();<a name="line.110"></a>
+<span class="sourceLineNo">111</span>    srcExtractors.add(new TypePathExtractor&lt;Event&gt;(Event.class, "tense"));<a name="line.111"></a>
+<span class="sourceLineNo">112</span>    srcExtractors.add(new TypePathExtractor&lt;Event&gt;(Event.class, "eventClass"));<a name="line.112"></a>
+<span class="sourceLineNo">113</span>    srcExtractors.add(new CleartkExtractor&lt;Event, Token&gt;(Token.class, prepOrVerbExtractor, new Ngram(new Following(5))));<a name="line.113"></a>
+<span class="sourceLineNo">114</span>    this.setSourceExtractors(srcExtractors);<a name="line.114"></a>
+<span class="sourceLineNo">115</span>    <a name="line.115"></a>
+<span class="sourceLineNo">116</span>    List&lt;FeatureExtractor1&lt;Time&gt;&gt; tgtExtractors = Lists.newArrayList();<a name="line.116"></a>
+<span class="sourceLineNo">117</span>    tgtExtractors.add(new CleartkExtractor&lt;Time, Token&gt;(Token.class, new CoveredTextExtractor&lt;Token&gt;(), new Bag(new Covered())));<a name="line.117"></a>
+<span class="sourceLineNo">118</span>    tgtExtractors.add(new TypePathExtractor&lt;Time&gt;(Time.class, "timeType"));<a name="line.118"></a>
+<span class="sourceLineNo">119</span>    tgtExtractors.add(new TypePathExtractor&lt;Time&gt;(Time.class, "value"));<a name="line.119"></a>
+<span class="sourceLineNo">120</span>    tgtExtractors.add(new CleartkExtractor&lt;Time, Token&gt;(Token.class, prepOrVerbExtractor, new Ngram(new Preceding(5))));<a name="line.120"></a>
+<span class="sourceLineNo">121</span>    this.setTargetExtractors(tgtExtractors);<a name="line.121"></a>
+<span class="sourceLineNo">122</span><a name="line.122"></a>
+<span class="sourceLineNo">123</span>//    this.setTargetExtractors(Arrays.asList(<a name="line.123"></a>
+<span class="sourceLineNo">124</span>//        new CleartkExtractor&lt;Time, Token&gt;(Token.class, new CoveredTextExtractor(), new Bag(new Covered())),<a name="line.124"></a>
+<span class="sourceLineNo">125</span>//        new TypePathExtractor&lt;Time&gt;(Time.class, "timeType"),<a name="line.125"></a>
+<span class="sourceLineNo">126</span>//        new TypePathExtractor&lt;Time&gt;(Time.class, "value"),<a name="line.126"></a>
+<span class="sourceLineNo">127</span>//        new CleartkExtractor&lt;Time, Token&gt;(Token.class, prepOrVerbExtractor, new Ngram(new Preceding(5)))));<a name="line.127"></a>
+<span class="sourceLineNo">128</span><a name="line.128"></a>
+<span class="sourceLineNo">129</span>    // this will probably only extract when the source (Event) precedes the target (Time)<a name="line.129"></a>
+<span class="sourceLineNo">130</span>    <a name="line.130"></a>
+<span class="sourceLineNo">131</span>    List&lt;FeatureExtractor2&lt;Anchor, Anchor&gt;&gt; btweenExtractors = Lists.newArrayList();<a name="line.131"></a>
+<span class="sourceLineNo">132</span>    btweenExtractors.add(new CleartkExtractor&lt;Anchor, Token&gt;(<a name="line.132"></a>
+<span class="sourceLineNo">133</span>        Token.class,<a name="line.133"></a>
+<span class="sourceLineNo">134</span>        prepOrVerbExtractor,<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        new Bag(new Covered())));<a name="line.135"></a>
+<span class="sourceLineNo">136</span>  }<a name="line.136"></a>
+<span class="sourceLineNo">137</span><a name="line.137"></a>
+<span class="sourceLineNo">138</span>  @Override<a name="line.138"></a>
+<span class="sourceLineNo">139</span>  protected List&lt;SourceTargetPair&gt; getSourceTargetPairs(JCas jCas) {<a name="line.139"></a>
+<span class="sourceLineNo">140</span>    List&lt;SourceTargetPair&gt; pairs = Lists.newArrayList();<a name="line.140"></a>
+<span class="sourceLineNo">141</span>    for (Sentence sentence : JCasUtil.select(jCas, Sentence.class)) {<a name="line.141"></a>
+<span class="sourceLineNo">142</span>      for (Event event : JCasUtil.selectCovered(jCas, Event.class, sentence)) {<a name="line.142"></a>
+<span class="sourceLineNo">143</span>        for (Time time : getSubordinateTimes(event, sentence, jCas)) {<a name="line.143"></a>
+<span class="sourceLineNo">144</span>          pairs.add(new SourceTargetPair(event, time));<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        }<a name="line.145"></a>
+<span class="sourceLineNo">146</span>      }<a name="line.146"></a>
+<span class="sourceLineNo">147</span>    }<a name="line.147"></a>
+<span class="sourceLineNo">148</span>    return pairs;<a name="line.148"></a>
+<span class="sourceLineNo">149</span>  }<a name="line.149"></a>
+<span class="sourceLineNo">150</span><a name="line.150"></a>
+<span class="sourceLineNo">151</span>  private static List&lt;Time&gt; getSubordinateTimes(Event event, Sentence sentence, JCas jCas) {<a name="line.151"></a>
+<span class="sourceLineNo">152</span>    List&lt;Time&gt; times = new ArrayList&lt;Time&gt;();<a name="line.152"></a>
+<span class="sourceLineNo">153</span>    TreebankNode eventNode = selectMatchingLeaf(jCas, event);<a name="line.153"></a>
+<span class="sourceLineNo">154</span>    for (Time time : JCasUtil.selectCovered(jCas, Time.class, sentence)) {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>      TreebankNode timeNode = selectHighestCoveredTreebankNode(jCas, time);<a name="line.155"></a>
+<span class="sourceLineNo">156</span>      if (eventNode != null &amp;&amp; timeNode != null) {<a name="line.156"></a>
+<span class="sourceLineNo">157</span>        String path = noLeavesPath(TreebankNodeUtil.getPath(eventNode, timeNode));<a name="line.157"></a>
+<span class="sourceLineNo">158</span>        if (SUBORDINATE_PATH_PATTERN.matcher(path).matches()) {<a name="line.158"></a>
+<span class="sourceLineNo">159</span>          times.add(time);<a name="line.159"></a>
+<span class="sourceLineNo">160</span>        }<a name="line.160"></a>
+<span class="sourceLineNo">161</span>      }<a name="line.161"></a>
+<span class="sourceLineNo">162</span>    }<a name="line.162"></a>
+<span class="sourceLineNo">163</span>    return times;<a name="line.163"></a>
+<span class="sourceLineNo">164</span>  }<a name="line.164"></a>
+<span class="sourceLineNo">165</span>}<a name="line.165"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

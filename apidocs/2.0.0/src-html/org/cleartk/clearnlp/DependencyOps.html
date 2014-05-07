@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package org.cleartk.clearnlp;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>import java.util.List;<a name="line.3"></a>
+<span class="sourceLineNo">004</span><a name="line.4"></a>
+<span class="sourceLineNo">005</span>import org.apache.uima.jcas.JCas;<a name="line.5"></a>
+<span class="sourceLineNo">006</span>import org.apache.uima.jcas.cas.TOP;<a name="line.6"></a>
+<span class="sourceLineNo">007</span>import org.apache.uima.jcas.tcas.Annotation;<a name="line.7"></a>
+<span class="sourceLineNo">008</span><a name="line.8"></a>
+<span class="sourceLineNo">009</span>import com.google.common.annotations.Beta;<a name="line.9"></a>
+<span class="sourceLineNo">010</span><a name="line.10"></a>
+<span class="sourceLineNo">011</span>/**<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * Defines common set of dependency graph data type operations used to convert to and query in<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * the target type system<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * <a name="line.14"></a>
+<span class="sourceLineNo">015</span> * @author Lee Becker<a name="line.15"></a>
+<span class="sourceLineNo">016</span> *<a name="line.16"></a>
+<span class="sourceLineNo">017</span> */<a name="line.17"></a>
+<span class="sourceLineNo">018</span>@Beta<a name="line.18"></a>
+<span class="sourceLineNo">019</span>public interface DependencyOps&lt;<a name="line.19"></a>
+<span class="sourceLineNo">020</span>    NODE_TYPE extends TOP,<a name="line.20"></a>
+<span class="sourceLineNo">021</span>    NODE_SPAN_TYPE extends Annotation,<a name="line.21"></a>
+<span class="sourceLineNo">022</span>    ROOT_NODE_TYPE extends NODE_TYPE,<a name="line.22"></a>
+<span class="sourceLineNo">023</span>    ROOT_NODE_SPAN_TYPE extends Annotation,<a name="line.23"></a>
+<span class="sourceLineNo">024</span>    RELATION_TYPE extends TOP&gt; {<a name="line.24"></a>
+<span class="sourceLineNo">025</span>  <a name="line.25"></a>
+<span class="sourceLineNo">026</span>  /**<a name="line.26"></a>
+<span class="sourceLineNo">027</span>   * Selects the single root node within the annotation. Should error on more than one root node.<a name="line.27"></a>
+<span class="sourceLineNo">028</span>   */<a name="line.28"></a>
+<span class="sourceLineNo">029</span>  ROOT_NODE_TYPE selectRootNode(JCas jCas, Annotation coveringAnnotation);<a name="line.29"></a>
+<span class="sourceLineNo">030</span><a name="line.30"></a>
+<span class="sourceLineNo">031</span>  /**<a name="line.31"></a>
+<span class="sourceLineNo">032</span>   * Selects all dependency nodes within the annotation, excluding the root node.<a name="line.32"></a>
+<span class="sourceLineNo">033</span>   * <a name="line.33"></a>
+<span class="sourceLineNo">034</span>   * Nodes should be ordered by their offsets. <a name="line.34"></a>
+<span class="sourceLineNo">035</span>   */<a name="line.35"></a>
+<span class="sourceLineNo">036</span>  List&lt;NODE_TYPE&gt; selectNodes(JCas jCas, Annotation coveringAnnotation);<a name="line.36"></a>
+<span class="sourceLineNo">037</span><a name="line.37"></a>
+<span class="sourceLineNo">038</span>  List&lt;RELATION_TYPE&gt; getHeadRelations(JCas jCas, NODE_TYPE node);<a name="line.38"></a>
+<span class="sourceLineNo">039</span>  NODE_TYPE getHead(JCas jCas, RELATION_TYPE relation); <a name="line.39"></a>
+<span class="sourceLineNo">040</span>  String getLabel(JCas jCas, RELATION_TYPE relation); <a name="line.40"></a>
+<span class="sourceLineNo">041</span>  <a name="line.41"></a>
+<span class="sourceLineNo">042</span>  /**<a name="line.42"></a>
+<span class="sourceLineNo">043</span>   * Creates a new dependency node for the specified span<a name="line.43"></a>
+<span class="sourceLineNo">044</span>   */<a name="line.44"></a>
+<span class="sourceLineNo">045</span>  NODE_TYPE createNode(JCas jCas, NODE_SPAN_TYPE span);<a name="line.45"></a>
+<span class="sourceLineNo">046</span>  ROOT_NODE_TYPE createRootNode(JCas jCas, ROOT_NODE_SPAN_TYPE span);<a name="line.46"></a>
+<span class="sourceLineNo">047</span>  <a name="line.47"></a>
+<span class="sourceLineNo">048</span>  /**<a name="line.48"></a>
+<span class="sourceLineNo">049</span>   * Creates a relation between the two nodes.  If dealing with a type system where the relation is a separate object,<a name="line.49"></a>
+<span class="sourceLineNo">050</span>   * this will likely create a new relation object.  For graphs that have the relation built into the node, this will likely<a name="line.50"></a>
+<span class="sourceLineNo">051</span>   * just set labels on head and child relation fields<a name="line.51"></a>
+<span class="sourceLineNo">052</span>   */<a name="line.52"></a>
+<span class="sourceLineNo">053</span>  RELATION_TYPE createRelation(JCas jCas, NODE_TYPE head, NODE_TYPE child, String relation);<a name="line.53"></a>
+<span class="sourceLineNo">054</span>  <a name="line.54"></a>
+<span class="sourceLineNo">055</span>  /**<a name="line.55"></a>
+<span class="sourceLineNo">056</span>   * Sets the head relations for a given node.  This is only important if the type system supports multi-head dependency parses<a name="line.56"></a>
+<span class="sourceLineNo">057</span>   */<a name="line.57"></a>
+<span class="sourceLineNo">058</span>  void setHeadRelations(JCas jCas, NODE_TYPE node, List&lt;RELATION_TYPE&gt; headRelations);<a name="line.58"></a>
+<span class="sourceLineNo">059</span>  <a name="line.59"></a>
+<span class="sourceLineNo">060</span>  /**<a name="line.60"></a>
+<span class="sourceLineNo">061</span>   * Sets the head relations for a given node.  This is only important if the type system supports multi-child dependency parses<a name="line.61"></a>
+<span class="sourceLineNo">062</span>   */<a name="line.62"></a>
+<span class="sourceLineNo">063</span>  void setChildRelations(JCas jCas, NODE_TYPE node, List&lt;RELATION_TYPE&gt; childRelations);<a name="line.63"></a>
+<span class="sourceLineNo">064</span><a name="line.64"></a>
+<span class="sourceLineNo">065</span>}<a name="line.65"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
