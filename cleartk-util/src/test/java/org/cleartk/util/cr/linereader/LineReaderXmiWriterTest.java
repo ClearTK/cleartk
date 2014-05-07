@@ -69,7 +69,10 @@ public class LineReaderXmiWriterTest extends DefaultTestBase {
 
     SimplePipeline.runPipeline(reader, xmiWriter);
     List<String> actualFiles = Arrays.asList(outputDir.list());
-    List<String> expectedFiles = Arrays.asList(
+
+    // We can't rely on the files in the directory being read in a particular order
+    // so we have to allow for either order in the saved XMIs
+    List<String> expectedFiles1 = Arrays.asList(
         "a-test1.txt.1.xmi",
         "a-test1.txt.2.xmi",
         "a-test1.txt.3.xmi",
@@ -82,9 +85,27 @@ public class LineReaderXmiWriterTest extends DefaultTestBase {
         "b-test2.dat.10.xmi",
         "b-test2.dat.11.xmi",
         "b-test2.dat.12.xmi");
+    List<String> expectedFiles2 = Arrays.asList(
+        "b-test2.dat.1.xmi",
+        "b-test2.dat.2.xmi",
+        "b-test2.dat.3.xmi",
+        "b-test2.dat.4.xmi",
+        "a-test1.txt.5.xmi",
+        "a-test1.txt.6.xmi",
+        "a-test1.txt.7.xmi",
+        "a-test1.txt.8.xmi",
+        "a-test1.txt.9.xmi",
+        "a-test1.txt.10.xmi",
+        "a-test1.txt.11.xmi",
+        "a-test1.txt.12.xmi");
 
-    Collections.sort(expectedFiles);
+    Collections.sort(expectedFiles1);
+    Collections.sort(expectedFiles2);
     Collections.sort(actualFiles);
-    Assert.assertEquals(expectedFiles, actualFiles);
+    try {
+      Assert.assertEquals(expectedFiles1, actualFiles);
+    } catch (AssertionError e) {
+      Assert.assertEquals(expectedFiles2, actualFiles);
+    }
   }
 }
