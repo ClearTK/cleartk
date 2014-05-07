@@ -45,7 +45,7 @@
 		<dependency>
 			<groupId>org.maltparser</groupId>
 			<artifactId>maltparser</artifactId>
-			<version>1.7.2</version>
+			<version>1.8</version>
 			<!-- MaltParser is using old versions -->
 			<exclusions>
 				<exclusion>
@@ -65,7 +65,7 @@
 		<dependency>
 			<groupId>de.bwaldvogel</groupId>
 			<artifactId>liblinear</artifactId>
-			<version>1.92</version>
+			<version>1.94</version>
 		</dependency>
 		<dependency>
 			<groupId>tw.edu.ntu.csie</groupId>

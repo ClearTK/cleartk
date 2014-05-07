@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>de.bwaldvogel</groupId>
 			<artifactId>liblinear</artifactId>
-			<version>1.92</version>
+			<version>1.94</version>
 		</dependency>
 		<!-- test only -->
 		<dependency>
