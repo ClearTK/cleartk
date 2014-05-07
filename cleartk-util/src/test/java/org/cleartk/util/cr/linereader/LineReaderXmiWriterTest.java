@@ -26,8 +26,8 @@ package org.cleartk.util.cr.linereader;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReaderDescription;
@@ -68,8 +68,8 @@ public class LineReaderXmiWriterTest extends DefaultTestBase {
     AnalysisEngineDescription xmiWriter = LineReaderXmiWriter.getDescription(outputDir);
 
     SimplePipeline.runPipeline(reader, xmiWriter);
-    Set<String> actualFiles = new HashSet<>(Arrays.asList(outputDir.list()));
-    Set<String> expectedFiles = new HashSet<>(Arrays.asList(
+    List<String> actualFiles = Arrays.asList(outputDir.list());
+    List<String> expectedFiles = Arrays.asList(
         "a-test1.txt.1.xmi",
         "a-test1.txt.2.xmi",
         "a-test1.txt.3.xmi",
@@ -81,8 +81,10 @@ public class LineReaderXmiWriterTest extends DefaultTestBase {
         "b-test2.dat.9.xmi",
         "b-test2.dat.10.xmi",
         "b-test2.dat.11.xmi",
-        "b-test2.dat.12.xmi"));
+        "b-test2.dat.12.xmi");
 
+    Collections.sort(expectedFiles);
+    Collections.sort(actualFiles);
     Assert.assertEquals(expectedFiles, actualFiles);
   }
 }
