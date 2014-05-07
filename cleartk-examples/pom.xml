@@ -109,12 +109,13 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<!-- Generate type system files using ${jcasgen.typesystem} -->
 	<properties>
-		<jcasgen.typesystem>org/cleartk/examples/TypeSystem.xml</jcasgen.typesystem>
+		<!-- Don't generate javadoc since cleartk-examples should not be released -->
+		<maven.javadoc.skip>true</maven.javadoc.skip>
 	</properties>
 	<build>
 		<plugins>
+			<!-- Generate type system files using ${jcasgen.typesystem} -->
 			<plugin>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>jcasgen-maven-plugin</artifactId>
@@ -122,29 +123,6 @@
 					<typeSystemIncludes>
 						<include>src/main/resources/org/cleartk/examples/TypeSystem.xml</include>
 					</typeSystemIncludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<tags>
-						<tag>
-							<name>generated</name>
-							<placement>a</placement>
-							<head>Generated:</head>
-						</tag>
-						<tag>
-							<name>ordered</name>
-							<placement>a</placement>
-							<head>Ordered:</head>
-						</tag>
-						<tag>
-							<name>modifiable</name>
-							<placement>a</placement>
-							<head>Modifiable:</head>
-						</tag>
-					</tags>
 				</configuration>
 			</plugin>
 			<!--
