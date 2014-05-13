@@ -9,9 +9,9 @@
 	<fileSets>
 		<fileSet>
 			<includes>
-				<include>README</include>
-				<include>LICENSE</include>
-				<include>licenses/*</include>
+				<include>../README</include>
+				<include>../LICENSE</include>
+				<include>../licenses/*</include>
 			</includes>
 		</fileSet>
 	</fileSets>
@@ -24,3 +24,5 @@
 		</dependencySet>
 	</dependencySets>
 </assembly>
+
+

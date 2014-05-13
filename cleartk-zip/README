@@ -1,0 +1,3 @@
+To generate a binary zip file that includes dependencies as jar files run the following command:
+
+> mvn assembly:single

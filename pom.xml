@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<prerequisites>
 		<maven>3.0</maven>
 	</prerequisites>
@@ -21,8 +22,8 @@
 		<url>https://code.google.com/p/cleartk/source/browse/</url>
 		<connection>scm:git:https://code.google.com/p/cleartk/</connection>
 		<developerConnection>scm:git:https://code.google.com/p/cleartk/</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 	<developers>
 		<developer>
 			<id>steven.bethard</id>
@@ -262,123 +263,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	<profiles>
-		<profile>
-			<id>zip</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>distro-assembly</id>
-								<phase>package</phase>
-								<goals>
-									<goal>single</goal>
-								</goals>
-								<configuration>
-									<descriptors>
-										<descriptor>zip.xml</descriptor>
-									</descriptors>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-			<dependencies>
-				<!-- basic util modules -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-test-util</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-util</artifactId>
-				</dependency>
-				<!-- machine learning modules -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml-opennlp-maxent</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml-svmlight</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml-tksvmlight</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml-libsvm</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml-mallet</artifactId>
-				</dependency>
-				<!-- omit because of GPL licensing issues <dependency> <groupId>org.cleartk</groupId> 
-					<artifactId>cleartk-ml-weka</artifactId> </dependency> -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-ml-crfsuite</artifactId>
-				</dependency>
-				<!-- evaluation module -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-eval</artifactId>
-				</dependency>
-				<!-- type system -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-type-system</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-corpus</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-feature</artifactId>
-				</dependency>
-				<!-- wrappers for external components -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-snowball</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-opennlp-tools</artifactId>
-				</dependency>
-				<!-- omit because of GPL licensing issues <dependency> <groupId>org.cleartk</groupId> 
-					<artifactId>cleartk-berkeleyparser</artifactId> </dependency> -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-maltparser</artifactId>
-				</dependency>
-				<!-- omit because of GPL licensing issues <dependency> <groupId>org.cleartk</groupId> 
-					<artifactId>cleartk-stanford-corenlp</artifactId> </dependency> -->
-				<!-- home-grown components -->
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-token</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-summarization</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.cleartk</groupId>
-					<artifactId>cleartk-timeml</artifactId>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
-
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -512,6 +396,15 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+					<descriptors>
+						<descriptor>zip.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>

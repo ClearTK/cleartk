@@ -25,7 +25,7 @@ Please see the section titled "Dependencies" below for important licensing infor
 License
 #######
 
-Copyright (c) 2007-2011, Regents of the University of Colorado 
+Copyright (c) 2007-2014, Regents of the University of Colorado 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -118,8 +118,8 @@ http://cleartk.googlecode.com/svn/repo/org/cleartk/cleartk-syntax-dependency-mal
 ###################
 Creating a zip file
 ###################
-to create cleartk-release-<version>-SNAPSHOT-bin.zip perform the following maven command
-from cleartk trunk:
+to create cleartk-<version>-bin.zip perform the following maven command
+from cleartk-zip:
 
-mvn -DskipTests -Pzip package
+mvn assembly:single
   
