@@ -6,6 +6,7 @@
 	<formats>
 		<format>zip</format>
 	</formats>
+	<!-- 
 	<fileSets>
 		<fileSet>
 			<includes>
@@ -15,6 +16,7 @@
 			</includes>
 		</fileSet>
 	</fileSets>
+	 -->
 	<!-- Include all runtime dependencies of the modules -->
 	<dependencySets>
 		<dependencySet>
