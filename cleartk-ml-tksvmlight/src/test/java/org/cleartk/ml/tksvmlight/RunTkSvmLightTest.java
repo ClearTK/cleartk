@@ -46,6 +46,7 @@ import org.cleartk.ml.encoder.features.StringEncoder;
 import org.cleartk.ml.jar.DefaultDataWriterFactory;
 import org.cleartk.ml.jar.DirectoryDataWriterFactory;
 import org.cleartk.ml.jar.Train;
+import org.cleartk.ml.tksvmlight.kernel.SubsetTreeKernel;
 import org.cleartk.ml.tksvmlight.model.TreeKernel;
 import org.cleartk.ml.tksvmlight.model.TreeKernel.ForestSumMethod;
 import org.cleartk.ml.tksvmlight.model.TreeKernel.KernelType;
@@ -104,8 +105,9 @@ public class RunTkSvmLightTest extends DefaultTestBase {
 
   @Test
   public void testTKSim(){
-    TreeKernel sst = new TreeKernel(TreeKernel.LAMBDA_DEFAULT, ForestSumMethod.SEQUENTIAL, KernelType.SUBSET, false);
-    
+    org.cleartk.ml.tksvmlight.kernel.TreeKernel sst = new SubsetTreeKernel(SubsetTreeKernel.LAMBDA_DEFAULT,
+        org.cleartk.ml.tksvmlight.kernel.TreeKernel.ForestSumMethod.SEQUENTIAL, false);
+
     TreeFeatureVector tf1 = new TreeFeatureVector();
     String tree1 = "(S (NP i) (VP (VB eat) (NN cake)))";
     LinkedHashMap<String,String> tree1map = new LinkedHashMap<String,String>();
@@ -164,7 +166,8 @@ public class RunTkSvmLightTest extends DefaultTestBase {
   
   @Test
   public void testPTKSpeed() {
-    TreeKernel sst = new TreeKernel(TreeKernel.LAMBDA_DEFAULT, ForestSumMethod.SEQUENTIAL, KernelType.SUBSET, false);
+    org.cleartk.ml.tksvmlight.kernel.TreeKernel sst = new SubsetTreeKernel(SubsetTreeKernel.LAMBDA_DEFAULT,
+        org.cleartk.ml.tksvmlight.kernel.TreeKernel.ForestSumMethod.SEQUENTIAL, false);
     TreeKernel ptk = new TreeKernel(TreeKernel.LAMBDA_DEFAULT, ForestSumMethod.SEQUENTIAL, KernelType.PARTIAL, false);
     
     TreeFeatureVector tf1 = new TreeFeatureVector();
