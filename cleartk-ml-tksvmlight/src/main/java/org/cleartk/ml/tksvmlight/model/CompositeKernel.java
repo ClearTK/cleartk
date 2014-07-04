@@ -27,6 +27,7 @@ import java.util.HashMap;
 
 import org.cleartk.ml.svmlight.model.Kernel;
 import org.cleartk.ml.tksvmlight.TreeFeatureVector;
+import org.cleartk.ml.tksvmlight.kernel.TreeKernel;
 import org.cleartk.ml.util.featurevector.FeatureVector;
 
 import com.google.common.annotations.Beta;

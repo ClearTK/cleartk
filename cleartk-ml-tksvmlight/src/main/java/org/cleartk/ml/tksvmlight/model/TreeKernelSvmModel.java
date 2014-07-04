@@ -38,10 +38,12 @@ import org.cleartk.ml.svmlight.model.RbfKernel;
 import org.cleartk.ml.svmlight.model.SigmoidKernel;
 import org.cleartk.ml.svmlight.model.UnsupportedKernelError;
 import org.cleartk.ml.tksvmlight.TreeFeatureVector;
+import org.cleartk.ml.tksvmlight.kernel.PartialTreeKernel;
+import org.cleartk.ml.tksvmlight.kernel.SubsetTreeKernel;
+import org.cleartk.ml.tksvmlight.kernel.TreeKernel;
+import org.cleartk.ml.tksvmlight.kernel.TreeKernel.ForestSumMethod;
 import org.cleartk.ml.tksvmlight.model.CompositeKernel.ComboOperator;
 import org.cleartk.ml.tksvmlight.model.CompositeKernel.Normalize;
-import org.cleartk.ml.tksvmlight.model.TreeKernel.ForestSumMethod;
-import org.cleartk.ml.tksvmlight.model.TreeKernel.KernelType;
 import org.cleartk.ml.util.featurevector.FeatureVector;
 import org.cleartk.ml.util.featurevector.InvalidFeatureVectorValueException;
 import org.cleartk.ml.util.featurevector.SparseFeatureVector;
@@ -165,25 +167,15 @@ public class TreeKernelSvmModel {
         sumMethod = ForestSumMethod.ALL_PAIRS;
       }
 
-      TreeKernel.KernelType kernelType;
-      switch (tkType) {
-        case 0:
-          kernelType = KernelType.SUBTREE;
-          break;
-        case 1:
-          kernelType = KernelType.SUBSET;
-          break;
-        case 2:
-          kernelType = KernelType.SUBSET_BOW;
-          break;
-        case 3:
-          kernelType = KernelType.PARTIAL;
-          break;
-        default:
-          throw new UnsupportedKernelError();
-      }
       boolean normalize = norm == 1 || norm == 3;
-      treeKernel = new TreeKernel(lambda, sumMethod, kernelType, normalize);
+
+      if(tkType == 1){
+        treeKernel = new SubsetTreeKernel(lambda, sumMethod, normalize);
+      }else if(tkType == 3){
+        treeKernel = new PartialTreeKernel(lambda, PartialTreeKernel.MU_DEFAULT, sumMethod, normalize);
+      }else{
+        throw new UnsupportedKernelError();
+      }
       if (comboOperator.equals("+")) {
         operator = ComboOperator.SUM;
       } else if (comboOperator.equals("*")) {

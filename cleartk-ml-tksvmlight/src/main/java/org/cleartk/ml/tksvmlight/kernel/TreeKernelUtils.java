@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.cleartk.util.treebank.TreebankNode;
 
-import com.google.common.collect.Lists;
-
 public class TreeKernelUtils {
   public static final List<TreebankNode> getNodeList(TreebankNode tree) {
     ArrayList<TreebankNode> list = new ArrayList<TreebankNode>();

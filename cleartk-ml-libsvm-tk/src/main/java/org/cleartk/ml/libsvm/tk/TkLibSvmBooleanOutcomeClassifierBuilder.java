@@ -50,15 +50,17 @@ import org.cleartk.ml.svmlight.model.Kernel;
 import org.cleartk.ml.svmlight.model.LinearKernel;
 import org.cleartk.ml.svmlight.model.PolynomialKernel;
 import org.cleartk.ml.svmlight.model.RbfKernel;
+import org.cleartk.ml.svmlight.model.UnsupportedKernelError;
 import org.cleartk.ml.tksvmlight.TreeFeatureVector;
 import org.cleartk.ml.tksvmlight.TreeKernelSvmBooleanOutcomeClassifier;
 import org.cleartk.ml.tksvmlight.TreeKernelSvmBooleanOutcomeClassifierBuilder;
-import org.cleartk.ml.tksvmlight.model.TreeKernel;
-import org.cleartk.ml.tksvmlight.model.TreeKernelSvmModel;
+import org.cleartk.ml.tksvmlight.kernel.PartialTreeKernel;
+import org.cleartk.ml.tksvmlight.kernel.SubsetTreeKernel;
+import org.cleartk.ml.tksvmlight.kernel.TreeKernel;
+import org.cleartk.ml.tksvmlight.kernel.TreeKernel.ForestSumMethod;
 import org.cleartk.ml.tksvmlight.model.CompositeKernel.ComboOperator;
 import org.cleartk.ml.tksvmlight.model.CompositeKernel.Normalize;
-import org.cleartk.ml.tksvmlight.model.TreeKernel.ForestSumMethod;
-import org.cleartk.ml.tksvmlight.model.TreeKernel.KernelType;
+import org.cleartk.ml.tksvmlight.model.TreeKernelSvmModel;
 import org.cleartk.ml.util.featurevector.FeatureVector;
 import org.cleartk.ml.util.featurevector.InvalidFeatureVectorValueException;
 import org.cleartk.ml.util.featurevector.SparseFeatureVector;
@@ -133,7 +135,6 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
     String sumMethod = cmd.getOptionValue("W", "S");
     int normalize = Integer.parseInt(cmd.getOptionValue("N", "3"));
     double tkWeight = Double.parseDouble(cmd.getOptionValue("T", "1.0"));
-    KernelType kType = null;
     int treeComparisonMethod = Integer.parseInt(cmd.getOptionValue("D", "1"));
     
     if(kernelType == 5){
@@ -145,13 +146,12 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
       case 2:
         fk = new RbfKernel(gamma); break;
       }
+      TreeKernel tk = null;
       switch(treeComparisonMethod){
-      case 0: kType = KernelType.SUBTREE; break;
-      case 1: kType = KernelType.SUBSET; break;
-      case 2: kType = KernelType.SUBSET_BOW; break;
-      case 3: kType = KernelType.PARTIAL; break;
+      case 1: tk = new SubsetTreeKernel(lambda, sumMethod.equals("S") ? ForestSumMethod.SEQUENTIAL : ForestSumMethod.ALL_PAIRS, normalize % 2 > 0); break;
+      case 3: tk = new PartialTreeKernel(lambda, PartialTreeKernel.MU_DEFAULT, sumMethod.equals("S") ? ForestSumMethod.SEQUENTIAL : ForestSumMethod.ALL_PAIRS, normalize % 2 > 0); break;
+      default: throw new UnsupportedKernelError();
       }
-      TreeKernel tk = new TreeKernel(lambda, sumMethod.equals("S") ? ForestSumMethod.SEQUENTIAL : ForestSumMethod.ALL_PAIRS, kType, normalize % 2 > 0);
       ComboOperator op = null;
       if(comboOperator.equals("+")) op = ComboOperator.SUM;
       else if(comboOperator.equals("*")) op = ComboOperator.PRODUCT;

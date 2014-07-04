@@ -28,8 +28,8 @@ import org.chboston.cnlp.libsvm.svm_node;
 import org.cleartk.ml.svmlight.model.Kernel;
 import org.cleartk.ml.tksvmlight.TreeFeatureVector;
 import org.cleartk.ml.tksvmlight.TreeKernelSvmBooleanOutcomeClassifier;
+import org.cleartk.ml.tksvmlight.kernel.TreeKernel;
 import org.cleartk.ml.tksvmlight.model.CompositeKernel;
-import org.cleartk.ml.tksvmlight.model.TreeKernel;
 
 import com.google.common.annotations.Beta;
 
