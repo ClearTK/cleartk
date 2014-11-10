@@ -48,7 +48,7 @@ import com.clearnlp.dependency.DEPNode;
 import com.clearnlp.dependency.DEPTree;
 import com.clearnlp.dependency.srl.SRLArc;
 import com.clearnlp.nlp.NLPGetter;
-import com.clearnlp.nlp.NLPLib;
+import com.clearnlp.nlp.NLPMode;
 import com.clearnlp.reader.AbstractReader;
 
 /**
@@ -156,17 +156,17 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
       this.predIdentifier = NLPGetter.getComponent(
           this.predIdModelPath,
           languageCode,
-          NLPLib.MODE_PRED);
+          NLPMode.MODE_PRED);
 
       this.roleSetClassifier = NLPGetter.getComponent(
           this.rolesetModelPath,
           languageCode,
-          NLPLib.MODE_ROLE);
+          NLPMode.MODE_ROLE);
 
       this.srlabeler = NLPGetter.getComponent(
           this.srlModelPath,
           languageCode,
-          NLPLib.MODE_SRL);
+          NLPMode.MODE_SRL);
 
     } catch (Exception e) {
       throw new ResourceInitializationException(e);

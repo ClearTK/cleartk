@@ -39,7 +39,7 @@ import com.clearnlp.component.AbstractComponent;
 import com.clearnlp.dependency.DEPNode;
 import com.clearnlp.dependency.DEPTree;
 import com.clearnlp.nlp.NLPGetter;
-import com.clearnlp.nlp.NLPLib;
+import com.clearnlp.nlp.NLPMode;
 import com.clearnlp.reader.AbstractReader;
 
 /**
@@ -120,7 +120,7 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
     super.initialize(context);
     try {
       // Load POS tagger model
-      this.tagger = NLPGetter.getComponent(modelPath, languageCode, NLPLib.MODE_POS);
+      this.tagger = NLPGetter.getComponent(modelPath, languageCode, NLPMode.MODE_POS);
 
     } catch (Exception e) {
       throw new ResourceInitializationException(e);

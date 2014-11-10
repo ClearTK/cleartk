@@ -41,7 +41,7 @@ import com.clearnlp.component.AbstractComponent;
 import com.clearnlp.dependency.DEPNode;
 import com.clearnlp.dependency.DEPTree;
 import com.clearnlp.nlp.NLPGetter;
-import com.clearnlp.nlp.NLPLib;
+import com.clearnlp.nlp.NLPMode;
 import com.clearnlp.reader.AbstractReader;
 
 /**
@@ -135,7 +135,7 @@ public abstract class MpAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
       this.mpAnalyzer = NLPGetter.getComponent(
           "",
           languageCode,
-          NLPLib.MODE_MORPH);
+          NLPMode.MODE_MORPH);
       
     } catch (Exception e) {
       throw new ResourceInitializationException(e);

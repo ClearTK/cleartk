@@ -46,7 +46,7 @@ import com.clearnlp.dependency.DEPFeat;
 import com.clearnlp.dependency.DEPNode;
 import com.clearnlp.dependency.DEPTree;
 import com.clearnlp.nlp.NLPGetter;
-import com.clearnlp.nlp.NLPLib;
+import com.clearnlp.nlp.NLPMode;
 import com.clearnlp.reader.AbstractReader;
 
 /**
@@ -123,7 +123,7 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation, 
       this.parser = NLPGetter.getComponent(
           this.parserModelPath,
           this.languageCode,
-          NLPLib.MODE_DEP);
+          NLPMode.MODE_DEP);
     } catch (IOException e) {
       throw new ResourceInitializationException(e);
     }
