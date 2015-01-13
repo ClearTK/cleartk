@@ -25,12 +25,16 @@ package org.cleartk.ml.libsvm.tk;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 
@@ -51,9 +55,11 @@ import org.cleartk.ml.svmlight.model.LinearKernel;
 import org.cleartk.ml.svmlight.model.PolynomialKernel;
 import org.cleartk.ml.svmlight.model.RbfKernel;
 import org.cleartk.ml.svmlight.model.UnsupportedKernelError;
+import org.cleartk.ml.tksvmlight.TreeFeature;
 import org.cleartk.ml.tksvmlight.TreeFeatureVector;
 import org.cleartk.ml.tksvmlight.TreeKernelSvmBooleanOutcomeClassifier;
 import org.cleartk.ml.tksvmlight.TreeKernelSvmBooleanOutcomeClassifierBuilder;
+import org.cleartk.ml.tksvmlight.kernel.ArrayTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.PartialTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.SubsetTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.TreeKernel;
@@ -109,6 +115,17 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
   private File getModelFile(File dir){
     return new File(dir, "training-data.libsvm.model");  
   }
+
+  private TreeKernel getTreeKernel(File dir) throws FileNotFoundException, IOException, ClassNotFoundException{
+    ArrayTreeKernel kernel = null;
+    ObjectInputStream ois = null;
+    File kFile = new File(dir, "tree-kernel.obj");
+    if(!kFile.exists()) return null;
+    ois = new ObjectInputStream(new FileInputStream(kFile));
+    kernel = (ArrayTreeKernel) ois.readObject();
+    ois.close();
+    return kernel;
+  }
   
   @Override
   public void trainClassifier(File filePath, String... args) throws Exception {
@@ -122,6 +139,7 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
     Kernel fk = null;
     
     CustomKernel<TreeFeatureVector> kernel = null;
+    TreeKernel treeKernel = null;
     
     double cost = Double.parseDouble(cmd.getOptionValue("c", "1"));
     int kernelType = Integer.parseInt(cmd.getOptionValue("t"));
@@ -146,11 +164,16 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
       case 2:
         fk = new RbfKernel(gamma); break;
       }
-      TreeKernel tk = null;
-      switch(treeComparisonMethod){
-      case 1: tk = new SubsetTreeKernel(lambda, sumMethod.equals("S") ? ForestSumMethod.SEQUENTIAL : ForestSumMethod.ALL_PAIRS, normalize % 2 > 0); break;
-      case 3: tk = new PartialTreeKernel(lambda, PartialTreeKernel.MU_DEFAULT, sumMethod.equals("S") ? ForestSumMethod.SEQUENTIAL : ForestSumMethod.ALL_PAIRS, normalize % 2 > 0); break;
-      default: throw new UnsupportedKernelError();
+      File parentDir = filePath.isDirectory() ? filePath : filePath.getParentFile();
+      treeKernel = getTreeKernel(parentDir);
+      if(treeKernel == null){
+        switch(treeComparisonMethod){
+        case 1: treeKernel = new SubsetTreeKernel(lambda, sumMethod.equals("S") ? ForestSumMethod.SEQUENTIAL : ForestSumMethod.ALL_PAIRS, normalize % 2 > 0); break;
+        case 3: treeKernel = new PartialTreeKernel(lambda, PartialTreeKernel.MU_DEFAULT, sumMethod.equals("S") ? ForestSumMethod.SEQUENTIAL : ForestSumMethod.ALL_PAIRS, normalize % 2 > 0); break;
+        default: throw new UnsupportedKernelError();
+        }
+      }else{
+        treeComparisonMethod = -1;
       }
       ComboOperator op = null;
       if(comboOperator.equals("+")) op = ComboOperator.SUM;
@@ -164,7 +187,7 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
       case 2: norm = Normalize.VECTOR; break;
       case 3: norm = Normalize.BOTH; break;
       }
-      kernel = new CustomCompositeKernel(fk, tk, op, tkWeight, norm);
+      kernel = new CustomCompositeKernel(fk, treeKernel, op, tkWeight, norm);
       KernelManager.setCustomKernel(kernel);
     }else{
       throw new Exception("If you are not doing a tree/composite kernel (t = 5) then you should just use the regular libsvm module");
@@ -181,6 +204,12 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
           highestIndex = entry.index;
         }
       }
+      
+      if(treeKernel != null && treeKernel instanceof ArrayTreeKernel){
+        for(TreeFeature tf : inst.getData().getTrees().values()){
+          tf.setKernel(((ArrayTreeKernel)treeKernel).getKernel(tf.getName()));
+        }
+      }
     }
     
     // give the SVMTrainer the instance array and the kernel parameters
@@ -189,8 +218,9 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
     param.C = cost;
     param.shrinking = 0;
     String modelFilename = inputFile.getPath() + ".model";
-    svm_model<TreeFeatureVector> model = SVMTrainer.train(instances, param);
+    svm_model<TreeFeatureVector> libsvmModel = SVMTrainer.train(instances, param);
     
+    // This could be changed to read the svm_model into a TreeKernelSVMModel and serialize it.
     PrintWriter out = new PrintWriter(modelFilename);
     out.println("cleartk-ml-libsvm-tk wrapper and bridge for svmlight/libsvm tree kernel libraries");
     out.println("5 # kernel type");
@@ -210,19 +240,20 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
     out.print("S"); out.println(" # kernel parameter -W");
     out.print(highestIndex); out.println(" # highest feature index");
     out.print(instances.size()); out.println(" # number of training documents");
-    out.print(model.l+1); out.println(" # number of support vectors + 1");
-    out.print(model.rho[0]); out.println(" # threshold b, each following line is a SV (starting with alpha*y)");
+    out.print(libsvmModel.l+1); out.println(" # number of support vectors + 1");
+    out.print(libsvmModel.rho[0]); out.println(" # threshold b, each following line is a SV (starting with alpha*y)");
     
     // print out SVs:
-    for(int i = 0; i < model.SV.length; i++){
-      svm_node<TreeFeatureVector> node = model.SV[i];
-      out.print(model.sv_coef[0][i]);
+    for(int i = 0; i < libsvmModel.SV.length; i++){
+      svm_node<TreeFeatureVector> node = libsvmModel.SV[i];
+      out.print(libsvmModel.sv_coef[0][i]);
       TreeFeatureVector treeVec = node.data;
-      LinkedHashMap<String,String> trees = treeVec.getTrees();
+      LinkedHashMap<String,TreeFeature> trees = treeVec.getTrees();
+
       if(trees.size() > 0){
-        for(String tree : trees.values()){
+        for(TreeFeature tree : trees.values()){
           out.print(" |BT| ");
-          out.print(tree);
+          out.print(TreeKernelSvmModel.treeFeatureToString(tree));
         }
         out.print(" |ET| ");
       }
@@ -237,7 +268,7 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
       out.print("|EV|");
       out.println();
     }
-    out.close();    
+    out.close();
   }
 
   private List<Instance<TreeFeatureVector>> readInstances(File filePath) throws IOException {
@@ -271,11 +302,13 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
     }
     
     // read trees:
-    LinkedHashMap<String,String> treeFeats = new LinkedHashMap<String,String>();
+    LinkedHashMap<String,TreeFeature> treeFeats = new LinkedHashMap<String,TreeFeature>();
     if(treeSect != null){
       String[] trees = treeSect.substring(5).split("\\|BT\\|");
       for(int i = 0; i < trees.length; i++){
-        treeFeats.put("TK_feat_" + i, trees[i].trim());
+        String defaultFeatName = "TK_feat_" + i;
+        TreeFeature tf = TreeKernelSvmModel.treeStringToFeature(trees[i], defaultFeatName);
+        treeFeats.put(tf.getName(), tf);
       }
     }
     
@@ -307,6 +340,12 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
   @Override
   protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
     super.packageClassifier(dir, modelStream);
+    for(File file : dir.listFiles()){
+      if(file.getName().equals("tree-kernel.obj")){
+        String tkName = file.getName().substring(0, file.getName().length()-4);
+        JarStreams.putNextJarEntry(modelStream, tkName, file);
+      }
+    }
     JarStreams.putNextJarEntry(modelStream, "model.libsvm", getModelFile(dir));
   }
 
@@ -316,8 +355,23 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
   @Override
   protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
     super.unpackageClassifier(modelStream);
-    JarStreams.getNextJarEntry(modelStream, "model.libsvm");
-    model = TreeKernelSvmModel.fromInputStream(modelStream);
+    ArrayTreeKernel kernel = null;
+    JarEntry entry = modelStream.getNextJarEntry();
+    if(entry.getName().equals("tree-kernel")){
+      ObjectInputStream ois = new ObjectInputStream(modelStream);
+      try{
+        kernel = (ArrayTreeKernel) ois.readObject();
+      }catch(ClassNotFoundException e){
+        throw new IOException(e);
+      }
+      entry = modelStream.getNextJarEntry();
+    }
+    if(!entry.getName().equals("model.libsvm")){
+      throw new IOException(String.format(
+          "expected next jar entry to be model.libsvm, found %s",
+          entry.getName()));
+    }
+    model = TreeKernelSvmModel.fromInputStream(modelStream, kernel);
   }
 
   @Override

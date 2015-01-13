@@ -31,6 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.cleartk.ml.tksvmlight.TreeFeature;
 import org.cleartk.ml.tksvmlight.TreeFeatureVector;
 
 import com.google.common.collect.Lists;
@@ -50,7 +51,11 @@ import com.google.common.collect.Lists;
  * @author Tim Miller
  */
 
-public class PartialTreeKernel implements TreeKernel {
+public class PartialTreeKernel implements ComposableTreeKernel {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 2944612040188589291L;
   public static final int MAX_CHILDREN = 5;
   public static final double LAMBDA_DEFAULT = 0.4;
   
@@ -97,17 +102,22 @@ public class PartialTreeKernel implements TreeKernel {
   public double evaluate(TreeFeatureVector fv1, TreeFeatureVector fv2) {
     double sim = 0.0;
     if (sumMethod == ForestSumMethod.SEQUENTIAL) {
-      List<String> fv1Trees = new ArrayList<String>(fv1.getTrees().values());
-      List<String> fv2Trees = new ArrayList<String>(fv2.getTrees().values());
+      List<TreeFeature> fv1Trees = new ArrayList<>(fv1.getTrees().values());
+      List<TreeFeature> fv2Trees = new ArrayList<>(fv2.getTrees().values());
       for (int i = 0; i < fv1Trees.size(); i++) {
-        String tree1Str = fv1Trees.get(i);
-        String tree2Str = fv2Trees.get(i);
+        String tree1Str = fv1Trees.get(i).getValue().toString();
+        String tree2Str = fv2Trees.get(i).getValue().toString();
         sim += ptk(tree1Str, tree2Str);
       }
     } else {
       throw new NotImplementedException("The only summation method implemented is Sequential!");
     }
     return sim;
+  }
+
+  @Override
+  public double evaluate(TreeFeature tf1, TreeFeature tf2){
+    return ptk(tf1.getValue().toString(), tf2.getValue().toString());
   }
 
   private double ptk(String tree1Str, String tree2Str){

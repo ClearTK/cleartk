@@ -27,7 +27,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -39,7 +38,6 @@ import org.cleartk.ml.CleartkAnnotator;
 import org.cleartk.ml.CleartkProcessingException;
 import org.cleartk.ml.Feature;
 import org.cleartk.ml.Instance;
-import org.cleartk.ml.TreeFeature;
 import org.cleartk.ml.encoder.features.BooleanEncoder;
 import org.cleartk.ml.encoder.features.NumberEncoder;
 import org.cleartk.ml.encoder.features.StringEncoder;
@@ -105,28 +103,20 @@ public class RunTkSvmLightTest extends DefaultTestBase {
 
   @Test
   public void testTKSim(){
-    TreeKernel sst = new SubsetTreeKernel(SubsetTreeKernel.LAMBDA_DEFAULT,
+    SubsetTreeKernel sst = new SubsetTreeKernel(SubsetTreeKernel.LAMBDA_DEFAULT,
         ForestSumMethod.SEQUENTIAL, false);
 
-    TreeFeatureVector tf1 = new TreeFeatureVector();
     String tree1 = "(S (NP i) (VP (VB eat) (NN cake)))";
-    LinkedHashMap<String,String> tree1map = new LinkedHashMap<String,String>();
-    tree1map.put("TK_1", tree1);
-    tf1.setTrees(tree1map);
+    TreeFeature tf1 = new TreeFeature("TK_1", tree1);
     
-    TreeFeatureVector tf2 = new TreeFeatureVector();
-    LinkedHashMap<String,String> tree2map = new LinkedHashMap<String,String>();
-    tree2map.put("TK_1", tree1);
-    tf2.setTrees(tree2map);
+    TreeFeature tf2 = new TreeFeature("TK_1", tree1);
     
     double sim = sst.evaluate(tf1, tf2);
     
     Assert.assertEquals(2.983040, sim, 0.01);
     
     String tree2 = "(S (NP i) (VP (VBD ran) (NN home)))";
-    tree2map.clear();
-    tree2map.put("TK_1", tree2);
-    tf2.setTrees(tree2map);
+    tf2 = new TreeFeature("TK_1", tree2);
     
     sim = sst.evaluate(tf1, tf2);
     Assert.assertEquals(0.96, sim, 0.01);
@@ -134,12 +124,8 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     PartialTreeKernel ptk = new PartialTreeKernel(PartialTreeKernel.LAMBDA_DEFAULT, PartialTreeKernel.MU_DEFAULT, ForestSumMethod.SEQUENTIAL, false);
     String tree3 = "(NP (DT the) (NN dog))";
     String tree4 = "(NP (DT the) (JJ big) (NN dog))";
-    tree1map.clear();
-    tree1map.put("TK1", tree3);
-    tree2map.clear();
-    tree2map.put("TK1", tree4);
-    tf1.setTrees(tree1map);
-    tf2.setTrees(tree2map);
+    tf1 = new TreeFeature("TK1", tree3);
+    tf2 = new TreeFeature("TK2", tree4);
     sim = ptk.evaluate(tf1, tf2);
     double expected = 0.337027; // output of moschitti's code
     Assert.assertEquals(expected, sim, 0.01);
@@ -152,9 +138,7 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     expected = 0.474024;
     Assert.assertEquals(expected, sim, 0.01);
     
-    tree2map.clear();
-    tree2map.put("TK1", tree2);
-    tf2.setTrees(tree2map);
+    tf2 = new TreeFeature("TK1", tree2);
     sim = ptk.evaluate(tf1, tf2);
     expected = 0.128;
     Assert.assertEquals(expected, sim, 0.01);
@@ -166,27 +150,19 @@ public class RunTkSvmLightTest extends DefaultTestBase {
   
   @Test
   public void testPTKSpeed() {
-    TreeKernel sst = new SubsetTreeKernel(SubsetTreeKernel.LAMBDA_DEFAULT,
+    SubsetTreeKernel sst = new SubsetTreeKernel(SubsetTreeKernel.LAMBDA_DEFAULT,
         TreeKernel.ForestSumMethod.SEQUENTIAL, false);
     PartialTreeKernel ptk = new PartialTreeKernel(PartialTreeKernel.LAMBDA_DEFAULT, PartialTreeKernel.MU_DEFAULT, ForestSumMethod.SEQUENTIAL, false);
     
-    TreeFeatureVector tf1 = new TreeFeatureVector();
     String tree1 = "(S (NP i) (VP (VB eat) (NN cake)))";
-    LinkedHashMap<String,String> tree1map = new LinkedHashMap<String,String>();
-    tree1map.put("TK_1", tree1);
-    tf1.setTrees(tree1map);
-    
-    TreeFeatureVector tf2 = new TreeFeatureVector();
-    LinkedHashMap<String,String> tree2map = new LinkedHashMap<String,String>();
-    tree2map.put("TK_1", tree1);
-    tf2.setTrees(tree2map);
+    TreeFeature tf1 = new TreeFeature("TK_1", tree1);
 
     long start = System.currentTimeMillis();
     final int NUM_ITERATIONS = 1000000;
     @SuppressWarnings("unused")
     double sim = 0.0;
     for(int i = 0; i < NUM_ITERATIONS; i++){
-      sim += sst.evaluate(tf1, tf2);
+      sim += sst.evaluate(tf1, tf1);
     }
     long end = System.currentTimeMillis();
     System.out.println("Test on sst takes: " + (end-start) + " ms");
@@ -195,7 +171,7 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     start = System.currentTimeMillis();
     sim = 0.0;
     for(int i = 0; i < NUM_ITERATIONS; i++){
-      sim += ptk.evaluate(tf1, tf2);
+      sim += ptk.evaluate(tf1, tf1);
     }
     end = System.currentTimeMillis();
     System.out.println("Test on ptk takes: " + (end - start) + " ms");
@@ -204,7 +180,7 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     start = System.currentTimeMillis();
     sim = 0.0;
     for(int i = 0; i < NUM_ITERATIONS; i++){
-      sim += ptk.evaluate(tf1, tf2);
+      sim += ptk.evaluate(tf1, tf1);
     }
     end = System.currentTimeMillis();
     System.out.println("Test on cached ptk takes: " + (end - start) + " ms");    
@@ -231,12 +207,12 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     List<Instance<Boolean>> instances = generateTreeFeatureInstances(100);
     for(Instance<Boolean> instance : instances){
       TreeFeatureVector features = encoder.encodeAll(instance.getFeatures());
-      Map<String,String> treeFeatures = features.getTrees();
+      Map<String,TreeFeature> treeFeatures = features.getTrees();
       Assert.assertTrue(treeFeatures.size() > 0);
     }
   }
   
-  @Ignore
+//  @Ignore
   @Test
   public void testTKSVMlight() throws Exception {
     this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, TK_SVMLIGHT_TESTS_PROPERTY_VALUE);
@@ -281,7 +257,7 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     }
   }
 
-  @Ignore
+//  @Ignore
   @Test
   public void testOVATKSVMlight() throws Exception {
     this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, TK_SVMLIGHT_TESTS_PROPERTY_VALUE);

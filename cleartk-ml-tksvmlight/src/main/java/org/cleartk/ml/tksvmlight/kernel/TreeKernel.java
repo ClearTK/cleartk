@@ -23,6 +23,8 @@
  */
 package org.cleartk.ml.tksvmlight.kernel;
 
+import java.io.Serializable;
+
 import org.cleartk.ml.tksvmlight.TreeFeatureVector;
 
 /**
@@ -39,7 +41,7 @@ import org.cleartk.ml.tksvmlight.TreeFeatureVector;
  * @author Tim Miller
  */
 
-public interface TreeKernel {
+public interface TreeKernel extends Serializable {
   public static enum ForestSumMethod {
     SEQUENTIAL, ALL_PAIRS
   }

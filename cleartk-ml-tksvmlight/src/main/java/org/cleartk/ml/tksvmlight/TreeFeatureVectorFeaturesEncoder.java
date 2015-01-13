@@ -31,7 +31,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.cleartk.ml.Feature;
-import org.cleartk.ml.TreeFeature;
 import org.cleartk.ml.encoder.CleartkEncoderException;
 import org.cleartk.ml.encoder.features.FeatureEncoder;
 import org.cleartk.ml.encoder.features.FeatureVectorFeaturesEncoder;
@@ -79,10 +78,13 @@ public class TreeFeatureVectorFeaturesEncoder implements FeaturesEncoder<TreeFea
   @Override
   public TreeFeatureVector encodeAll(Iterable<Feature> features) throws CleartkEncoderException {
     List<Feature> fves = new ArrayList<Feature>();
-    LinkedHashMap<String, String> trs = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, TreeFeature> trs = new LinkedHashMap<String, TreeFeature>();
     for (Feature feature : features) {
-      if (feature instanceof TreeFeature || (feature.getName() != null && feature.getName().matches("^TK.*"))) {
-        trs.put(feature.getName(), feature.getValue().toString());
+      if (feature instanceof TreeFeature){
+        trs.put(feature.getName(), (TreeFeature) feature);
+      } else if (feature.getName() != null && feature.getName().matches("^TK.*")) {
+        TreeFeature tf = new TreeFeature(feature.getName(), feature.getValue());
+        trs.put(feature.getName(), tf);
       } else {
         fves.add(feature);
       }

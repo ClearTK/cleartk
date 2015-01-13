@@ -34,6 +34,7 @@ import org.cleartk.ml.encoder.features.NumberEncoder;
 import org.cleartk.ml.encoder.features.StringEncoder;
 import org.cleartk.ml.encoder.outcome.BooleanToBooleanOutcomeEncoder;
 import org.cleartk.ml.jar.DataWriter_ImplBase;
+import org.cleartk.ml.tksvmlight.model.TreeKernelSvmModel;
 import org.cleartk.ml.util.featurevector.FeatureVector;
 
 import com.google.common.annotations.Beta;
@@ -71,8 +72,9 @@ public abstract class TreeKernelSvmBooleanOutcomeDataWriter extends
   public static String createString(TreeFeatureVector features) throws CleartkProcessingException {
     StringBuffer output = new StringBuffer();
 
-    for (String tree : features.getTrees().values()) {
-      output.append(String.format(Locale.US, " |BT| %s", tree));
+    for (TreeFeature tree : features.getTrees().values()) {
+      String featString = TreeKernelSvmModel.treeFeatureToString(tree);
+      output.append(String.format(Locale.US, " |BT| %s", featString));
     }
     if (!features.getTrees().isEmpty()) {
       output.append(" |ET|");
@@ -112,5 +114,5 @@ public abstract class TreeKernelSvmBooleanOutcomeDataWriter extends
     output.append(createString(features));
 
     this.trainingDataWriter.println(output);
-  }
+  }  
 }

@@ -25,6 +25,7 @@ package org.cleartk.ml.tksvmlight;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.TreeMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -32,6 +33,8 @@ import java.util.jar.JarOutputStream;
 
 import org.cleartk.ml.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.ml.jar.JarStreams;
+import org.cleartk.ml.tksvmlight.kernel.ArrayTreeKernel;
+import org.cleartk.ml.tksvmlight.kernel.TreeKernel;
 import org.cleartk.ml.tksvmlight.model.TreeKernelSvmModel;
 
 import com.google.common.annotations.Beta;
@@ -101,6 +104,13 @@ public abstract class TreeKernelSvmStringOutcomeClassifierBuilder
   protected void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
     super.packageClassifier(dir, modelStream);
 
+    for(File file : dir.listFiles()){
+      if(file.getName().equals("tree-kernel.obj")){
+        String tkName = file.getName().substring(0, file.getName().length()-4);
+        JarStreams.putNextJarEntry(modelStream, tkName, file);
+      }
+    }
+
     int label = 1;
     while (true) {
       File modelFile = new File(dir, String.format(
@@ -125,14 +135,30 @@ public abstract class TreeKernelSvmStringOutcomeClassifierBuilder
   @Override
   protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
     super.unpackageClassifier(modelStream);
+
+    ArrayTreeKernel kernel = null;
+    JarEntry entry = modelStream.getNextJarEntry();
+
+    if(entry != null && entry.getName().equals("tree-kernel")){
+      ObjectInputStream ois = new ObjectInputStream(modelStream);
+      try{
+        kernel = (ArrayTreeKernel) ois.readObject();
+      }catch(ClassNotFoundException e){
+        throw new IOException(e);
+      }
+      // get the next entry queued up
+      entry = modelStream.getNextJarEntry();
+    }
+
     this.models = new TreeMap<Integer, TreeKernelSvmModel>();
     // File model;
     TreeKernelSvmModel model;
 
     int label = 1;
-    while ((model = getNextModel(modelStream, label)) != null) {
+    while ((model = getNextModel(modelStream, entry, label, kernel)) != null) {
       this.models.put(label, model);
       label += 1;
+      entry = modelStream.getNextJarEntry();
     }
 
     if (this.models.isEmpty()) {
@@ -140,9 +166,8 @@ public abstract class TreeKernelSvmStringOutcomeClassifierBuilder
     }
   }
 
-  private TreeKernelSvmModel getNextModel(JarInputStream modelStream, int label) throws IOException {
+  private TreeKernelSvmModel getNextModel(JarInputStream modelStream, JarEntry entry, int label, TreeKernel kernel) throws IOException {
     // look for a next entry or return null if there isn't one
-    JarEntry entry = modelStream.getNextJarEntry();
     if (entry == null) {
       return null;
     }
@@ -155,7 +180,7 @@ public abstract class TreeKernelSvmStringOutcomeClassifierBuilder
           expectedName,
           entry.getName()));
     }
-    TreeKernelSvmModel model = TreeKernelSvmModel.fromInputStream(modelStream);
+    TreeKernelSvmModel model = TreeKernelSvmModel.fromInputStream(modelStream, kernel);
     return model;
   }
 

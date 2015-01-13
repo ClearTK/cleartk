@@ -25,9 +25,18 @@ package org.cleartk.ml.libsvm.tk;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.cleartk.ml.CleartkProcessingException;
+import org.cleartk.ml.tksvmlight.TreeFeatureVector;
 import org.cleartk.ml.tksvmlight.TreeKernelSvmBooleanOutcomeClassifier;
 import org.cleartk.ml.tksvmlight.TreeKernelSvmStringOutcomeDataWriter;
+import org.cleartk.ml.tksvmlight.kernel.ArrayTreeKernel;
+import org.cleartk.ml.tksvmlight.kernel.ComposableTreeKernel;
 
 /**
  * A class that provided interfaces to train, package and unpackage a
@@ -43,13 +52,50 @@ import org.cleartk.ml.tksvmlight.TreeKernelSvmStringOutcomeDataWriter;
 public class TkLibSvmStringOutcomeDataWriter extends
 TreeKernelSvmStringOutcomeDataWriter<TkLibSvmStringOutcomeClassifierBuilder>{
 
+  protected Map<String, ComposableTreeKernel> treeKernels;
+
   public TkLibSvmStringOutcomeDataWriter(File outputDirectory)
       throws FileNotFoundException {
     super(outputDirectory);
+    treeKernels = new HashMap<>();
   }
 
   @Override
   protected TkLibSvmStringOutcomeClassifierBuilder newClassifierBuilder() {
     return new TkLibSvmStringOutcomeClassifierBuilder();
+  }
+  
+  @Override
+  protected void writeEncoded(TreeFeatureVector features, Integer outcome)
+      throws CleartkProcessingException {
+    super.writeEncoded(features, outcome);
+
+    if(outcome != null){
+      for(String tkKey : features.getTrees().keySet()){
+        if(!treeKernels.containsKey(tkKey)){
+          ComposableTreeKernel tk = features.getTrees().get(tkKey).getKernel();
+          if(tk != null){
+            treeKernels.put(tkKey, tk);
+          }
+        }
+      }
+    }
+  }
+  
+  @Override
+  public void finish() throws CleartkProcessingException {
+    super.finish();
+    if(treeKernels.size() > 0){
+      ObjectOutputStream oos = null;
+      ArrayTreeKernel atk = new ArrayTreeKernel(treeKernels);
+      try{
+        oos = new ObjectOutputStream(new FileOutputStream(new File(this.outputDirectory, "tree-kernel.obj")));
+        oos.writeObject(atk);
+        oos.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+        throw new CleartkProcessingException(e);
+      }
+    }
   }
 }

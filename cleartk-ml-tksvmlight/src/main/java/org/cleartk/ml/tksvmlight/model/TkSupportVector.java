@@ -23,6 +23,8 @@
  */
 package org.cleartk.ml.tksvmlight.model;
 
+import java.io.Serializable;
+
 import org.cleartk.ml.svmlight.model.SupportVector;
 import org.cleartk.ml.tksvmlight.TreeFeatureVector;
 
@@ -36,7 +38,11 @@ import com.google.common.annotations.Beta;
  * All rights reserved.
  */
 @Beta
-public class TkSupportVector extends SupportVector {
+public class TkSupportVector extends SupportVector implements Serializable {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 945737876786118044L;
   TreeFeatureVector tfv = null;
 
   public TkSupportVector(double ay, TreeFeatureVector fv) {

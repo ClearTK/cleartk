@@ -37,6 +37,7 @@ import org.cleartk.ml.svmlight.model.PolynomialKernel;
 import org.cleartk.ml.svmlight.model.RbfKernel;
 import org.cleartk.ml.svmlight.model.SigmoidKernel;
 import org.cleartk.ml.svmlight.model.UnsupportedKernelError;
+import org.cleartk.ml.tksvmlight.TreeFeature;
 import org.cleartk.ml.tksvmlight.TreeFeatureVector;
 import org.cleartk.ml.tksvmlight.kernel.PartialTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.SubsetTreeKernel;
@@ -59,13 +60,13 @@ import com.google.common.annotations.Beta;
  */
 @Beta
 public class TreeKernelSvmModel {
-  String version;
+  protected String version;
 
-  CompositeKernel kernel = null;
+  protected CompositeKernel kernel = null;
 
-  double bias;
+  protected double bias;
 
-  TkSupportVector[] supportVectors = null;
+  protected TkSupportVector[] supportVectors = null;
 
   public double evaluate(TreeFeatureVector fv) {
     double result = -bias;
@@ -85,10 +86,14 @@ public class TreeKernelSvmModel {
   }
 
   public static TreeKernelSvmModel fromInputStream(InputStream modelStream) throws IOException {
+    return fromInputStream(modelStream, null);
+  }
+
+  public static TreeKernelSvmModel fromInputStream(InputStream modelStream, TreeKernel tk) throws IOException {
     TreeKernelSvmModel model = new TreeKernelSvmModel();
     TkSvmLightReader in = new TkSvmLightReader(modelStream);
     Kernel featKernel = null;
-    TreeKernel treeKernel = null;
+    TreeKernel treeKernel = tk;
     String buffer;
 
     // Model File Version
@@ -173,7 +178,7 @@ public class TreeKernelSvmModel {
         treeKernel = new SubsetTreeKernel(lambda, sumMethod, normalize);
       }else if(tkType == 3){
         treeKernel = new PartialTreeKernel(lambda, PartialTreeKernel.MU_DEFAULT, sumMethod, normalize);
-      }else{
+      }else if(treeKernel == null){
         throw new UnsupportedKernelError();
       }
       if (comboOperator.equals("+")) {
@@ -245,11 +250,13 @@ public class TreeKernelSvmModel {
       vectSect = treesAndVecs;
     }
 
-    LinkedHashMap<String, String> trees = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, TreeFeature> trees = new LinkedHashMap<>();
     if (treeSect != null) {
       String[] subtrees = treeSect.substring(5).split("\\|BT\\|"); // skip over "|BT| " at start
       for (int i = 0; i < subtrees.length; i++) {
-        trees.put("TK_" + i, subtrees[i].replaceAll("\\((\\S+)\\)", "$1"));
+        String defaultFeatName = "TK_" + i;
+        TreeFeature tf = treeStringToFeature(subtrees[i], defaultFeatName);
+        trees.put(tf.getName(), tf);
       }
     }
 
@@ -273,6 +280,26 @@ public class TreeKernelSvmModel {
     tfv.setFeatures(fv);
     tfv.setTrees(trees);
     return new TkSupportVector(alpha_y, tfv);
+  }
+
+  public static TreeFeature treeStringToFeature(String subtree, String defaultFeatName){
+    String featName = defaultFeatName;
+    String featVal;
+    String[] nameVal = subtree.trim().split("::");
+    if(nameVal.length > 1){
+      featName = nameVal[0];
+      featVal = nameVal[1];
+    }else{
+      featVal = nameVal[0];
+    }
+    featVal = featVal.replaceAll("\\((\\S+)\\)", "$1");
+    return new TreeFeature(featName, featVal);
+  }
+
+  public static String treeFeatureToString(TreeFeature tf){
+    String featString = tf.getKernel() == null ? tf.getValue().toString() :
+      tf.getName() + "::" + tf.getValue();
+    return featString;
   }
 
   private static class TkSvmLightReader {

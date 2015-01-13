@@ -21,7 +21,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.ml;
+package org.cleartk.ml.tksvmlight;
+
+import org.cleartk.ml.Feature;
+import org.cleartk.ml.tksvmlight.kernel.ComposableTreeKernel;
 
 /**
  * <br>
@@ -37,12 +40,27 @@ package org.cleartk.ml;
 
 public class TreeFeature extends Feature {
 
+  protected ComposableTreeKernel kernel = null;
+
   public TreeFeature(Object value) {
     super(value);
   }
 
   public TreeFeature(String name, Object value) {
     super(name, value);
+  }
+
+  public TreeFeature(String name, Object value, ComposableTreeKernel kernel){
+    this(name, value);
+    this.kernel = kernel;
+  }
+
+  public ComposableTreeKernel getKernel() {
+    return this.kernel;
+  }
+
+  public void setKernel(ComposableTreeKernel k){
+    this.kernel = k;
   }
 
   /**

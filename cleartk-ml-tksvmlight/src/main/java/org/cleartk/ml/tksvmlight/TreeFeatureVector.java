@@ -45,14 +45,14 @@ import com.google.common.annotations.Beta;
  */
 @Beta
 public class TreeFeatureVector {
-  private LinkedHashMap<String, String> trees = null;
+  private LinkedHashMap<String, TreeFeature> trees = null;
   private FeatureVector features = null;
   
   /**
    * Get the trees from the feature vector (i.e. all features named with the prefix "TK_").
    * @return A LinkedHashMap of all the trees.
    */
-  public LinkedHashMap<String, String> getTrees() {
+  public LinkedHashMap<String, TreeFeature> getTrees() {
     return trees;
   }
 
@@ -60,7 +60,7 @@ public class TreeFeatureVector {
    * Set the trees.
    * @param trees A LinkedHashMap of all the trees.
    */
-  public void setTrees(LinkedHashMap<String, String> trees) {
+  public void setTrees(LinkedHashMap<String, TreeFeature> trees) {
     this.trees = trees;
   }
 

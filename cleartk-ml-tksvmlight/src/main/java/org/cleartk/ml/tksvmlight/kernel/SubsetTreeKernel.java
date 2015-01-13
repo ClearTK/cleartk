@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.cleartk.ml.tksvmlight.TreeFeature;
 import org.cleartk.ml.tksvmlight.TreeFeatureVector;
 import org.cleartk.util.treebank.TopTreebankNode;
 import org.cleartk.util.treebank.TreebankFormatParser;
@@ -48,7 +49,11 @@ import org.cleartk.util.treebank.TreebankNode;
  * @author Tim Miller
  */
 
-public class SubsetTreeKernel implements TreeKernel {
+public class SubsetTreeKernel implements ComposableTreeKernel {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -6445337885365641838L;
   public static final double LAMBDA_DEFAULT = 0.4;
   private double lambda = LAMBDA_DEFAULT;
 
@@ -73,17 +78,22 @@ public class SubsetTreeKernel implements TreeKernel {
   public double evaluate(TreeFeatureVector fv1, TreeFeatureVector fv2) {
     double sim = 0.0;
     if (sumMethod == ForestSumMethod.SEQUENTIAL) {
-      List<String> fv1Trees = new ArrayList<String>(fv1.getTrees().values());
-      List<String> fv2Trees = new ArrayList<String>(fv2.getTrees().values());
+      List<TreeFeature> fv1Trees = new ArrayList<>(fv1.getTrees().values());
+      List<TreeFeature> fv2Trees = new ArrayList<>(fv2.getTrees().values());
       for (int i = 0; i < fv1Trees.size(); i++) {
-        String tree1Str = fv1Trees.get(i);
-        String tree2Str = fv2Trees.get(i);
+        String tree1Str = fv1Trees.get(i).getValue().toString();
+        String tree2Str = fv2Trees.get(i).getValue().toString();
         sim += sst(tree1Str, tree2Str);
       }
     } else {
       throw new NotImplementedException("The only summation method implemented is Sequential!");
     }
     return sim;
+  }
+
+  @Override
+  public double evaluate(TreeFeature tf1, TreeFeature tf2) {
+    return sst(tf1.getValue().toString(), tf2.getValue().toString());
   }
 
   private double sst(String tree1Str, String tree2Str) {
