@@ -212,7 +212,7 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     }
   }
   
-//  @Ignore
+  @Ignore
   @Test
   public void testTKSVMlight() throws Exception {
     this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, TK_SVMLIGHT_TESTS_PROPERTY_VALUE);
@@ -257,7 +257,7 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     }
   }
 
-//  @Ignore
+  @Ignore
   @Test
   public void testOVATKSVMlight() throws Exception {
     this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, TK_SVMLIGHT_TESTS_PROPERTY_VALUE);
