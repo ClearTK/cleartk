@@ -44,6 +44,7 @@ import org.cleartk.ml.encoder.features.StringEncoder;
 import org.cleartk.ml.jar.DefaultDataWriterFactory;
 import org.cleartk.ml.jar.DirectoryDataWriterFactory;
 import org.cleartk.ml.jar.Train;
+import org.cleartk.ml.tksvmlight.kernel.DescendingPathKernel;
 import org.cleartk.ml.tksvmlight.kernel.PartialTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.SubsetTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.TreeKernel;
@@ -122,12 +123,23 @@ public class RunTkSvmLightTest extends DefaultTestBase {
     Assert.assertEquals(0.96, sim, 0.01);
     
     PartialTreeKernel ptk = new PartialTreeKernel(PartialTreeKernel.LAMBDA_DEFAULT, PartialTreeKernel.MU_DEFAULT, ForestSumMethod.SEQUENTIAL, false);
+    DescendingPathKernel dpk = new DescendingPathKernel(1,ForestSumMethod.SEQUENTIAL, false);
+    DescendingPathKernel dpkn = new DescendingPathKernel(1,ForestSumMethod.SEQUENTIAL, true);
+    
     String tree3 = "(NP (DT the) (NN dog))";
     String tree4 = "(NP (DT the) (JJ big) (NN dog))";
     tf1 = new TreeFeature("TK1", tree3);
     tf2 = new TreeFeature("TK2", tree4);
     sim = ptk.evaluate(tf1, tf2);
     double expected = 0.337027; // output of moschitti's code
+    Assert.assertEquals(expected, sim, 0.01);
+    
+    sim = dpk.evaluate(tf1, tf2);
+    expected = 9; //output of dpk without normalization
+    Assert.assertEquals(expected, sim, 0.01);
+    
+    sim = dpkn.evaluate(tf1, tf2);
+    expected = 0.83; //output of dpk with normalization
     Assert.assertEquals(expected, sim, 0.01);
    
     sim = ptk.evaluate(tf1, tf1);

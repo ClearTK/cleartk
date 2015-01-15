@@ -44,6 +44,7 @@ import org.cleartk.ml.jar.Train;
 import org.cleartk.ml.tksvmlight.TreeFeature;
 import org.cleartk.ml.tksvmlight.TreeKernelSvmBooleanOutcomeClassifier;
 import org.cleartk.ml.tksvmlight.TreeKernelSvmStringOutcomeClassifier;
+import org.cleartk.ml.tksvmlight.kernel.DescendingPathKernel;
 import org.cleartk.ml.tksvmlight.kernel.PartialTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.SubsetTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.TreeKernel.ForestSumMethod;
@@ -337,6 +338,7 @@ public class RunTkLibSvmTest extends DefaultTestBase {
 
   private static List<Instance<String>> generateStringMultiKernelInstances(int n) {
     SubsetTreeKernel sst = new SubsetTreeKernel(0.4, ForestSumMethod.SEQUENTIAL, true);
+    DescendingPathKernel dpk = new DescendingPathKernel(0.4, ForestSumMethod.SEQUENTIAL, false);
     PartialTreeKernel ptk = new PartialTreeKernel(0.4, 0.5, ForestSumMethod.SEQUENTIAL, true);
     Random random = new Random(42);
     List<Instance<String>> instances = new ArrayList<Instance<String>>();
@@ -346,6 +348,7 @@ public class RunTkLibSvmTest extends DefaultTestBase {
       if (c == 0) {
         instance.setOutcome("A");
         instance.add(new TreeFeature("Tree", "(S (NP I) (VB ran) (. .))", sst));
+        instance.add(new TreeFeature("Tree", "(S (NP I) (VB ran) (. .))", dpk));
         instance.add(new TreeFeature("DepTree", "(ROOT (dep (ran (nsubj i))))", ptk));
         instance.add(new Feature("hello", random.nextInt(100) + 950));
         instance.add(new Feature("goodbye", random.nextInt(100)));
@@ -353,6 +356,7 @@ public class RunTkLibSvmTest extends DefaultTestBase {
       } else if (c == 1) {
         instance.setOutcome("B");
         instance.add(new TreeFeature("Tree", "(S (TT going) (ZZ gone) (. .))", sst));
+        instance.add(new TreeFeature("Tree", "(S (TT going) (ZZ gone) (. .))", dpk));
         instance.add(new TreeFeature("DepTree", "(ROOT (dep (gone (nsubj going))))", ptk));
         instance.add(new Feature("hello", random.nextInt(100)));
         instance.add(new Feature("goodbye", random.nextInt(100) + 950));
@@ -360,6 +364,7 @@ public class RunTkLibSvmTest extends DefaultTestBase {
       } else {
         instance.setOutcome("C");
         instance.add(new TreeFeature("Tree", "(S (DET The) (PP Fox) (. .))", sst));
+        instance.add(new TreeFeature("Tree", "(S (DET The) (PP Fox) (. .))", dpk));
         instance.add(new TreeFeature("DepTree", "(ROOT (dep (Fox (det The) (punct .))))", ptk));
         instance.add(new Feature("hello", random.nextInt(100)));
         instance.add(new Feature("goodbye", random.nextInt(100)));
