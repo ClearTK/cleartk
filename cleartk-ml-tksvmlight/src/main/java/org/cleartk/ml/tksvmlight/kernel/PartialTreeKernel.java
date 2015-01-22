@@ -30,9 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.cleartk.ml.tksvmlight.TreeFeature;
-import org.cleartk.ml.tksvmlight.TreeFeatureVector;
 
 import com.google.common.collect.Lists;
 
@@ -51,7 +49,7 @@ import com.google.common.collect.Lists;
  * @author Tim Miller
  */
 
-public class PartialTreeKernel implements ComposableTreeKernel {
+public class PartialTreeKernel extends TreeKernel_ImplBase {
   /**
    * 
    */
@@ -73,8 +71,6 @@ public class PartialTreeKernel implements ComposableTreeKernel {
 //  private int cacheHits = 0;
   HashMap<SimpleDepTree,HashMap<SimpleDepTree,Double>> cache = new HashMap<SimpleDepTree, HashMap<SimpleDepTree,Double>>();
   
-  private ForestSumMethod sumMethod = ForestSumMethod.SEQUENTIAL;
-
   private ConcurrentHashMap<String, Double> normalizers = new ConcurrentHashMap<String, Double>();
 
   HashMap<String, SimpleDepTree> depTrees = null;
@@ -82,12 +78,10 @@ public class PartialTreeKernel implements ComposableTreeKernel {
   public PartialTreeKernel(      
       double lambda,
       double mu,
-      ForestSumMethod sumMethod,
       boolean normalize) {
     this.lambda = lambda;
     this.lambdaSquared = lambda * lambda;
     this.mu = mu;
-    this.sumMethod = sumMethod;
     this.normalize = normalize;
     depTrees = new HashMap<String, SimpleDepTree>();
     initExponents();
@@ -97,22 +91,6 @@ public class PartialTreeKernel implements ComposableTreeKernel {
     for(int i = 0; i < lambdaPowers.length; i++){
       lambdaPowers[i] = Math.pow(this.lambda, i);
     }
-  }
-
-  public double evaluate(TreeFeatureVector fv1, TreeFeatureVector fv2) {
-    double sim = 0.0;
-    if (sumMethod == ForestSumMethod.SEQUENTIAL) {
-      List<TreeFeature> fv1Trees = new ArrayList<>(fv1.getTrees().values());
-      List<TreeFeature> fv2Trees = new ArrayList<>(fv2.getTrees().values());
-      for (int i = 0; i < fv1Trees.size(); i++) {
-        String tree1Str = fv1Trees.get(i).getValue().toString();
-        String tree2Str = fv2Trees.get(i).getValue().toString();
-        sim += ptk(tree1Str, tree2Str);
-      }
-    } else {
-      throw new NotImplementedException("The only summation method implemented is Sequential!");
-    }
-    return sim;
   }
 
   @Override

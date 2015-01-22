@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2007-2013, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2007-2015, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,34 +21,32 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.ml.tksvmlight.kernel;
-
-import org.cleartk.ml.tksvmlight.model.IdentityLexicalSimilarity;
+package org.cleartk.ml.tksvmlight.model;
 
 /**
  * <br>
- * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2015, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * <p>
- * 
- * This class implements the subset tree kernel defined by Collins and Duffy
- * in multiple papers, but most notably "Convolution Kernels for Natural Language,"
- * published at NIPS 2002.
  * 
  * @author Tim Miller
  */
 
-public class SubsetTreeKernel extends SyntacticSemanticTreeKernel {
+public class IdentityLexicalSimilarity implements LexicalFunctionModel {
+
   /**
    * 
    */
-  public static final double LAMBDA_DEFAULT = 0.4;
-  private static final long serialVersionUID = -6445337885365641838L;
-
-  public SubsetTreeKernel(
-      double lambda,
-      boolean normalize) {
-    super(new IdentityLexicalSimilarity(lambda), lambda, normalize);
+  private static final long serialVersionUID = 7501977557567004327L;
+  private double lambda = 1.0;
+  
+  public IdentityLexicalSimilarity(){}
+  
+  public IdentityLexicalSimilarity(double lambda){
+    this.lambda = lambda;
   }
+  
+  public double getLexicalSimilarity(String w1, String w2) {
+    return w1.equals(w2) ? lambda : 0.0;
+  }
+
 }

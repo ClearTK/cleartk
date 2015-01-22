@@ -42,7 +42,6 @@ import org.cleartk.ml.tksvmlight.TreeFeatureVector;
 import org.cleartk.ml.tksvmlight.kernel.PartialTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.SubsetTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.TreeKernel;
-import org.cleartk.ml.tksvmlight.kernel.TreeKernel.ForestSumMethod;
 import org.cleartk.ml.tksvmlight.model.CompositeKernel.ComboOperator;
 import org.cleartk.ml.tksvmlight.model.CompositeKernel.Normalize;
 import org.cleartk.ml.util.featurevector.FeatureVector;
@@ -131,7 +130,7 @@ public class TreeKernelSvmModel {
     // kernel parameter -V (kernel applied to 'S' (sequence of trees), or 'A' (all tree pairs))
     in.readLine();
     // kernel parameter -W (kernel applied to 'S' (sequence of trees), or 'A' (all tree pairs))
-    String treeSeqMethod = in.readLine();
+    in.readLine();
 
     for (int kCode : new int[] { ktype, fkType }) {
       if (featKernel != null) {
@@ -165,19 +164,12 @@ public class TreeKernelSvmModel {
     ComboOperator operator = null;
     // check for code for TK
     if (ktype == 5) {
-      ForestSumMethod sumMethod;
-      if (treeSeqMethod.equals("S")) {
-        sumMethod = ForestSumMethod.SEQUENTIAL;
-      } else {
-        sumMethod = ForestSumMethod.ALL_PAIRS;
-      }
-
       boolean normalize = norm == 1 || norm == 3;
 
       if(tkType == 1){
-        treeKernel = new SubsetTreeKernel(lambda, sumMethod, normalize);
+        treeKernel = new SubsetTreeKernel(lambda, normalize);
       }else if(tkType == 3){
-        treeKernel = new PartialTreeKernel(lambda, PartialTreeKernel.MU_DEFAULT, sumMethod, normalize);
+        treeKernel = new PartialTreeKernel(lambda, PartialTreeKernel.MU_DEFAULT, normalize);
       }else if(treeKernel == null){
         throw new UnsupportedKernelError();
       }

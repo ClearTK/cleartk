@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2007-2013, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2007-2015, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,32 +23,45 @@
  */
 package org.cleartk.ml.tksvmlight.kernel;
 
-import org.cleartk.ml.tksvmlight.model.IdentityLexicalSimilarity;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
+import org.cleartk.ml.tksvmlight.TreeFeature;
+import org.cleartk.ml.tksvmlight.TreeFeatureVector;
 /**
  * <br>
- * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2015, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * <p>
- * 
- * This class implements the subset tree kernel defined by Collins and Duffy
- * in multiple papers, but most notably "Convolution Kernels for Natural Language,"
- * published at NIPS 2002.
  * 
  * @author Tim Miller
  */
 
-public class SubsetTreeKernel extends SyntacticSemanticTreeKernel {
+public abstract class TreeKernel_ImplBase implements ComposableTreeKernel {
+
   /**
    * 
    */
-  public static final double LAMBDA_DEFAULT = 0.4;
-  private static final long serialVersionUID = -6445337885365641838L;
+  private static final long serialVersionUID = 7301165397474109861L;
 
-  public SubsetTreeKernel(
-      double lambda,
-      boolean normalize) {
-    super(new IdentityLexicalSimilarity(lambda), lambda, normalize);
+  protected ForestSumMethod sumMethod = ForestSumMethod.SEQUENTIAL;
+
+  public double evaluate(TreeFeatureVector fv1, TreeFeatureVector fv2) {
+    double sim = 0.0;
+    if (sumMethod == ForestSumMethod.SEQUENTIAL) {
+      List<TreeFeature> fv1Trees = new ArrayList<>(fv1.getTrees().values());
+      List<TreeFeature> fv2Trees = new ArrayList<>(fv2.getTrees().values());
+      for (int i = 0; i < fv1Trees.size(); i++) {
+        TreeFeature tf1 = fv1Trees.get(i);
+        TreeFeature tf2 = fv2Trees.get(i);        
+        sim += evaluate(tf1, tf2);
+      }
+    } else {
+      throw new NotImplementedException("The only summation method implemented is Sequential!");
+    }
+    return sim;
   }
+
+  public abstract double evaluate(TreeFeature tf1, TreeFeature tf2);
+
 }

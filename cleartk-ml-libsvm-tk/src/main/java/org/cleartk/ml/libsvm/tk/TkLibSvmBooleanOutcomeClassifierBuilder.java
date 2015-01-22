@@ -63,7 +63,6 @@ import org.cleartk.ml.tksvmlight.kernel.ArrayTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.PartialTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.SubsetTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.TreeKernel;
-import org.cleartk.ml.tksvmlight.kernel.TreeKernel.ForestSumMethod;
 import org.cleartk.ml.tksvmlight.model.CompositeKernel.ComboOperator;
 import org.cleartk.ml.tksvmlight.model.CompositeKernel.Normalize;
 import org.cleartk.ml.tksvmlight.model.TreeKernelSvmModel;
@@ -150,7 +149,6 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
     double gamma = Double.parseDouble(cmd.getOptionValue("g", "1.0"));
     double lambda = Double.parseDouble(cmd.getOptionValue("L", "0.4"));
     String comboOperator = cmd.getOptionValue("C", "T");
-    String sumMethod = cmd.getOptionValue("W", "S");
     int normalize = Integer.parseInt(cmd.getOptionValue("N", "3"));
     double tkWeight = Double.parseDouble(cmd.getOptionValue("T", "1.0"));
     int treeComparisonMethod = Integer.parseInt(cmd.getOptionValue("D", "1"));
@@ -168,8 +166,8 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
       treeKernel = getTreeKernel(parentDir);
       if(treeKernel == null){
         switch(treeComparisonMethod){
-        case 1: treeKernel = new SubsetTreeKernel(lambda, sumMethod.equals("S") ? ForestSumMethod.SEQUENTIAL : ForestSumMethod.ALL_PAIRS, normalize % 2 > 0); break;
-        case 3: treeKernel = new PartialTreeKernel(lambda, PartialTreeKernel.MU_DEFAULT, sumMethod.equals("S") ? ForestSumMethod.SEQUENTIAL : ForestSumMethod.ALL_PAIRS, normalize % 2 > 0); break;
+        case 1: treeKernel = new SubsetTreeKernel(lambda, normalize % 2 > 0); break;
+        case 3: treeKernel = new PartialTreeKernel(lambda, PartialTreeKernel.MU_DEFAULT, normalize % 2 > 0); break;
         default: throw new UnsupportedKernelError();
         }
       }else{

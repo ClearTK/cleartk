@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2007-2013, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2007-2015, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -21,34 +21,56 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.cleartk.ml.tksvmlight.kernel;
+package org.cleartk.ml.tksvmlight.model;
 
-import org.cleartk.ml.tksvmlight.model.IdentityLexicalSimilarity;
+import java.util.Map;
 
 /**
  * <br>
- * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2015, Regents of the University of Colorado <br>
  * All rights reserved.
- * 
- * <p>
- * 
- * This class implements the subset tree kernel defined by Collins and Duffy
- * in multiple papers, but most notably "Convolution Kernels for Natural Language,"
- * published at NIPS 2002.
  * 
  * @author Tim Miller
  */
 
-public class SubsetTreeKernel extends SyntacticSemanticTreeKernel {
+public class ContinuousCosineLexicalSimilarity implements LexicalFunctionModel {
+
   /**
    * 
    */
-  public static final double LAMBDA_DEFAULT = 0.4;
-  private static final long serialVersionUID = -6445337885365641838L;
-
-  public SubsetTreeKernel(
-      double lambda,
-      boolean normalize) {
-    super(new IdentityLexicalSimilarity(lambda), lambda, normalize);
+  private static final long serialVersionUID = -6282134536439718560L;
+  Map<String,Double[]> wordMap = null;
+  
+  public ContinuousCosineLexicalSimilarity(Map<String,Double[]> map){
+    this.wordMap = map;
+    
+    // set vectors to unit length to speed computation.
+    for(Double[] vec : wordMap.values()){
+      double sum = 0.0;
+      for(double val : vec){
+        sum += val*val;
+      }
+      for(int i = 0; i < vec.length; i++){
+        vec[i] /= Math.sqrt(sum);
+      }
+    }
   }
+  
+  public double getLexicalSimilarity(String w1, String w2) {
+    double sim;
+    Double[] v1 = wordMap.get(w1);
+    Double[] v2 = wordMap.get(w2);
+    
+    if(v1 == null || v2 == null){
+      if(w1.equals(w2)) return 1.0;
+      else return 0.0;
+    }
+    
+    sim = 0.0;
+    for(int i = 0; i < v1.length; i++){
+      sim += v1[i] * v2[i];      
+    }
+    return sim;
+  }
+
 }

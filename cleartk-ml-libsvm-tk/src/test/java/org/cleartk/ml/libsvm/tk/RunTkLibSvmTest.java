@@ -47,7 +47,6 @@ import org.cleartk.ml.tksvmlight.TreeKernelSvmStringOutcomeClassifier;
 import org.cleartk.ml.tksvmlight.kernel.DescendingPathKernel;
 import org.cleartk.ml.tksvmlight.kernel.PartialTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.SubsetTreeKernel;
-import org.cleartk.ml.tksvmlight.kernel.TreeKernel.ForestSumMethod;
 import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Before;
@@ -280,8 +279,8 @@ public class RunTkLibSvmTest extends DefaultTestBase {
   }
 
   private static List<Instance<Boolean>> generateBooleanMultiKernelInstances(int n){
-    SubsetTreeKernel sst = new SubsetTreeKernel(0.4, ForestSumMethod.SEQUENTIAL, true);
-    PartialTreeKernel ptk = new PartialTreeKernel(0.4, 0.5, ForestSumMethod.SEQUENTIAL, true);
+    SubsetTreeKernel sst = new SubsetTreeKernel(0.4, true);
+    PartialTreeKernel ptk = new PartialTreeKernel(0.4, 0.5, true);
     Random random = new Random(42);
     List<Instance<Boolean>> instances = new ArrayList<Instance<Boolean>>();
     for (int i = 0; i < n; i++) {
@@ -337,9 +336,9 @@ public class RunTkLibSvmTest extends DefaultTestBase {
   }
 
   private static List<Instance<String>> generateStringMultiKernelInstances(int n) {
-    SubsetTreeKernel sst = new SubsetTreeKernel(0.4, ForestSumMethod.SEQUENTIAL, true);
-    DescendingPathKernel dpk = new DescendingPathKernel(0.4, ForestSumMethod.SEQUENTIAL, false);
-    PartialTreeKernel ptk = new PartialTreeKernel(0.4, 0.5, ForestSumMethod.SEQUENTIAL, true);
+    SubsetTreeKernel sst = new SubsetTreeKernel(0.4, true);
+    DescendingPathKernel dpk = new DescendingPathKernel(0.4, false);
+    PartialTreeKernel ptk = new PartialTreeKernel(0.4, 0.5, true);
     Random random = new Random(42);
     List<Instance<String>> instances = new ArrayList<Instance<String>>();
     for (int i = 0; i < n; i++) {

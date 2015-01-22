@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2007-2013, Regents of the University of Colorado 
+/** 
+ * Copyright (c) 2007-2015, Regents of the University of Colorado 
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -23,35 +23,32 @@
  */
 package org.cleartk.ml.tksvmlight.kernel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.cleartk.ml.tksvmlight.TreeFeature;
+import org.cleartk.ml.tksvmlight.model.LexicalFunctionModel;
 import org.cleartk.util.treebank.TopTreebankNode;
 import org.cleartk.util.treebank.TreebankFormatParser;
 import org.cleartk.util.treebank.TreebankNode;
 
 /**
  * <br>
- * Copyright (c) 2007-2013, Regents of the University of Colorado <br>
+ * Copyright (c) 2007-2015, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
- * <p>
- * 
- * This class implements the descending path kernel defined by Lin et. al.
- * in "Descending-Path Convolution Kernel for Syntactic Structures",
- * published at ACL 2014.
- * 
- * @author Chen Lin
+ * @author Tim Miller
  */
 
-public class DescendingPathKernel extends TreeKernel_ImplBase {
+public class SyntacticSemanticTreeKernel extends TreeKernel_ImplBase {
+
   /**
    * 
    */
-  private static final long serialVersionUID = 4500173927314841765L;
+  private static final long serialVersionUID = -4333998714675622519L;
+  
+  
   public static final double LAMBDA_DEFAULT = 0.4;
   private double lambda = LAMBDA_DEFAULT;
 
@@ -61,21 +58,22 @@ public class DescendingPathKernel extends TreeKernel_ImplBase {
 
   HashMap<String, TopTreebankNode> trees = null;
 
-  public DescendingPathKernel(
+  private LexicalFunctionModel lexModel = null;
+  
+  public SyntacticSemanticTreeKernel(LexicalFunctionModel lex,
       double lambda,
       boolean normalize) {
+    this.lexModel = lex;
     this.lambda = lambda;
     this.normalize = normalize;
     trees = new HashMap<String, TopTreebankNode>();
   }
 
-  @Override
   public double evaluate(TreeFeature tf1, TreeFeature tf2) {
-    return dpk(tf1.getValue().toString(), tf2.getValue().toString());
+    return sstk(tf1.getValue().toString(), tf2.getValue().toString());
   }
   
-  private double dpk(String tree1Str, String tree2Str) {
-
+  private double sstk(String tree1Str, String tree2Str){
     TopTreebankNode node1 = null;
     if (!trees.containsKey(tree1Str)) {
       node1 = TreebankFormatParser.parse(tree1Str);
@@ -118,37 +116,53 @@ public class DescendingPathKernel extends TreeKernel_ImplBase {
     List<TreebankNode> N2 = TreeKernelUtils.getNodeList(node2);
     for (TreebankNode n1 : N1) {
       for (TreebankNode n2 : N2) {
-        sim += numCommonNodes(n1, n2);
+        sim += numCommonSubtrees(n1, n2);
       }
     }
     return sim;
   }
 
-  private double numCommonNodes(TreebankNode n1, TreebankNode n2){
-    if (!n1.getType().equals(n2.getType()) )
-      return 0;
-    else { //if the two nodes have the same label
-      double retval = 1.0;
-      if (n1.isLeaf() && n2.isLeaf()){ //if both n1 and n2 are pre-terminals
-        if (n1.getValue().equals(n2.getValue())) {
-          retval += lambda;//1;
-        }
-      }else if( !n1.isLeaf() && !n2.isLeaf()){ //if both n1 and n2 are not pre-terminals, find their common children
-        List<TreebankNode[]> matchingNodes = new ArrayList<TreebankNode[]>();
-        for ( TreebankNode child1 : n1.getChildren()){
-          for ( TreebankNode child2 : n2.getChildren() ){
-            if( child1.getType().equals(child2.getType()) ){
-              TreebankNode[] nodePair = {child1,child2};
-              matchingNodes.add(nodePair);
-            }
-          }
-        }
-        for ( TreebankNode[] nodePair : matchingNodes){
-          retval += lambda*numCommonNodes(nodePair[0], nodePair[1]);
+  private double numCommonSubtrees(TreebankNode n1, TreebankNode n2) {
+    double retVal = 1.0;
+    List<TreebankNode> children1 = n1.getChildren();
+    List<TreebankNode> children2 = n2.getChildren();
+    int c1size = children1.size();
+    int c2size = children2.size();
+    if (c1size != c2size) {
+      retVal = 0;
+    } else if (!n1.getType().equals(n2.getType())) {
+      retVal = 0;
+    } else if (n1.isLeaf() && n2.isLeaf()) {
+      // both are preterminals, and we know they have the same type, need to check value (word)
+      // Collins & Duffy tech report says lambdaSquared, but Nips 02 paper uses lambda
+      // Moschitti's papers also use lambda
+      // retVal = lambdaSquared;
+      retVal = lexModel.getLexicalSimilarity(n1.getValue(), n2.getValue());
+    } else {
+      // At this point they have the same label and same # children. Check if children the same.
+      boolean sameProd = true;
+      for (int i = 0; i < c1size; i++) {
+        String l1 = children1.get(i).getType();
+        String l2 = children2.get(i).getType();
+        if (!l1.equals(l2)) {
+          sameProd = false;
+          break;
         }
       }
-      return retval;
+      if (sameProd == true) {
+        for (int i = 0; i < c1size; i++) {
+          retVal *= (1 + numCommonSubtrees(children1.get(i), children2.get(i)));
+        }
+        // again, some disagreement in the literature, with Collins and Duffy saying
+        // lambdaSquared here in tech report and lambda here in nips 02. We'll stick with
+        // lambda b/c that's what moschitti's code (which was presumably used for model-building)
+        // uses.
+        retVal = lambda * retVal;
+      } else {
+        retVal = 0;
+      }
     }
+    return retVal;
   }
 
 }
