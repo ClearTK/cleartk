@@ -48,7 +48,7 @@ public class LexicalSimilarityTest extends DefaultTestBase {
   
   public static final double EPSILON = 0.01;
 
-  Map<String,Double[]> wordMap = new HashMap<>();
+  Map<String,double[]> wordMap = new HashMap<>();
   
   LexicalFunctionModel cont = null;
   LexicalFunctionModel ident = null;
@@ -64,11 +64,11 @@ public class LexicalSimilarityTest extends DefaultTestBase {
   @Override
   public void setUp(){
     
-    wordMap.put("the",   new Double[] {0.5, 0.5, 0.0, 0.0, 0.0});
-    wordMap.put("a",     new Double[] {1.0, 0.0, 0.0, 0.0, 0.0});
-    wordMap.put("cat",   new Double[] {0.0, 0.0, 1.0, 0.0, 0.0});
-    wordMap.put("dog",   new Double[] {0.0, 0.0, 0.5, 0.5, 0.0});
-    wordMap.put("house", new Double[] {0.0, 0.0, 0.0, 0.0, 1.0});
+    wordMap.put("the",   new double[] {0.5, 0.5, 0.0, 0.0, 0.0});
+    wordMap.put("a",     new double[] {1.0, 0.0, 0.0, 0.0, 0.0});
+    wordMap.put("cat",   new double[] {0.0, 0.0, 1.0, 0.0, 0.0});
+    wordMap.put("dog",   new double[] {0.0, 0.0, 0.5, 0.5, 0.0});
+    wordMap.put("house", new double[] {0.0, 0.0, 0.0, 0.0, 1.0});
 
     cont = new ContinuousCosineLexicalSimilarity(wordMap);
     ident = new IdentityLexicalSimilarity();

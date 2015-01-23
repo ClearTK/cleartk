@@ -39,13 +39,13 @@ public class ContinuousCosineLexicalSimilarity implements LexicalFunctionModel {
    * 
    */
   private static final long serialVersionUID = -6282134536439718560L;
-  Map<String,Double[]> wordMap = null;
+  Map<String,double[]> wordMap = null;
   
-  public ContinuousCosineLexicalSimilarity(Map<String,Double[]> map){
+  public ContinuousCosineLexicalSimilarity(Map<String,double[]> map){
     this.wordMap = map;
     
     // set vectors to unit length to speed computation.
-    for(Double[] vec : wordMap.values()){
+    for(double[] vec : wordMap.values()){
       double sum = 0.0;
       for(double val : vec){
         sum += val*val;
@@ -58,8 +58,8 @@ public class ContinuousCosineLexicalSimilarity implements LexicalFunctionModel {
   
   public double getLexicalSimilarity(String w1, String w2) {
     double sim;
-    Double[] v1 = wordMap.get(w1);
-    Double[] v2 = wordMap.get(w2);
+    double[] v1 = wordMap.get(w1);
+    double[] v2 = wordMap.get(w2);
     
     if(v1 == null || v2 == null){
       if(w1.equals(w2)) return 1.0;
