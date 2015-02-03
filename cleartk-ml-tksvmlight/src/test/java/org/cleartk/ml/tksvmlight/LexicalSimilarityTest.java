@@ -114,5 +114,10 @@ public class LexicalSimilarityTest extends DefaultTestBase {
     tf1 = new TreeFeature("TF1", tree3, sstk);
     tf2 = new TreeFeature("TF2", tree2, sstk);
     Assert.assertEquals(2.414, sstk.evaluate(tf1, tf2), EPSILON);
+    
+    sstk = new SyntacticSemanticTreeKernel(cont, 0.4, false);
+    tf1 = new TreeFeature("TF1", tree1, sstk);
+    tf2 = new TreeFeature("TF2", tree2, sstk);
+    Assert.assertEquals(1.23,  sstk.evaluate(tf1, tf2), EPSILON);
   }
 }
