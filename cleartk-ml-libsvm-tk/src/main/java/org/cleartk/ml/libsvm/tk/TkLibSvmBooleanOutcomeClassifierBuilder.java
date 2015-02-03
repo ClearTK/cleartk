@@ -152,7 +152,7 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
     int normalize = Integer.parseInt(cmd.getOptionValue("N", "3"));
     double tkWeight = Double.parseDouble(cmd.getOptionValue("T", "1.0"));
     int treeComparisonMethod = Integer.parseInt(cmd.getOptionValue("D", "1"));
-    
+
     if(kernelType == 5){
       
       switch(secondaryKernel){
@@ -245,12 +245,13 @@ public class TkLibSvmBooleanOutcomeClassifierBuilder extends
     for(int i = 0; i < libsvmModel.SV.length; i++){
       svm_node<TreeFeatureVector> node = libsvmModel.SV[i];
       out.print(libsvmModel.sv_coef[0][i]);
+      out.print(' ');
       TreeFeatureVector treeVec = node.data;
       LinkedHashMap<String,TreeFeature> trees = treeVec.getTrees();
 
       if(trees.size() > 0){
         for(TreeFeature tree : trees.values()){
-          out.print(" |BT| ");
+          out.print("|BT| ");
           out.print(TreeKernelSvmModel.treeFeatureToString(tree));
         }
         out.print(" |ET| ");
