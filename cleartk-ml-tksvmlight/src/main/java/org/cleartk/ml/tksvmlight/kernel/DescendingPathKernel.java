@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.cleartk.ml.tksvmlight.TreeFeature;
+import org.cleartk.ml.tksvmlight.model.IdentityLexicalSimilarity;
+import org.cleartk.ml.tksvmlight.model.LexicalFunctionModel;
 import org.cleartk.util.treebank.TopTreebankNode;
 import org.cleartk.util.treebank.TreebankFormatParser;
 import org.cleartk.util.treebank.TreebankNode;
@@ -59,14 +61,24 @@ public class DescendingPathKernel extends TreeKernel_ImplBase {
   
   private ConcurrentHashMap<String, Double> normalizers = new ConcurrentHashMap<String, Double>();
 
+  private LexicalFunctionModel lex;
+  
   HashMap<String, TopTreebankNode> trees = null;
 
   public DescendingPathKernel(
       double lambda,
-      boolean normalize) {
+      boolean normalize,
+      LexicalFunctionModel lex) {
     this.lambda = lambda;
     this.normalize = normalize;
+    this.lex = lex;
     trees = new HashMap<String, TopTreebankNode>();
+  }
+  
+  public DescendingPathKernel(
+      double lambda,
+      boolean normalize) {
+    this(lambda, normalize, new IdentityLexicalSimilarity());
   }
 
   @Override
@@ -130,9 +142,7 @@ public class DescendingPathKernel extends TreeKernel_ImplBase {
     else { //if the two nodes have the same label
       double retval = 1.0;
       if (n1.isLeaf() && n2.isLeaf()){ //if both n1 and n2 are pre-terminals
-        if (n1.getValue().equals(n2.getValue())) {
-          retval += lambda;//1;
-        }
+        retval += lambda * lex.getLexicalSimilarity(n1.getValue(), n2.getValue());
       }else if( !n1.isLeaf() && !n2.isLeaf()){ //if both n1 and n2 are not pre-terminals, find their common children
         List<TreebankNode[]> matchingNodes = new ArrayList<TreebankNode[]>();
         for ( TreebankNode child1 : n1.getChildren()){

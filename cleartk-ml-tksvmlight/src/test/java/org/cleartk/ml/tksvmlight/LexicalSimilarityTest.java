@@ -26,6 +26,7 @@ package org.cleartk.ml.tksvmlight;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.cleartk.ml.tksvmlight.kernel.DescendingPathKernel;
 import org.cleartk.ml.tksvmlight.kernel.SubsetTreeKernel;
 import org.cleartk.ml.tksvmlight.kernel.SyntacticSemanticTreeKernel;
 import org.cleartk.ml.tksvmlight.model.ContinuousCosineLexicalSimilarity;
@@ -119,5 +120,14 @@ public class LexicalSimilarityTest extends DefaultTestBase {
     tf1 = new TreeFeature("TF1", tree1, sstk);
     tf2 = new TreeFeature("TF2", tree2, sstk);
     Assert.assertEquals(1.23,  sstk.evaluate(tf1, tf2), EPSILON);
+    
+    DescendingPathKernel dpk = new DescendingPathKernel(1.0, false);
+    Assert.assertEquals(5.0, dpk.evaluate(tf1, tf2), EPSILON);
+    
+    dpk = new DescendingPathKernel(1.0, false, cont);
+    Assert.assertEquals(7.828, dpk.evaluate(tf1, tf2), EPSILON);
+    
+    dpk = new DescendingPathKernel(0.4, false, cont);
+    Assert.assertEquals(4.59, dpk.evaluate(tf1, tf2), EPSILON);
   }
 }
