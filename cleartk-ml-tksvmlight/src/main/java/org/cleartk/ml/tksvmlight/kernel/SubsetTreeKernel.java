@@ -49,6 +49,6 @@ public class SubsetTreeKernel extends SyntacticSemanticTreeKernel {
   public SubsetTreeKernel(
       double lambda,
       boolean normalize) {
-    super(new IdentityLexicalSimilarity(lambda), lambda, normalize);
+    super(new IdentityLexicalSimilarity(), lambda, normalize);
   }
 }

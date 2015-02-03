@@ -37,16 +37,9 @@ public class IdentityLexicalSimilarity implements LexicalFunctionModel {
    * 
    */
   private static final long serialVersionUID = 7501977557567004327L;
-  private double lambda = 1.0;
-  
-  public IdentityLexicalSimilarity(){}
-  
-  public IdentityLexicalSimilarity(double lambda){
-    this.lambda = lambda;
-  }
   
   public double getLexicalSimilarity(String w1, String w2) {
-    return w1.equals(w2) ? lambda : 0.0;
+    return w1.equals(w2) ? 1.0 : 0.0;
   }
 
 }

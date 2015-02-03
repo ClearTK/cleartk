@@ -137,7 +137,7 @@ public class SyntacticSemanticTreeKernel extends TreeKernel_ImplBase {
       // Collins & Duffy tech report says lambdaSquared, but Nips 02 paper uses lambda
       // Moschitti's papers also use lambda
       // retVal = lambdaSquared;
-      retVal = lexModel.getLexicalSimilarity(n1.getValue(), n2.getValue());
+      retVal = lambda * lexModel.getLexicalSimilarity(n1.getValue(), n2.getValue());
     } else {
       // At this point they have the same label and same # children. Check if children the same.
       boolean sameProd = true;
