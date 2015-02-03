@@ -70,7 +70,7 @@ public class LexicalSimilarityTest extends DefaultTestBase {
     wordMap.put("cat",   new double[] {0.0, 0.0, 1.0, 0.0, 0.0});
     wordMap.put("dog",   new double[] {0.0, 0.0, 0.5, 0.5, 0.0});
     wordMap.put("house", new double[] {0.0, 0.0, 0.0, 0.0, 1.0});
-
+    
     cont = new ContinuousCosineLexicalSimilarity(wordMap);
     ident = new IdentityLexicalSimilarity();
   }
@@ -89,6 +89,10 @@ public class LexicalSimilarityTest extends DefaultTestBase {
     Assert.assertEquals(0.707, cont.getLexicalSimilarity("cat", "dog"), EPSILON);
     Assert.assertEquals(0.707, cont.getLexicalSimilarity("the", "a"), EPSILON);
     Assert.assertEquals(0.0, cont.getLexicalSimilarity("cat", "house"), EPSILON);
+    
+    Assert.assertEquals(0.0, cont.getLexicalSimilarity("cat", "wolf"), EPSILON);
+    wordMap.put("unk",   new double[] {.44, .44, .44, .44, .44});
+    Assert.assertEquals(0.44, cont.getLexicalSimilarity("cat", "wolf"), EPSILON);
   }
   
   @Test
