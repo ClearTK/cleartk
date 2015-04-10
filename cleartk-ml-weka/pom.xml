@@ -4,37 +4,13 @@
 	<packaging>jar</packaging>
 	<name>ClearTK ML Weka</name>
 	<description>ClearTK wrapper for the WEKA machine learning library</description>
-	<url>http://cleartk.googlecode.com/</url>
 	<licenses>
 		<license>
 			<name>The GNU General Public License, Version 2</name>
-			<url>http://cleartk.googlecode.com/git/cleartk-ml-weka/LICENSE</url>
+			<url>https://raw.githubusercontent.com/ClearTK/cleartk/master/cleartk-ml-weka/LICENSE</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	<developers>
-		<developer>
-			<id>steven.bethard</id>
-			<email>steven.bethard@gmail.com</email>
-			<name>Steven Bethard</name>
-		</developer>
-		<developer>
-			<id>philip.ogren</id>
-			<email>philip@ogren.info</email>
-			<name>Philip Ogren</name>
-		</developer>
-		<developer>
-			<id>lee.becker</id>
-			<email>lee.becker@gmail.com</email>
-			<name>Lee Becker</name>
-		</developer>
-	</developers>
-	<scm>
-        <connection>scm:git:https://code.google.com/p/cleartk/</connection>
-        <developerConnection>scm:git:https://code.google.com/p/cleartk/</developerConnection>
-        <url>https://code.google.com/p/cleartk/</url>
-	  <tag>HEAD</tag>
-  </scm>
 	<parent>
 		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>

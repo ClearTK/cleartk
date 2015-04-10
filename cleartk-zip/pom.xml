@@ -8,22 +8,15 @@
 	<artifactId>cleartk-zip</artifactId>
 	<version>2.0.0</version>
 	<packaging>pom</packaging>
-	<name>ClearTK</name>
-	<description>The official ClearTK release</description>
-	<url>http://cleartk.googlecode.com</url>
+	<name>ClearTK Zip</name>
+	<description>Generates a zip distribution of ClearTK</description>
 	<licenses>
 		<license>
-			<name>BSD</name>
-			<url>https://code.google.com/p/cleartk/source/browse/README</url>
+			<name>The BSD 3-Clause License</name>
+			<url>https://raw.githubusercontent.com/ClearTK/cleartk/master/LICENSE</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	<scm>
-		<url>https://code.google.com/p/cleartk/source/browse/</url>
-		<connection>scm:git:https://code.google.com/p/cleartk/</connection>
-		<developerConnection>scm:git:https://code.google.com/p/cleartk/</developerConnection>
-		<tag>HEAD</tag>
-	</scm>
 	<developers>
 		<developer>
 			<id>steven.bethard</id>
@@ -41,11 +34,6 @@
 			<name>Lee Becker</name>
 		</developer>
 	</developers>
-	<properties>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 		<dependencies>
 			<dependency>
 				<groupId>org.cleartk</groupId>

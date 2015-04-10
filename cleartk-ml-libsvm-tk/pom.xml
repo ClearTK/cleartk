@@ -9,10 +9,7 @@
   </parent>
   <artifactId>cleartk-ml-libsvm-tk</artifactId>
   <name>ClearTK ML LIBSVM-TK</name>
-  <url>http://cleartk.googlecode.com/</url>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+  <description>ClearTK wrapper for LIBSVM-TK</description>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>

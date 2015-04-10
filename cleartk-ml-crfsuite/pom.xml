@@ -3,15 +3,7 @@
 	<artifactId>cleartk-ml-crfsuite</artifactId>
 	<packaging>jar</packaging>
 	<name>ClearTK ML CRFsuite</name>
-	<url>http://cleartk.googlecode.com/</url>
 	<description>ClearTK wrapper for the CRFsuite</description>
-	<licenses>
-		<license>
-			<name>The BSD 3-Clause License</name>
-			<url>http://cleartk.googlecode.com/git/cleartk-ml-crfsuite/LICENSE</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
 	<developers>
 		<developer>
 			<id>martin.riedl</id>
@@ -60,10 +52,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<scm>
-        <connection>scm:git:https://code.google.com/p/cleartk/</connection>
-        <developerConnection>scm:git:https://code.google.com/p/cleartk/</developerConnection>
-        <url>https://code.google.com/p/cleartk/</url>
-	  <tag>HEAD</tag>
-  </scm>
 </project>

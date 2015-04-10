@@ -6,11 +6,11 @@
 	<packaging>maven-plugin</packaging>
 	<name>Consistent Versions Plugin</name>
 	<description>The Consistent Versions Plugin helps causes the build to fail if there are version conflicts in your dependencies.</description>
-	<url>http://cleartk.googlecode.com/</url>
+	<url>http://cleartk.github.io/cleartk/</url>
 	<licenses>
 		<license>
 			<name>The BSD 3-Clause License</name>
-			<url>http://cleartk.googlecode.com/git/consistent-versions-plugin/LICENSE</url>
+			<url>https://raw.githubusercontent.com/ClearTK/cleartk/master/consistent-versions-plugin/LICENSE</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -31,11 +31,11 @@
 			<name>Lee Becker</name>
 		</developer>
 	</developers>
-	<scm>
-        <connection>scm:git:https://code.google.com/p/cleartk/</connection>
-        <developerConnection>scm:git:https://code.google.com/p/cleartk/</developerConnection>
-        <url>https://code.google.com/p/cleartk/</url>
-	</scm>
+    <scm>
+        <url>https://github.com/ClearTK/cleartk</url>
+        <connection>scm:git:https://github.com/ClearTK/cleartk.git</connection>
+        <developerConnection>scm:git:git@github.com:ClearTK/cleartk.git</developerConnection>
+    </scm>
 	<prerequisites>
 		<maven>2.2.1</maven>
 	</prerequisites>

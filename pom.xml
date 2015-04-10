@@ -10,20 +10,23 @@
 	<packaging>pom</packaging>
 	<name>ClearTK</name>
 	<description>The official ClearTK release</description>
-	<url>http://cleartk.googlecode.com</url>
+	<url>http://cleartk.github.io/cleartk/</url>
 	<licenses>
 		<license>
-			<name>BSD</name>
-			<url>https://code.google.com/p/cleartk/source/browse/README</url>
+			<name>The BSD 3-Clause License</name>
+			<url>https://raw.githubusercontent.com/ClearTK/cleartk/master/LICENSE</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
 	<scm>
-		<url>https://code.google.com/p/cleartk/source/browse/</url>
-		<connection>scm:git:https://code.google.com/p/cleartk/</connection>
-		<developerConnection>scm:git:https://code.google.com/p/cleartk/</developerConnection>
-		<tag>HEAD</tag>
+		<url>https://github.com/ClearTK/cleartk</url>
+		<connection>scm:git:https://github.com/ClearTK/cleartk.git</connection>
+		<developerConnection>scm:git:git@github.com:ClearTK/cleartk.git</developerConnection>
 	</scm>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/ClearTK/cleartk/issues</url>
+	</issueManagement>
 	<developers>
 		<developer>
 			<id>steven.bethard</id>

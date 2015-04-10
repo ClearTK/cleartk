@@ -4,37 +4,6 @@
 	<packaging>jar</packaging>
 	<name>ClearTK Test Util</name>
 	<description>ClearTK testing infrastructure</description>
-	<url>http://cleartk.googlecode.com/</url>
-	<licenses>
-		<license>
-			<name>The BSD 3-Clause License</name>
-			<url>http://cleartk.googlecode.com/git/cleartk-test-util/LICENSE</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<developers>
-		<developer>
-			<id>steven.bethard</id>
-			<email>steven.bethard@gmail.com</email>
-			<name>Steven Bethard</name>
-		</developer>
-		<developer>
-			<id>philip.ogren</id>
-			<email>philip@ogren.info</email>
-			<name>Philip Ogren</name>
-		</developer>
-		<developer>
-			<id>lee.becker</id>
-			<email>lee.becker@gmail.com</email>
-			<name>Lee Becker</name>
-		</developer>
-	</developers>
-	<scm>
-            <connection>scm:git:https://code.google.com/p/cleartk/</connection>
-            <developerConnection>scm:git:https://code.google.com/p/cleartk/</developerConnection>
-            <url>https://code.google.com/p/cleartk/</url>
-	  <tag>HEAD</tag>
-  </scm>
 	<parent>
 		<artifactId>cleartk</artifactId>
 		<groupId>org.cleartk</groupId>
@@ -68,29 +37,6 @@
 					<typeSystemIncludes>
 						<include>src/main/resources/org/cleartk/test/util/type/TestTypeSystem.xml</include>
 					</typeSystemIncludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<tags>
-						<tag>
-							<name>generated</name>
-							<placement>a</placement>
-							<head>Generated:</head>
-						</tag>
-						<tag>
-							<name>ordered</name>
-							<placement>a</placement>
-							<head>Ordered:</head>
-						</tag>
-						<tag>
-							<name>modifiable</name>
-							<placement>a</placement>
-							<head>Modifiable:</head>
-						</tag>
-					</tags>
 				</configuration>
 			</plugin>
 		</plugins>
