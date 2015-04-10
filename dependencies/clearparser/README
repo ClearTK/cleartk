@@ -1,3 +1,0 @@
-The src directory of Clear Parser (http://code.google.com/p/clearparser/) is
-included here via svn:externals. The most recently deployed Clear Parser jar
-(0.4.0-SNAPSHOT) was built from revision 223.
