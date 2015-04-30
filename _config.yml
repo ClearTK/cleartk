@@ -1,0 +1,10 @@
+title: ClearTK
+markdown: kramdown
+kramdown:
+  parse_block_html: true
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: "default"
