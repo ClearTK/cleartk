@@ -34,9 +34,9 @@
 	    {% assign sorted_pages = site.pages | sort:"order" %}
 	    {% for p in sorted_pages %}
 	      {% if p.title == page.title %}
-            <li class="active"><a href="{{ p.url }}">{{ p.title }}</a></li>
+            <li class="active"><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
 	      {% else %}
-            <li><a href="{{ p.url }}">{{ p.title }}</a></li>
+            <li><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
 	      {% endif %}
 	    {% endfor %}
           </ul>
