@@ -1,6 +1,7 @@
 ---
-title: Documentation
-order: 2
+title: Getting Started
+menu: Documentation
+menu-order: 1
 ---
 
 <div class="row">

@@ -1,5 +1,9 @@
 title: ClearTK
 baseurl: /cleartk
+menu_names:
+  - Home
+  - Documentation
+  - About
 markdown: kramdown
 kramdown:
   parse_block_html: true

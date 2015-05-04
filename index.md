@@ -1,6 +1,7 @@
 ---
 title: Home
-order: 1
+menu: Home
+menu-order: 1
 ---
 
 <div class="text-center jumbotron">

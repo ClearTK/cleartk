@@ -31,13 +31,28 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-	    {% assign sorted_pages = site.pages | sort:"order" %}
-	    {% for p in sorted_pages %}
-	      {% if p.title == page.title %}
-            <li class="active"><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
-	      {% else %}
-            <li><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
-	      {% endif %}
+	    {% comment %}loop through the pages once per menu item since group_by only gives us a list (not a hash){% endcomment %}
+	    {% assign menu_groups = site.pages | group_by:"menu" %}
+	    {% for current_name in site.menu_names %}
+	      {% for menu_pages in menu_groups %}
+	        {% assign name = menu_pages.name %}
+	        {% if name == current_name %}
+	          {% assign pages = menu_pages.items | sort:"menu-order" %}
+	          {% assign n_pages = pages | size %}
+	          {% if n_pages == 1 %}
+	            {% assign p = pages | first %}
+            <li{% if p.url == page.url %} class="active"{% endif %}><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
+	          {% else %}
+	    <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ name }} <span class="caret"></span></a>
+	      <ul class="dropdown-menu" role="menu">
+	            {% for p in pages %}
+		<li{% if p.url == page.url %} class="active"{% endif %}><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
+	            {% endfor %}
+	      </ul>
+	          {% endif %}
+	        {% endif %}
+	      {% endfor %}
 	    {% endfor %}
           </ul>
         </div><!--/.nav-collapse -->

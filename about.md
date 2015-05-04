@@ -1,6 +1,7 @@
 ---
 title: About
-order: 3
+menu: About
+menu-order: 1
 ---
 
 ### History ###
