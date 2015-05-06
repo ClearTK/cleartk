@@ -13,7 +13,7 @@ menu-order: 1
 ClearTK is a framework for developing machine learning and natural language processing components within the [Apache Unstructured Information Management Architecture](http://uima.apache.org).
 
 [View on GitHub](https://github.com/ClearTK/cleartk){: class="btn btn-primary btn-lg" role="button"}
-[Documentation](docs.html){: class="btn btn-info btn-lg" role="button"}
+[Documentation](docs/index.html){: class="btn btn-info btn-lg" role="button"}
 
 </div>
 

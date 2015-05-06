@@ -238,4 +238,4 @@ Note that for each of the above examples only one context object was passed into
 
 ## Trainable feature extractors
 
-Please see the separate tutorial on [trainable feature extractors](trainable_feature_extractors.html) for building feature extractors which require "training" of some kind.
+Please see the separate tutorial on [trainable feature extractors](trainable_feature_extraction.html) for building feature extractors which require "training" of some kind.
