@@ -3,7 +3,9 @@ baseurl: /cleartk
 menu_names:
   - Home
   - Documentation
+  - Tutorials
   - About
+highlighter: pygments
 markdown: kramdown
 kramdown:
   parse_block_html: true

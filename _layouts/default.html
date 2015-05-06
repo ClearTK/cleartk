@@ -14,6 +14,8 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Pygments CSS -->
+    <link href="{{ site.baseurl }}/syntax.css" rel="stylesheet">
     <!-- Make inline code pretty like block code (instead of bright red) -->
     <style>code { color: #333; background-color: #f5f5f5; }</style>
   </head>
@@ -43,7 +45,7 @@
 	          {% assign n_pages = pages | size %}
 	          {% if n_pages == 1 %}
 	            {% assign p = pages | first %}
-            <li{% if p.url == page.url %} class="active"{% endif %}><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
+            <li{% if p.url == page.url %} class="active"{% endif %}><a href="{{ site.baseurl }}{{ p.url }}">{{ name }}</a></li>
 	          {% else %}
 	    <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ name }} <span class="caret"></span></a>
