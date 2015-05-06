@@ -10,7 +10,7 @@ The ClearTK-ML module provides the core APIs for building machine-learning-based
 
 ## CleartkAnnotator
 
-In ClearTK, machine-learning-based annotators are subclasses of  [CleartkAnnotator](https://github.com/ClearTK/cleartk/blob/master/cleartk-ml/src/main/java/org/cleartk/ml/CleartkAnnotator.java) (or for sequence-labeling tasks, its sibling, [CleartkSequenceAnnotator](https://github.com/ClearTK/cleartk/blob/master/cleartk-ml/src/main/java/org/cleartk/ml/CleartkSequenceAnnotator.java)). The [POS tagger tutorial](tutorial/sequence_classifier.html) and the [BIO tagging tutorial](tutorial/chunking_classifier.html) give detailed examples of creating such annotators. In short though, a `CleartkAnnotator` is just a UIMA annotator (i.e. a subclass of `JCasAnnotator_ImplBase`) where the `process(JCas)` method extracts features and passes them to a classifier. `CleartkAnnotator` (and `CleartkSequenceAnnotator`) provides useful methods and instance variables that are available to subclasses:
+In ClearTK, machine-learning-based annotators are subclasses of  [CleartkAnnotator](https://github.com/ClearTK/cleartk/blob/master/cleartk-ml/src/main/java/org/cleartk/ml/CleartkAnnotator.java) (or for sequence-labeling tasks, its sibling, [CleartkSequenceAnnotator](https://github.com/ClearTK/cleartk/blob/master/cleartk-ml/src/main/java/org/cleartk/ml/CleartkSequenceAnnotator.java)). The [POS tagger tutorial]({{ site.baseurl }}/docs/tutorial/sequence_classifier.html) and the [BIO tagging tutorial]({{ site.baseurl }}/docs/tutorial/chunking_classifier.html) give detailed examples of creating such annotators. In short though, a `CleartkAnnotator` is just a UIMA annotator (i.e. a subclass of `JCasAnnotator_ImplBase`) where the `process(JCas)` method extracts features and passes them to a classifier. `CleartkAnnotator` (and `CleartkSequenceAnnotator`) provides useful methods and instance variables that are available to subclasses:
 
  * `isTraining()` - indicates whether the annotator is being used to write training data or to classify new instances
  * `dataWriter` - an implementation of the `DataWriter` (or `SequenceDataWriter`, for `CleartkSequenceAnnotator`) interface, which allows `Instance` objects, composed of features and outcomes (a.k.a. labels), to be written out in an appropriate data format for classifier training. Available only when `isTraining()` returns true.
@@ -55,4 +55,4 @@ And a pipeline that uses the classifier to classify new instances will typically
         GenericJarClassifierFactory.PARAM_CLASSIFIER_JAR_PATH,
         <path-to-your-model.jar-file>);
 
-For more detailed examples, see the [POS tagger tutorial](tutorial/sequence_classifier.html) and the [BIO tagging tutorial](tutorial/chunking_classifier.html).
+For more detailed examples, see the [POS tagger tutorial]({{ site.baseurl }}/docs/tutorial/sequence_classifier.html) and the [BIO tagging tutorial]({{ site.baseurl }}/docs/tutorial/chunking_classifier.html).

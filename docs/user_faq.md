@@ -14,7 +14,7 @@ menu-order: 2
 
 ### How do I find the UIMA configuration parameters for annotators in ClearTK? ###
 
-For `CleartkAnnotator` and `CleartkSequenceAnnotator` parameters, see the description on the [ClearTK-ML module page](cleartk_ml.html).
+For `CleartkAnnotator` and `CleartkSequenceAnnotator` parameters, see the description on the [ClearTK-ML module page]({{ site.baseurl }}/docs/module/cleartk_ml.html).
 
 In general, most annotators that take parameters will have public static fields that start with *`PARAM`*. For example:
 
