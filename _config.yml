@@ -4,6 +4,7 @@ menu_names:
   - Home
   - Documentation
   - Tutorials
+  - Contributors
   - About
 highlighter: pygments
 markdown: kramdown
