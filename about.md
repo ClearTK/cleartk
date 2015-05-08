@@ -10,7 +10,7 @@ ClearTK was originally developed by the University of Colorado's [Center for Com
 
 ### License ###
 
-Most of ClearTK is distributed under the [BSD license](http://cleartk.googlecode.com/svn/trunk/cleartk-release/LICENSE).
+Most of ClearTK is distributed under the [BSD license](https://github.com/cleartk/cleartk/blob/master/LICENSE).
 
 However, a small portion of the code is licensed under the GPL because it depends on GPL licensed third party libraries. This code has been isolated into sub-projects so that only these sub-projects need to be licensed with the GPL. For further details on the software licenses please see:
 

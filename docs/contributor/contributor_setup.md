@@ -33,7 +33,7 @@ To check out ClearTK:
 
 1.  Go to **File** -> **Import...** -> **Git** -> **Projects from Git**.
 2.  Select **URI** and then click **Next**.
-3.  Paste **`https://code.google.com/p/cleartk/`** as the URI and then click **Next**.
+3.  Paste **`git@github.com:ClearTK/cleartk.git`** as the URI and then click **Next**.
 4.  The **master** branch will be selected. Click **Next**.
 5.  The default local storage directory should be fine. Click **Next**.
 6.  Wait several minutes while the project is cloned.
@@ -94,7 +94,7 @@ There is a wide variety of documentation for Git and Maven online, so here we ju
 
 The ClearTK code is kept in a [Git](http://git-scm.com/) repository. To check out the code run:
 
-    git clone https://code.google.com/p/cleartk/
+    git clone git@github.com:ClearTK/cleartk.git
 
 This will create a `cleartk` directory in your current directory, and fill it with the contents of the ClearTK code base.
 

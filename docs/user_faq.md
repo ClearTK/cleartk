@@ -22,7 +22,7 @@ In general, most annotators that take parameters will have public static fields 
 * `org.cleartk.token.stem.snowball.SnowballStemmer.PARAM_STEMMER_NAME`
 * `org.cleartk.corpus.timeml.TempEval2013Writer.PARAM_OUTPUT_DIRECTORY`
 
-For more information on how to set configuration parameters, refer to the uimaFIT documentation for [ConfigurationParameterFactory](http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/index.html)
+For more information on how to set configuration parameters, refer to [the uimaFIT documentation for @ConfigurationParameter](https://uima.apache.org/d/uimafit-current/tools.uimafit.book.html#ugr.tools.uimafit.configurationparameters).
 
 ## Setting Up Classifiers ##
 
