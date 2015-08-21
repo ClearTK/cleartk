@@ -41,15 +41,16 @@ import org.apache.uima.fit.util.JCasUtil;
 import com.google.common.annotations.Beta;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.clearnlp.component.AbstractComponent;
-import com.clearnlp.dependency.DEPArc;
-import com.clearnlp.dependency.DEPLib;
-import com.clearnlp.dependency.DEPNode;
-import com.clearnlp.dependency.DEPTree;
-import com.clearnlp.dependency.srl.SRLArc;
-import com.clearnlp.nlp.NLPGetter;
-import com.clearnlp.nlp.NLPMode;
-import com.clearnlp.reader.AbstractReader;
+
+import edu.emory.clir.clearnlp.component.AbstractComponent;
+import edu.emory.clir.clearnlp.component.mode.srl.SRLConfiguration;
+import edu.emory.clir.clearnlp.component.utils.NLPUtils;
+import edu.emory.clir.clearnlp.dependency.DEPLib;
+import edu.emory.clir.clearnlp.dependency.DEPNode;
+import edu.emory.clir.clearnlp.dependency.DEPTree;
+import edu.emory.clir.clearnlp.util.arc.DEPArc;
+import edu.emory.clir.clearnlp.util.arc.SRLArc;
+import edu.emory.clir.clearnlp.util.lang.TLanguage;
 
 /**
  * <br>
@@ -84,7 +85,7 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
 
   public static final String DEFAULT_ROLESET_MODEL_PATH = "general-en";
 
-  public static final String DEFAULT_SRL_MODEL_PATH = "general-en";
+  public static final String DEFAULT_SRL_MODEL_PATH = "general-en-srl.xz";
 
   public static final String PARAM_SRL_MODEL_PATH = "srlModelPath";
   @ConfigurationParameter(
@@ -117,8 +118,8 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
       name = PARAM_LANGUAGE_CODE,
       mandatory = false,
       description = "Language code for the semantic role labeler (default value=en).",
-      defaultValue = AbstractReader.LANG_EN)
-  private String languageCode;
+      defaultValue = "ENGLISH")
+  private TLanguage languageCode;
 
   public static final String PARAM_WINDOW_CLASS = "windowClass";
 
@@ -153,6 +154,7 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
     super.initialize(aContext);
 
     try {
+      /*
       this.predIdentifier = NLPGetter.getComponent(
           this.predIdModelPath,
           languageCode,
@@ -162,11 +164,12 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
           this.rolesetModelPath,
           languageCode,
           NLPMode.MODE_ROLE);
+          */
 
-      this.srlabeler = NLPGetter.getComponent(
-          this.srlModelPath,
+      this.srlabeler = NLPUtils.getSRLabeler(
           languageCode,
-          NLPMode.MODE_SRL);
+          this.srlModelPath,
+          new SRLConfiguration(4, 3));
 
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
@@ -199,13 +202,14 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
       }
 
       // Build dependency tree from token information
-      DEPTree tree = NLPGetter.toDEPTree(tokenStrings);
+      DEPTree tree = new DEPTree(tokenStrings);
       // DEPTree tree = new DEPTree();
       for (int i = 1; i < tree.size(); i++) {
         TOKEN_TYPE token = tokens.get(i - 1);
         DEPNode node = tree.get(i);
-        node.pos = this.tokenOps.getPos(jCas, token);
-        node.lemma = this.tokenOps.getLemma(jCas, token);
+        node.setPOSTag(this.tokenOps.getPos(jCas, token));
+
+        node.setLemma(this.tokenOps.getLemma(jCas, token));
       }
 
       // Build map between CAS dependency node and id for later creation of
@@ -272,14 +276,14 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
       DEPNode parserNode = tree.get(i);
       TOKEN_TYPE token = tokens.get(i - 1);
 
-      List<SRLArc> semanticHeads = parserNode.getSHeads();
+      List<SRLArc> semanticHeads = parserNode.getSemanticHeadArcList();
       if (semanticHeads.isEmpty()) {
         continue;
       }
 
       // Parse semantic head relations to get SRL triplets
-      for (DEPArc shead : semanticHeads) {
-        int headId = shead.getNode().id;
+      for (SRLArc shead : semanticHeads) {
+        int headId = shead.getNode().getID();
         TOKEN_TYPE headToken = tokens.get(headId - 1);
         PREDICATE_TYPE pred;
         List<ARGUMENT_TYPE> args;

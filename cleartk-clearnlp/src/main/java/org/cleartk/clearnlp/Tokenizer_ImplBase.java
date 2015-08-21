@@ -36,9 +36,10 @@ import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
-import com.clearnlp.nlp.NLPGetter;
-import com.clearnlp.reader.AbstractReader;
-import com.clearnlp.tokenization.AbstractTokenizer;
+
+import edu.emory.clir.clearnlp.component.utils.NLPUtils;
+import edu.emory.clir.clearnlp.tokenization.AbstractTokenizer;
+import edu.emory.clir.clearnlp.util.lang.TLanguage;
 
 /**
  * <br>
@@ -70,7 +71,7 @@ public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation> extends
       name = PARAM_LANGUAGE_CODE,
       mandatory = false,
       description = "Language code for the tokenizer (default value=en).",
-      defaultValue = AbstractReader.LANG_EN)
+      defaultValue = "ENGLISH")
   private String languageCode;
 
   public static final String PARAM_DICTIONARY_URI = "dictionaryUri";
@@ -102,7 +103,7 @@ public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation> extends
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
     try {
-      this.tokenizer = NLPGetter.getTokenizer(languageCode);
+      this.tokenizer = NLPUtils.getTokenizer(TLanguage.getType(languageCode));
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
     }
@@ -113,7 +114,7 @@ public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation> extends
     for (Annotation window : JCasUtil.select(jCas, this.windowClass)) {
       String windowText = window.getCoveredText();
       int windowOffset = window.getBegin();
-      List<String> tokens = tokenizer.getTokens(windowText);
+      List<String> tokens = tokenizer.tokenize(windowText);
 
       int offset = 0;
       for (String token : tokens) {
