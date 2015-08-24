@@ -79,8 +79,8 @@ public class UriToDocumentTextAnnotator extends JCasAnnotator_ImplBase {
     URI uri = ViewUriUtil.getURI(jCas);
     String content;
 
-    try {
-      content = CharStreams.toString(new InputStreamReader(uri.toURL().openStream()));
+    try (InputStreamReader reader = new InputStreamReader(uri.toURL().openStream())) {
+      content = CharStreams.toString(reader);
       jCas.setSofaDataString(content, "text/plain");
     } catch (MalformedURLException e) {
       throw new AnalysisEngineProcessException(e);
