@@ -23,6 +23,7 @@
  */
 package org.cleartk.clearnlp;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,7 @@ import com.google.common.collect.Maps;
 
 import edu.emory.clir.clearnlp.component.AbstractComponent;
 import edu.emory.clir.clearnlp.component.mode.srl.SRLConfiguration;
+import edu.emory.clir.clearnlp.component.utils.GlobalLexica;
 import edu.emory.clir.clearnlp.component.utils.NLPUtils;
 import edu.emory.clir.clearnlp.dependency.DEPLib;
 import edu.emory.clir.clearnlp.dependency.DEPNode;
@@ -81,10 +83,6 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
   public static final String DEFAULT_SRL_MODEL_FILE_NAME = "ontonotes-en-srl-1.3.0.tgz";
   */
 
-  public static final String DEFAULT_PRED_ID_MODEL_PATH = "general-en";
-
-  public static final String DEFAULT_ROLESET_MODEL_PATH = "general-en";
-
   public static final String DEFAULT_SRL_MODEL_PATH = "general-en-srl.xz";
 
   public static final String PARAM_SRL_MODEL_PATH = "srlModelPath";
@@ -94,23 +92,6 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
       description = "This parameter provides the path pointing to the semantic role labeler model.  If none is specified it will use the default ontonotes model.",
       defaultValue=DEFAULT_SRL_MODEL_PATH)
   private String srlModelPath;
-
-  public static final String PARAM_PRED_ID_MODEL_PATH = "predIdModelPath";
-  @ConfigurationParameter(
-      name = PARAM_PRED_ID_MODEL_PATH,
-      mandatory = false,
-      description = "This parameter provides the path pointing to the predicate identifier model.  If none is specified it will use the default ontonotes model.",
-      defaultValue=DEFAULT_PRED_ID_MODEL_PATH)
-  private String predIdModelPath;
-
-  public static final String PARAM_ROLESET_MODEL_PATH = "rolesetModelPath";
-
-  @ConfigurationParameter(
-      name = PARAM_ROLESET_MODEL_PATH,
-      mandatory = false,
-      description = "This parameter provides the path pointing to the role set classifier model.  If none is specified it will use the default ontonotes model.",
-      defaultValue=DEFAULT_ROLESET_MODEL_PATH)
-  private String rolesetModelPath;
 
   public static final String PARAM_LANGUAGE_CODE = "languageCode";
 
@@ -152,6 +133,13 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
+    
+    // initialize global lexica
+    // FIXME: This should probably be put in a shared resource for multiple analysis engines
+    List<String> paths = new ArrayList<>();
+    paths.add("brown-rcv1.clean.tokenized-CoNLL03.txt-c1000-freq1.txt.xz");
+    GlobalLexica.initDistributionalSemanticsWords(paths);
+    
 
     try {
       /*
@@ -246,8 +234,8 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
 
       // Run the SRL
       if (!skipSentence) {
-        this.predIdentifier.process(tree);
-        this.roleSetClassifier.process(tree);
+        //this.predIdentifier.process(tree);
+        //this.roleSetClassifier.process(tree);
         this.srlabeler.process(tree);
 
         // Extract SRL information and create ClearTK CAS types
@@ -309,10 +297,6 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
     }
 
   }
-
-  private AbstractComponent predIdentifier;
-
-  private AbstractComponent roleSetClassifier;
 
   private AbstractComponent srlabeler;
 }

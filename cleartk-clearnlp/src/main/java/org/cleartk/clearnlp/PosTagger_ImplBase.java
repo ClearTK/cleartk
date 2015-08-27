@@ -23,6 +23,7 @@
  */
 package org.cleartk.clearnlp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
@@ -37,6 +38,7 @@ import org.apache.uima.fit.util.JCasUtil;
 import com.google.common.annotations.Beta;
 
 import edu.emory.clir.clearnlp.component.AbstractComponent;
+import edu.emory.clir.clearnlp.component.utils.GlobalLexica;
 import edu.emory.clir.clearnlp.component.utils.NLPUtils;
 import edu.emory.clir.clearnlp.dependency.DEPNode;
 import edu.emory.clir.clearnlp.dependency.DEPTree;
@@ -66,7 +68,7 @@ import edu.emory.clir.clearnlp.util.lang.TLanguage;
 public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
     JCasAnnotator_ImplBase {
 
-  public static final String DEFAULT_MODEL_PATH = "general-en-pos-xz";
+  public static final String DEFAULT_MODEL_PATH = "general-en-pos.xz";
   
   public static final String PARAM_MODEL_PATH = "modelPath";
   
@@ -97,8 +99,7 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
       mandatory = false,
       description = "Language code for the pos tagger (default value=ENGLISH).",
       defaultValue = "ENGLISH")
-  private TLanguage languageCode;
-  //private String languageCode;
+  private String languageCode;
 
   public static final String PARAM_WINDOW_CLASS = "windowClass";
 
@@ -123,8 +124,15 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
     try {
+      
+      
+      // initialize global lexica
+      List<String> paths = new ArrayList<>();
+      paths.add("brown-rcv1.clean.tokenized-CoNLL03.txt-c1000-freq1.txt.xz");
+      GlobalLexica.initDistributionalSemanticsWords(paths);
+      
       // Load POS tagger model
-      this.tagger = NLPUtils.getPOSTagger(languageCode, modelPath);
+      this.tagger = NLPUtils.getPOSTagger(TLanguage.getType(languageCode), modelPath);
 
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
@@ -143,7 +151,7 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
 
       List<String> tokenStrings = JCasUtil.toText(tokens);
 
-      // As of version 1.3.0, ClearNLP does all processing to go through its own dependency tree
+      // As of version 1.3.0, ClearNLP does all processing through its own dependency tree
       // structure
       DEPTree clearNlpDepTree = new DEPTree(tokenStrings);
 
@@ -155,7 +163,6 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
         TOKEN_TYPE token = tokens.get(i);
         DEPNode node = clearNlpDepTree.get(i+1);
         this.tokenOps.setPos(jCas, token, node.getPOSTag());
-        this.tokenOps.setLemma(jCas, token, node.getLemma());
       }
     }
   }

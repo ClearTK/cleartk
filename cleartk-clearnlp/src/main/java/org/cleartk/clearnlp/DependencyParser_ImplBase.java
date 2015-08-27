@@ -44,6 +44,7 @@ import com.google.common.collect.Multimap;
 
 import edu.emory.clir.clearnlp.component.AbstractComponent;
 import edu.emory.clir.clearnlp.component.mode.dep.DEPConfiguration;
+import edu.emory.clir.clearnlp.component.utils.GlobalLexica;
 import edu.emory.clir.clearnlp.component.utils.NLPUtils;
 import edu.emory.clir.clearnlp.dependency.DEPFeat;
 import edu.emory.clir.clearnlp.dependency.DEPNode;
@@ -71,7 +72,7 @@ import edu.emory.clir.clearnlp.util.lang.TLanguage;
 public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_TYPE extends Annotation, DEPENDENCY_NODE_TYPE extends TOP, DEPENDENCY_ROOT_NODE_TYPE extends DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE extends TOP>
     extends JCasAnnotator_ImplBase {
 
-  public static final String DEFAULT_MODEL_PATH = "general-en";
+  public static final String DEFAULT_MODEL_PATH = "general-en-dep.xz";
 
   public static final String PARAM_PARSER_MODEL_PATH = "parserModelPath";
 
@@ -119,6 +120,12 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation, 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
+    
+    // initialize global lexica
+    List<String> paths = new ArrayList<>();
+    paths.add("brown-rcv1.clean.tokenized-CoNLL03.txt-c1000-freq1.txt.xz");
+    GlobalLexica.initDistributionalSemanticsWords(paths);
+
     this.parser = NLPUtils.getDEPParser(TLanguage.getType(languageCode), this.parserModelPath, new DEPConfiguration("root"));
     
   }
