@@ -79,7 +79,7 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<argLine>-Xmx3g</argLine>
+					<argLine>-Xmx4g</argLine>
 				</configuration>
 			</plugin>
 		</plugins>

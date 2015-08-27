@@ -112,8 +112,6 @@ public class ClearNlpTest extends CleartkTestBase {
 
     desc = SemanticRoleLabeler.getDescription(code, predIdPath, rolesetPath, srlPath);
     assertParameterValue(code, desc, SemanticRoleLabeler_ImplBase.PARAM_LANGUAGE_CODE);
-    assertParameterValue(predIdPath, desc, SemanticRoleLabeler_ImplBase.PARAM_PRED_ID_MODEL_PATH);
-    assertParameterValue(rolesetPath, desc, SemanticRoleLabeler_ImplBase.PARAM_ROLESET_MODEL_PATH);
     assertParameterValue(srlPath, desc, SemanticRoleLabeler_ImplBase.PARAM_SRL_MODEL_PATH);
   }
 
@@ -197,10 +195,10 @@ public class ClearNlpTest extends CleartkTestBase {
   public void srlTest() throws Exception {
     this.assumeBigMemoryTestsEnabled();
     this.assumeLongTestsEnabled();
-    this.logger.info(BIG_MEMORY_TEST_MESSAGE);
-    this.logger.info(LONG_TEST_MESSAGE);
-
+    //this.logger.info(BIG_MEMORY_TEST_MESSAGE);
+    //this.logger.info(LONG_TEST_MESSAGE);
     this.initDefaultModels();
+
     this.jCas.reset();
     tokenBuilder = new TokenBuilder<Token, Sentence>(Token.class, Sentence.class, "pos", "stem");
 
@@ -219,7 +217,7 @@ public class ClearNlpTest extends CleartkTestBase {
         "det(car, the)",
         "dobj(drives, car)",
         "nsubj(gave, Mary)",
-        "rcmod(car, gave)",
+        "relcl(car, gave)",
         "dobj(gave, him)",
         "prep(gave, in)",
         "pobj(in, 1982)",
@@ -248,12 +246,12 @@ public class ClearNlpTest extends CleartkTestBase {
     // Check SRL relations
     List<String> expectedSrl = Arrays.asList(
         "A0(drives, John)",
-        "AM-TMP(drives, still)",
+        "TMP(drives, still)",
         "A1(drives, car)",
         "A1(gave, car)",
         "A0(gave, Mary)",
-        "A2(gave, him)",
-        "AM-TMP(gave, in)");
+        "GOL(gave, him)",
+        "TMP(gave, in)");
 
     List<String> actualSrl = Lists.newArrayList();
     for (Predicate pred : JCasUtil.select(jCas, Predicate.class)) {
