@@ -23,9 +23,10 @@
  */
 package org.cleartk.clearnlp;
 
-import java.net.URI;
+import java.io.InputStream;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
@@ -36,6 +37,7 @@ import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
+import com.google.common.collect.Lists;
 
 import edu.emory.clir.clearnlp.component.utils.NLPUtils;
 import edu.emory.clir.clearnlp.tokenization.AbstractTokenizer;
@@ -61,8 +63,17 @@ import edu.emory.clir.clearnlp.util.lang.TLanguage;
  * 
  */
 @Beta
-public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation> extends
+public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> extends
     JCasAnnotator_ImplBase {
+  
+  
+  public static final String PARAM_SEGMENT_SENTENCES = "segmentSentences";
+  @ConfigurationParameter(
+      name = PARAM_SEGMENT_SENTENCES,
+      mandatory = false,
+      description = "Turn on flag to include sentence segmentation",
+      defaultValue = "false")
+  private Boolean segmentSentences;
 
   public static final String PARAM_LANGUAGE_CODE = "languageCode";
 
@@ -82,17 +93,29 @@ public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation> extends
   @ConfigurationParameter(
       name = PARAM_WINDOW_CLASS,
       mandatory = false,
-      description = WINDOW_TYPE_DESCRIPTION,
-      defaultValue = "org.cleartk.token.type.Sentence")
+      description = WINDOW_TYPE_DESCRIPTION)
+      //defaultValue = "org.cleartk.token.type.Sentence")
   private Class<? extends Annotation> windowClass;
-
+  
+//  public static final String PARAM_WINDOW_CLASS_NAMES = "windowClassNames";
+//
+//  @ConfigurationParameter(
+//      name = PARAM_WINDOW_CLASS_NAMES,
+//      mandatory = false,
+//      description = "provides an array of the annotation types that will be processed by this tokenizer.  If the parameter is not filled, then the Tokenizer will process on the contents of jCas.getDocumentText().  It us up to the caller to ensure annotations do not overlap.")
+//  private List<String> windowClassNames;
+//
+//  protected List<Class<? extends Annotation>> windowClasses;
+//  
   private AbstractTokenizer tokenizer;
 
   protected abstract TokenOps<TOKEN_TYPE> getTokenOps();
+  protected abstract SentenceOps<SENTENCE_TYPE> getSentenceOps();
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
+
     try {
       this.tokenizer = NLPUtils.getTokenizer(TLanguage.getType(languageCode));
     } catch (Exception e) {
@@ -102,23 +125,82 @@ public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation> extends
 
   @Override
   public void process(JCas jCas) throws AnalysisEngineProcessException {
-    for (Annotation window : JCasUtil.select(jCas, this.windowClass)) {
-      String windowText = window.getCoveredText();
-      int windowOffset = window.getBegin();
-      List<String> tokens = tokenizer.tokenize(windowText);
+    
+    
+    if (this.segmentSentences) {
+      // Run combined Sentence Segmentation and Tokenization
+      if (this.windowClass == null) {
+        // If no windowClass specified, run combined segmentation and tokenization on the entire document
+        this.segmentSentencesAndTokenizeText(jCas, jCas.getDocumentText(), 0);
+      } else {
+        // If no windowClass specified, run combined segmentation and tokenization on the entire document
+        for (Annotation window : JCasUtil.select(jCas, this.windowClass)) {
+          this.segmentSentencesAndTokenizeText(jCas, window.getCoveredText(), window.getBegin());
+        }
+      }
+    } else {
+      // Run Tokenization Only
+      if (this.windowClass == null) {
+        // If no windowClass specified, run tokenization on the entire document
+        this.tokenizeText(jCas, jCas.getDocumentText(), 0);
+      } else {
 
-      int offset = 0;
-      for (String token : tokens) {
-        int tokenBegin = windowText.indexOf(token, offset);
+        // Run tokenization over windowClass
+        for (Annotation window : JCasUtil.select(jCas, this.windowClass)) {
+          this.tokenizeText(jCas, window.getCoveredText(), window.getBegin());
+        }
+      }
+    }
+    
+    
+  }
+  
+  void segmentSentencesAndTokenizeText(JCas jCas, String text, int textOffset) throws AnalysisEngineProcessException {
+    InputStream stream = IOUtils.toInputStream(text);
+    List<List<String>> sentencesTokens = this.tokenizer.segmentize(stream);
+
+    int offset = textOffset;
+    for (List<String> sentenceTokenStrings : sentencesTokens) {
+      int sentenceBegin = -1;
+      int sentenceEnd = -1;
+      List <TOKEN_TYPE> tokens = Lists.newArrayList();
+      for (String token : sentenceTokenStrings) {
+        int tokenBegin = text.indexOf(token, offset);
         int tokenEnd = tokenBegin + token.length();
         try {
-          this.getTokenOps().createToken(jCas, windowOffset + tokenBegin, windowOffset + tokenEnd);
+          TOKEN_TYPE t = this.getTokenOps().createToken(jCas, tokenBegin, tokenEnd);
+          tokens.add(t);
         } catch (Exception e) {
           throw new AnalysisEngineProcessException(e);
         }
+        if (sentenceBegin < 0) {
+          sentenceBegin = tokenBegin;
+        }
         offset = tokenEnd;
+        sentenceEnd = tokenEnd;
+      }
+      if (sentenceBegin >= 0 && sentenceEnd >= 0) {
+        this.getSentenceOps().createSentence(jCas, sentenceBegin, sentenceEnd);
       }
     }
+  }
+  
+  void tokenizeText(JCas jCas, String text, int textOffset) throws AnalysisEngineProcessException  {
+    List<String> tokens = tokenizer.tokenize(text);
+    
+
+    int offset = 0;
+    for (String token : tokens) {
+      int tokenBegin = text.indexOf(token, offset);
+      int tokenEnd = tokenBegin + token.length();
+      try {
+        this.getTokenOps().createToken(jCas, textOffset + tokenBegin, textOffset + tokenEnd);
+      } catch (Exception e) {
+        throw new AnalysisEngineProcessException(e);
+      }
+      offset = tokenEnd;
+    }
+    
   }
 
 }
