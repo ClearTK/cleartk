@@ -43,7 +43,7 @@ public class TokenizerTest extends CleartkTestBase {
 
 	static {
 		try {
-			tokenizer = AnalysisEngineFactory.createEngine(Tokenizer.getDescription());
+			tokenizer = AnalysisEngineFactory.createEngine(Tokenizer.getDescription("ENGLISH"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
