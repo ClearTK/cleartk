@@ -89,16 +89,6 @@ public abstract class MpAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
       defaultValue = "ENGLISH")
   private String languageCode;
 
-  /*
-  public static final String PARAM_DICTIONARY_URI = "dictionaryUri";
-
-  @ConfigurationParameter(
-      name = PARAM_DICTIONARY_URI,
-      mandatory = false,
-      description = "This parameter provides the URI to the morphological analyzer dictionary used for lemmatizing.")
-  private URI dictionaryUri;
-  */
-
   public static final String PARAM_WINDOW_CLASS = "windowClass";
 
   private static final String WINDOW_TYPE_DESCRIPTION = "specifies the class type of annotations that will be tokenized. "

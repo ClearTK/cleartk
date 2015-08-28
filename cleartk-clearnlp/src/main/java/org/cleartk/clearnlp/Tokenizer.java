@@ -23,7 +23,6 @@
  */
 package org.cleartk.clearnlp;
 
-import java.net.URI;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -49,14 +48,6 @@ public class Tokenizer extends Tokenizer_ImplBase<Token> {
     return AnalysisEngineFactory.createEngineDescription(Tokenizer.class,
         Tokenizer_ImplBase.PARAM_LANGUAGE_CODE,
         languageCode);
-  }
-
-  public static AnalysisEngineDescription getDescription(String languageCode, URI dictionaryUri) throws ResourceInitializationException {
-    return AnalysisEngineFactory.createEngineDescription(Tokenizer.class,
-        Tokenizer_ImplBase.PARAM_LANGUAGE_CODE,
-        languageCode,
-        Tokenizer_ImplBase.PARAM_DICTIONARY_URI,
-        dictionaryUri);
   }
 
   @Override

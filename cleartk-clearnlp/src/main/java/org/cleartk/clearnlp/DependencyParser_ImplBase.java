@@ -23,7 +23,6 @@
  */
 package org.cleartk.clearnlp;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,6 +120,7 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation, 
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
     
+    // FIXME: Is this possible to put into a shared resource so it stays in memory for all annotators?
     // initialize global lexica
     List<String> paths = new ArrayList<>();
     paths.add("brown-rcv1.clean.tokenized-CoNLL03.txt-c1000-freq1.txt.xz");

@@ -50,7 +50,6 @@ import edu.emory.clir.clearnlp.component.utils.NLPUtils;
 import edu.emory.clir.clearnlp.dependency.DEPLib;
 import edu.emory.clir.clearnlp.dependency.DEPNode;
 import edu.emory.clir.clearnlp.dependency.DEPTree;
-import edu.emory.clir.clearnlp.util.arc.DEPArc;
 import edu.emory.clir.clearnlp.util.arc.SRLArc;
 import edu.emory.clir.clearnlp.util.lang.TLanguage;
 
@@ -74,14 +73,6 @@ import edu.emory.clir.clearnlp.util.lang.TLanguage;
 @Beta
 public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_TYPE extends Annotation, DEPENDENCY_NODE_TYPE extends TOP, DEPENDENCY_ROOT_NODE_TYPE extends DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE extends TOP, ARGUMENT_TYPE extends TOP, PREDICATE_TYPE extends TOP>
     extends JCasAnnotator_ImplBase {
-
-  /*
-  public static final String DEFAULT_PRED_ID_MODEL_FILE_NAME = "ontonotes-en-pred-1.3.0.tgz";
-
-  public static final String DEFAULT_ROLESET_MODEL_FILE_NAME = "ontonotes-en-role-1.3.0.tgz";
-
-  public static final String DEFAULT_SRL_MODEL_FILE_NAME = "ontonotes-en-srl-1.3.0.tgz";
-  */
 
   public static final String DEFAULT_SRL_MODEL_PATH = "general-en-srl.xz";
 

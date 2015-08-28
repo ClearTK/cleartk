@@ -80,16 +80,6 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
   private String modelPath;
 
   
-  /*
-  public static final String PARAM_MODEL_URI = "modelUri";
-
-  @ConfigurationParameter(
-      name = PARAM_MODEL_URI,
-      mandatory = false,
-      description = "This parameter provides the URI to the pos tagger model.")
-  private URI modelUri;
-  */
-
   public static final String PARAM_LANGUAGE_CODE = "languageCode";
   
   public static final String DEFAULT_LANGUAGE_CODE = TLanguage.ENGLISH.toString();

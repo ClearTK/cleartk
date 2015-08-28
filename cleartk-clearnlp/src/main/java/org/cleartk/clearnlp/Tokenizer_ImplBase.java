@@ -63,7 +63,6 @@ import edu.emory.clir.clearnlp.util.lang.TLanguage;
 @Beta
 public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation> extends
     JCasAnnotator_ImplBase {
-  public static final String DEFAULT_DICTIONARY_FILE_NAME = "dictionary-1.2.0.zip";
 
   public static final String PARAM_LANGUAGE_CODE = "languageCode";
 
@@ -73,14 +72,6 @@ public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation> extends
       description = "Language code for the tokenizer (default value=en).",
       defaultValue = "ENGLISH")
   private String languageCode;
-
-  public static final String PARAM_DICTIONARY_URI = "dictionaryUri";
-
-  @ConfigurationParameter(
-      name = PARAM_DICTIONARY_URI,
-      mandatory = false,
-      description = "This parameter provides the URI of the tokenizer dictionary file.")
-  private URI dictionaryUri;
 
   public static final String PARAM_WINDOW_CLASS = "windowClass";
 
