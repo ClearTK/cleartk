@@ -36,14 +36,22 @@ public abstract class ParserWrapper_ImplBase<TOKEN_TYPE extends Annotation, SENT
     extends JCasAnnotator_ImplBase {
 
   public static final String PARAM_INPUT_TYPES_HELPER_CLASS_NAME = "inputTypesHelperClassName";
+  public static final String PARAM_TOKENIZER_CLASS_NAME = "tokenizerClassName";
 
   @ConfigurationParameter(
 	  name = PARAM_INPUT_TYPES_HELPER_CLASS_NAME,
       defaultValue = "org.cleartk.berkeleyparser.DefaultInputTypesHelper",
       mandatory = true)
   protected String inputTypesHelperClassName;
-
+  
+  @ConfigurationParameter(
+      name = PARAM_TOKENIZER_CLASS_NAME,
+        defaultValue = "org.cleartk.berkeleyparser.DefaultBerkeleyTokenizer",
+        mandatory = false)
+    protected String tokenizerClassName;
+  
   protected InputTypesHelper<TOKEN_TYPE, SENTENCE_TYPE> inputTypesHelper;
+  protected Tokenizer<TOKEN_TYPE, SENTENCE_TYPE> tokenizer;
 
   public static final String PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME = "outputTypesHelperClassName";
 
@@ -67,5 +75,10 @@ public abstract class ParserWrapper_ImplBase<TOKEN_TYPE extends Annotation, SENT
         outputTypesHelperClassName,
         OutputTypesHelper.class);
 
+    if (tokenizerClassName != null)
+      tokenizer = InitializableFactory.create(
+          ctx, 
+          tokenizerClassName,
+          Tokenizer.class);
   }
 }

@@ -1,9 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>cleartk-berkeleyparser</artifactId>
 	<packaging>jar</packaging>
 	<name>ClearTK BerkeleyParser</name>
 	<description>ClearTK wrapper for the Berkeley parser</description>
+	<repositories>
+		<repository>
+			<id>my-mvn-repo</id>
+			<url>https://users.encs.concordia.ca/~m_laali/mvn-repo/</url>
+		</repository>
+	</repositories>
 	<licenses>
 		<license>
 			<name>The GNU General Public License, Version 2</name>
@@ -19,9 +26,9 @@
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>edu.berkeley.nlp</groupId>
+			<groupId>cleartk.berkeleyparser</groupId>
 			<artifactId>berkeleyparser</artifactId>
-			<version>r32</version>
+			<version>1.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
@@ -37,5 +44,11 @@
 			<artifactId>cleartk-test-util</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+		
 	</dependencies>
 </project>

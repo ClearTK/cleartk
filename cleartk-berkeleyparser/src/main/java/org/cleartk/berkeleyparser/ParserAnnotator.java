@@ -30,17 +30,18 @@ import java.util.zip.GZIPInputStream;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.util.IoUtil;
-import org.apache.uima.fit.descriptor.ConfigurationParameter;
-import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 import edu.berkeley.nlp.PCFGLA.CoarseToFineMaxRuleParser;
 import edu.berkeley.nlp.PCFGLA.Grammar;
 import edu.berkeley.nlp.PCFGLA.Lexicon;
 import edu.berkeley.nlp.PCFGLA.ParserData;
+import edu.berkeley.nlp.io.PTBLineLexer;
 import edu.berkeley.nlp.syntax.Tree;
 import edu.berkeley.nlp.util.Numberer;
 
@@ -55,14 +56,17 @@ import edu.berkeley.nlp.util.Numberer;
 
 public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, TOP_NODE_TYPE extends Annotation>
     extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Tree<String>, TOP_NODE_TYPE> {
-  
-  public static AnalysisEngineDescription getDescription(String modelPath) throws ResourceInitializationException {
+
+  public static AnalysisEngineDescription getDescription(String modelPath)
+      throws ResourceInitializationException {
     return AnalysisEngineFactory.createEngineDescription(
         ParserAnnotator.class,
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         modelPath,
         ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
-        DefaultOutputTypesHelper.class.getName());
+        DefaultOutputTypesHelper.class.getName(),
+        ParserWrapper_ImplBase.PARAM_TOKENIZER_CLASS_NAME,
+        DefaultBerkeleyTokenizer.class.getName());
   }
 
   public static final String PARAM_PARSER_MODEL_PATH = "parserModelPath";
@@ -75,6 +79,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
   private int parseFailureCount = 0;
 
   private int sentenceCount = 0;
+  private PTBLineLexer ptbNormalizer = new PTBLineLexer();
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
@@ -124,17 +129,36 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
 
     for (SENTENCE_TYPE sentence : sentenceList) {
       sentenceCount++;
+      boolean posTagProvided = true;
       List<TOKEN_TYPE> tokens = inputTypesHelper.getTokens(jCas, sentence);
-      List<String> words = new ArrayList<String>();
-      List<String> tags = new ArrayList<String>();
-
-      for (TOKEN_TYPE token : tokens) {
-        words.add(token.getCoveredText());
-        String tag = inputTypesHelper.getPosTag(token);
-        tags.add(tag);
+      if (tokens.isEmpty()) {
+        String sentTxt = sentence.getCoveredText();
+        if (!sentTxt.trim().isEmpty()) {
+          tokens = tokenizer.tokenize(sentence);
+        }
+        posTagProvided = false;
       }
 
-      Tree<String> tree = parser.getBestConstrainedParse(words, tags, null);
+      List<String> words = null;
+      List<String> tags = null;
+      words = new ArrayList<String>();
+      if (posTagProvided)
+        tags = new ArrayList<String>();
+      for (TOKEN_TYPE token : tokens) {
+        try {
+          words.addAll(ptbNormalizer.tokenizeLine(token.getCoveredText()));
+        } catch (IOException e) {
+          e.printStackTrace();  //there should not be any IOException, ignore the exception
+        }
+        if (posTagProvided){
+          String tag = inputTypesHelper.getPosTag(token);
+          tags.add(tag);
+        }
+      }
+
+      Tree<String> tree = null;
+      tree = parser.getBestConstrainedParse(words, tags, null);
+
       if (tree.isLeaf()) {
         System.out.println("words: " + words.size() + "  " + words);
         System.out.println("tags: " + tags.size() + "  " + tags);
@@ -148,8 +172,9 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
 
   @Override
   public void collectionProcessComplete() throws AnalysisEngineProcessException {
-    System.out.println("total number of sentences that were not parsed was: " + parseFailureCount
-        + " out of " + sentenceCount);
+    System.out.println(
+        "total number of sentences that were not parsed was: " + parseFailureCount + " out of "
+            + sentenceCount);
   }
 
   public static void main(String[] args) {
@@ -172,38 +197,40 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
         true,
         true);
 
-    List<String> sentence = Arrays.asList(new String[] {
-        "The",
-        "striatum",
-        "plays",
-        "a",
-        "pivotal",
-        "role",
-        "in",
-        "modulating",
-        "motor",
-        "activity",
-        "and",
-        "higher",
-        "cognitive",
-        "function",
-        "." });
-    List<String> posTags = Arrays.asList(new String[] {
-        "DT",
-        "NN",
-        "VBZ",
-        "DT",
-        "JJ",
-        "NN",
-        "IN",
-        "VBG",
-        "NN",
-        "NN",
-        "CC",
-        "JJR",
-        "JJ",
-        "NN",
-        "." });
+    List<String> sentence = Arrays.asList(
+        new String[] {
+            "The",
+            "striatum",
+            "plays",
+            "a",
+            "pivotal",
+            "role",
+            "in",
+            "modulating",
+            "motor",
+            "activity",
+            "and",
+            "higher",
+            "cognitive",
+            "function",
+            "." });
+    List<String> posTags = Arrays.asList(
+        new String[] {
+            "DT",
+            "NN",
+            "VBZ",
+            "DT",
+            "JJ",
+            "NN",
+            "IN",
+            "VBG",
+            "NN",
+            "NN",
+            "CC",
+            "JJR",
+            "JJ",
+            "NN",
+            "." });
 
     System.out.println("sentence size=" + sentence.size());
     System.out.println("posTags size=" + posTags.size());
