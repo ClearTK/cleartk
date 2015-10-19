@@ -1,16 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>cleartk-berkeleyparser-mj</artifactId>
+	<artifactId>cleartk-berkeleyparser</artifactId>
 	<packaging>jar</packaging>
 	<name>ClearTK BerkeleyParser</name>
 	<description>ClearTK wrapper for the Berkeley parser</description>
-	<repositories>
-		<repository>
-			<id>my-mvn-repo</id>
-			<url>https://users.encs.concordia.ca/~m_laali/mvn-repo/</url>
-		</repository>
-	</repositories>
 	<licenses>
 		<license>
 			<name>The GNU General Public License, Version 2</name>
@@ -26,9 +19,9 @@
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>cleartk.berkeleyparser</groupId>
+			<groupId>edu.berkeley.nlp</groupId>
 			<artifactId>berkeleyparser</artifactId>
-			<version>1.7</version>
+			<version>r32</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
