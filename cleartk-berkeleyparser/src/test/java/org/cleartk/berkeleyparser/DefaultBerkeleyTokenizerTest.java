@@ -114,7 +114,7 @@ public class DefaultBerkeleyTokenizerTest extends BerkeleyTestBase {
   }
 
   @Test
-  public void test() throws UIMAException{
+  public void givenTwoSentencesWhenTokenizingTheSecondSentenceThenTokensBoundariesAreCorrectlySet() throws UIMAException{
     String testSent = "It is a test.I like it.";
     String testToken = "It is a test . \n I like it .";
     StringBuffer sb = new StringBuffer();
