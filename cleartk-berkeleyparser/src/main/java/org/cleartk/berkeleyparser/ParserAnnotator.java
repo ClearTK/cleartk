@@ -165,7 +165,9 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
         System.out.println("unable to parse sentence: " + sentence.getCoveredText());
         parseFailureCount++;
       } else {
-        outputTypesHelper.addParse(jCas, tree, sentence, tokens);
+        TOP_NODE_TYPE parseTree = outputTypesHelper.addParse(jCas, tree, sentence, tokens);
+        if (!posTagProvided)
+          tokenizer.setPosTags(tokens, parseTree);
       }
     }
   }

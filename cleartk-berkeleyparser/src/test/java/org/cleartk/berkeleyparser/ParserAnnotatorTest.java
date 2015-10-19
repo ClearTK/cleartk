@@ -19,18 +19,21 @@
 
 package org.cleartk.berkeleyparser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.cleartk.berkeleyparser.ParserAnnotator;
-import org.cleartk.syntax.constituent.type.TopTreebankNode;
-import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.cleartk.token.type.Sentence;
-import org.junit.Assert;
-import org.junit.Test;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
+import org.cleartk.syntax.constituent.type.TreebankNode;
+import org.cleartk.token.type.Sentence;
+import org.cleartk.token.type.Token;
+import org.junit.Assert;
+import org.junit.Test;
 
 import edu.berkeley.nlp.PCFGLA.GrammarTrainer;
 
@@ -154,7 +157,15 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
         "new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair",
         newEvidenceNode.getCoveredText());
     
+    List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jCas, Token.class));
+    String posTagString = "CD JJ NNS VBP JJ NN JJ IN DT NN IN DT NN NN NN NN NN IN NN NN .";
+    String[] posTags = posTagString.split(" ");
+    Assert.assertEquals(posTags.length, tokens.size());
+    for (int i = 0; i < tokens.size(); i++){
+      Assert.assertEquals(posTags[i], tokens.get(i).getPos());
+    }
   }
+  
   
 
   public static void main(String[] args) {

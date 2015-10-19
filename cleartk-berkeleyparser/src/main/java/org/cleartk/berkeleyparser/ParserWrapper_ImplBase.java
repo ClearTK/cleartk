@@ -51,7 +51,7 @@ public abstract class ParserWrapper_ImplBase<TOKEN_TYPE extends Annotation, SENT
     protected String tokenizerClassName;
   
   protected InputTypesHelper<TOKEN_TYPE, SENTENCE_TYPE> inputTypesHelper;
-  protected Tokenizer<TOKEN_TYPE, SENTENCE_TYPE> tokenizer;
+  protected Tokenizer<TOKEN_TYPE, SENTENCE_TYPE, TOP_NODE_TYPE> tokenizer;
 
   public static final String PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME = "outputTypesHelperClassName";
 
