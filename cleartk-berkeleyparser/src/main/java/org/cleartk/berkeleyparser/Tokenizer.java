@@ -21,8 +21,8 @@ package org.cleartk.berkeleyparser;
 
 import java.util.List;
 
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.cleartk.syntax.constituent.type.TopTreebankNode;
 
 /**
  * <br>
@@ -33,6 +33,6 @@ import org.cleartk.syntax.constituent.type.TopTreebankNode;
  */
 public interface Tokenizer<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, TOP_NODE_TYPE extends Annotation> {
 
-  public List<TOKEN_TYPE> tokenize(SENTENCE_TYPE sent);
+  public List<TOKEN_TYPE> tokenize(SENTENCE_TYPE sent) throws AnalysisEngineProcessException;
   public void setPosTags(List<TOKEN_TYPE> tokens, TOP_NODE_TYPE topTreebankNode);
 }

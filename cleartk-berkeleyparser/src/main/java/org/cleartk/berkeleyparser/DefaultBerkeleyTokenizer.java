@@ -23,7 +23,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
+import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
@@ -42,10 +44,11 @@ import edu.berkeley.nlp.io.LineLexer;
 public class DefaultBerkeleyTokenizer implements Tokenizer<Token, Sentence, TopTreebankNode> {
   private LineLexer tokenizer = new LineLexer();
 
-  public List<Token> tokenize(Sentence sent) {
+  public List<Token> tokenize(Sentence sent) throws AnalysisEngineProcessException {
     try {
       int base = sent.getBegin();
       String strSent = sent.getCoveredText();
+      JCas jCas = sent.getCAS().getJCas();
       List<String> strTokens = tokenizer.tokenizeLine(strSent);
       List<Token> tokens = new ArrayList<>();
       
@@ -53,9 +56,13 @@ public class DefaultBerkeleyTokenizer implements Tokenizer<Token, Sentence, TopT
       for (String strToken: strTokens){
         index = strSent.indexOf(strToken, index);
         if (index == -1)
-          throw new RuntimeException(String.format("Cannot find token <%s> in the sentence <%s>: ", 
-              strToken, strSent));
-        Token token = new Token(sent.getCAS().getJCas(), base + index, base + index + strToken.length());
+          throw new AnalysisEngineProcessException(
+              new RuntimeException(
+                  String.format("Cannot find token <%s> in the sentence <%s>: ", strToken, strSent)));
+        
+        int begin = base + index;
+        int end = begin + strToken.length();
+        Token token = buildAToken(jCas, begin, end);
         token.addToIndexes();
         tokens.add(token);
         index += strToken.length();
@@ -68,6 +75,11 @@ public class DefaultBerkeleyTokenizer implements Tokenizer<Token, Sentence, TopT
     }
     return null;
     
+  }
+
+  public Token buildAToken(JCas jCas, int begin, int end) {
+    Token token = new Token(jCas, begin, end);
+    return token;
   }
   
   public void setPosTags(List<Token> tokens, TopTreebankNode topTreebankNode) {
