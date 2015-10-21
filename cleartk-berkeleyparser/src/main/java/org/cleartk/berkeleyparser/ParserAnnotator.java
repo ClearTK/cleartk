@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
@@ -139,6 +140,9 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
         posTagProvided = false;
       }
 
+      if (tokens.isEmpty())
+        continue;
+      
       List<String> words = null;
       List<String> tags = null;
       words = new ArrayList<String>();
@@ -161,6 +165,8 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
 
       if (tree.isLeaf()) {
         System.out.println("words: " + words.size() + "  " + words);
+        if (!posTagProvided)
+          tags = Collections.emptyList();
         System.out.println("tags: " + tags.size() + "  " + tags);
         System.out.println("unable to parse sentence: " + sentence.getCoveredText());
         parseFailureCount++;
