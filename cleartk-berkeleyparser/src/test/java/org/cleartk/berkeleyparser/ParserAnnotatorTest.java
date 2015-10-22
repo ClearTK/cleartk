@@ -206,6 +206,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
     AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         ParserAnnotator.getDescription(MODEL_PATH));
     String sent = "I've provided new evidence.";
+    //(ROOT (S (@S (NP (NN I)) (VP (VBN 've) (S (VP (VBN provided) (S (NP (JJ new) (NN evidence))))))) (. .)))
     jCas.setDocumentText(sent);
     new Sentence(jCas, 0 , sent.length()).addToIndexes();
 
@@ -213,10 +214,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
     engine.collectionProcessComplete();
     Assert.assertEquals(1, JCasUtil.select(jCas, TopTreebankNode.class).size());
     Assert.assertEquals(6, JCasUtil.select(jCas, TerminalTreebankNode.class).size());
-//    for (TreebankNode treebankNode: JCasUtil.select(jCas, TreebankNode.class)){
-//      System.out.printf("<%d, %d>\t%s\t%s\t%s\n", treebankNode.getBegin(), treebankNode.getEnd(), 
-//          treebankNode.getType().getName(), treebankNode.getNodeType(), treebankNode.getCoveredText());
-//    }
+
     Assert.assertEquals(14, JCasUtil.select(jCas, TreebankNode.class).size());
   }
 
