@@ -217,7 +217,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
 
     Assert.assertEquals(14, JCasUtil.select(jCas, TreebankNode.class).size());
   }
-
+    
   public static void main(String[] args) {
     GrammarTrainer.main(new String[] {
         "-path",

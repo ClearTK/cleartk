@@ -54,11 +54,12 @@ public class DefaultBerkeleyTokenizer implements Tokenizer<Token, Sentence, TopT
       
       int index = 0;
       for (String strToken: strTokens){
-        index = strSent.indexOf(strToken, index);
-        if (index == -1)
-          throw new AnalysisEngineProcessException(
-              new RuntimeException(
-                  String.format("Cannot find token <%s> in the sentence <%s>: ", strToken, strSent)));
+        int nextIndex = strSent.indexOf(strToken, index);
+        if (nextIndex == -1){
+          System.err.printf(String.format("Cannot find token <%s> in the sentence <%s>: \n", strToken, strSent));
+          continue;
+        }
+        index = nextIndex;
         
         int begin = base + index;
         int end = begin + strToken.length();

@@ -41,14 +41,9 @@ public class DefaultBerkeleyTokenizerTest extends BerkeleyTestBase {
 
   @Test
   public void givenASentenctWhenTokenizingThenAllTokenAreReturned() throws UIMAException{
-    tokenBuilder.buildTokens(
-        jCas,
-        ParserAnnotatorTest.SAMPLE_SENT,
-        ParserAnnotatorTest.SAMPLE_SENT_TOKEN,
-        ParserAnnotatorTest.SAMPLE_SENT_POSES 
-        );
+    setupJCas(ParserAnnotatorTest.SAMPLE_SENT, ParserAnnotatorTest.SAMPLE_SENT_TOKEN);
 
-    Sentence sent = JCasUtil.select(jCas, Sentence.class).iterator().next();
+    Sentence sent = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     DefaultBerkeleyTokenizer tokenizer = new DefaultBerkeleyTokenizer();
     List<Token> tokens = tokenizer.tokenize(sent);
     List<String> goldTokens = Arrays.asList(ParserAnnotatorTest.SAMPLE_SENT_TOKEN.split(" "));
@@ -65,16 +60,9 @@ public class DefaultBerkeleyTokenizerTest extends BerkeleyTestBase {
   public void givenALeftBracketWhenTokenizingThenItIsConvertedToLRB() throws UIMAException{
     String testSent = "(Test)";
     String testToken = "( Test )";
-    String testPos = "X X X";
+    setupJCas(testSent, testToken);
 
-    tokenBuilder.buildTokens(
-        jCas,
-        testSent,
-        testToken,
-        testPos 
-        );
-
-    Sentence sent = JCasUtil.select(jCas, Sentence.class).iterator().next();
+    Sentence sent = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     DefaultBerkeleyTokenizer tokenizer = new DefaultBerkeleyTokenizer();
     List<Token> tokens = tokenizer.tokenize(sent);
     List<String> goldTokens = Arrays.asList(testToken.split(" "));
@@ -91,20 +79,13 @@ public class DefaultBerkeleyTokenizerTest extends BerkeleyTestBase {
   public void givenBritishWordWhenTokenizingThenTokenizerDoesntConvertToAmerican() throws UIMAException{
     String testSent = "colour";
     String testToken = "colour";
-    String testPos = "X";
+    setupJCas(testSent, testToken);
 
-    tokenBuilder.buildTokens(
-        jCas,
-        testSent,
-        testToken,
-        testPos 
-        );
-
-    Sentence sent = JCasUtil.select(jCas, Sentence.class).iterator().next();
+    Sentence sent = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
     DefaultBerkeleyTokenizer tokenizer = new DefaultBerkeleyTokenizer();
-    List<Token> tokens = tokenizer.tokenize(sent);
     List<String> goldTokens = Arrays.asList(testToken.split(" "));
 
+    List<Token> tokens = tokenizer.tokenize(sent);
     List<String> strTokens = new ArrayList<>();
     for (Token token: tokens){
       strTokens.add(token.getCoveredText());
@@ -117,20 +98,8 @@ public class DefaultBerkeleyTokenizerTest extends BerkeleyTestBase {
   public void givenTwoSentencesWhenTokenizingTheSecondSentenceThenTokensBoundariesAreCorrectlySet() throws UIMAException{
     String testSent = "It is a test.I like it.";
     String testToken = "It is a test . \n I like it .";
-    StringBuffer sb = new StringBuffer();
-    for (int i = 0; i < testToken.split(" ").length; i++){
-      if (i != 0)
-        sb.append(" ");
-      sb.append("X");
-    }
-    String testPos = sb.toString();
 
-    tokenBuilder.buildTokens(
-        jCas,
-        testSent,
-        testToken,
-        testPos 
-        );
+    setupJCas(testSent, testToken);
 
     String[] sentTokens = testToken.split("\n");
     int idx = 0;
@@ -147,6 +116,42 @@ public class DefaultBerkeleyTokenizerTest extends BerkeleyTestBase {
 
       assertThat(strTokens).isEqualTo(goldTokens);
     }
+  }
+
+  private void setupJCas(String sent, String token) throws UIMAException {
+    StringBuffer sb = new StringBuffer();
+    for (int i = 0; i < token.split(" ").length; i++){
+      if (i != 0)
+        sb.append(" ");
+      sb.append("X");
+    }
+    String testPos = sb.toString();
+
+    tokenBuilder.buildTokens(
+        jCas,
+        sent,
+        token,
+        testPos 
+        );
+  }
+  
+  @Test
+  public void givenTheSentenceWhenTokenizingTheOutputIsIncorrect() throws UIMAException{
+    String testSent = "I show it to my friends, and they all say 'wow.";
+    String testToken = "I show it to my friends , and they all say 'wow .";
+    setupJCas(testSent, testToken);
+    
+    Sentence sent = JCasUtil.selectByIndex(jCas, Sentence.class, 0);
+    DefaultBerkeleyTokenizer tokenizer = new DefaultBerkeleyTokenizer();
+    List<String> goldTokens = Arrays.asList("I show it to my friends , and they all say 'wo .".split(" "));
+
+    List<Token> tokens = tokenizer.tokenize(sent);
+    List<String> strTokens = new ArrayList<>();
+    for (Token token: tokens){
+      strTokens.add(token.getCoveredText());
+    }
+
+    assertThat(strTokens).isEqualTo(goldTokens); 
   }
 
 }
