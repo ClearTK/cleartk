@@ -86,7 +86,7 @@ public class DefaultBerkeleyTokenizer implements Tokenizer<Token, Sentence, TopT
     FSArray terminals = topTreebankNode.getTerminals();
     for (int i = 0; i < terminals.size(); i++){
       TerminalTreebankNode terminalTreebankNode = (TerminalTreebankNode) terminals.get(i);
-      tokens.get(i).setPos(terminalTreebankNode.getParent().getNodeType());
+      tokens.get(i).setPos(terminalTreebankNode.getNodeType());
     }
   }
 }

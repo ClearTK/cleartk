@@ -33,9 +33,11 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.util.IoUtil;
 
 import edu.berkeley.nlp.PCFGLA.CoarseToFineMaxRuleParser;
@@ -127,7 +129,6 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
   public void process(JCas jCas) throws AnalysisEngineProcessException {
 
     List<SENTENCE_TYPE> sentenceList = inputTypesHelper.getSentences(jCas);
-
     for (SENTENCE_TYPE sentence : sentenceList) {
       sentenceCount++;
       boolean posTagProvided = true;
@@ -149,11 +150,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
       if (posTagProvided)
         tags = new ArrayList<String>();
       for (TOKEN_TYPE token : tokens) {
-        try {
-          words.addAll(ptbNormalizer.tokenizeLine(token.getCoveredText()));
-        } catch (IOException e) {
-          e.printStackTrace();  //there should not be any IOException, ignore the exception
-        }
+          words.add(normalizeText(token));
         if (posTagProvided){
           String tag = inputTypesHelper.getPosTag(token);
           tags.add(tag);
@@ -171,11 +168,35 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
         System.out.println("unable to parse sentence: " + sentence.getCoveredText());
         parseFailureCount++;
       } else {
+//        System.out.println(sentence.getCoveredText());
+//        System.out.println(tree.toEscapedString());
+//        System.out.println(words);
         TOP_NODE_TYPE parseTree = outputTypesHelper.addParse(jCas, tree, sentence, tokens);
+        for (TopTreebankNode topTreebankNode: JCasUtil.select(jCas, TopTreebankNode.class)){
+          if (topTreebankNode.getBegin() == 0 || topTreebankNode.getEnd() == 0)
+            System.out.println("ParserAnnotator.process()");
+        }
         if (!posTagProvided)
           tokenizer.setPosTags(tokens, parseTree);
       }
     }
+  }
+
+  private String normalizeText(TOKEN_TYPE token) throws AnalysisEngineProcessException {
+    List<String> ptbTokens;
+    String tokenText = token.getCoveredText();
+    try {
+      ptbTokens = ptbNormalizer.tokenizeLine(tokenText);
+    } catch (IOException e) {
+      throw new AnalysisEngineProcessException(e);  //this exception will never be raised.
+    }
+    StringBuilder sb = new StringBuilder();
+    for (String aWord: ptbTokens){
+      if (aWord.equals("`") && tokenText.contains("'") && tokenText.length() > 1) //e.g. <'ve> should not be converted to <`ve>
+        aWord = "'";  //
+      sb.append(aWord);
+    }
+    return sb.toString();
   }
 
   @Override

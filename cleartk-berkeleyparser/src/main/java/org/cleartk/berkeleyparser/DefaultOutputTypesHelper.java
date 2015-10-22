@@ -59,7 +59,6 @@ public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TY
         true);
     topNode.setTerminals(new FSArray(jCas, leafNodes.size()));
     FSCollectionFactory.fillArrayFS(topNode.getTerminals(), leafNodes);
-    topNode.addToIndexes();
     return topNode;
   }
 
@@ -107,7 +106,7 @@ public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TY
             jCas,
             token.getBegin(),
             token.getEnd());
-        leafNode.setNodeType(berkeleyNode.getLabel());
+//        leafNode.setNodeType(berkeleyNode.getLabel());
         leafNode.setTokenIndex(tokenIndex.index);
         leafNode.setNodeValue(berkeleyNode.toString());
         leafNode.addToIndexes();
@@ -128,13 +127,21 @@ public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TY
         tokens,
         tokenIndex,
         leafNodes);
+    
+    TreebankNode terminal = null;
+    if (uimaChildren.size() == 1 && (terminal = uimaChildren.get(0)) instanceof TerminalTreebankNode 
+        && terminal.getNodeType() == null){
+      terminal.setNodeType(berkeleyNode.getLabel());
+      return terminal;
+    }
+    
     int nodeBegin = uimaChildren.get(0).getBegin();
     int nodeEnd = uimaChildren.get(uimaChildren.size() - 1).getEnd();
 
     TreebankNode uimaNode;
 
     if (isTop) {
-      uimaNode = new TopTreebankNode(jCas);
+      uimaNode = new TopTreebankNode(jCas, nodeBegin, nodeEnd);
     } else {
       uimaNode = new TreebankNode(jCas, nodeBegin, nodeEnd);
     }
