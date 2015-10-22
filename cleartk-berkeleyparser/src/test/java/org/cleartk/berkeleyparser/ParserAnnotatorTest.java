@@ -28,6 +28,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.token.type.Sentence;
@@ -52,7 +53,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
   public static String SAMPLE_SENT = "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair.";
   public static String SAMPLE_SENT_TOKEN = "Two recent papers provide new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair .";
   public static String SAMPLE_SENT_POSES = "DT JJ NN VBP JJ NN JJ IN DT NN IN DT NN NN NN NN NN IN NN NN ."; // changed 1st tag from CD to DT and
-                                            // 3rd tag from NNS to NN
+  // 3rd tag from NNS to NN
   @Test
   public void givenASentenceAndPosesWhenParsingThenSyntaxTreeOfTheSentenceIsConstructed() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createEngine(
@@ -63,7 +64,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
         SAMPLE_SENT,
         SAMPLE_SENT_TOKEN,
         SAMPLE_SENT_POSES 
-    );
+        );
 
     engine.process(jCas);
     engine.collectionProcessComplete();
@@ -107,15 +108,15 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
         newEvidenceNode.getCoveredText());
 
   }
-  
-  
+
+
   @Test
-  public void givenASentenceWhenParsingThenSyntaxTreeOfTheSentenceIsConstructed() throws ResourceInitializationException, AnalysisEngineProcessException{
+  public void givenASentenceWithoutPosesWhenParsingThenSyntaxTreeOfTheSentenceIsConstructed() throws ResourceInitializationException, AnalysisEngineProcessException{
     AnalysisEngine engine = AnalysisEngineFactory.createEngine(
         ParserAnnotator.getDescription(MODEL_PATH));
     jCas.setDocumentText(SAMPLE_SENT);
     new Sentence(jCas, 0 , SAMPLE_SENT.length()).addToIndexes();
-    
+
     engine.process(jCas);
     engine.collectionProcessComplete();
 
@@ -156,7 +157,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
     Assert.assertEquals(
         "new evidence relevant to the role of the breast cancer susceptibility gene BRCA2 in DNA repair",
         newEvidenceNode.getCoveredText());
-    
+
     List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jCas, Token.class));
     String posTagString = "CD JJ NNS VBP JJ NN JJ IN DT NN IN DT NN NN NN NN NN IN NN NN .";
     String[] posTags = posTagString.split(" ");
@@ -165,8 +166,59 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
       Assert.assertEquals(posTags[i], tokens.get(i).getPos());
     }
   }
+
+  @Test
+  public void givenASentenceWithShortFormOfToBeWhenParsingThenApostropheDoesNotChange() throws ResourceInitializationException, AnalysisEngineProcessException{
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
+        ParserAnnotator.getDescription(MODEL_PATH));
+    String sent = "I've provided new evidence.";
+    jCas.setDocumentText(sent);
+    new Sentence(jCas, 0 , sent.length()).addToIndexes();
+
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+    
+    Assert.assertEquals(1, JCasUtil.select(jCas, TopTreebankNode.class).size());
+    TopTreebankNode tree = JCasUtil.selectByIndex(jCas, TopTreebankNode.class, 0);
+    Assert.assertNotNull(tree);
+    Assert.assertEquals("ROOT", tree.getNodeType());
+    Assert.assertEquals(1, tree.getChildren().size());
+
+    TreebankNode sNode = tree.getChildren(0);
+    Assert.assertEquals("S", sNode.getNodeType());
+    Assert.assertEquals(3, sNode.getChildren().size());
+    
+    TreebankNode npNode = sNode.getChildren(0);
+    TreebankNode vpNode = sNode.getChildren(1);
+    TreebankNode periodNode = sNode.getChildren(2);
+    Assert.assertEquals("NP", npNode.getNodeType());
+    Assert.assertEquals("VP", vpNode.getNodeType());
+    Assert.assertEquals(".", periodNode.getNodeType());
+    Assert.assertEquals(2, vpNode.getChildren().size());
+   
+    TreebankNode vbnNode = vpNode.getChildren(0);
+    Assert.assertEquals("VBN", vbnNode.getNodeType()); 
+    Assert.assertEquals("'ve", vbnNode.getNodeValue());
+  }
   
-  
+  @Test
+  public void whenParsingASentenceThenNoDuplicateTreeNodeIsGenerated() throws ResourceInitializationException, AnalysisEngineProcessException{
+    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
+        ParserAnnotator.getDescription(MODEL_PATH));
+    String sent = "I've provided new evidence.";
+    jCas.setDocumentText(sent);
+    new Sentence(jCas, 0 , sent.length()).addToIndexes();
+
+    engine.process(jCas);
+    engine.collectionProcessComplete();
+    Assert.assertEquals(1, JCasUtil.select(jCas, TopTreebankNode.class).size());
+    Assert.assertEquals(6, JCasUtil.select(jCas, TerminalTreebankNode.class).size());
+//    for (TreebankNode treebankNode: JCasUtil.select(jCas, TreebankNode.class)){
+//      System.out.printf("<%d, %d>\t%s\t%s\t%s\n", treebankNode.getBegin(), treebankNode.getEnd(), 
+//          treebankNode.getType().getName(), treebankNode.getNodeType(), treebankNode.getCoveredText());
+//    }
+    Assert.assertEquals(14, JCasUtil.select(jCas, TreebankNode.class).size());
+  }
 
   public static void main(String[] args) {
     GrammarTrainer.main(new String[] {
@@ -175,7 +227,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
         "-out",
         "src/test/resources/models/11597317.gr",
         "-treebank",
-        "SINGLEFILE" });
+    "SINGLEFILE" });
 
   }
 }
