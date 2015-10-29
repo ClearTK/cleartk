@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
@@ -33,11 +32,9 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
-import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.util.IoUtil;
 
 import edu.berkeley.nlp.PCFGLA.CoarseToFineMaxRuleParser;
@@ -58,18 +55,15 @@ import edu.berkeley.nlp.util.Numberer;
  */
 
 public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, TOP_NODE_TYPE extends Annotation>
-    extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Tree<String>, TOP_NODE_TYPE> {
+extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Tree<String>, TOP_NODE_TYPE> {
 
-  public static AnalysisEngineDescription getDescription(String modelPath)
-      throws ResourceInitializationException {
+  public static AnalysisEngineDescription getDescription(String modelPath) throws ResourceInitializationException {
     return AnalysisEngineFactory.createEngineDescription(
         ParserAnnotator.class,
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         modelPath,
         ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
-        DefaultOutputTypesHelper.class.getName(),
-        ParserWrapper_ImplBase.PARAM_TOKENIZER_CLASS_NAME,
-        DefaultBerkeleyTokenizer.class.getName());
+        DefaultOutputTypesHelper.class.getName());
   }
 
   public static final String PARAM_PARSER_MODEL_PATH = "parserModelPath";
@@ -129,56 +123,32 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
   public void process(JCas jCas) throws AnalysisEngineProcessException {
 
     List<SENTENCE_TYPE> sentenceList = inputTypesHelper.getSentences(jCas);
+
     for (SENTENCE_TYPE sentence : sentenceList) {
       sentenceCount++;
-      boolean posTagProvided = true;
       List<TOKEN_TYPE> tokens = inputTypesHelper.getTokens(jCas, sentence);
-      if (tokens.isEmpty()) {
-        String sentTxt = sentence.getCoveredText();
-        if (!sentTxt.trim().isEmpty()) {
-          tokens = tokenizer.tokenize(sentence);
-        }
-        posTagProvided = false;
-      }
 
       if (tokens.isEmpty())
         continue;
-      
-      List<String> words = null;
-      List<String> tags = null;
-      words = new ArrayList<String>();
-      if (posTagProvided)
-        tags = new ArrayList<String>();
+
+      List<String> words = new ArrayList<String>();
+      List<String> tags = new ArrayList<String>();
       for (TOKEN_TYPE token : tokens) {
-          words.add(normalizeText(token));
-        if (posTagProvided){
-          String tag = inputTypesHelper.getPosTag(token);
+        words.add(normalizeText(token));
+        String tag = inputTypesHelper.getPosTag(token);
+        if (tag != null){
           tags.add(tag);
         }
       }
 
-      Tree<String> tree = null;
-      tree = parser.getBestConstrainedParse(words, tags, null);
-
+      Tree<String> tree = parser.getBestConstrainedParse(words, tags.isEmpty() ? null : tags, null);
       if (tree.isLeaf()) {
         System.out.println("words: " + words.size() + "  " + words);
-        if (!posTagProvided)
-          tags = Collections.emptyList();
         System.out.println("tags: " + tags.size() + "  " + tags);
         System.out.println("unable to parse sentence: " + sentence.getCoveredText());
         parseFailureCount++;
       } else {
-        System.out.println();
-        System.out.println(sentence.getCoveredText());
-        System.out.println(tree.toEscapedString());
-        System.out.println(words);
-        TOP_NODE_TYPE parseTree = outputTypesHelper.addParse(jCas, tree, sentence, tokens);
-        for (TopTreebankNode topTreebankNode: JCasUtil.select(jCas, TopTreebankNode.class)){
-          if (topTreebankNode.getBegin() == 0 || topTreebankNode.getEnd() == 0)
-            System.out.println("ParserAnnotator.process()");
-        }
-        if (!posTagProvided)
-          tokenizer.setPosTags(tokens, parseTree);
+        outputTypesHelper.addParse(jCas, tree, sentence, tokens);
       }
     }
   }
@@ -243,7 +213,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
             "higher",
             "cognitive",
             "function",
-            "." });
+        "." });
     List<String> posTags = Arrays.asList(
         new String[] {
             "DT",
@@ -260,7 +230,7 @@ public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extend
             "JJR",
             "JJ",
             "NN",
-            "." });
+        "." });
 
     System.out.println("sentence size=" + sentence.size());
     System.out.println("posTags size=" + posTags.size());

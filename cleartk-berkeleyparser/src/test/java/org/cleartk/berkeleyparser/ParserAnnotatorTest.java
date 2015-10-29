@@ -26,6 +26,7 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
@@ -112,13 +113,12 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
 
   @Test
   public void givenASentenceWithoutPosesWhenParsingThenSyntaxTreeOfTheSentenceIsConstructed() throws ResourceInitializationException, AnalysisEngineProcessException{
-    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
-        ParserAnnotator.getDescription(MODEL_PATH));
     jCas.setDocumentText(SAMPLE_SENT);
     new Sentence(jCas, 0 , SAMPLE_SENT.length()).addToIndexes();
 
-    engine.process(jCas);
-    engine.collectionProcessComplete();
+    SimplePipeline.runPipeline(jCas, DefaultBerkeleyTokenizer.getDescription(), 
+        ParserAnnotator.getDescription(MODEL_PATH), 
+        ParseTreePosTagSetter.getDescription());
 
     /*
      * (TOP (S (NP-SBJ (CD Two) (JJ recent) (NNS papers)) (VP (VBP provide) (NP (NP (JJ new) (NN
@@ -169,14 +169,12 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
 
   @Test
   public void givenASentenceWithShortFormOfToBeWhenParsingThenApostropheDoesNotChange() throws ResourceInitializationException, AnalysisEngineProcessException{
-    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
-        ParserAnnotator.getDescription(MODEL_PATH));
     String sent = "I've provided new evidence.";
     jCas.setDocumentText(sent);
     new Sentence(jCas, 0 , sent.length()).addToIndexes();
 
-    engine.process(jCas);
-    engine.collectionProcessComplete();
+    SimplePipeline.runPipeline(jCas, DefaultBerkeleyTokenizer.getDescription(), 
+        ParserAnnotator.getDescription(MODEL_PATH));
     
     Assert.assertEquals(1, JCasUtil.select(jCas, TopTreebankNode.class).size());
     TopTreebankNode tree = JCasUtil.selectByIndex(jCas, TopTreebankNode.class, 0);
@@ -203,15 +201,13 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
   
   @Test
   public void whenParsingASentenceThenNoDuplicateTreeNodeIsGenerated() throws ResourceInitializationException, AnalysisEngineProcessException{
-    AnalysisEngine engine = AnalysisEngineFactory.createEngine(
-        ParserAnnotator.getDescription(MODEL_PATH));
     String sent = "I've provided new evidence.";
     //(ROOT (S (@S (NP (NN I)) (VP (VBN 've) (S (VP (VBN provided) (S (NP (JJ new) (NN evidence))))))) (. .)))
     jCas.setDocumentText(sent);
     new Sentence(jCas, 0 , sent.length()).addToIndexes();
 
-    engine.process(jCas);
-    engine.collectionProcessComplete();
+    SimplePipeline.runPipeline(jCas, DefaultBerkeleyTokenizer.getDescription(), 
+        ParserAnnotator.getDescription(MODEL_PATH));
     Assert.assertEquals(1, JCasUtil.select(jCas, TopTreebankNode.class).size());
     Assert.assertEquals(6, JCasUtil.select(jCas, TerminalTreebankNode.class).size());
 

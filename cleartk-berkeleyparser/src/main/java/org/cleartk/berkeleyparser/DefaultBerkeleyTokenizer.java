@@ -23,13 +23,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.initializable.InitializableFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
+import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
-import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 
 import edu.berkeley.nlp.io.LineLexer;
@@ -41,16 +48,41 @@ import edu.berkeley.nlp.io.LineLexer;
  * 
  * @author Majid Laali
  */
-public class DefaultBerkeleyTokenizer implements Tokenizer<Token, Sentence, TopTreebankNode> {
-  private LineLexer tokenizer = new LineLexer();
+public class DefaultBerkeleyTokenizer<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> extends JCasAnnotator_ImplBase {
+  public static final String PARAM_INPUT_TYPES_HELPER_CLASS_NAME = "inputTypesHelperClassName";
 
-  public List<Token> tokenize(Sentence sent) throws AnalysisEngineProcessException {
+  public static AnalysisEngineDescription getDescription() throws ResourceInitializationException{
+    return AnalysisEngineFactory.createEngineDescription(DefaultBerkeleyTokenizer.class, 
+        PARAM_INPUT_TYPES_HELPER_CLASS_NAME, DefaultInputTypesHelper.class.getName());
+  }
+
+  @ConfigurationParameter(
+      name = PARAM_INPUT_TYPES_HELPER_CLASS_NAME,
+      defaultValue = "org.cleartk.berkeleyparser.DefaultInputTypesHelper",
+      mandatory = true)
+  protected String inputTypesHelperClassName;
+
+  private InputTypesHelper<TOKEN_TYPE, SENTENCE_TYPE> inputTypesHelper;
+  private LineLexer tokenizer = new LineLexer();
+  
+  @SuppressWarnings("unchecked")
+  @Override
+  public void initialize(UimaContext ctx) throws ResourceInitializationException {
+    super.initialize(ctx);
+
+    inputTypesHelper = InitializableFactory.create(
+        ctx,
+        inputTypesHelperClassName,
+        InputTypesHelper.class);
+  }
+  
+  public List<TOKEN_TYPE> tokenize(SENTENCE_TYPE sent) {
     try {
       int base = sent.getBegin();
       String strSent = sent.getCoveredText();
       JCas jCas = sent.getCAS().getJCas();
       List<String> strTokens = tokenizer.tokenizeLine(strSent);
-      List<Token> tokens = new ArrayList<>();
+      List<TOKEN_TYPE> tokens = new ArrayList<>();
       
       int index = 0;
       for (String strToken: strTokens){
@@ -63,7 +95,7 @@ public class DefaultBerkeleyTokenizer implements Tokenizer<Token, Sentence, TopT
         
         int begin = base + index;
         int end = begin + strToken.length();
-        Token token = buildAToken(jCas, begin, end);
+        TOKEN_TYPE token = inputTypesHelper.buildToken(jCas, begin, end);
         token.addToIndexes();
         tokens.add(token);
         index += strToken.length();
@@ -78,16 +110,19 @@ public class DefaultBerkeleyTokenizer implements Tokenizer<Token, Sentence, TopT
     
   }
 
-  public Token buildAToken(JCas jCas, int begin, int end) {
-    Token token = new Token(jCas, begin, end);
-    return token;
-  }
-  
   public void setPosTags(List<Token> tokens, TopTreebankNode topTreebankNode) {
     FSArray terminals = topTreebankNode.getTerminals();
     for (int i = 0; i < terminals.size(); i++){
       TerminalTreebankNode terminalTreebankNode = (TerminalTreebankNode) terminals.get(i);
       tokens.get(i).setPos(terminalTreebankNode.getNodeType());
+    }
+  }
+
+  @Override
+  public void process(JCas aJCas) throws AnalysisEngineProcessException {
+    List<SENTENCE_TYPE> sentences = inputTypesHelper.getSentences(aJCas);
+    for (SENTENCE_TYPE sentence: sentences){
+      tokenize(sentence);
     }
   }
 }

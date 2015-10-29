@@ -35,7 +35,7 @@ import org.apache.uima.fit.util.JCasUtil;
  * @author Philip Ogren
  */
 
-public class DefaultInputTypesHelper extends InputTypesHelper<Token, Sentence> {
+public class DefaultInputTypesHelper implements InputTypesHelper<Token, Sentence> {
 
   public List<Token> getTokens(JCas jCas, Sentence sentence) {
     return JCasUtil.selectCovered(jCas, Token.class, sentence);
@@ -53,6 +53,12 @@ public class DefaultInputTypesHelper extends InputTypesHelper<Token, Sentence> {
 
   public List<Sentence> getSentences(JCas jCas) {
     return new ArrayList<Sentence>(JCasUtil.select(jCas, Sentence.class));
+  }
+
+
+
+  public Token buildToken(JCas jCas, int begin, int end) {
+    return new Token(jCas, begin, end);
   }
 
 }

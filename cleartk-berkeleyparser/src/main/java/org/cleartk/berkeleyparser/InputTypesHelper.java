@@ -36,13 +36,15 @@ import org.apache.uima.jcas.tcas.Annotation;
  * @author Philip Ogren
  */
 
-public abstract class InputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> {
-  public abstract List<TOKEN_TYPE> getTokens(JCas jCas, SENTENCE_TYPE sentence);
+public interface InputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> {
+  public List<TOKEN_TYPE> getTokens(JCas jCas, SENTENCE_TYPE sentence);
+  
+  public TOKEN_TYPE buildToken(JCas jCas, int begin, int end);
 
-  public abstract List<SENTENCE_TYPE> getSentences(JCas jCas);
+  public List<SENTENCE_TYPE> getSentences(JCas jCas);
 
-  public abstract String getPosTag(TOKEN_TYPE token);
+  public String getPosTag(TOKEN_TYPE token);
 
-  public abstract void setPosTag(TOKEN_TYPE token, String tag);
+  public void setPosTag(TOKEN_TYPE token, String tag);
 
 }
