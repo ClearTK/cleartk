@@ -88,7 +88,7 @@ public class DefaultBerkeleyTokenizer<TOKEN_TYPE extends Annotation, SENTENCE_TY
       for (String strToken: strTokens){
         int nextIndex = strSent.indexOf(strToken, index);
         if (nextIndex == -1){
-          System.err.printf(String.format("Cannot find token <%s> in the sentence <%s>: \n", strToken, strSent));
+          System.err.print(String.format("Cannot find token <%s> in the sentence <%s>: \n", strToken, strSent));
           continue;
         }
         index = nextIndex;
