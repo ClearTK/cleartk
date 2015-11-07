@@ -31,7 +31,7 @@ import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
-import org.cleartk.opennlp.Span;
+import org.cleartk.ne.type.NamedEntityMention;
 import org.junit.Test;
 
 
@@ -54,8 +54,8 @@ public class NameFinderTest {
         Tokenizer.getDescription("en"),
         NameFinderAnnotator.getDescription(NameFinderAnnotator.DEFAULT_PERSON_MODEL_PATH));
     
-    Span span = JCasUtil.selectByIndex(aJCas, Span.class, 0);
-    assertThat(span.getNeType()).isEqualTo("person");
+    NamedEntityMention span = JCasUtil.selectByIndex(aJCas, NamedEntityMention.class, 0);
+    assertThat(span.getMentionType()).isEqualTo("person");
     assertThat(span.getBegin()).isEqualTo(0);
     assertThat(span.getEnd()).isEqualTo(13);
   }

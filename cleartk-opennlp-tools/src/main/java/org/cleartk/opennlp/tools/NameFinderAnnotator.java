@@ -42,6 +42,7 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.opennlp.tools.parser.DefaultOutputTypesHelper;
 import org.cleartk.opennlp.tools.parser.InputTypesHelper;
 import org.cleartk.opennlp.tools.parser.OutputTypesHelper;
@@ -115,11 +116,11 @@ extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Parse, TOP_NODE_TYPE> 
       
       Span[] opennlpSpans = nameFinder.find(tokenTexts.toArray(new String[tokenTexts.size()]));
       for (Span opennlpSpan: opennlpSpans){
-        org.cleartk.opennlp.Span span = new org.cleartk.opennlp.Span(jCas, 
+        NamedEntityMention ne = new NamedEntityMention(jCas, 
             tokenAnnotations.get(opennlpSpan.getStart()).getBegin(), 
             tokenAnnotations.get(opennlpSpan.getEnd() - 1).getEnd());
-        span.setNeType(opennlpSpan.getType());
-        span.addToIndexes();
+        ne.setMentionType(opennlpSpan.getType());
+        ne.addToIndexes();
       }
     }
     

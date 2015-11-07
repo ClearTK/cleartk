@@ -1,1 +1,0 @@
-classpath*:org/cleartk/TypeSystem.xml
