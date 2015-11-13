@@ -96,8 +96,10 @@ public class DefaultBerkeleyTokenizer<TOKEN_TYPE extends Annotation, SENTENCE_TY
         int begin = base + index;
         int end = begin + strToken.length();
         TOKEN_TYPE token = inputTypesHelper.buildToken(jCas, begin, end);
-        token.addToIndexes();
-        tokens.add(token);
+        if (token != null){
+          token.addToIndexes();
+          tokens.add(token);
+        }
         index += strToken.length();
       }
       return tokens;
