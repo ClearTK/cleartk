@@ -37,12 +37,22 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
-import com.clearnlp.component.AbstractComponent;
-import com.clearnlp.dependency.DEPNode;
-import com.clearnlp.dependency.DEPTree;
-import com.clearnlp.nlp.NLPGetter;
-import com.clearnlp.nlp.NLPMode;
-import com.clearnlp.reader.AbstractReader;
+//import com.clearnlp.component.AbstractComponent;
+//import com.clearnlp.dependency.DEPNode;
+//import com.clearnlp.dependency.DEPTree;
+//import com.clearnlp.nlp.NLPGetter;
+//import com.clearnlp.nlp.NLPMode;
+//import com.clearnlp.reader.AbstractReader;
+
+
+
+
+
+import edu.emory.clir.clearnlp.component.mode.morph.AbstractMPAnalyzer;
+import edu.emory.clir.clearnlp.component.utils.NLPUtils;
+import edu.emory.clir.clearnlp.dependency.DEPNode;
+import edu.emory.clir.clearnlp.dependency.DEPTree;
+import edu.emory.clir.clearnlp.util.lang.TLanguage;
 
 /**
  * <br>
@@ -76,18 +86,8 @@ public abstract class MpAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
       name = PARAM_LANGUAGE_CODE,
       mandatory = false,
       description = "Language code (default value=en).",
-      defaultValue = AbstractReader.LANG_EN)
+      defaultValue = "ENGLISH")
   private String languageCode;
-
-  /*
-  public static final String PARAM_DICTIONARY_URI = "dictionaryUri";
-
-  @ConfigurationParameter(
-      name = PARAM_DICTIONARY_URI,
-      mandatory = false,
-      description = "This parameter provides the URI to the morphological analyzer dictionary used for lemmatizing.")
-  private URI dictionaryUri;
-  */
 
   public static final String PARAM_WINDOW_CLASS = "windowClass";
 
@@ -132,10 +132,7 @@ public abstract class MpAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
     try {
 
       // initialize ClearNLP components
-      this.mpAnalyzer = NLPGetter.getComponent(
-          "",
-          languageCode,
-          NLPMode.MODE_MORPH);
+      this.mpAnalyzer = NLPUtils.getMPAnalyzer(TLanguage.getType(languageCode));
       
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
@@ -151,11 +148,11 @@ public abstract class MpAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
 
       // All processing in ClearNLP goes through the DEPTree structures,
       // so populate it with token and POS tag info
-      DEPTree depTree = NLPGetter.toDEPTree(tokenStrings);
+      DEPTree depTree = new DEPTree(tokenStrings);
       for (int i = 1; i < depTree.size(); i++) {
         TOKEN_TYPE token = tokens.get(i - 1);
         DEPNode node = depTree.get(i);
-        node.pos = this.tokenOps.getPos(jCas, token);
+        node.setPOSTag(this.tokenOps.getPos(jCas, token));
       }
       // Run the morphological analyzer
       this.mpAnalyzer.process(depTree);
@@ -164,11 +161,11 @@ public abstract class MpAnalyzer_ImplBase<TOKEN_TYPE extends Annotation> extends
       for (int i = 1; i < depTree.size(); i++) {
         TOKEN_TYPE token = tokens.get(i - 1);
         DEPNode node = depTree.get(i);
-        this.tokenOps.setLemma(jCas, token, node.lemma);
+        this.tokenOps.setLemma(jCas, token, node.getLemma());
       }
     }
   }
 
-  private AbstractComponent mpAnalyzer;
+  private AbstractMPAnalyzer mpAnalyzer;
 
 }
