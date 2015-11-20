@@ -32,12 +32,8 @@ import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.initializable.InitializableFactory;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
-import org.cleartk.syntax.constituent.type.TopTreebankNode;
-import org.cleartk.token.type.Token;
 
 import edu.berkeley.nlp.io.LineLexer;
 
