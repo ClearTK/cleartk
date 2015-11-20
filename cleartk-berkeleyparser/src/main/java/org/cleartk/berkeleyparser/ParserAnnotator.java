@@ -57,19 +57,26 @@ import edu.berkeley.nlp.util.Numberer;
 public class ParserAnnotator<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, TOP_NODE_TYPE extends Annotation>
 extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Tree<String>, TOP_NODE_TYPE> {
 
-  public static AnalysisEngineDescription getDescription(String modelPath) throws ResourceInitializationException {
+  public static AnalysisEngineDescription getDescription(String modelPath, boolean overwriteTokenPosTags) throws ResourceInitializationException {
     return AnalysisEngineFactory.createEngineDescription(
         ParserAnnotator.class,
         ParserAnnotator.PARAM_PARSER_MODEL_PATH,
         modelPath,
         ParserWrapper_ImplBase.PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME,
-        DefaultOutputTypesHelper.class.getName());
+        DefaultOutputTypesHelper.class.getName(), 
+        ParserAnnotator.PARAM_OVERWRITE_TOKEN_POS_TAGS, 
+        overwriteTokenPosTags);
   }
 
   public static final String PARAM_PARSER_MODEL_PATH = "parserModelPath";
+  public static final String PARAM_OVERWRITE_TOKEN_POS_TAGS = "overwriteTokenPosTags";
 
   @ConfigurationParameter(name = PARAM_PARSER_MODEL_PATH)
   private String parserModelPath;
+  
+  @ConfigurationParameter(name = PARAM_OVERWRITE_TOKEN_POS_TAGS, 
+      description = "If set, the parser does not use tokens' pos and uses the parser's internal model to tag the input.")
+  private boolean overwriteTokenPosTags;
 
   protected CoarseToFineMaxRuleParser parser;
 
@@ -136,7 +143,7 @@ extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Tree<String>, TOP_NODE
       for (TOKEN_TYPE token : tokens) {
         words.add(normalizeText(token));
         String tag = inputTypesHelper.getPosTag(token);
-        if (tag != null){
+        if (!overwriteTokenPosTags){
           tags.add(tag);
         }
       }

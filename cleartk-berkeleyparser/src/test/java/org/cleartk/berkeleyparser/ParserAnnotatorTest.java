@@ -58,7 +58,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
   @Test
   public void givenASentenceAndPosesWhenParsingThenSyntaxTreeOfTheSentenceIsConstructed() throws UIMAException {
     AnalysisEngine engine = AnalysisEngineFactory.createEngine(
-        ParserAnnotator.getDescription(MODEL_PATH));
+        ParserAnnotator.getDescription(MODEL_PATH, false));
 
     tokenBuilder.buildTokens(
         jCas,
@@ -117,7 +117,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
     new Sentence(jCas, 0 , SAMPLE_SENT.length()).addToIndexes();
 
     SimplePipeline.runPipeline(jCas, DefaultBerkeleyTokenizer.getDescription(), 
-        ParserAnnotator.getDescription(MODEL_PATH), 
+        ParserAnnotator.getDescription(MODEL_PATH, true), 
         ParseTreePosTagSetter.getDescription());
 
     /*
@@ -174,7 +174,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
     new Sentence(jCas, 0 , sent.length()).addToIndexes();
 
     SimplePipeline.runPipeline(jCas, DefaultBerkeleyTokenizer.getDescription(), 
-        ParserAnnotator.getDescription(MODEL_PATH));
+        ParserAnnotator.getDescription(MODEL_PATH, true));
     
     Assert.assertEquals(1, JCasUtil.select(jCas, TopTreebankNode.class).size());
     TopTreebankNode tree = JCasUtil.selectByIndex(jCas, TopTreebankNode.class, 0);
@@ -207,7 +207,7 @@ public class ParserAnnotatorTest extends BerkeleyTestBase {
     new Sentence(jCas, 0 , sent.length()).addToIndexes();
 
     SimplePipeline.runPipeline(jCas, DefaultBerkeleyTokenizer.getDescription(), 
-        ParserAnnotator.getDescription(MODEL_PATH));
+        ParserAnnotator.getDescription(MODEL_PATH, true));
     Assert.assertEquals(1, JCasUtil.select(jCas, TopTreebankNode.class).size());
     Assert.assertEquals(6, JCasUtil.select(jCas, TerminalTreebankNode.class).size());
 
