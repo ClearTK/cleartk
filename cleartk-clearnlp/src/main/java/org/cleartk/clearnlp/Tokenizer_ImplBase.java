@@ -96,17 +96,7 @@ public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation, SENTENCE
       description = WINDOW_TYPE_DESCRIPTION)
       //defaultValue = "org.cleartk.token.type.Sentence")
   private Class<? extends Annotation> windowClass;
-  
-//  public static final String PARAM_WINDOW_CLASS_NAMES = "windowClassNames";
-//
-//  @ConfigurationParameter(
-//      name = PARAM_WINDOW_CLASS_NAMES,
-//      mandatory = false,
-//      description = "provides an array of the annotation types that will be processed by this tokenizer.  If the parameter is not filled, then the Tokenizer will process on the contents of jCas.getDocumentText().  It us up to the caller to ensure annotations do not overlap.")
-//  private List<String> windowClassNames;
-//
-//  protected List<Class<? extends Annotation>> windowClasses;
-//  
+
   private AbstractTokenizer tokenizer;
 
   protected abstract TokenOps<TOKEN_TYPE> getTokenOps();
@@ -133,7 +123,7 @@ public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation, SENTENCE
         // If no windowClass specified, run combined segmentation and tokenization on the entire document
         this.segmentSentencesAndTokenizeText(jCas, jCas.getDocumentText(), 0);
       } else {
-        // If no windowClass specified, run combined segmentation and tokenization on the entire document
+        // If windowClass specified, run only tokenization over the window type
         for (Annotation window : JCasUtil.select(jCas, this.windowClass)) {
           this.segmentSentencesAndTokenizeText(jCas, window.getCoveredText(), window.getBegin());
         }
