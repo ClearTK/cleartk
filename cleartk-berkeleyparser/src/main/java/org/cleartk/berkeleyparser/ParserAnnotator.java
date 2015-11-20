@@ -143,9 +143,9 @@ extends ParserWrapper_ImplBase<TOKEN_TYPE, SENTENCE_TYPE, Tree<String>, TOP_NODE
 
       Tree<String> tree = parser.getBestConstrainedParse(words, tags.isEmpty() ? null : tags, null);
       if (tree.isLeaf()) {
-        System.out.println("words: " + words.size() + "  " + words);
-        System.out.println("tags: " + tags.size() + "  " + tags);
-        System.out.println("unable to parse sentence: " + sentence.getCoveredText());
+        System.err.println("words: " + words.size() + "  " + words);
+        System.err.println("tags: " + tags.size() + "  " + tags);
+        System.err.println("unable to parse sentence: " + sentence.getCoveredText());
         parseFailureCount++;
       } else {
         outputTypesHelper.addParse(jCas, tree, sentence, tokens);

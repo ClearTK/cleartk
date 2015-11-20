@@ -112,13 +112,6 @@ public class DefaultBerkeleyTokenizer<TOKEN_TYPE extends Annotation, SENTENCE_TY
     
   }
 
-  public void setPosTags(List<Token> tokens, TopTreebankNode topTreebankNode) {
-    FSArray terminals = topTreebankNode.getTerminals();
-    for (int i = 0; i < terminals.size(); i++){
-      TerminalTreebankNode terminalTreebankNode = (TerminalTreebankNode) terminals.get(i);
-      tokens.get(i).setPos(terminalTreebankNode.getNodeType());
-    }
-  }
 
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {

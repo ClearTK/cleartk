@@ -43,7 +43,7 @@ import org.junit.Test;
 public class DefaultBerkeleyTokenizerTest extends BerkeleyTestBase {
 
   @Test
-  public void givenASentenctWhenTokenizingThenAllTokenAreReturned() throws UIMAException{
+  public void givenASentencWhenTokenizingThenAllTokensAreReturned() throws UIMAException{
     setupJCas(ParserAnnotatorTest.SAMPLE_SENT, ParserAnnotatorTest.SAMPLE_SENT_TOKEN);
 
     AnalysisEngineDescription tokenizer = DefaultBerkeleyTokenizer.getDescription();
