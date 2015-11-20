@@ -132,8 +132,8 @@ public class MutualInformationTest extends DefaultTestBase {
     Assert.assertEquals(5, selectedFeatures.size());
     Assert.assertEquals("Bag_Covered:monkey", selectedFeatures.get(0));
     Assert.assertEquals("Bag_Covered:girl", selectedFeatures.get(1));
-    Assert.assertEquals("Bag_Covered:wolf", selectedFeatures.get(2));
-    Assert.assertEquals("Bag_Covered:pig", selectedFeatures.get(3));
+    Assert.assertEquals("Bag_Covered:pig", selectedFeatures.get(2));
+    Assert.assertEquals("Bag_Covered:wolf", selectedFeatures.get(3));
     Assert.assertEquals("Bag_Covered:boy", selectedFeatures.get(4));
 
     // Extract features using selected features model
