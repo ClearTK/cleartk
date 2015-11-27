@@ -33,9 +33,11 @@ import com.google.common.annotations.Beta;
 @Beta
 public class WekaStringOutcomeClassifierBuilder extends ClassifierBuilder_ImplBase<WekaStringOutcomeClassifier, Iterable<Feature>, String, String> {
 
-	@Override
+	public static final String TRAINING_FILE_NAME = "training-data.arff";
+
+  @Override
 	public File getTrainingDataFile(File dir) {
-	    return new File(dir, "training-data.arff");
+	    return new File(dir, TRAINING_FILE_NAME);
 	}
 
 	@Override

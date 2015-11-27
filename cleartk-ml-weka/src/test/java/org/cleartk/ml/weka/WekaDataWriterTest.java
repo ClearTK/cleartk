@@ -18,24 +18,26 @@
  */
 package org.cleartk.ml.weka;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.jcas.JCas;
 import org.cleartk.ml.CleartkAnnotator;
 import org.cleartk.ml.Feature;
 import org.cleartk.ml.Instance;
 import org.cleartk.ml.jar.DefaultDataWriterFactory;
 import org.cleartk.ml.jar.DirectoryDataWriterFactory;
-import org.cleartk.ml.weka.WekaStringOutcomeDataWriter;
 import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -49,8 +51,29 @@ import com.google.common.io.Files;
  */
 
 public class WekaDataWriterTest extends DefaultTestBase {
+  private File getFile(String testName){
+    String fileName = getClass().getName().replace('.', '/') + "-" + testName;
+    return new File(getClass().getClassLoader().getResource(fileName).getFile());
+  }
+  
+  public void runTest(Class<? extends CleartkAnnotator<String>> annotatorClass, String expectedFileName) throws Exception{
+    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
+        annotatorClass,
+        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
+        WekaStringOutcomeDataWriter.class.getName(),
+        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
+        this.outputDirectory);
+    dataWriterAnnotator.process(jCas);
+    dataWriterAnnotator.collectionProcessComplete();
 
-  public static class Test1Annotator extends CleartkAnnotator<String> {
+    assertThat(outputDirectory).exists();
+    String actual = FileUtils.readFileToString(new File(outputDirectory, WekaStringOutcomeClassifierBuilder.TRAINING_FILE_NAME));
+    System.out.println(actual);
+    String expected = FileUtils.readFileToString(getFile(expectedFileName));
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  public static class NumericFeaturesAnnotator extends CleartkAnnotator<String> {
 
     public void process(JCas cas) throws AnalysisEngineProcessException {
       List<Feature> features = Arrays.asList(
@@ -73,23 +96,54 @@ public class WekaDataWriterTest extends DefaultTestBase {
           new Feature("C", 5.234));
       instance = new Instance<String>("yes", features);
       this.dataWriter.write(instance);
-
+      
     }
   }
 
-  // @Ignore
   @Test
-  public void test1() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
-        Test1Annotator.class,
-        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        WekaStringOutcomeDataWriter.class.getName(),
-        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        this.outputDirectory);
-    dataWriterAnnotator.process(jCas);
-    dataWriterAnnotator.collectionProcessComplete();
+  public void whenWritingNumuricFeaturesThenGeneratedArffFilesIsFine() throws Exception {
+    runTest(NumericFeaturesAnnotator.class, "numericFeatures.arff");
   }
 
+  public static class StringFeaturesAnnotator extends CleartkAnnotator<String> {
+
+    public void process(JCas cas) throws AnalysisEngineProcessException {
+      List<Feature> features = Arrays.asList(
+          new Feature("A", "a"),
+          new Feature("B", "a b"),
+          new Feature("C", "a'b"));
+      Instance<String> instance = new Instance<String>("yes", features);
+      this.dataWriter.write(instance);
+
+      features = Arrays.asList(
+          new Feature("A", "b"),
+          new Feature("B", "b d c"),
+          new Feature("C", ""));
+      instance = new Instance<String>("no", features);
+      this.dataWriter.write(instance);
+
+      features = Arrays.asList(
+          new Feature("B", "bb"),
+          new Feature("C", "cc"));
+      instance = new Instance<String>("yes", features);
+      this.dataWriter.write(instance);
+      
+    }
+  }
+
+  
+  /*
+   * WEKA does not support string features very well and most classifier cannot handle features with String type.
+   * Therefore, it is better to convert them to Enum type.
+   */
+  @Test
+  public void whenWritingStringFeaturesThenTheyAreSavedAsEnumType() throws Exception {
+    runTest(StringFeaturesAnnotator.class, "stringFeatures.arff");
+  }
+  
+
+
+  
   public static class Test2Annotator extends CleartkAnnotator<String> {
 
     public void process(JCas cas) throws AnalysisEngineProcessException {
@@ -113,16 +167,10 @@ public class WekaDataWriterTest extends DefaultTestBase {
     }
   }
 
+  
   @Test
-  public void test2() throws Exception {
-    AnalysisEngine dataWriterAnnotator = AnalysisEngineFactory.createEngine(
-        Test2Annotator.class,
-        DefaultDataWriterFactory.PARAM_DATA_WRITER_CLASS_NAME,
-        WekaStringOutcomeDataWriter.class.getName(),
-        DirectoryDataWriterFactory.PARAM_OUTPUT_DIRECTORY,
-        this.outputDirectory);
-    dataWriterAnnotator.process(jCas);
-    dataWriterAnnotator.collectionProcessComplete();
+  public void test2() throws Exception{
+    runTest(Test2Annotator.class, "test2.arff");
   }
 
   public static class TestIssue339Annotator extends CleartkAnnotator<String> {
