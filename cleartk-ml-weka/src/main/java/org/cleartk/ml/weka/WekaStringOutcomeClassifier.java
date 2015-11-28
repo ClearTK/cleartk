@@ -18,19 +18,22 @@
  */
 package org.cleartk.ml.weka;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.cleartk.ml.CleartkProcessingException;
 import org.cleartk.ml.Feature;
 import org.cleartk.ml.encoder.features.FeaturesEncoder;
 import org.cleartk.ml.encoder.outcome.OutcomeEncoder;
 import org.cleartk.ml.jar.Classifier_ImplBase;
 
-import weka.core.Instance;
-
 import com.google.common.annotations.Beta;
+
+import weka.classifiers.Classifier;
+import weka.core.Attribute;
+import weka.core.Instance;
+import weka.core.Instances;
 
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -39,24 +42,63 @@ import com.google.common.annotations.Beta;
  * 
  */
 @Beta
-public abstract class WekaStringOutcomeClassifier extends Classifier_ImplBase<Instance, String, String> {
+public class WekaStringOutcomeClassifier extends Classifier_ImplBase<Iterable<Feature>, String, String> {
+  private WekaFeaturesEncoder featuresEncoder;
+  private WekaNominalFeatureEncoder outcomeEncoder;
+  private Attribute outcomeAttribute;
+  private Classifier classifier;
 
-	//TODO need to add the Weka model as a parameter
-	public WekaStringOutcomeClassifier(       FeaturesEncoder<Instance> featuresEncoder,
-		      OutcomeEncoder<String, String> outcomeEncoder) throws Exception {
-		   		super(featuresEncoder, outcomeEncoder);
-     }
-	
-	//TODO no implementation of classify method
-	public String classify(List<Feature> features) throws UnsupportedOperationException {
-		throw new NotImplementedException();
-	}
-	
-	//TODO no implementation of the score method
-	@Override
+  public WekaStringOutcomeClassifier(FeaturesEncoder<Iterable<Feature>> featuresEncoder,
+      OutcomeEncoder<String, String> outcomeEncoder, Classifier classifier) throws Exception {
+    super(featuresEncoder, outcomeEncoder);
+    this.featuresEncoder =  (WekaFeaturesEncoder) featuresEncoder;
+    this.outcomeEncoder = (WekaNominalFeatureEncoder) outcomeEncoder;
+    this.outcomeAttribute = this.outcomeEncoder.getAttribute();
+    this.classifier = classifier;
+  }
+
+  public String classify(List<Feature> features) throws UnsupportedOperationException {
+    Instances data = featuresEncoder.makeInstances(1, outcomeAttribute, "classify");
+
+    data.add(featuresEncoder.createInstance(features));
+    Attribute classAttribute = data.classAttribute();
+
+    //classify the extracted instance.
+    Instance wekaInstance = data.instance(0);
+    double classifyInstance;
+    try {
+      classifyInstance = classifier.classifyInstance(wekaInstance);
+      wekaInstance.setClassValue(classifyInstance);
+      String label = wekaInstance.toString(classAttribute);
+      return label;
+    } catch (Exception e1) {
+      throw new UnsupportedOperationException(e1);
+    }
+  }
+
+  @Override
   public Map<String, Double> score(List<Feature> features) throws CleartkProcessingException {
-		throw new NotImplementedException();
-	}
+    Instances data = featuresEncoder.makeInstances(1, outcomeAttribute, "classify");
+
+    data.add(featuresEncoder.createInstance(features));
+    Attribute classAttribute = data.classAttribute();
+
+    //classify the extracted instance.
+    Instance wekaInstance = data.instance(0);
+    double[] scores;
+    try {
+      scores = classifier.distributionForInstance(wekaInstance);
+      Map<String, Double> results = new HashMap<>();
+      for (int i = 0; i < scores.length; i++){
+        wekaInstance.setClassValue(i);
+        String label = wekaInstance.toString(classAttribute);
+        results.put(label, scores[i]);
+      }
+      return results;
+    } catch (Exception e1) {
+      throw new UnsupportedOperationException(e1);
+    }
+  }
 
 
 }

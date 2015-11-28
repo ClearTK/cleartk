@@ -1,3 +1,21 @@
+/** 
+ * Copyright (c) 2012, Regents of the University of Colorado 
+ * All rights reserved.
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * For a complete copy of the license please see the file LICENSE distributed 
+ * with the cleartk-syntax-berkeley project or visit 
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
+ */
 package org.cleartk.ml.weka;
 
 import java.io.File;
@@ -15,6 +33,13 @@ import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Utils;
 
+/**
+ * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * All rights reserved.
+ * 
+ * @author Majid Laali
+ * 
+ */
 public class WekaNominalFeatureEncoder implements OutcomeEncoder<String, String>{
   private static final long serialVersionUID = -7572202162749261473L;
   
@@ -36,10 +61,14 @@ public class WekaNominalFeatureEncoder implements OutcomeEncoder<String, String>
     range.add(updateIfEqualWithNotSeenConstant(value));
   }
   
-  String updateIfEqualWithNotSeenConstant(String value){
-    if (value.equals(NOT_SEAN_VAL) && addNotSeanValue)
-      return value = " " + value;
-    return value;//Utils.quote(value);
+  String updateIfEqualWithNotSeenConstant(Object value){
+    if (value == null)
+      return "null";
+    
+    String strValue = value.toString();
+    if (strValue.equals(NOT_SEAN_VAL) && addNotSeanValue)
+      return " " + strValue;
+    return strValue;//Utils.quote(value);
   }
   
   public Attribute getAttribute(){
@@ -49,11 +78,11 @@ public class WekaNominalFeatureEncoder implements OutcomeEncoder<String, String>
     return attribute;
   }
   
-  public void setAttributeValue(Instance instance, String value){
+  public void setAttributeValue(Instance instance, Object value){
     String updatedValue = updateIfEqualWithNotSeenConstant(value);
     int idx = Collections.binarySearch(getSortedValues(), updatedValue);
     if (idx < 0){
-      value = NOT_SEAN_VAL;
+      updatedValue = NOT_SEAN_VAL;
     }
     instance.setValue(attribute, updatedValue);
   }

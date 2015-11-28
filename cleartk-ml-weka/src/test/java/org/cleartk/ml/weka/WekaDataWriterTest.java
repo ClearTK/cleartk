@@ -47,7 +47,7 @@ import com.google.common.io.Files;
  * All rights reserved.
  * 
  * @author Philip Ogren
- * 
+ * @author Majid Laali
  */
 
 public class WekaDataWriterTest extends DefaultTestBase {

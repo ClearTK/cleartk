@@ -39,6 +39,7 @@ import weka.core.SparseInstance;
  * All rights reserved.
  * 
  * @author Philip Ogren
+ * @author Majid Laali
  * 
  */
 @Beta
@@ -75,7 +76,7 @@ public class WekaFeaturesEncoder implements FeaturesEncoder<Iterable<Feature>> {
         wekaNominalFeatureEncoder = new WekaNominalFeatureEncoder(name, true);
         nominalFeatures.put(name, wekaNominalFeatureEncoder);
       }
-      wekaNominalFeatureEncoder.save(value.toString());
+      wekaNominalFeatureEncoder.save(value == null ? null : value.toString());
     }
     
   }
@@ -112,7 +113,7 @@ public class WekaFeaturesEncoder implements FeaturesEncoder<Iterable<Feature>> {
       if (numberAttributes.containsKey(attributeName)){
         instance.setValue(numberAttributes.get(attributeName), ((Number)feature.getValue()).doubleValue());
       } else
-        nominalFeatures.get(attributeName).setAttributeValue(instance, feature.getValue().toString());  
+        nominalFeatures.get(attributeName).setAttributeValue(instance, feature.getValue());  
     }
     return instance;
   }
