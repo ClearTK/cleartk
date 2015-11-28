@@ -20,7 +20,9 @@ package org.cleartk.ml.weka;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.cleartk.ml.Feature;
@@ -29,7 +31,8 @@ import org.cleartk.ml.encoder.features.FeaturesEncoder;
 import com.google.common.annotations.Beta;
 
 import weka.core.Attribute;
-import weka.core.Utils;
+import weka.core.Instances;
+import weka.core.SparseInstance;
 
 /**
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -40,77 +43,78 @@ import weka.core.Utils;
  */
 @Beta
 public class WekaFeaturesEncoder implements FeaturesEncoder<Iterable<Feature>> {
-
-  private static final long serialVersionUID = 1L;
-
-  private ArrayList<Attribute> attributes;
-
-  private Map<String, Attribute> attributeMap;
+  private static final long serialVersionUID = -1576549332348888211L;
+  private Map<String, WekaNominalFeatureEncoder> nominalFeatures = new HashMap<>();
+  private Map<String, Attribute> numberAttributes = new HashMap<>();
 
   public WekaFeaturesEncoder() {
-    attributes = new ArrayList<Attribute>();
-    attributeMap = new HashMap<String, Attribute>();
   }
 
   public Iterable<Feature> encodeAll(Iterable<Feature> features) {
     for (Feature feature : features) {
-      featureToAttribute(feature);
+      checkForNominalFeatures(feature);
     }
     return features;
   }
 
-  /**
-   * @param feature
-   * @return
-   */
-  private Attribute featureToAttribute(Feature feature) {
-    String name = feature.getName();
-    Attribute attribute = attributeMap.get(name);
-    if (attribute == null) {
-      attribute = featureToAttribute(feature, attributes.size());
-      attributes.add(attribute);
-      attributeMap.put(name, attribute);
-    }
-    return attribute;
-  }
-
-  public static Attribute featureToAttribute(Feature feature, int attributeIndex) {
-    String name = Utils.quote(feature.getName());
+  private void checkForNominalFeatures(Feature feature) {
     Object value = feature.getValue();
-    Attribute attribute;
-    // if value is a number then create a numeric attribute
-    if (value instanceof Number) {
-      attribute = new Attribute(name);
-    }// if value is a boolean then create a numeric attribute
-    else if (value instanceof Boolean) {
-      attribute = new Attribute(name);
-    }
-    // if value is an Enum thene create a nominal attribute
-    else if (value instanceof Enum) {
-      Object[] enumConstants = value.getClass().getEnumConstants();
-      ArrayList<String> attributeValues = new ArrayList<String>(enumConstants.length);
-      for (Object enumConstant : enumConstants) {
-        attributeValues.add(enumConstant.toString());
+    String name = feature.getName();
+    
+    if (value instanceof Number){
+      if (nominalFeatures.containsKey(name))
+        throw new RuntimeException(String.format("The feature <%s> cannon hold number values, %s is a number.", name, value.toString()));
+      numberAttributes.put(name, new Attribute(name));
+    } else {
+      
+      if (numberAttributes.containsKey(name))
+        throw new RuntimeException(String.format("The feature <%s> can only hold number values, %s is not a number.", name, value.toString()));
+      
+      WekaNominalFeatureEncoder wekaNominalFeatureEncoder = nominalFeatures.get(name);
+      if (wekaNominalFeatureEncoder == null){
+        wekaNominalFeatureEncoder = new WekaNominalFeatureEncoder(name, true);
+        nominalFeatures.put(name, wekaNominalFeatureEncoder);
       }
-      attribute = new Attribute(name, attributeValues);
+      wekaNominalFeatureEncoder.save(value.toString());
     }
-    // if value is not a number, boolean, or enum, then we will create a
-    // string attribute
-    else {
-      attribute = new Attribute(name, (ArrayList<String>) null);
-    }
-    return attribute;
+    
   }
 
   public void finalizeFeatureSet(File outputDirectory) {
   }
 
-  public ArrayList<Attribute> getWekaAttributes() {
-    return attributes;
+  public Instances makeInstances(int size, Attribute outcomeAttribute, String relationTag) {
+    List<String> allAttributes = new ArrayList<>();
+    allAttributes.addAll(numberAttributes.keySet());
+    allAttributes.addAll(nominalFeatures.keySet());
+    Collections.sort(allAttributes);
+    
+    ArrayList<Attribute> attributes = new ArrayList<>(); 
+    for (String attributeName: allAttributes){
+      if (numberAttributes.containsKey(attributeName)){
+        attributes.add(numberAttributes.get(attributeName));
+      } else
+        attributes.add(nominalFeatures.get(attributeName).getAttribute());
+    }
+    
+    attributes.add(outcomeAttribute);
+    Instances instances = new Instances(relationTag, attributes, size);
+    instances.setClass(outcomeAttribute);
+    return instances;
   }
 
-  public Map<String, Attribute> getWekaAttributeMap() {
-    return attributeMap;
+  public SparseInstance createInstance(Iterable<Feature> features) {
+    
+    SparseInstance instance = new SparseInstance(numberAttributes.size() + nominalFeatures.size() + 1); //add one for the outcome attribute 
+    
+    for (Feature feature: features){
+      String attributeName = feature.getName();
+      if (numberAttributes.containsKey(attributeName)){
+        instance.setValue(numberAttributes.get(attributeName), ((Number)feature.getValue()).doubleValue());
+      } else
+        nominalFeatures.get(attributeName).setAttributeValue(instance, feature.getValue().toString());  
+    }
+    return instance;
   }
 
 }

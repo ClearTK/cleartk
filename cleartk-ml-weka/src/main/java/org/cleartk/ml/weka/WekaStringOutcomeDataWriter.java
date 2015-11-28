@@ -23,13 +23,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import org.cleartk.ml.CleartkProcessingException;
 import org.cleartk.ml.Feature;
-import org.cleartk.ml.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.ml.jar.DataWriter_ImplBase;
 
 import com.google.common.annotations.Beta;
@@ -49,7 +46,7 @@ import weka.core.SparseInstance;
  */
 @Beta
 public class WekaStringOutcomeDataWriter extends
-    DataWriter_ImplBase<WekaStringOutcomeClassifierBuilder, Iterable<Feature>, String, String> {
+DataWriter_ImplBase<WekaStringOutcomeClassifierBuilder, Iterable<Feature>, String, String> {
 
   private final String relationTag;
 
@@ -62,7 +59,9 @@ public class WekaStringOutcomeDataWriter extends
   public WekaStringOutcomeDataWriter(File outputDirectory, String relationTag) throws IOException {
     super(outputDirectory);
     this.setFeaturesEncoder(new WekaFeaturesEncoder());
-    this.setOutcomeEncoder(new StringToStringOutcomeEncoder());
+    this.setOutcomeEncoder(new WekaNominalFeatureEncoder("outcome", false));
+
+
     this.relationTag = relationTag;
     instanceFeatures = new ArrayList<Iterable<Feature>>();
     instanceOutcomes = new ArrayList<String>();
@@ -82,59 +81,24 @@ public class WekaStringOutcomeDataWriter extends
 
   @Override
   public void finish() throws CleartkProcessingException {
-    ArrayList<Attribute> attributes = ((WekaFeaturesEncoder) this.classifierBuilder.getFeaturesEncoder()).getWekaAttributes();
-    Map<String, Attribute> attributeMap = ((WekaFeaturesEncoder) this.classifierBuilder.getFeaturesEncoder()).getWekaAttributeMap();
-    
-    // There is a known problem writing Weka SparseInstance objects from datasets that have string
-    // attributes. Need to add a (hopefully unique for this dataset!) dummy string value at index 0
-    // so that all the real values will have value > 0 and the SparseInstance will write them out.
-    // (Note that a SparseInstance writes out the actual string values, not the indexes of those
-    // values, so it shouldn't change the data if there's an extra dummy value in the Attribute.)
-    // Read more:
-    // http://weka.wikispaces.com/Why+am+I+missing+certain+nominal+or+string+values+from+sparse+instances%3F
-    // http://weka.wikispaces.com/ARFF+%28stable+version%29#Sparse%20ARFF%20files
-    for (Attribute attribute : attributeMap.values()) {
-      if (attribute.isString() && attribute.numValues() == 0) {
-        attribute.addStringValue(UUID.randomUUID().toString());
-      }
-    }
+    WekaFeaturesEncoder wekaFeatureEncoder = (WekaFeaturesEncoder) this.classifierBuilder.getFeaturesEncoder();
+    WekaNominalFeatureEncoder wekaOutcomeEncoder= (WekaNominalFeatureEncoder) this.classifierBuilder.getOutcomeEncoder();
 
-    Attribute outcomeAttribute = createOutcomeAttribute(attributes.size());
-    attributes.add(outcomeAttribute);
-
-    Instances instances = new Instances(relationTag, attributes, instanceFeatures.size());
-    instances.setClass(outcomeAttribute);
+    Attribute outcomeAttribute = wekaOutcomeEncoder.getAttribute();
+    Instances instances = wekaFeatureEncoder.makeInstances(instanceFeatures.size(), outcomeAttribute, relationTag);
 
     for (int i = 0; i < instanceFeatures.size(); i++) {
-      SparseInstance instance = new SparseInstance(instances.numAttributes());
-
       Iterable<Feature> features = instanceFeatures.get(i);
-      for (Feature feature : features) {
-        Attribute attribute = attributeMap.get(feature.getName());
-        Object featureValue = feature.getValue();
+      String outcome = instanceOutcomes.get(i);
 
-        if (featureValue instanceof Number) {
-          double attributeValue = ((Number) feature.getValue()).doubleValue();
-          instance.setValue(attribute, attributeValue);
-        } else if (featureValue instanceof Boolean) {
-          double attributeValue = (Boolean) featureValue ? 1.0d : -1.0d;
-          instance.setValue(attribute, attributeValue);
-        } else {
-          instance.setValue(attribute, featureValue.toString());
-        }
-      }
+      SparseInstance instance = wekaFeatureEncoder.createInstance(features);
+      wekaOutcomeEncoder.setAttributeValue(instance, outcome);
 
-      instance.setValue(outcomeAttribute, instanceOutcomes.get(i));
       instances.add(instance);
     }
 
     trainingDataWriter.write(instances.toString());
     super.finish();
-  }
-
-  private Attribute createOutcomeAttribute(int attributeIndex) {
-    // TODO make sure that "outcome" is not the name of an existing feature.
-    return new Attribute("outcome", new ArrayList<String>(this.outcomeValues));
   }
 
   @Override

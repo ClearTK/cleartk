@@ -1,11 +1,11 @@
 @relation cleartk-generated
 
-@attribute A {a,b}
-@attribute B {'a b', 'b d c', bb}
-@attribute C {'a\'b', '', cc}
+@attribute apostrophe {'',apostrophe,apostrophe=,'apostrophe=\''}
+@attribute normal {'',a,b,c}
+@attribute space {'',space,'space ','space= '}
 @attribute outcome {no,yes}
 
 @data
-{0 a,1 'a b',2 'a\'b',3 yes}
-{0 b,1 'b d c',2 ''}
-{0 ?,1 bb,2 cc,3 yes}
+{0 apostrophe,1 a,2 space,3 yes}
+{0 apostrophe=,1 b,2 'space '}
+{0 'apostrophe=\'',1 c,2 'space= ',3 yes}

@@ -68,7 +68,6 @@ public class WekaDataWriterTest extends DefaultTestBase {
 
     assertThat(outputDirectory).exists();
     String actual = FileUtils.readFileToString(new File(outputDirectory, WekaStringOutcomeClassifierBuilder.TRAINING_FILE_NAME));
-    System.out.println(actual);
     String expected = FileUtils.readFileToString(getFile(expectedFileName));
     assertThat(actual).isEqualTo(expected);
   }
@@ -109,22 +108,26 @@ public class WekaDataWriterTest extends DefaultTestBase {
 
     public void process(JCas cas) throws AnalysisEngineProcessException {
       List<Feature> features = Arrays.asList(
-          new Feature("A", "a"),
-          new Feature("B", "a b"),
-          new Feature("C", "a'b"));
+          new Feature("normal", "a")
+          , new Feature("space", "space")
+          , new Feature("apostrophe", "apostrophe")
+          );
       Instance<String> instance = new Instance<String>("yes", features);
       this.dataWriter.write(instance);
 
       features = Arrays.asList(
-          new Feature("A", "b"),
-          new Feature("B", "b d c"),
-          new Feature("C", ""));
+          new Feature("normal", "b")
+          , new Feature("space", "space ")
+          , new Feature("apostrophe", "apostrophe=")
+          );
       instance = new Instance<String>("no", features);
       this.dataWriter.write(instance);
 
       features = Arrays.asList(
-          new Feature("B", "bb"),
-          new Feature("C", "cc"));
+          new Feature("normal", "c")
+          , new Feature("space", "space= ")
+          , new Feature("apostrophe", "apostrophe='")
+          );
       instance = new Instance<String>("yes", features);
       this.dataWriter.write(instance);
       
