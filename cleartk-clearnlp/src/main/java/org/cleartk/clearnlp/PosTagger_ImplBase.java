@@ -23,6 +23,7 @@
  */
 package org.cleartk.clearnlp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
@@ -35,12 +36,14 @@ import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.annotations.Beta;
-import com.clearnlp.component.AbstractComponent;
-import com.clearnlp.dependency.DEPNode;
-import com.clearnlp.dependency.DEPTree;
-import com.clearnlp.nlp.NLPGetter;
-import com.clearnlp.nlp.NLPMode;
-import com.clearnlp.reader.AbstractReader;
+
+import edu.emory.clir.clearnlp.component.AbstractComponent;
+import edu.emory.clir.clearnlp.component.utils.GlobalLexica;
+import edu.emory.clir.clearnlp.component.utils.NLPUtils;
+import edu.emory.clir.clearnlp.dependency.DEPNode;
+import edu.emory.clir.clearnlp.dependency.DEPTree;
+import edu.emory.clir.clearnlp.util.lang.TLanguage;
+
 
 /**
  * <br>
@@ -65,7 +68,7 @@ import com.clearnlp.reader.AbstractReader;
 public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
     JCasAnnotator_ImplBase {
 
-  public static final String DEFAULT_MODEL_PATH = "general-en";
+  public static final String DEFAULT_MODEL_PATH = "general-en-pos.xz";
   
   public static final String PARAM_MODEL_PATH = "modelPath";
   
@@ -77,23 +80,15 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
   private String modelPath;
 
   
-  /*
-  public static final String PARAM_MODEL_URI = "modelUri";
-
-  @ConfigurationParameter(
-      name = PARAM_MODEL_URI,
-      mandatory = false,
-      description = "This parameter provides the URI to the pos tagger model.")
-  private URI modelUri;
-  */
-
   public static final String PARAM_LANGUAGE_CODE = "languageCode";
+  
+  public static final String DEFAULT_LANGUAGE_CODE = TLanguage.ENGLISH.toString();
 
   @ConfigurationParameter(
       name = PARAM_LANGUAGE_CODE,
       mandatory = false,
-      description = "Language code for the pos tagger (default value=en).",
-      defaultValue = AbstractReader.LANG_EN)
+      description = "Language code for the pos tagger (default value=ENGLISH).",
+      defaultValue = "ENGLISH")
   private String languageCode;
 
   public static final String PARAM_WINDOW_CLASS = "windowClass";
@@ -119,8 +114,15 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
     try {
+      
+      
+      // initialize global lexica
+      List<String> paths = new ArrayList<>();
+      paths.add("brown-rcv1.clean.tokenized-CoNLL03.txt-c1000-freq1.txt.xz");
+      GlobalLexica.initDistributionalSemanticsWords(paths);
+      
       // Load POS tagger model
-      this.tagger = NLPGetter.getComponent(modelPath, languageCode, NLPMode.MODE_POS);
+      this.tagger = NLPUtils.getPOSTagger(TLanguage.getType(languageCode), modelPath);
 
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
@@ -139,9 +141,10 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
 
       List<String> tokenStrings = JCasUtil.toText(tokens);
 
-      // As of version 1.3.0, ClearNLP does all processing to go through its own dependency tree
+      // As of version 1.3.0, ClearNLP does all processing through its own dependency tree
       // structure
-      DEPTree clearNlpDepTree = NLPGetter.toDEPTree(tokenStrings);
+      DEPTree clearNlpDepTree = new DEPTree(tokenStrings);
+
       this.tagger.process(clearNlpDepTree);
 
       // Note the ClearNLP counts index 0 as the sentence dependency node, so the POS tag indices
@@ -149,8 +152,7 @@ public abstract class PosTagger_ImplBase<TOKEN_TYPE extends Annotation> extends
       for (int i = 0; i < tokens.size(); i++) {
         TOKEN_TYPE token = tokens.get(i);
         DEPNode node = clearNlpDepTree.get(i+1);
-        this.tokenOps.setPos(jCas, token, node.pos);
-        this.tokenOps.setLemma(jCas, token, node.lemma);
+        this.tokenOps.setPos(jCas, token, node.getPOSTag());
       }
     }
   }

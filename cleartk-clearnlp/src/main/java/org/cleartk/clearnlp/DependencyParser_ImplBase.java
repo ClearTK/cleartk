@@ -23,7 +23,6 @@
  */
 package org.cleartk.clearnlp;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,14 +40,15 @@ import com.google.common.annotations.Beta;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import com.clearnlp.component.AbstractComponent;
-import com.clearnlp.dependency.DEPFeat;
-import com.clearnlp.dependency.DEPNode;
-import com.clearnlp.dependency.DEPTree;
-import com.clearnlp.nlp.NLPGetter;
-import com.clearnlp.nlp.NLPMode;
-import com.clearnlp.reader.AbstractReader;
 
+import edu.emory.clir.clearnlp.component.AbstractComponent;
+import edu.emory.clir.clearnlp.component.mode.dep.DEPConfiguration;
+import edu.emory.clir.clearnlp.component.utils.GlobalLexica;
+import edu.emory.clir.clearnlp.component.utils.NLPUtils;
+import edu.emory.clir.clearnlp.dependency.DEPFeat;
+import edu.emory.clir.clearnlp.dependency.DEPNode;
+import edu.emory.clir.clearnlp.dependency.DEPTree;
+import edu.emory.clir.clearnlp.util.lang.TLanguage;
 /**
  * <br>
  * Copyright (c) 2012, Regents of the University of Colorado <br>
@@ -71,7 +71,7 @@ import com.clearnlp.reader.AbstractReader;
 public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_TYPE extends Annotation, DEPENDENCY_NODE_TYPE extends TOP, DEPENDENCY_ROOT_NODE_TYPE extends DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE extends TOP>
     extends JCasAnnotator_ImplBase {
 
-  public static final String DEFAULT_MODEL_PATH = "general-en";
+  public static final String DEFAULT_MODEL_PATH = "general-en-dep.xz";
 
   public static final String PARAM_PARSER_MODEL_PATH = "parserModelPath";
 
@@ -89,7 +89,7 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation, 
       name = PARAM_LANGUAGE_CODE,
       mandatory = false,
       description = "Language code for the dependency parser (default value=en).",
-      defaultValue = AbstractReader.LANG_EN)
+      defaultValue = "ENGLISH")
   private String languageCode;
 
   public static final String PARAM_WINDOW_CLASS = "windowClass";
@@ -119,14 +119,14 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation, 
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
-    try {
-      this.parser = NLPGetter.getComponent(
-          this.parserModelPath,
-          this.languageCode,
-          NLPMode.MODE_DEP);
-    } catch (IOException e) {
-      throw new ResourceInitializationException(e);
-    }
+    
+    // FIXME: Is this possible to put into a shared resource so it stays in memory for all annotators?
+    // initialize global lexica
+    List<String> paths = new ArrayList<>();
+    paths.add("brown-rcv1.clean.tokenized-CoNLL03.txt-c1000-freq1.txt.xz");
+    GlobalLexica.initDistributionalSemanticsWords(paths);
+
+    this.parser = NLPUtils.getDEPParser(TLanguage.getType(languageCode), this.parserModelPath, new DEPConfiguration("root"));
     
   }
 
@@ -137,7 +137,7 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation, 
       List<TOKEN_TYPE> tokens = this.tokenOps.selectTokens(jCas, window);
 
       // Extract data from CAS and stuff it into ClearNLP data structures
-      DEPTree tree = new DEPTree();
+      DEPTree tree = new DEPTree(tokens.size());
       for (int i = 0; i < tokens.size(); i++) {
         TOKEN_TYPE token = tokens.get(i);
         String lemma = this.tokenOps.getLemma(jCas, token);
@@ -179,7 +179,7 @@ public abstract class DependencyParser_ImplBase<WINDOW_TYPE extends Annotation, 
     for (int i = 0; i < tree.size(); i++) {
       DEPNode parserNode = tree.get(i);
       if (parserNode.hasHead()) {
-        int headIndex = parserNode.getHead().id;
+        int headIndex = parserNode.getHead().getID();
         DEPENDENCY_NODE_TYPE node = nodes.get(i);
         DEPENDENCY_NODE_TYPE headNode = nodes.get(headIndex);
         DEPENDENCY_RELATION_TYPE rel = this.dependencyOps.createRelation(

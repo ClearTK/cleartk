@@ -37,10 +37,9 @@ import org.apache.uima.jcas.JCas;
 import org.cleartk.ml.Feature;
 import org.cleartk.ml.Instance;
 import org.cleartk.ml.feature.extractor.CleartkExtractor;
-import org.cleartk.ml.feature.extractor.CoveredTextExtractor;
 import org.cleartk.ml.feature.extractor.CleartkExtractor.Bag;
 import org.cleartk.ml.feature.extractor.CleartkExtractor.Covered;
-import org.cleartk.ml.feature.selection.MutualInformationFeatureSelectionExtractor;
+import org.cleartk.ml.feature.extractor.CoveredTextExtractor;
 import org.cleartk.ml.feature.selection.MutualInformationFeatureSelectionExtractor.MutualInformationStats;
 import org.cleartk.test.util.DefaultTestBase;
 import org.cleartk.test.util.type.Sentence;
@@ -80,7 +79,9 @@ public class MutualInformationTest extends DefaultTestBase {
     Assert.assertEquals((int) stats.classConditionalCounts.get("export", "poultry"), 49);
     Assert.assertEquals((int) stats.classConditionalCounts.get("export", "not_poultry"), 141);
     Assert.assertEquals((int) stats.classConditionalCounts.get("not_export", "poultry"), 27652);
-    Assert.assertEquals((int) stats.classConditionalCounts.get("not_export", "not_poultry"), 774106);
+    Assert.assertEquals(
+        (int) stats.classConditionalCounts.get("not_export", "not_poultry"),
+        774106);
 
     Assert.assertEquals(stats.classCounts.count("poultry"), 27701);
     Assert.assertEquals(stats.classCounts.count("not_poultry"), 774247);
@@ -88,7 +89,10 @@ public class MutualInformationTest extends DefaultTestBase {
     Assert.assertEquals(stats.mutualInformation("export", "poultry"), 0.0000766, 0.00000005);
     Assert.assertEquals(stats.mutualInformation("export", "not_poultry"), 0.0000766, 0.00000005);
     Assert.assertEquals(stats.mutualInformation("not_export", "poultry"), 0.0000766, 0.00000005);
-    Assert.assertEquals(stats.mutualInformation("not_export", "not_poultry"), 0.0000766, 0.00000005);
+    Assert.assertEquals(
+        stats.mutualInformation("not_export", "not_poultry"),
+        0.0000766,
+        0.00000005);
   }
 
   @Test
@@ -132,8 +136,8 @@ public class MutualInformationTest extends DefaultTestBase {
     Assert.assertEquals(5, selectedFeatures.size());
     Assert.assertEquals("Bag_Covered:monkey", selectedFeatures.get(0));
     Assert.assertEquals("Bag_Covered:girl", selectedFeatures.get(1));
-    Assert.assertEquals("Bag_Covered:wolf", selectedFeatures.get(2));
-    Assert.assertEquals("Bag_Covered:pig", selectedFeatures.get(3));
+    Assert.assertEquals("Bag_Covered:pig", selectedFeatures.get(2));
+    Assert.assertEquals("Bag_Covered:wolf", selectedFeatures.get(3));
     Assert.assertEquals("Bag_Covered:boy", selectedFeatures.get(4));
 
     // Extract features using selected features model
@@ -164,8 +168,8 @@ public class MutualInformationTest extends DefaultTestBase {
     return instances;
   }
 
-  private static final String CLASS_A_TEXT = "The boy and the cat . \n"
-      + "The boy and the dog . \n" + "The boy and the wolf . \n" + "The boy and the pig . \n";
+  private static final String CLASS_A_TEXT = "The boy and the cat . \n" + "The boy and the dog . \n"
+      + "The boy and the wolf . \n" + "The boy and the pig . \n";
 
   private static final String CLASS_B_TEXT = "The girl and the cat . \n"
       + "The girl and the dog . \n" + "The girl and the boy . \n" + "The girl and the chicken . \n";

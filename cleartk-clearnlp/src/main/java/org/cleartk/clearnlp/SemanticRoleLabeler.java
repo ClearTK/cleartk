@@ -75,10 +75,6 @@ public class SemanticRoleLabeler extends SemanticRoleLabeler_ImplBase<Sentence, 
     return AnalysisEngineFactory.createEngineDescription(SemanticRoleLabeler.class, 
       SemanticRoleLabeler_ImplBase.PARAM_LANGUAGE_CODE,
       languageCode,
-      SemanticRoleLabeler_ImplBase.PARAM_PRED_ID_MODEL_PATH,
-      predIdModelPath,
-      SemanticRoleLabeler_ImplBase.PARAM_ROLESET_MODEL_PATH,
-      rolesetModelPath,
       SemanticRoleLabeler_ImplBase.PARAM_SRL_MODEL_PATH,
       srlModelPath);
   }

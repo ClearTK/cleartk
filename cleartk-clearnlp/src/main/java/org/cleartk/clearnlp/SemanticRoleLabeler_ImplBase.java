@@ -23,6 +23,7 @@
  */
 package org.cleartk.clearnlp;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,15 +42,16 @@ import org.apache.uima.fit.util.JCasUtil;
 import com.google.common.annotations.Beta;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.clearnlp.component.AbstractComponent;
-import com.clearnlp.dependency.DEPArc;
-import com.clearnlp.dependency.DEPLib;
-import com.clearnlp.dependency.DEPNode;
-import com.clearnlp.dependency.DEPTree;
-import com.clearnlp.dependency.srl.SRLArc;
-import com.clearnlp.nlp.NLPGetter;
-import com.clearnlp.nlp.NLPMode;
-import com.clearnlp.reader.AbstractReader;
+
+import edu.emory.clir.clearnlp.component.AbstractComponent;
+import edu.emory.clir.clearnlp.component.mode.srl.SRLConfiguration;
+import edu.emory.clir.clearnlp.component.utils.GlobalLexica;
+import edu.emory.clir.clearnlp.component.utils.NLPUtils;
+import edu.emory.clir.clearnlp.dependency.DEPLib;
+import edu.emory.clir.clearnlp.dependency.DEPNode;
+import edu.emory.clir.clearnlp.dependency.DEPTree;
+import edu.emory.clir.clearnlp.util.arc.SRLArc;
+import edu.emory.clir.clearnlp.util.lang.TLanguage;
 
 /**
  * <br>
@@ -72,19 +74,7 @@ import com.clearnlp.reader.AbstractReader;
 public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotation, TOKEN_TYPE extends Annotation, DEPENDENCY_NODE_TYPE extends TOP, DEPENDENCY_ROOT_NODE_TYPE extends DEPENDENCY_NODE_TYPE, DEPENDENCY_RELATION_TYPE extends TOP, ARGUMENT_TYPE extends TOP, PREDICATE_TYPE extends TOP>
     extends JCasAnnotator_ImplBase {
 
-  /*
-  public static final String DEFAULT_PRED_ID_MODEL_FILE_NAME = "ontonotes-en-pred-1.3.0.tgz";
-
-  public static final String DEFAULT_ROLESET_MODEL_FILE_NAME = "ontonotes-en-role-1.3.0.tgz";
-
-  public static final String DEFAULT_SRL_MODEL_FILE_NAME = "ontonotes-en-srl-1.3.0.tgz";
-  */
-
-  public static final String DEFAULT_PRED_ID_MODEL_PATH = "general-en";
-
-  public static final String DEFAULT_ROLESET_MODEL_PATH = "general-en";
-
-  public static final String DEFAULT_SRL_MODEL_PATH = "general-en";
+  public static final String DEFAULT_SRL_MODEL_PATH = "general-en-srl.xz";
 
   public static final String PARAM_SRL_MODEL_PATH = "srlModelPath";
   @ConfigurationParameter(
@@ -94,31 +84,14 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
       defaultValue=DEFAULT_SRL_MODEL_PATH)
   private String srlModelPath;
 
-  public static final String PARAM_PRED_ID_MODEL_PATH = "predIdModelPath";
-  @ConfigurationParameter(
-      name = PARAM_PRED_ID_MODEL_PATH,
-      mandatory = false,
-      description = "This parameter provides the path pointing to the predicate identifier model.  If none is specified it will use the default ontonotes model.",
-      defaultValue=DEFAULT_PRED_ID_MODEL_PATH)
-  private String predIdModelPath;
-
-  public static final String PARAM_ROLESET_MODEL_PATH = "rolesetModelPath";
-
-  @ConfigurationParameter(
-      name = PARAM_ROLESET_MODEL_PATH,
-      mandatory = false,
-      description = "This parameter provides the path pointing to the role set classifier model.  If none is specified it will use the default ontonotes model.",
-      defaultValue=DEFAULT_ROLESET_MODEL_PATH)
-  private String rolesetModelPath;
-
   public static final String PARAM_LANGUAGE_CODE = "languageCode";
 
   @ConfigurationParameter(
       name = PARAM_LANGUAGE_CODE,
       mandatory = false,
       description = "Language code for the semantic role labeler (default value=en).",
-      defaultValue = AbstractReader.LANG_EN)
-  private String languageCode;
+      defaultValue = "ENGLISH")
+  private TLanguage languageCode;
 
   public static final String PARAM_WINDOW_CLASS = "windowClass";
 
@@ -151,8 +124,16 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
   @Override
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
+    
+    // initialize global lexica
+    // FIXME: This should probably be put in a shared resource for multiple analysis engines
+    List<String> paths = new ArrayList<>();
+    paths.add("brown-rcv1.clean.tokenized-CoNLL03.txt-c1000-freq1.txt.xz");
+    GlobalLexica.initDistributionalSemanticsWords(paths);
+    
 
     try {
+      /*
       this.predIdentifier = NLPGetter.getComponent(
           this.predIdModelPath,
           languageCode,
@@ -162,11 +143,12 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
           this.rolesetModelPath,
           languageCode,
           NLPMode.MODE_ROLE);
+          */
 
-      this.srlabeler = NLPGetter.getComponent(
-          this.srlModelPath,
+      this.srlabeler = NLPUtils.getSRLabeler(
           languageCode,
-          NLPMode.MODE_SRL);
+          this.srlModelPath,
+          new SRLConfiguration(4, 3));
 
     } catch (Exception e) {
       throw new ResourceInitializationException(e);
@@ -199,13 +181,14 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
       }
 
       // Build dependency tree from token information
-      DEPTree tree = NLPGetter.toDEPTree(tokenStrings);
+      DEPTree tree = new DEPTree(tokenStrings);
       // DEPTree tree = new DEPTree();
       for (int i = 1; i < tree.size(); i++) {
         TOKEN_TYPE token = tokens.get(i - 1);
         DEPNode node = tree.get(i);
-        node.pos = this.tokenOps.getPos(jCas, token);
-        node.lemma = this.tokenOps.getLemma(jCas, token);
+        node.setPOSTag(this.tokenOps.getPos(jCas, token));
+
+        node.setLemma(this.tokenOps.getLemma(jCas, token));
       }
 
       // Build map between CAS dependency node and id for later creation of
@@ -242,8 +225,8 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
 
       // Run the SRL
       if (!skipSentence) {
-        this.predIdentifier.process(tree);
-        this.roleSetClassifier.process(tree);
+        //this.predIdentifier.process(tree);
+        //this.roleSetClassifier.process(tree);
         this.srlabeler.process(tree);
 
         // Extract SRL information and create ClearTK CAS types
@@ -272,14 +255,14 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
       DEPNode parserNode = tree.get(i);
       TOKEN_TYPE token = tokens.get(i - 1);
 
-      List<SRLArc> semanticHeads = parserNode.getSHeads();
+      List<SRLArc> semanticHeads = parserNode.getSemanticHeadArcList();
       if (semanticHeads.isEmpty()) {
         continue;
       }
 
       // Parse semantic head relations to get SRL triplets
-      for (DEPArc shead : semanticHeads) {
-        int headId = shead.getNode().id;
+      for (SRLArc shead : semanticHeads) {
+        int headId = shead.getNode().getID();
         TOKEN_TYPE headToken = tokens.get(headId - 1);
         PREDICATE_TYPE pred;
         List<ARGUMENT_TYPE> args;
@@ -305,10 +288,6 @@ public abstract class SemanticRoleLabeler_ImplBase<WINDOW_TYPE extends Annotatio
     }
 
   }
-
-  private AbstractComponent predIdentifier;
-
-  private AbstractComponent roleSetClassifier;
 
   private AbstractComponent srlabeler;
 }
