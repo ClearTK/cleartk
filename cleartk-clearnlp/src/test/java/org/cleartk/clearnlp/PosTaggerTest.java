@@ -67,14 +67,14 @@ public class PosTaggerTest extends CleartkTestBase {
 		
     List<String> expectedPos = Arrays.asList("DT JJ NN VBD RB IN DT JJ NN .".split(" "));
 		List<String> actualPos = new ArrayList<String>();
-    List<String> expectedLemma = Arrays.asList("the brown fox jump quickly over the lazy dog .".split(" "));
-		List<String> actualLemma = new ArrayList<String>();
+    //List<String> expectedLemma = Arrays.asList("the brown fox jump quickly over the lazy dog .".split(" "));
+		//List<String> actualLemma = new ArrayList<String>();
 		for (Token token : JCasUtil.select(this.jCas, Token.class)) {
 			actualPos.add(token.getPos());
-			actualLemma.add(token.getLemma());
+			//actualLemma.add(token.getLemma());
 		}
 		Assert.assertEquals(expectedPos, actualPos);
-		Assert.assertEquals(expectedLemma, actualLemma);
+		//Assert.assertEquals(expectedLemma, actualLemma);
 	}
 	
 }

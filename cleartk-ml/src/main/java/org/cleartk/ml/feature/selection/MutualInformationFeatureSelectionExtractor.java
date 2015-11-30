@@ -50,13 +50,13 @@ import org.cleartk.ml.feature.transform.TransformableFeature;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Table;
+import com.google.common.collect.TreeBasedTable;
 
 /**
  * <br>
@@ -70,8 +70,8 @@ import com.google.common.collect.Table;
  * @author Lee Becker
  * 
  */
-public class MutualInformationFeatureSelectionExtractor<OUTCOME_T, FOCUS_T extends Annotation>
-    extends FeatureSelectionExtractor<OUTCOME_T> implements FeatureExtractor1<FOCUS_T> {
+public class MutualInformationFeatureSelectionExtractor<OUTCOME_T extends Comparable<?>, FOCUS_T extends Annotation>
+    extends FeatureSelectionExtractor<OUTCOME_T>implements FeatureExtractor1<FOCUS_T> {
 
   /**
    * Specifies how scores for each outcome should be combined/aggregated into a single score
@@ -83,8 +83,8 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T, FOCUS_T exten
     // MERGE, // Take k-largest mutual information values for each class and merge into a single
     // collection - currently omitted because it requires a different extraction flow
 
-    public abstract static class CombineScoreFunction<OUTCOME_T> implements
-        Function<Map<OUTCOME_T, Double>, Double> {
+    public abstract static class CombineScoreFunction<OUTCOME_T>
+        implements Function<Map<OUTCOME_T, Double>, Double> {
     }
 
     public static class AverageScores<OUTCOME_T> extends CombineScoreFunction<OUTCOME_T> {
@@ -112,7 +112,7 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T, FOCUS_T exten
   /**
    * Helper class for aggregating and computing mutual information statistics
    */
-  public static class MutualInformationStats<OUTCOME_T> {
+  public static class MutualInformationStats<OUTCOME_T extends Comparable<?>> {
     protected Multiset<OUTCOME_T> classCounts;
 
     protected Table<String, OUTCOME_T, Integer> classConditionalCounts;
@@ -121,7 +121,7 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T, FOCUS_T exten
 
     public MutualInformationStats(double smoothingCount) {
       this.classCounts = HashMultiset.<OUTCOME_T> create();
-      this.classConditionalCounts = HashBasedTable.<String, OUTCOME_T, Integer> create();
+      this.classConditionalCounts = TreeBasedTable.<String, OUTCOME_T, Integer> create();
       this.smoothingCount += smoothingCount;
     }
 
@@ -158,10 +158,10 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T, FOCUS_T exten
       for (int nFeature = 0; nFeature <= 1; nFeature++) {
         for (int nOutcome = 0; nOutcome <= 1; nOutcome++) {
           featureOutcomeCounts[nFeature][nOutcome] += smoothingCount;
-          information += (double) featureOutcomeCounts[nFeature][nOutcome]
-              / (double) n
-              * Math.log(((double) n * featureOutcomeCounts[nFeature][nOutcome])
-                  / ((double) featureCounts[nFeature] * outcomeCounts[nOutcome]));
+          information += (double) featureOutcomeCounts[nFeature][nOutcome] / (double) n
+              * Math.log(
+                  ((double) n * featureOutcomeCounts[nFeature][nOutcome])
+                      / ((double) featureCounts[nFeature] * outcomeCounts[nOutcome]));
         }
       }
 
@@ -192,10 +192,8 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T, FOCUS_T exten
         writer.append(featureName);
         for (OUTCOME_T outcome : this.classConditionalCounts.columnKeySet()) {
           writer.append("\t");
-          writer.append(String.format(
-              Locale.ROOT,
-              "%f",
-              this.mutualInformation(featureName, outcome)));
+          writer.append(
+              String.format(Locale.ROOT, "%f", this.mutualInformation(featureName, outcome)));
         }
         writer.append("\n");
       }
@@ -208,7 +206,8 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T, FOCUS_T exten
       return new ComputeFeatureScore<OUTCOME_T>(this, combineScoreMethod);
     }
 
-    public static class ComputeFeatureScore<OUTCOME_T> implements Function<String, Double> {
+    public static class ComputeFeatureScore<OUTCOME_T extends Comparable<?>>
+        implements Function<String, Double> {
 
       private MutualInformationStats<OUTCOME_T> stats;
 
@@ -242,8 +241,9 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T, FOCUS_T exten
   }
 
   public String nameFeature(Feature feature) {
-    return (feature.getValue() instanceof Number) ? feature.getName() : feature.getName() + ":"
-        + feature.getValue();
+    return (feature.getValue() instanceof Number)
+        ? feature.getName()
+        : feature.getName() + ":" + feature.getValue();
   }
 
   protected boolean isTrained;
@@ -297,7 +297,8 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T, FOCUS_T exten
   }
 
   @Override
-  public List<Feature> extract(JCas view, FOCUS_T focusAnnotation) throws CleartkExtractorException {
+  public List<Feature> extract(JCas view, FOCUS_T focusAnnotation)
+      throws CleartkExtractorException {
 
     List<Feature> extracted = this.subExtractor.extract(view, focusAnnotation);
     List<Feature> result = new ArrayList<Feature>();
@@ -332,8 +333,8 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T, FOCUS_T exten
     Set<String> featureNames = mutualInfoStats.classConditionalCounts.rowKeySet();
 
     this.selectedFeatures = Ordering.natural().onResultOf(
-        this.mutualInfoStats.getScoreFunction(this.combineScoreMethod)).reverse().immutableSortedCopy(
-        featureNames);
+        this.mutualInfoStats.getScoreFunction(
+            this.combineScoreMethod)).reverse().immutableSortedCopy(featureNames);
     this.isTrained = true;
   }
 
@@ -348,7 +349,8 @@ public class MutualInformationFeatureSelectionExtractor<OUTCOME_T, FOCUS_T exten
     writer.append(this.combineScoreMethod.toString());
     writer.append("\n");
 
-    ComputeFeatureScore<OUTCOME_T> computeScore = this.mutualInfoStats.getScoreFunction(this.combineScoreMethod);
+    ComputeFeatureScore<OUTCOME_T> computeScore = this.mutualInfoStats.getScoreFunction(
+        this.combineScoreMethod);
     for (String feature : this.selectedFeatures) {
       writer.append(String.format(Locale.ROOT, "%s\t%f\n", feature, computeScore.apply(feature)));
     }
