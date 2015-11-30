@@ -21,31 +21,51 @@
   	<artifactId>cleartk-type-system</artifactId>
   </dependency>
   <dependency>
-  	<groupId>com.clearnlp</groupId>
-  	<artifactId>clearnlp</artifactId>
-  	<version>2.0.2</version>
+    <groupId>edu.emory.clir</groupId>
+    <artifactId>clearnlp</artifactId>
+    <version>3.2.0</version>
   </dependency>
-  <!--  ClearNLP models -->
+
+  <!--  ClearNLP dictionaries -->
    <dependency>
-    <groupId>com.clearnlp</groupId>
-    <artifactId>clearnlp-dictionary</artifactId>
-    <version>1.0</version>
-  </dependency>
-  <dependency>
-    <groupId>com.clearnlp</groupId>
-    <artifactId>clearnlp-general-en-pos</artifactId>
-    <version>1.1</version>
-  </dependency>
-  <dependency>
-    <groupId>com.clearnlp</groupId>
-    <artifactId>clearnlp-general-en-dep</artifactId>
-    <version>1.2</version>
-  </dependency>
-  <dependency>
-    <groupId>com.clearnlp</groupId>
-    <artifactId>clearnlp-general-en-srl</artifactId>
-    <version>1.1</version>
-  </dependency>
+      <groupId>edu.emory.clir</groupId>
+      <artifactId>clearnlp-dictionary</artifactId>
+      <version>3.2</version>
+   </dependency>
+   <dependency>
+      <groupId>edu.emory.clir</groupId>
+      <artifactId>clearnlp-global-lexica</artifactId>
+      <version>3.1</version>
+   </dependency>
+   <dependency>
+    <groupId>edu.emory.clir</groupId>
+    <artifactId>clearnlp-general-en-ner-gazetteer</artifactId>
+    <version>3.0</version>
+   </dependency>
+
+  <!--  ClearNLP models -->
+    <dependency>
+        <groupId>edu.emory.clir</groupId>
+        <artifactId>clearnlp-general-en-pos</artifactId>
+        <version>3.2</version>
+    </dependency>
+    <dependency>
+        <groupId>edu.emory.clir</groupId>
+        <artifactId>clearnlp-general-en-dep</artifactId>
+        <version>3.2</version>
+    </dependency>
+    <dependency>
+        <groupId>edu.emory.clir</groupId>
+        <artifactId>clearnlp-general-en-ner</artifactId>
+        <version>3.1</version>
+    </dependency>
+   <dependency>
+        <groupId>edu.emory.clir</groupId>
+        <artifactId>clearnlp-general-en-srl</artifactId>
+        <version>3.0</version>
+    </dependency>
+
+
   
   
   <dependency>
@@ -59,7 +79,7 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<argLine>-Xmx3g</argLine>
+					<argLine>-Xmx4g</argLine>
 				</configuration>
 			</plugin>
 		</plugins>

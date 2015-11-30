@@ -23,45 +23,66 @@
  */
 package org.cleartk.clearnlp;
 
-import java.net.URI;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
+
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
-public class Tokenizer extends Tokenizer_ImplBase<Token> {
+public class Tokenizer extends Tokenizer_ImplBase<Token, Sentence> {
   
   
   private CleartkTokenOps tokenOps;
+  private CleartkSentenceOps sentenceOps;
 
   @Override
   public void initialize(UimaContext context) throws ResourceInitializationException {
     super.initialize(context);
     this.tokenOps = new CleartkTokenOps();
+    this.sentenceOps = new CleartkSentenceOps();
   }
 
   public static AnalysisEngineDescription getDescription() throws ResourceInitializationException {
-    return AnalysisEngineFactory.createEngineDescription(Tokenizer.class);
+    return getTokenizerDescription("ENGLISH");
   }
+  
+  public static AnalysisEngineDescription getTokenizerDescription(String languageCode) throws ResourceInitializationException {
 
-  public static AnalysisEngineDescription getDescription(String languageCode) throws ResourceInitializationException {
-    return AnalysisEngineFactory.createEngineDescription(Tokenizer.class,
-        Tokenizer_ImplBase.PARAM_LANGUAGE_CODE,
-        languageCode);
-  }
-
-  public static AnalysisEngineDescription getDescription(String languageCode, URI dictionaryUri) throws ResourceInitializationException {
     return AnalysisEngineFactory.createEngineDescription(Tokenizer.class,
         Tokenizer_ImplBase.PARAM_LANGUAGE_CODE,
         languageCode,
-        Tokenizer_ImplBase.PARAM_DICTIONARY_URI,
-        dictionaryUri);
+        Tokenizer_ImplBase.PARAM_WINDOW_CLASS,
+        "org.cleartk.token.type.Sentence"
+        );
+  }
+
+  public static AnalysisEngineDescription getSentenceSegmenterAndTokenizerDescription(String languageCode) throws ResourceInitializationException {
+
+    return AnalysisEngineFactory.createEngineDescription(Tokenizer.class,
+        Tokenizer_ImplBase.PARAM_LANGUAGE_CODE,
+        languageCode,
+        //Tokenizer_ImplBase.PARAM_WINDOW_CLASS,
+        //org.cleartk.token.type.Sentence.class,
+        Tokenizer_ImplBase.PARAM_SEGMENT_SENTENCES,
+        true
+        );
+  }
+  
+  
+  public static AnalysisEngineDescription getDescription(String languageCode) throws ResourceInitializationException {
+    return getTokenizerDescription(languageCode);
   }
 
   @Override
   protected TokenOps<Token> getTokenOps() {
     return this.tokenOps;
+  }
+
+  @Override
+  protected SentenceOps<Sentence> getSentenceOps() {
+    return this.sentenceOps;
   }
 }
 

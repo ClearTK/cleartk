@@ -43,7 +43,7 @@ public class TokenizerTest extends CleartkTestBase {
 
 	static {
 		try {
-			tokenizer = AnalysisEngineFactory.createEngine(Tokenizer.getDescription());
+			tokenizer = AnalysisEngineFactory.createEngine(Tokenizer.getDescription("ENGLISH"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,7 +61,7 @@ public class TokenizerTest extends CleartkTestBase {
 		SimplePipeline.runPipeline(jCas, tokenizer);
 		
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
-		assertEquals(36, tokenIndex.size());
+		assertEquals(32, tokenIndex.size());
 
 		int index = 0;
 		assertEquals("\"", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
@@ -85,11 +85,7 @@ public class TokenizerTest extends CleartkTestBase {
 		assertEquals("\"", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("What", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("a", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
-		assertEquals("@", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
-		assertEquals("#", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
-		assertEquals("$", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
-		assertEquals("%", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
-		assertEquals("*", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("@#$%*", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("!", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("a", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("-", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
@@ -193,7 +189,7 @@ public class TokenizerTest extends CleartkTestBase {
 
 		SimplePipeline.runPipeline(jCas, tokenizer);
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
-		assertEquals(15, tokenIndex.size());
+		assertEquals(13, tokenIndex.size());
 
 
 		int index = 0;
@@ -208,9 +204,7 @@ public class TokenizerTest extends CleartkTestBase {
 		assertEquals("should", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("'ve", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("paid", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
-		assertEquals("only", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
-		assertEquals("$", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
-		assertEquals("16.75", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("only$16.75", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals(".", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 	}
 
@@ -221,11 +215,10 @@ public class TokenizerTest extends CleartkTestBase {
 		new Sentence(jCas, 0, 54).addToIndexes();
 		SimplePipeline.runPipeline(jCas, tokenizer);
 		FSIndex<Annotation> tokenIndex = jCas.getAnnotationIndex(Token.type);
-		assertEquals(19, tokenIndex.size());
+		assertEquals(18, tokenIndex.size());
 
 		int index = 0;
-		assertEquals("1", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
-		assertEquals(".", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("1.", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("Buy", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("a", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("new", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
@@ -237,8 +230,8 @@ public class TokenizerTest extends CleartkTestBase {
 		assertEquals("owned", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("in", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("the", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
-		assertEquals("U.S.", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
-		assertEquals(".", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("U.S", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
+		assertEquals("..", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals(")", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals(".", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
 		assertEquals("15", JCasUtil.selectByIndex(jCas, Token.class, index++).getCoveredText());
