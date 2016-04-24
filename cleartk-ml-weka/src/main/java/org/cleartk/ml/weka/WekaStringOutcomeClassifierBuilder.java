@@ -136,7 +136,6 @@ public class WekaStringOutcomeClassifierBuilder extends
     } catch (ClassNotFoundException e) {
       throw new RuntimeException(e);
     }
-    classifierStream.close();
 
   }
 }
