@@ -77,6 +77,9 @@
 		<module>cleartk-summarization</module>
 		<module>cleartk-timeml</module>
 		<module>cleartk-examples</module>
+		
+		<module>cleartk-ml-script</module>
+		<module>cleartk-ml-script-keras</module>
 	</modules>
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
