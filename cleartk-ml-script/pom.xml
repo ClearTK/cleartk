@@ -6,7 +6,7 @@
     <version>2.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>cleartk-ml-script</artifactId>
-  <name>cleartk-ml-script</name>
+  <name>ClearTK ML Script</name>
   <description>This module provides connectors for building classifiers with arbitrary scripts. This was originally intended to be a connector to neural network libraries but is quite general. The way to use these connetors is to simply provide a path to a directory containing a train.* and classify.* script that will be called at the appropriate times.</description>
   <dependencies>
   	<dependency>

@@ -54,8 +54,27 @@ import org.junit.Test;
  */
 
 public class KerasTest extends DefaultTestBase {
+  /**
+   * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that
+   * tests requiring the SVMlight executables to be installed on your system's
+   * path should be disabled. Current value:
+   * {@value #SVMLIGHT_TESTS_PROPERTY_VALUE}.
+   */
+  public static final String KERAS_TESTS_PROPERTY_VALUE = "keras";
+
+  /**
+   * Message that will be logged at the beginning of each test that requires the
+   * SVMlight executables.
+   */
+  public static final String KERAS_TESTS_ENABLED_MESSAGE = createTestEnabledMessage(
+      KERAS_TESTS_PROPERTY_VALUE,
+      "This test requires installation of Keras environment.");
+
   @Test
   public void testMultiClassLIBSVM() throws Exception {
+    this.assumeTestsEnabled(KERAS_TESTS_PROPERTY_VALUE);
+    this.logger.info(KERAS_TESTS_ENABLED_MESSAGE);
+
     // create the data writer
     StringAnnotator annotator = new StringAnnotator();
     annotator

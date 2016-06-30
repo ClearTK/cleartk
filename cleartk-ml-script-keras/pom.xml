@@ -6,7 +6,7 @@
     <version>2.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>cleartk-ml-script-keras</artifactId>
-  <name>cleartk-ml-script-keras</name>
+  <name>ClearTK ML Script Keras</name>
   <description>This module contains connectors for interfacing with the keras package for learning neural network models.</description>
   <dependencies>
   	<dependency>

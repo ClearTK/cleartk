@@ -1,4 +1,4 @@
 language: java
 jdk:
   - oraclejdk8
-script: mvn test -Dcleartk.skipTests=long,svmlight,tksvmlight
+script: mvn test -Dcleartk.skipTests=long,svmlight,tksvmlight,keras

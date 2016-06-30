@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.uima.UIMAFramework;
-import org.apache.uima.util.Level;
 import org.apache.uima.util.Logger;
 import org.cleartk.ml.CleartkProcessingException;
 import org.cleartk.ml.Feature;
@@ -60,7 +59,6 @@ public abstract class ScriptStringOutcomeClassifier extends
   Process classifierProcess = null;
   PrintStream toClassifier = null;
   BufferedReader reader = null;
-  BufferedReader errReader = null;
   Logger logger = UIMAFramework.getLogger(ScriptStringOutcomeClassifier.class);
 
   public ScriptStringOutcomeClassifier(
@@ -123,14 +121,8 @@ public abstract class ScriptStringOutcomeClassifier extends
     this.toClassifier.flush();
 
     String line = "";
-    String eLine = "";
     try {
       line = reader.readLine();
-      if (line == null) {
-        while ((eLine = errReader.readLine()) != null) {
-          logger.log(Level.SEVERE, eLine);
-        }
-      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
