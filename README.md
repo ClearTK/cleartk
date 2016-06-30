@@ -1,6 +1,6 @@
-############
-Introduction
-############
+[![Build Status](https://travis-ci.org/ClearTK/cleartk.svg?branch=master)](https://travis-ci.org/ClearTK/cleartk)
+
+# Introduction #
 
 ClearTK provides a framework for developing statistical natural language 
 processing (NLP) components in Java and is built on top of Apache UIMA. It is 
@@ -21,9 +21,7 @@ determine which jar files are required for the parts of ClearTK you want to use.
 
 Please see the section titled "Dependencies" below for important licensing information.
 
-#######
-License
-#######
+# License #
 
 Copyright (c) 2007-2014, Regents of the University of Colorado 
 All rights reserved.
@@ -47,9 +45,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE. 
 
-############
-Dependencies
-############
+# Dependencies #
 
 ClearTK depends on a variety of different open source libraries that are
 redistributed here subject to the respective licensing terms provided by 
@@ -58,9 +54,7 @@ commercially friendly.  Please see the notes below for exceptions.  For a
 complete listing of the dependencies and their respective licenses please
 see the file licenses/index.html.
 
-################
-GPL Dependencies
-################
+# GPL Dependencies #
 
 ClearTK has two sub-projects that depend on GPL licensed libraries: 
  * cleartk-syntax-berkeley
@@ -72,9 +66,7 @@ hosted maven repository:
 http://cleartk.googlecode.com/svn/repo/org/cleartk/cleartk-syntax-berkeley/
 http://cleartk.googlecode.com/svn/repo/org/cleartk/cleartk-stanford-corenlp/
 
-########
-SVMLIGHT
-########
+# SVMLIGHT #
 
 ClearTK also has two projects called cleartk-ml-svmlight and cleartk-ml-tksvmlight
 which have special licensing considerations. The ClearTK project does not 
@@ -93,33 +85,9 @@ provided by SVMlight is not compatible with our BSD License) - it would be very
 difficult to use the SVMlight wrappers we provide in a commercial setting without
 obtaining a license for SVMlight directly from its authors.  
 
-####
-LGPL
-####
+# LGPL #
 
 The cleartk-ml-mallet project depends on Mallet (http://mallet.cs.umass.edu/),
 which depends on trove4j (http://trove.starlight-systems.com/), which is
 released under the LGPL license. If you do not need Mallet classifiers and would
 like to avoid the LGPL license, you can omit the cleartk-ml-mallet dependency.
-
-###################
-Malt Parser Wrapper
-###################
-
-The project cleartk-syntax-dependency-malt was not added to this release because it 
-made the ClearTK download too large (i.e. above 100MB).  We are working on releasing 
-a much smaller zip file that is not bloated with large classifier model files.  Please
-see issue http://code.google.com/p/cleartk/issues/detail?id=263 for details.  To obtain 
-this projects, please manually download them from our googlecode hosted maven repository:
-
-http://cleartk.googlecode.com/svn/repo/org/cleartk/cleartk-syntax-dependency-malt/
-  
-
-###################
-Creating a zip file
-###################
-to create cleartk-<version>-bin.zip perform the following maven command
-from cleartk-zip:
-
-mvn assembly:single
-  
