@@ -37,8 +37,9 @@ import org.cleartk.ml.jar.JarClassifierBuilder;
 import org.cleartk.ml.python.keras.KerasStringOutcomeClassifier;
 import org.cleartk.ml.python.keras.KerasStringOutcomeClassifierBuilder;
 import org.cleartk.ml.python.keras.KerasStringOutcomeDataWriter;
+import org.cleartk.ml.script.ExampleInstanceFactory;
+import org.cleartk.ml.script.ExampleInstanceFactory.StringAnnotator;
 import org.cleartk.ml.script.ScriptStringOutcomeDataWriter;
-import org.cleartk.ml.script.keras.ExampleInstanceFactory.StringAnnotator;
 import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -71,7 +72,7 @@ public class KerasTest extends DefaultTestBase {
       "This test requires installation of Keras environment.");
 
   @Test
-  public void testMultiClassLIBSVM() throws Exception {
+  public void testKerasStringOutcome() throws Exception {
     this.assumeTestsEnabled(KERAS_TESTS_PROPERTY_VALUE);
     this.logger.info(KERAS_TESTS_ENABLED_MESSAGE);
 

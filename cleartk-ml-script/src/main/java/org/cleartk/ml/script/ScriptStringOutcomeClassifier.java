@@ -35,6 +35,7 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Logger;
 import org.cleartk.ml.CleartkProcessingException;
 import org.cleartk.ml.Feature;
+import org.cleartk.ml.encoder.CleartkEncoderException;
 import org.cleartk.ml.encoder.features.FeaturesEncoder;
 import org.cleartk.ml.encoder.outcome.OutcomeEncoder;
 import org.cleartk.ml.jar.Classifier_ImplBase;
@@ -53,7 +54,7 @@ import com.google.common.annotations.Beta;
  * 
  */
 @Beta
-public abstract class ScriptStringOutcomeClassifier extends
+public class ScriptStringOutcomeClassifier extends
     Classifier_ImplBase<FeatureVector, String, Integer> {
   File modelDir = null;
   Process classifierProcess = null;
@@ -109,15 +110,7 @@ public abstract class ScriptStringOutcomeClassifier extends
     // format expected by
     // the annotator.
 
-    StringBuilder buf = new StringBuilder();
-
-    for (FeatureVector.Entry featureNode : this.featuresEncoder
-        .encodeAll(features)) {
-      buf.append(String.format(Locale.US, " %d:%.7f", featureNode.index,
-          featureNode.value));
-    }
-
-    this.toClassifier.println(buf.substring(1));
+    this.toClassifier.println(featuresToString(features));
     this.toClassifier.flush();
 
     String line = "";
@@ -128,6 +121,19 @@ public abstract class ScriptStringOutcomeClassifier extends
     }
 
     return line;
+  }
+
+  protected String featuresToString(List<Feature> features)
+      throws CleartkEncoderException {
+    StringBuilder buf = new StringBuilder();
+
+    for (FeatureVector.Entry featureNode : this.featuresEncoder
+        .encodeAll(features)) {
+      buf.append(String.format(Locale.US, " %d:%.7f", featureNode.index,
+          featureNode.value));
+    }
+
+    return buf.substring(1);
   }
 
   @Override

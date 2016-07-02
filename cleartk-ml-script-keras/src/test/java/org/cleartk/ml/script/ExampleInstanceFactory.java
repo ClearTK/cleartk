@@ -22,7 +22,7 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
-package org.cleartk.ml.script.keras;
+package org.cleartk.ml.script;
 
 import java.util.ArrayList;
 import java.util.List;
