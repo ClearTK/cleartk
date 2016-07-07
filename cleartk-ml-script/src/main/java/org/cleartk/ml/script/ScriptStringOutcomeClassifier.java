@@ -39,7 +39,6 @@ import org.cleartk.ml.encoder.CleartkEncoderException;
 import org.cleartk.ml.encoder.features.FeaturesEncoder;
 import org.cleartk.ml.encoder.outcome.OutcomeEncoder;
 import org.cleartk.ml.jar.Classifier_ImplBase;
-import org.cleartk.ml.script.util.StreamHandlerThread;
 import org.cleartk.ml.util.featurevector.FeatureVector;
 
 import com.google.common.annotations.Beta;
@@ -59,6 +58,7 @@ public class ScriptStringOutcomeClassifier extends
   File modelDir = null;
   Process classifierProcess = null;
   PrintStream toClassifier = null;
+
   BufferedReader reader = null;
   Logger logger = UIMAFramework.getLogger(ScriptStringOutcomeClassifier.class);
 
@@ -85,13 +85,11 @@ public class ScriptStringOutcomeClassifier extends
     }
 
     try {
-      this.classifierProcess = Runtime.getRuntime().exec(
-          new String[] { classifyScript.getAbsolutePath(),
-              modelDir.getAbsolutePath() });
-      // start the classifier process running, give it a chance to read the
-      // model, and
-      // set classifierProcess to the running classifier
-      new StreamHandlerThread(classifierProcess.getErrorStream(), logger)
+      // start the classifier process running and connect to stdin and stdout
+      // so we can send it features and get labels in return.
+      this.classifierProcess = new ProcessBuilder(
+          classifyScript.getAbsolutePath(), modelDir.getAbsolutePath())
+          .redirectError(new File(this.modelDir, "classifier-stderr.out"))
           .start();
       toClassifier = new PrintStream(classifierProcess.getOutputStream());
       reader = new BufferedReader(new InputStreamReader(
@@ -134,13 +132,5 @@ public class ScriptStringOutcomeClassifier extends
     }
 
     return buf.substring(1);
-  }
-
-  @Override
-  protected void finalize() throws Throwable {
-    super.finalize();
-
-    this.toClassifier.print('\n');
-    classifierProcess.waitFor();
   }
 }
