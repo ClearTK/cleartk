@@ -1,5 +1,5 @@
 #!/bin/bash
 
-echo "test" > $1/model.txt
+echo "test" > $1/script.model
 
 exit 0

@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Logger;
@@ -38,6 +39,7 @@ import org.cleartk.ml.script.util.StreamHandlerThread;
 import org.cleartk.ml.util.featurevector.FeatureVector;
 
 import com.google.common.annotations.Beta;
+import com.google.common.io.Files;
 
 /**
  * <br>
@@ -49,15 +51,14 @@ import com.google.common.annotations.Beta;
  * 
  */
 @Beta
-public abstract class ScriptStringOutcomeClassifierBuilder<T extends ScriptStringOutcomeClassifier>
-    extends ClassifierBuilder_ImplBase<T, FeatureVector, String, Integer> {
-  public static final Attributes.Name SCRIPT_DIR_PARAM = new Attributes.Name(
-      "ScriptDirectory");
-  protected static final Logger logger = UIMAFramework
-      .getLogger(ScriptStringOutcomeClassifierBuilder.class);
+public class ScriptStringOutcomeClassifierBuilder
+    extends ClassifierBuilder_ImplBase<ScriptStringOutcomeClassifier, FeatureVector, String, Integer> {
+  public static final Attributes.Name SCRIPT_DIR_PARAM = new Attributes.Name("ScriptDirectory");
+  protected static final Logger logger = UIMAFramework.getLogger(ScriptStringOutcomeClassifierBuilder.class);
 
   protected File modelDir = null;
   protected File scriptDir = null;
+  public static final String MODEL_FILENAME = "script.model";
 
   public void setScriptDirectory(String scriptDir) {
     Attributes atts = this.manifest.getMainAttributes();
@@ -76,8 +77,7 @@ public abstract class ScriptStringOutcomeClassifierBuilder<T extends ScriptStrin
     // dir is by convention the first argument that the training script takes.
 
     if (this.scriptDir == null) {
-      this.scriptDir = new File(this.manifest.getMainAttributes().getValue(
-          SCRIPT_DIR_PARAM));
+      this.scriptDir = new File(this.manifest.getMainAttributes().getValue(SCRIPT_DIR_PARAM));
     }
     // first find the train script:
     File trainScript = null;
@@ -91,8 +91,7 @@ public abstract class ScriptStringOutcomeClassifierBuilder<T extends ScriptStrin
       }
     }
     if (trainScript == null)
-      throw new RuntimeException(
-          "ERROR: Train directory does not contain any scripts named train.*");
+      throw new RuntimeException("ERROR: Train directory does not contain any scripts named train.*");
     StringBuilder cmdArgs = new StringBuilder();
     for (int i = 0; i < args.length; i++) {
       cmdArgs.append(args[i]);
@@ -102,16 +101,12 @@ public abstract class ScriptStringOutcomeClassifierBuilder<T extends ScriptStrin
     if (cmdArgs.length() > 0) {
       arg2 = cmdArgs.substring(0, cmdArgs.length() - 1);
     }
-    Process p = Runtime.getRuntime().exec(
-        new String[] { trainScript.getAbsolutePath(), dir.getAbsolutePath(),
-            arg2 });
+    Process p = Runtime.getRuntime().exec(new String[] { trainScript.getAbsolutePath(), dir.getAbsolutePath(), arg2 });
 
-    StreamHandlerThread inHandler = new StreamHandlerThread(p.getInputStream(),
-        logger);
+    StreamHandlerThread inHandler = new StreamHandlerThread(p.getInputStream(), logger);
     inHandler.start();
 
-    StreamHandlerThread errHandler = new StreamHandlerThread(
-        p.getErrorStream(), logger);
+    StreamHandlerThread errHandler = new StreamHandlerThread(p.getErrorStream(), logger);
     errHandler.start();
 
     int ret = p.waitFor();
@@ -120,8 +115,7 @@ public abstract class ScriptStringOutcomeClassifierBuilder<T extends ScriptStrin
     }
   }
 
-  protected static boolean extractFileToDir(File dir,
-      JarInputStream modelStream, String fn) throws IOException {
+  protected static boolean extractFileToDir(File dir, JarInputStream modelStream, String fn) throws IOException {
     JarEntry entry = JarStreams.getNextJarEntry(modelStream, fn);
     if (entry == null) {
       return false;
@@ -136,6 +130,33 @@ public abstract class ScriptStringOutcomeClassifierBuilder<T extends ScriptStrin
       }
     }
     return true;
+  }
+
+  @Override
+  public void packageClassifier(File dir, JarOutputStream modelStream) throws IOException {
+    super.packageClassifier(dir, modelStream);
+
+    JarStreams.putNextJarEntry(modelStream, "outcome-lookup.txt", new File(dir, "outcome-lookup.txt"));
+    JarStreams.putNextJarEntry(modelStream, MODEL_FILENAME, new File(dir, MODEL_FILENAME));
+  }
+
+  @Override
+  protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
+    super.unpackageClassifier(modelStream);
+
+    // create the model dir to unpack all the model files
+    this.modelDir = Files.createTempDir();
+
+    // grab the script dir from the manifest:
+    this.scriptDir = new File(modelStream.getManifest().getMainAttributes().getValue(SCRIPT_DIR_PARAM));
+
+    extractFileToDir(modelDir, modelStream, "outcome-lookup.txt");
+    extractFileToDir(modelDir, modelStream, MODEL_FILENAME);
+  }
+
+  @Override
+  protected ScriptStringOutcomeClassifier newClassifier() {
+    return new ScriptStringOutcomeClassifier(this.featuresEncoder, this.outcomeEncoder, this.modelDir, this.scriptDir);
   }
 
 }

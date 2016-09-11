@@ -52,16 +52,14 @@ import com.google.common.annotations.Beta;
  * 
  */
 @Beta
-public abstract class ScriptStringOutcomeDataWriter<T extends ScriptStringOutcomeClassifierBuilder<? extends ScriptStringOutcomeClassifier>>
-    extends DataWriter_ImplBase<T, FeatureVector, String, Integer> implements
-    Initializable {
+public class ScriptStringOutcomeDataWriter extends
+    DataWriter_ImplBase<ScriptStringOutcomeClassifierBuilder, FeatureVector, String, Integer>implements Initializable {
 
   public static final String PARAM_SCRIPT_DIRECTORY = "scriptDirectory";
   @ConfigurationParameter(name = PARAM_SCRIPT_DIRECTORY)
   protected String scriptDirectory;
 
-  public ScriptStringOutcomeDataWriter(File outputDirectory)
-      throws FileNotFoundException {
+  public ScriptStringOutcomeDataWriter(File outputDirectory) throws FileNotFoundException {
     super(outputDirectory);
     FeatureVectorFeaturesEncoder fe = new FeatureVectorFeaturesEncoder();
     fe.addEncoder(new NumberEncoder());
@@ -72,21 +70,22 @@ public abstract class ScriptStringOutcomeDataWriter<T extends ScriptStringOutcom
   }
 
   @Override
-  protected void writeEncoded(FeatureVector features, Integer outcome)
-      throws CleartkProcessingException {
+  protected void writeEncoded(FeatureVector features, Integer outcome) throws CleartkProcessingException {
     this.trainingDataWriter.print(outcome);
     for (FeatureVector.Entry featureNode : features) {
-      this.trainingDataWriter.format(Locale.US, " %d:%.7f", featureNode.index,
-          featureNode.value);
+      this.trainingDataWriter.format(Locale.US, " %d:%.7f", featureNode.index, featureNode.value);
     }
     this.trainingDataWriter.println();
   }
 
   @Override
-  public void initialize(UimaContext context)
-      throws ResourceInitializationException {
-    this.scriptDirectory = (String) context
-        .getConfigParameterValue(PARAM_SCRIPT_DIRECTORY);
+  public void initialize(UimaContext context) throws ResourceInitializationException {
+    this.scriptDirectory = (String) context.getConfigParameterValue(PARAM_SCRIPT_DIRECTORY);
     this.classifierBuilder.setScriptDirectory(this.scriptDirectory);
+  }
+
+  @Override
+  protected ScriptStringOutcomeClassifierBuilder newClassifierBuilder() {
+    return new ScriptStringOutcomeClassifierBuilder();
   }
 }

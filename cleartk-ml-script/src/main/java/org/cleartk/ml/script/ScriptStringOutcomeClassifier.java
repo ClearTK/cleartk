@@ -53,8 +53,7 @@ import com.google.common.annotations.Beta;
  * 
  */
 @Beta
-public class ScriptStringOutcomeClassifier extends
-    Classifier_ImplBase<FeatureVector, String, Integer> {
+public class ScriptStringOutcomeClassifier extends Classifier_ImplBase<FeatureVector, String, Integer> {
   File modelDir = null;
   Process classifierProcess = null;
   PrintStream toClassifier = null;
@@ -62,10 +61,8 @@ public class ScriptStringOutcomeClassifier extends
   BufferedReader reader = null;
   Logger logger = UIMAFramework.getLogger(ScriptStringOutcomeClassifier.class);
 
-  public ScriptStringOutcomeClassifier(
-      FeaturesEncoder<FeatureVector> featuresEncoder,
-      OutcomeEncoder<String, Integer> outcomeEncoder, File modelDir,
-      File scriptDir) {
+  public ScriptStringOutcomeClassifier(FeaturesEncoder<FeatureVector> featuresEncoder,
+      OutcomeEncoder<String, Integer> outcomeEncoder, File modelDir, File scriptDir) {
     super(featuresEncoder, outcomeEncoder);
     this.modelDir = modelDir;
 
@@ -73,8 +70,7 @@ public class ScriptStringOutcomeClassifier extends
     for (File file : scriptDir.listFiles()) {
       if (file.getName().startsWith("classify.")) {
         if (classifyScript != null) {
-          throw new RuntimeException(
-              "There are multiple files named classify.*");
+          throw new RuntimeException("There are multiple files named classify.*");
         }
         classifyScript = file;
       }
@@ -87,21 +83,17 @@ public class ScriptStringOutcomeClassifier extends
     try {
       // start the classifier process running and connect to stdin and stdout
       // so we can send it features and get labels in return.
-      this.classifierProcess = new ProcessBuilder(
-          classifyScript.getAbsolutePath(), modelDir.getAbsolutePath())
-          .redirectError(new File(this.modelDir, "classifier-stderr.out"))
-          .start();
+      this.classifierProcess = new ProcessBuilder(classifyScript.getAbsolutePath(), modelDir.getAbsolutePath())
+          .redirectError(new File(this.modelDir, "classifier-stderr.out")).start();
       toClassifier = new PrintStream(classifierProcess.getOutputStream());
-      reader = new BufferedReader(new InputStreamReader(
-          classifierProcess.getInputStream()));
+      reader = new BufferedReader(new InputStreamReader(classifierProcess.getInputStream()));
     } catch (IOException e) {
       e.printStackTrace();
       throw new RuntimeException(e);
     }
   }
 
-  public String classify(List<Feature> features)
-      throws CleartkProcessingException {
+  public String classify(List<Feature> features) throws CleartkProcessingException {
     // Encode the features and pass them to the standard input of the classifier
     // process
     // and then read the standard output prediction, which will be in the string
@@ -121,16 +113,20 @@ public class ScriptStringOutcomeClassifier extends
     return line;
   }
 
-  protected String featuresToString(List<Feature> features)
-      throws CleartkEncoderException {
+  protected String featuresToString(List<Feature> features) throws CleartkEncoderException {
     StringBuilder buf = new StringBuilder();
 
-    for (FeatureVector.Entry featureNode : this.featuresEncoder
-        .encodeAll(features)) {
-      buf.append(String.format(Locale.US, " %d:%.7f", featureNode.index,
-          featureNode.value));
+    FeatureVector encodedFeats = this.featuresEncoder.encodeAll(features);
+    if (encodedFeats != null) {
+      for (FeatureVector.Entry featureNode : this.featuresEncoder.encodeAll(features)) {
+        buf.append(String.format(Locale.US, " %d:%.7f", featureNode.index, featureNode.value));
+      }
+    } else {
+      for (Feature feat : features) {
+        buf.append(' ');
+        buf.append(feat.getValue());
+      }
     }
-
     return buf.substring(1);
   }
 }
