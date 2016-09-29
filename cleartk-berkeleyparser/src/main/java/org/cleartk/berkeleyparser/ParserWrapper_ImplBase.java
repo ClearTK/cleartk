@@ -42,7 +42,7 @@ public abstract class ParserWrapper_ImplBase<TOKEN_TYPE extends Annotation, SENT
       defaultValue = "org.cleartk.berkeleyparser.DefaultInputTypesHelper",
       mandatory = true)
   protected String inputTypesHelperClassName;
-
+  
   protected InputTypesHelper<TOKEN_TYPE, SENTENCE_TYPE> inputTypesHelper;
 
   public static final String PARAM_OUTPUT_TYPES_HELPER_CLASS_NAME = "outputTypesHelperClassName";

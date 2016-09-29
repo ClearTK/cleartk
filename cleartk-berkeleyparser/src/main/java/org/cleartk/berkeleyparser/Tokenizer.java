@@ -16,35 +16,23 @@
  * with the cleartk-syntax-berkeley project or visit 
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
  */
+
 package org.cleartk.berkeleyparser;
 
 import java.util.List;
 
-import org.apache.uima.jcas.JCas;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.tcas.Annotation;
 
 /**
  * <br>
- * Copyright (c) 2012, Regents of the University of Colorado <br>
+ * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
- * <p>
  * 
- * InputTypesHelper allows constituent wrappers to abstract away the input token and sentence types
- * that it expects. The default implementation uses the ClearTK token and sentence types, but by
- * extending this class you could specify your own input types from your type system.
- * 
- * @author Philip Ogren
+ * @author Majid Laali
  */
+public interface Tokenizer<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation, TOP_NODE_TYPE extends Annotation> {
 
-public interface InputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> {
-  public List<TOKEN_TYPE> getTokens(JCas jCas, SENTENCE_TYPE sentence);
-  
-  public TOKEN_TYPE buildToken(JCas jCas, int begin, int end);
-
-  public List<SENTENCE_TYPE> getSentences(JCas jCas);
-
-  public String getPosTag(TOKEN_TYPE token);
-
-  public void setPosTag(TOKEN_TYPE token, String tag);
-
+  public List<TOKEN_TYPE> tokenize(SENTENCE_TYPE sent) throws AnalysisEngineProcessException;
+  public void setPosTags(List<TOKEN_TYPE> tokens, TOP_NODE_TYPE topTreebankNode);
 }
