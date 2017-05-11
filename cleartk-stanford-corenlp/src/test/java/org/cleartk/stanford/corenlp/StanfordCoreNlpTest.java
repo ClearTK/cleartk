@@ -18,19 +18,12 @@
  */
 package org.cleartk.stanford.corenlp;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.testing.factory.TokenBuilder;
 import org.apache.uima.fit.util.JCasUtil;
 import org.cleartk.ne.type.NamedEntity;
 import org.cleartk.ne.type.NamedEntityMention;
-import org.cleartk.stanford.corenlp.StanfordCoreNlpAnnotator;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.dependency.type.DependencyNode;
@@ -41,6 +34,8 @@ import org.cleartk.token.type.Token;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.*;
 
 /**
  * 
@@ -237,13 +232,14 @@ public class StanfordCoreNlpTest extends CleartkTestBase {
     // expectedEntities.add(Arrays.asList("Stanford-based"));
     // expectedEntities.add(Arrays.asList("milk", "it", "the milk"));
     // expectedEntities.add(Arrays.asList("Martha", "she", "her"));
-    expectedEntities.add(Arrays.asList("The Stanford-based Dr. Smith", "him"));
+
     expectedEntities.add(Arrays.asList("Stanford-based", "she", "her"));
-    expectedEntities.add(Arrays.asList("Smith"));
     expectedEntities.add(Arrays.asList("Martha"));
+    expectedEntities.add(Arrays.asList("The Stanford-based Dr. Smith", "him"));
     expectedEntities.add(Arrays.asList("it"));
     expectedEntities.add(Arrays.asList("the milk"));
     expectedEntities.add(Arrays.asList("her bag"));
+    expectedEntities.add(Arrays.asList("Smith"));
     List<List<String>> actualEntities = new ArrayList<List<String>>();
     for (NamedEntity entity : JCasUtil.select(this.jCas, NamedEntity.class)) {
       List<String> mentionTexts = new ArrayList<String>();
