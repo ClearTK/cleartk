@@ -23,15 +23,8 @@
  */
 package org.cleartk.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -48,8 +41,11 @@ import org.cleartk.test.util.type.Sentence;
 import org.cleartk.test.util.type.Token;
 import org.junit.Test;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * <br>
@@ -75,7 +71,6 @@ public class AnnotationUtilTest extends DefaultTestBase {
     @Override
     public void process(JCas jCas) throws AnalysisEngineProcessException {
 
-      try {
         AnnotationFactory.createAnnotation(jCas, 0, 4, Token.class);
         AnnotationFactory.createAnnotation(jCas, 0, 4, NamedEntityMention.class);
         AnnotationFactory.createAnnotation(jCas, 0, 13, NamedEntityMention.class);
@@ -107,10 +102,6 @@ public class AnnotationUtilTest extends DefaultTestBase {
         AnnotationFactory.createAnnotation(jCas, 100, 109, Chunk.class);
         AnnotationFactory.createAnnotation(jCas, 115, 124, Chunk.class);
 
-      } catch (UIMAException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
     }
 
   }
