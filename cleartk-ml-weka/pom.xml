@@ -24,13 +24,20 @@
 		</dependency>
 		<dependency>
 			<groupId>nz.ac.waikato.cms.weka</groupId>
-			<artifactId>weka-dev</artifactId>
-			<version>3.7.11</version>
+			<artifactId>weka-stable</artifactId>
+			<version>3.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
 			<artifactId>cleartk-test-util</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>1.7.1</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 </project>
