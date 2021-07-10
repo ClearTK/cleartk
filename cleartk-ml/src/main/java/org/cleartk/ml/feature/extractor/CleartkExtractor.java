@@ -360,7 +360,7 @@ public class CleartkExtractor<FOCUS_T extends Annotation, SEARCH_T extends Annot
         SEARCH_T ann = adjustedPos >= 0 ? anns.get(adjustedPos) : null;
         if (ann != null && bounds.contains(ann)) {
           for (Feature feature : extractor.extract(jCas, ann)) {
-            features.add(new ContextFeature(this.getName(), pos, feature));
+            features.add(new ContextFeature(this.getName(), pos, feature, featureName));
           }
         }
 
