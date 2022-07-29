@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk</artifactId>
-	<version>2.0.1-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>ClearTK</name>
 	<description>The official ClearTK release</description>
@@ -91,6 +91,8 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <uima-version>3.3.0</uima-version>
+    <uimafit-version>3.3.0</uimafit-version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -108,17 +110,17 @@
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimaj-core</artifactId>
-				<version>2.9.0</version>
+				<version>${uima-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimaj-document-annotation</artifactId>
-				<version>2.9.0</version>
+        <version>${uima-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimafit-core</artifactId>
-				<version>2.3.0</version>
+        <version>${uimafit-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
@@ -339,7 +341,7 @@
 				<plugin>
 					<groupId>org.apache.uima</groupId>
 					<artifactId>jcasgen-maven-plugin</artifactId>
-					<version>2.5.0</version>
+					<version>${uima-version}</version>
 					<executions>
 						<execution>
 							<goals>

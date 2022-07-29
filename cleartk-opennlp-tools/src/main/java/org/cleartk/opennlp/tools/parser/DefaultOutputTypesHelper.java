@@ -25,20 +25,21 @@
 package org.cleartk.opennlp.tools.parser;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import opennlp.tools.parser.AbstractBottomUpParser;
-import opennlp.tools.parser.Parse;
-
+import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
-import org.apache.uima.fit.util.FSCollectionFactory;
 
 import com.google.common.annotations.Beta;
+
+import opennlp.tools.parser.AbstractBottomUpParser;
+import opennlp.tools.parser.Parse;
 
 /**
  * <br>
@@ -68,7 +69,7 @@ public class DefaultOutputTypesHelper<TOKEN_TYPE extends Annotation, SENTENCE_TY
     node.setTreebankParse(sb.toString());
     List<TreebankNode> terminals = getTerminals(node);
     node.setTerminals(new FSArray(jCas, terminals.size()));
-    FSCollectionFactory.fillArrayFS(node.getTerminals(), terminals);
+    FSCollectionFactory.fillArrayFS(node.getTerminals(), (Collection) terminals);
     return node;
   }
 

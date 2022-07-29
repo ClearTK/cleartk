@@ -26,7 +26,7 @@ package org.cleartk.ml.tksvmlight.kernel;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.cleartk.ml.tksvmlight.TreeFeature;
 import org.cleartk.ml.tksvmlight.TreeFeatureVector;
 /**
@@ -46,6 +46,7 @@ public abstract class TreeKernel_ImplBase implements ComposableTreeKernel {
 
   protected ForestSumMethod sumMethod = ForestSumMethod.SEQUENTIAL;
 
+  @Override
   public double evaluate(TreeFeatureVector fv1, TreeFeatureVector fv2) {
     double sim = 0.0;
     if (sumMethod == ForestSumMethod.SEQUENTIAL) {
@@ -62,6 +63,7 @@ public abstract class TreeKernel_ImplBase implements ComposableTreeKernel {
     return sim;
   }
 
+  @Override
   public abstract double evaluate(TreeFeature tf1, TreeFeature tf2);
 
 }
