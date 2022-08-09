@@ -45,6 +45,20 @@
 			<groupId>org.dkpro.core</groupId>
 			<artifactId>dkpro-core-api-resources-asl</artifactId>
 			<version>2.2.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId> spring-beans</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.cleartk</groupId>
