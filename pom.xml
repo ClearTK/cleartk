@@ -44,18 +44,6 @@
 			<name>Lee Becker</name>
 		</developer>
 	</developers>
-  <repositories>
-    <repository>
-      <id>apache.snapshots</id>
-      <url>https://repository.apache.org/content/repositories/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
 	<modules>
 		<!-- basic util modules -->
 		<module>cleartk-test-util</module>
@@ -103,7 +91,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <uima-version>3.3.1-SNAPSHOT</uima-version>
+    <uima-version>3.3.0</uima-version>
     <uima-jcasgen-version>3.3.0</uima-jcasgen-version>
     <uimafit-version>3.3.0</uimafit-version>
     <slf4j-version>1.7.36</slf4j-version>
