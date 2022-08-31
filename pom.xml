@@ -56,18 +56,6 @@
       </snapshots>
     </repository>
   </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>apache.snapshots</id>
-      <url>https://repository.apache.org/content/repositories/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
 	<modules>
 		<!-- basic util modules -->
 		<module>cleartk-test-util</module>
@@ -116,6 +104,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <uima-version>3.3.1-SNAPSHOT</uima-version>
+    <uima-jcasgen-version>3.3.0</uima-jcasgen-version>
     <uimafit-version>3.3.0</uimafit-version>
     <slf4j-version>1.7.36</slf4j-version>
 	</properties>
@@ -372,7 +361,7 @@
 				<plugin>
 					<groupId>org.apache.uima</groupId>
 					<artifactId>jcasgen-maven-plugin</artifactId>
-					<version>${uima-version}</version>
+					<version>${uima-jcasgen-version}</version>
 					<executions>
 						<execution>
 							<goals>
