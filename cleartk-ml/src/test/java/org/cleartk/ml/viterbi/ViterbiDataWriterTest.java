@@ -24,6 +24,9 @@
 
 package org.cleartk.ml.viterbi;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.contentOf;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -33,7 +36,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
@@ -52,7 +54,6 @@ import org.cleartk.ml.test.DefaultStringTestDataWriterFactory;
 import org.cleartk.test.util.DefaultTestBase;
 import org.cleartk.test.util.type.Sentence;
 import org.cleartk.test.util.type.Token;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -117,15 +118,17 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
     String expectedManifest = "Manifest-Version: 1.0\n"
         + "classifierBuilderClass: org.cleartk.ml.viterbi.ViterbiClassifierBuilde\n" + " r";
 
-    File manifestFile = new File(outputDirectoryName, "MANIFEST.MF");
-    String actualManifest = FileUtils.readFileToString(manifestFile);
-    Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
+    assertThat(contentOf(new File(outputDirectoryName, "MANIFEST.MF"), UTF_8).trim()) //
+        .isEqualToNormalizingNewlines(expectedManifest.trim());
+
+    // File manifestFile = new File(outputDirectoryName, "MANIFEST.MF");
+    // String actualManifest = FileUtils.readFileToString(manifestFile);
+    // Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
 
     ViterbiClassifierBuilder<String> builder = new ViterbiClassifierBuilder<String>();
     File delegatedOutputDirectory = builder.getDelegatedModelDirectory(outputDirectory);
-    String[] trainingData = FileUtil.loadListOfStrings(new File(
-        delegatedOutputDirectory,
-        "training-data.test"));
+    String[] trainingData = FileUtil.loadListOfStrings(
+        new File(delegatedOutputDirectory, "training-data.test"));
     testFeatures(trainingData[1], "PreviousOutcome_L1_D");
     testFeatures(
         trainingData[2],
