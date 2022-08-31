@@ -23,13 +23,15 @@
  */
 package org.cleartk.ml.jar;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.contentOf;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.fit.factory.UimaContextFactory;
-import org.apache.uima.util.FileUtils;
 import org.cleartk.ml.DataWriter;
 import org.cleartk.ml.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.ml.encoder.features.NameNumberFeaturesEncoder;
@@ -37,7 +39,6 @@ import org.cleartk.ml.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.ml.test.DefaultStringTestDataWriterFactory;
 import org.cleartk.ml.test.StringTestDataWriter;
 import org.cleartk.test.util.DefaultTestBase;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -59,9 +60,9 @@ public class JarDataWriterTest extends DefaultTestBase {
     dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
     dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
     dataWriter.finish();
-    File manifestFile = new File(outputDirectory, "MANIFEST.MF");
-    String actualManifest = FileUtils.file2String(manifestFile);
-    Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
+
+    assertThat(contentOf(new File(outputDirectory, "MANIFEST.MF"), UTF_8).trim()) //
+        .isEqualToNormalizingNewlines(expectedManifest.trim());
   }
 
   @Test
