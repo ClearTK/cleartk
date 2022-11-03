@@ -53,9 +53,9 @@ public class TkSvmLightBooleanOutcomeClassifierBuilder
     extends
     TreeKernelSvmBooleanOutcomeClassifierBuilder<TreeKernelSvmBooleanOutcomeClassifier>{
 
-  static Logger logger = UIMAFramework.getLogger(TkSvmLightBooleanOutcomeClassifierBuilder.class);
+  static final Logger logger = UIMAFramework.getLogger(TkSvmLightBooleanOutcomeClassifierBuilder.class);
 
-  public static String COMMAND_ARGUMENT = "--executable";
+  public static final String COMMAND_ARGUMENT = "--executable";
 
   /**
    * Train a SVMTK classifier. Assumes the executable name is "tk_svm_learn". Note: this is public
@@ -90,7 +90,8 @@ public class TkSvmLightBooleanOutcomeClassifierBuilder
     process.waitFor();
   }
 
-  public File getTrainingDataFile(File dir) {
+  @Override
+public File getTrainingDataFile(File dir) {
     return new File(dir, "training-data.svmlight");
   }
 
@@ -107,7 +108,8 @@ public class TkSvmLightBooleanOutcomeClassifierBuilder
    *          The arguments to be used by the tk_svm_classify command. Note: -t 5 is used to specify
    *          the use of Tree Kernels.
    */
-  public void trainClassifier(File dir, String... args) throws Exception {
+  @Override
+public void trainClassifier(File dir, String... args) throws Exception {
     File trainingDataFile = (dir.isDirectory() ? getTrainingDataFile(dir) : dir);
     train(trainingDataFile.getPath(), args);
   }
