@@ -49,9 +49,9 @@ import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.collect.ArrayListMultimap;
 
-import edu.stanford.nlp.dcoref.CorefChain;
-import edu.stanford.nlp.dcoref.CorefChain.CorefMention;
-import edu.stanford.nlp.dcoref.CorefCoreAnnotations.CorefChainAnnotation;
+import edu.stanford.nlp.coref.CorefCoreAnnotations.CorefChainAnnotation;
+import edu.stanford.nlp.coref.data.CorefChain;
+import edu.stanford.nlp.coref.data.CorefChain.CorefMention;
 import edu.stanford.nlp.ling.CoreAnnotations.BeginIndexAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.CharacterOffsetBeginAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.CharacterOffsetEndAnnotation;
@@ -93,7 +93,7 @@ public class StanfordCoreNlpAnnotator extends JCasAnnotator_ImplBase {
     super.initialize(context);
 
     Properties properties = new Properties();
-    properties.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref");
+    properties.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, coref");
 
     this.processor = new StanfordCoreNLP(properties);
   }
@@ -375,6 +375,7 @@ public class StanfordCoreNlpAnnotator extends JCasAnnotator_ImplBase {
       this.end = end;
     }
 
+    @Override
     public boolean equals(Object object) {
       if (object instanceof Span) {
         Span that = (Span) object;
@@ -384,6 +385,7 @@ public class StanfordCoreNlpAnnotator extends JCasAnnotator_ImplBase {
       }
     }
 
+    @Override
     public int hashCode() {
       return Arrays.hashCode(new int[] { this.begin, this.end });
     }
