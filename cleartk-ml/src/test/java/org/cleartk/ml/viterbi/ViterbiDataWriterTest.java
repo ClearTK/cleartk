@@ -24,6 +24,9 @@
 
 package org.cleartk.ml.viterbi;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.contentOf;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -33,7 +36,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
@@ -52,7 +54,6 @@ import org.cleartk.ml.test.DefaultStringTestDataWriterFactory;
 import org.cleartk.test.util.DefaultTestBase;
 import org.cleartk.test.util.type.Sentence;
 import org.cleartk.test.util.type.Token;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -118,8 +119,8 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
         + "classifierBuilderClass: org.cleartk.ml.viterbi.ViterbiClassifierBuilde\n" + " r";
 
     File manifestFile = new File(outputDirectoryName, "MANIFEST.MF");
-    String actualManifest = FileUtils.readFileToString(manifestFile);
-    Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
+    String actualManifest = contentOf(manifestFile, UTF_8);
+    assertThat(actualManifest).isEqualToIgnoringWhitespace(expectedManifest);
 
     ViterbiClassifierBuilder<String> builder = new ViterbiClassifierBuilder<String>();
     File delegatedOutputDirectory = builder.getDelegatedModelDirectory(outputDirectory);
@@ -166,5 +167,4 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
       assertTrue(features.contains(expectedFeature));
     }
   }
-
 }
