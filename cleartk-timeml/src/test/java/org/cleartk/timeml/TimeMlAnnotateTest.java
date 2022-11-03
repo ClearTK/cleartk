@@ -28,9 +28,12 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.apache.uima.util.CasCreationUtils;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.xmlunit.assertj3.XmlAssert;
+import org.xmlunit.builder.Input;
+import org.xmlunit.diff.DefaultNodeMatcher;
+import org.xmlunit.diff.ElementSelectors;
 
 /**
  * <br>
@@ -72,8 +75,7 @@ public class TimeMlAnnotateTest extends TimeMlTestBase {
     this.logger.info(BIG_MEMORY_TEST_MESSAGE);
 
     TimeMlAnnotate.main(this.inputFile.getPath(), this.tempDir.getPath());
-    String output = FileUtils.readFileToString(this.outputFile);
-    output = output.replaceAll("\r\n", "\n");
+    
     // @formatter:off
     String expected =
       "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
@@ -97,6 +99,9 @@ public class TimeMlAnnotateTest extends TimeMlTestBase {
       "<TLINK relType=\"BEFORE\" eventID=\"e2\" relatedToTime=\"t0\"/>" +
       "</TimeML>";
     // @formatter:on
-    Assert.assertEquals("TimeML output should match", expected, output);
+
+    XmlAssert.assertThat(Input.fromFile(outputFile)).and(expected)
+            .withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byNameAndAllAttributes))
+            .areSimilar();
   }
 }

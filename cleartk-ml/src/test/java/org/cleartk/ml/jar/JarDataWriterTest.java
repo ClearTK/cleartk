@@ -61,8 +61,8 @@ public class JarDataWriterTest extends DefaultTestBase {
     dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
     dataWriter.finish();
 
-    assertThat(contentOf(new File(outputDirectory, "MANIFEST.MF"), UTF_8).trim()) //
-        .isEqualToNormalizingNewlines(expectedManifest.trim());
+    assertThat(contentOf(new File(outputDirectory, "MANIFEST.MF"), UTF_8)) //
+        .isEqualToIgnoringWhitespace(expectedManifest);
   }
 
   @Test
@@ -76,7 +76,5 @@ public class JarDataWriterTest extends DefaultTestBase {
     DataWriter<String> dataWriter = factory.createDataWriter();
     dataWriter.finish();
     assertTrue(new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME).exists());
-
   }
-
 }

@@ -118,12 +118,8 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
     String expectedManifest = "Manifest-Version: 1.0\n"
         + "classifierBuilderClass: org.cleartk.ml.viterbi.ViterbiClassifierBuilde\n" + " r";
 
-    assertThat(contentOf(new File(outputDirectoryName, "MANIFEST.MF"), UTF_8).trim()) //
-        .isEqualToNormalizingNewlines(expectedManifest.trim());
-
-    // File manifestFile = new File(outputDirectoryName, "MANIFEST.MF");
-    // String actualManifest = FileUtils.readFileToString(manifestFile);
-    // Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
+    assertThat(contentOf(new File(outputDirectoryName, "MANIFEST.MF"), UTF_8)) //
+        .isEqualToIgnoringWhitespace(expectedManifest);
 
     ViterbiClassifierBuilder<String> builder = new ViterbiClassifierBuilder<String>();
     File delegatedOutputDirectory = builder.getDelegatedModelDirectory(outputDirectory);
@@ -169,5 +165,4 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
       assertTrue(features.contains(expectedFeature));
     }
   }
-
 }
