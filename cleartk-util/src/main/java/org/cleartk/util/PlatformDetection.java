@@ -36,7 +36,7 @@ package org.cleartk.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 /**
  * <br>

@@ -51,9 +51,9 @@ public class Tokenizer {
     return AnalysisEngineFactory.createEngineDescription(
         opennlp.uima.tokenize.Tokenizer.class,
         opennlp.uima.util.UimaUtil.MODEL_PARAMETER,
-        ExternalResourceFactory.createExternalResourceDescription(
-            TokenizerModelResourceImpl.class,
-            Tokenizer.class.getResource(modelPath).toString()),
+        ExternalResourceFactory.createSharedResourceDescription(
+            Tokenizer.class.getResource(modelPath).toString(),
+            TokenizerModelResourceImpl.class),
         opennlp.uima.util.UimaUtil.SENTENCE_TYPE_PARAMETER,
         Sentence.class.getName(),
         opennlp.uima.util.UimaUtil.TOKEN_TYPE_PARAMETER,

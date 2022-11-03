@@ -57,6 +57,7 @@
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-opennlp-tools</artifactId>
     </dependency>
+    
 		<!-- test only -->
     <dependency>
       <groupId>org.cleartk</groupId>
@@ -68,10 +69,15 @@
       <artifactId>xmlunit-assertj3</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
-			<!-- increase max memory for tests since models must be loaded -->
+      <!-- increase max memory for tests since models must be loaded -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>

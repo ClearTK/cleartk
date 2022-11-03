@@ -21,7 +21,7 @@ package org.cleartk.ml.weka;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.cleartk.ml.CleartkProcessingException;
 import org.cleartk.ml.Feature;
 import org.cleartk.ml.encoder.features.FeaturesEncoder;

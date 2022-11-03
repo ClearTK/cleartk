@@ -26,6 +26,7 @@ package org.cleartk.timeml;
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.uima.util.CasCreationUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +42,7 @@ import org.xmlunit.diff.ElementSelectors;
  * 
  * @author Steven Bethard
  */
-public class TimeMlAnnotateTest extends TimeMlTestBase{
+public class TimeMlAnnotateTest extends TimeMlTestBase {
   private File tempDir;
 
   private File inputFile;
@@ -49,8 +50,10 @@ public class TimeMlAnnotateTest extends TimeMlTestBase{
   private File outputFile;
 
   @Override
-@Before
+  @Before
   public void setUp() throws Exception {
+    // Workaround https://github.com/apache/uima-uimaj/issues/234
+    CasCreationUtils.createCas();
     this.tempDir = File.createTempFile("TimeMLAnnotateTest", "");
     this.tempDir.delete();
     this.tempDir.mkdir();

@@ -35,6 +35,10 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
+import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.SofaCapability;
+import org.apache.uima.fit.util.FSCollectionFactory;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -43,16 +47,13 @@ import org.cleartk.ne.type.NamedEntityMention;
 import org.cleartk.srl.type.Chunk;
 import org.cleartk.srl.type.Predicate;
 import org.cleartk.srl.type.SemanticArgument;
+import org.cleartk.syntax.constituent.type.TerminalTreebankNode;
 import org.cleartk.syntax.constituent.type.TopTreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNode;
 import org.cleartk.syntax.constituent.type.TreebankNodeUtil;
 import org.cleartk.token.type.Sentence;
 import org.cleartk.token.type.Token;
 import org.cleartk.util.AnnotationUtil;
-import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
-import org.apache.uima.fit.descriptor.ConfigurationParameter;
-import org.apache.uima.fit.descriptor.SofaCapability;
-import org.apache.uima.fit.util.FSCollectionFactory;
 
 /**
  * <br>
@@ -98,14 +99,17 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
       CharniakParseParser parser = new CharniakParseParser(initView);
 
       int numberOfPredicates = 0;
-      for (Conll2005Line line : conll2005Lines)
-        if (!line.targetVerb.equals("-"))
+      for (Conll2005Line line : conll2005Lines) {
+        if (!line.targetVerb.equals("-")) {
           numberOfPredicates += 1;
+        }
+      }
 
       int currentPredicate = 0;
       PredicateParser predicateParsers[] = new PredicateParser[numberOfPredicates];
-      for (int i = 0; i < numberOfPredicates; i++)
+      for (int i = 0; i < numberOfPredicates; i++) {
         predicateParsers[i] = new PredicateParser(initView);
+      }
 
       NamedEntityParser namedEntityParser = new NamedEntityParser(initView);
 
@@ -128,7 +132,7 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
         token.setPos(line.pos);
         token.addToIndexes();
 
-        TreebankNode terminal = new TreebankNode(initView, startIndex, endIndex);
+        TerminalTreebankNode terminal = new TerminalTreebankNode(initView, startIndex, endIndex);
         terminal.setNodeType(line.pos);
         terminal.setNodeValue(line.word);
         terminal.setChildren(new FSArray(jCas, 0));
@@ -162,8 +166,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
 
       parser.makeParse();
 
-      for (PredicateParser predicateParser : predicateParsers)
+      for (PredicateParser predicateParser : predicateParsers) {
         predicateParser.makePredicate();
+      }
 
     } catch (CASException e) {
       throw new AnalysisEngineProcessException(e);
@@ -237,8 +242,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
         node.setNodeType(this.type);
         node.setChildren(new FSArray(jCas, this.children.size()));
         FSCollectionFactory.fillArrayFS(node.getChildren(), this.children);
-        for (TreebankNode child : this.children)
+        for (TreebankNode child : this.children) {
           child.setParent(node);
+        }
         node.addToIndexes();
         return node;
       }
@@ -248,18 +254,18 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
   private static class CharniakParseParser {
     Stack<Constituent> parseStack;
 
-    List<TreebankNode> terminals;
+    List<TerminalTreebankNode> terminals;
 
     JCas jCas;
 
     CharniakParseParser(JCas jCas) {
       parseStack = new Stack<Constituent>();
       parseStack.push(new Constituent("TOP"));
-      terminals = new ArrayList<TreebankNode>();
+      terminals = new ArrayList<>();
       this.jCas = jCas;
     }
 
-    void feed(String segment, TreebankNode terminal) throws IOException {
+    void feed(String segment, TerminalTreebankNode terminal) throws IOException {
       BufferedReader r = new BufferedReader(new StringReader(segment));
 
       terminals.add(terminal);
@@ -291,8 +297,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
       List<TreebankNode> children = parseStack.peek().children;
       node.setChildren(new FSArray(jCas, children.size()));
       FSCollectionFactory.fillArrayFS(node.getChildren(), children);
-      for (TreebankNode child : parseStack.peek().children)
+      for (TreebankNode child : parseStack.peek().children) {
         child.setParent(node);
+      }
       node.setTerminals(new FSArray(jCas, this.terminals.size()));
       FSCollectionFactory.fillArrayFS(node.getTerminals(), this.terminals);
       node.addToIndexes();
@@ -376,8 +383,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
             this.argumentTokens = null;
             break;
           case '*':
-            if (this.argumentTokens != null)
+            if (this.argumentTokens != null) {
               this.argumentTokens.add(token);
+            }
             break;
           default:
             throw new IOException("unexpected character in string: " + String.valueOf(c) + " ("
@@ -409,8 +417,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
       while (true) {
         r.mark(1);
         int i = r.read();
-        if (i == -1)
+        if (i == -1) {
           break;
+        }
 
         char c = (char) i;
         if (c == '(' || c == ')' || c == '*') {
@@ -476,8 +485,9 @@ public class Conll2005GoldAnnotator extends JCasAnnotator_ImplBase {
       while (true) {
         r.mark(1);
         int i = r.read();
-        if (i == -1)
+        if (i == -1) {
           break;
+        }
 
         char c = (char) i;
         if (c == '*') {

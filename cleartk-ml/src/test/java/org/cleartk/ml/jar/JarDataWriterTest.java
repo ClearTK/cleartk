@@ -23,14 +23,15 @@
  */
 package org.cleartk.ml.jar;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.contentOf;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.fit.factory.UimaContextFactory;
-import org.apache.uima.util.FileUtils;
 import org.cleartk.ml.DataWriter;
 import org.cleartk.ml.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.ml.encoder.features.NameNumberFeaturesEncoder;
@@ -59,10 +60,9 @@ public class JarDataWriterTest extends DefaultTestBase {
     dataWriter.setFeaturesEncoder(new NameNumberFeaturesEncoder(false, false));
     dataWriter.setOutcomeEncoder(new StringToStringOutcomeEncoder());
     dataWriter.finish();
-    File manifestFile = new File(outputDirectory, "MANIFEST.MF");
-    String actualManifest = FileUtils.file2String(manifestFile);
-    
-    assertThat(actualManifest).isEqualToIgnoringWhitespace(expectedManifest);
+
+    assertThat(contentOf(new File(outputDirectory, "MANIFEST.MF"), UTF_8)) //
+        .isEqualToIgnoringWhitespace(expectedManifest);
   }
 
   @Test

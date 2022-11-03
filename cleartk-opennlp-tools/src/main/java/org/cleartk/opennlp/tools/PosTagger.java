@@ -51,9 +51,9 @@ public class PosTagger {
     return AnalysisEngineFactory.createEngineDescription(
         opennlp.uima.postag.POSTagger.class,
         opennlp.uima.util.UimaUtil.MODEL_PARAMETER,
-        ExternalResourceFactory.createExternalResourceDescription(
-            POSModelResourceImpl.class,
-            PosTagger.class.getResource(modelPath).toString()),
+        ExternalResourceFactory.createSharedResourceDescription(
+            PosTagger.class.getResource(modelPath).toString(),
+            POSModelResourceImpl.class),
         opennlp.uima.util.UimaUtil.SENTENCE_TYPE_PARAMETER,
         Sentence.class.getName(),
         opennlp.uima.util.UimaUtil.TOKEN_TYPE_PARAMETER,

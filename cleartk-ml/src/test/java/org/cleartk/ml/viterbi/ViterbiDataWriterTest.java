@@ -118,15 +118,13 @@ public class ViterbiDataWriterTest extends DefaultTestBase {
     String expectedManifest = "Manifest-Version: 1.0\n"
         + "classifierBuilderClass: org.cleartk.ml.viterbi.ViterbiClassifierBuilde\n" + " r";
 
-    File manifestFile = new File(outputDirectoryName, "MANIFEST.MF");
-    String actualManifest = contentOf(manifestFile, UTF_8);
-    assertThat(actualManifest).isEqualToIgnoringWhitespace(expectedManifest);
+    assertThat(contentOf(new File(outputDirectoryName, "MANIFEST.MF"), UTF_8)) //
+        .isEqualToIgnoringWhitespace(expectedManifest);
 
     ViterbiClassifierBuilder<String> builder = new ViterbiClassifierBuilder<String>();
     File delegatedOutputDirectory = builder.getDelegatedModelDirectory(outputDirectory);
-    String[] trainingData = FileUtil.loadListOfStrings(new File(
-        delegatedOutputDirectory,
-        "training-data.test"));
+    String[] trainingData = FileUtil.loadListOfStrings(
+        new File(delegatedOutputDirectory, "training-data.test"));
     testFeatures(trainingData[1], "PreviousOutcome_L1_D");
     testFeatures(
         trainingData[2],
