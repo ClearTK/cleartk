@@ -106,15 +106,16 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <cleartk.skipTests>tksvmlight,svmlight</cleartk.skipTests>
-    
+
     <uima-version>2.11.0</uima-version>
     <uimafit-version>2.5.0</uimafit-version>
     <junit-version>4.13.2</junit-version>
     <assertj-version>3.23.1</assertj-version>
+    <xmlunit-version>2.9.0</xmlunit-version>
   </properties>
 
   <dependencyManagement>
@@ -170,6 +171,11 @@
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
         <version>${assertj-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xmlunit</groupId>
+        <artifactId>xmlunit-assertj3</artifactId>
+        <version>${xmlunit-version}</version>
       </dependency>
 			<!-- ClearTK modules -->
       <dependency>
@@ -299,7 +305,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  
+
   <build>
     <pluginManagement>
       <plugins>
