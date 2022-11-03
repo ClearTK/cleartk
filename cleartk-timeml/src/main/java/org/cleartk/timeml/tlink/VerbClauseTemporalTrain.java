@@ -25,6 +25,7 @@ package org.cleartk.timeml.tlink;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Level;
@@ -99,9 +100,7 @@ public class VerbClauseTemporalTrain {
   }
 
   public static File getCleanedTimeBankDir(String timeBankDir) throws IOException {
-    File tempDir = File.createTempFile("TimeBank", "Cleaned");
-    tempDir.delete();
-    tempDir.mkdir();
+    File tempDir = Files.createTempDirectory("TimeBank" + "Cleaned").toFile();
     for (File file : new File(timeBankDir).listFiles()) {
       String name = file.getName();
       if (file.isHidden() || name.startsWith(".")) {
