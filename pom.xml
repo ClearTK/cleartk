@@ -1,504 +1,516 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<prerequisites>
-		<maven>3.0</maven>
-	</prerequisites>
-	<modelVersion>4.0.0</modelVersion>
-  
-	<groupId>org.cleartk</groupId>
-	<artifactId>cleartk</artifactId>
-	<version>2.1.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
-  
-	<name>ClearTK</name>
-	<description>The official ClearTK release</description>
-	<url>http://cleartk.github.io/cleartk/</url>
-  
-	<licenses>
-		<license>
-			<name>The BSD 3-Clause License</name>
-			<url>https://raw.githubusercontent.com/ClearTK/cleartk/master/LICENSE</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-  
-	<scm>
-		<url>https://github.com/ClearTK/cleartk</url>
-		<connection>scm:git:https://github.com/ClearTK/cleartk.git</connection>
-		<developerConnection>scm:git:git@github.com:ClearTK/cleartk.git</developerConnection>
-	</scm>
-  
-	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/ClearTK/cleartk/issues</url>
-	</issueManagement>
-  
-	<developers>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+    <relativePath />
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.cleartk</groupId>
+  <artifactId>cleartk</artifactId>
+  <version>2.1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>ClearTK</name>
+  <description>The official ClearTK release</description>
+  <url>http://cleartk.github.io/cleartk/</url>
+
+  <prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
+
+  <licenses>
+    <license>
+      <name>The BSD 3-Clause License</name>
+      <url>https://raw.githubusercontent.com/ClearTK/cleartk/master/LICENSE</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>https://github.com/ClearTK/cleartk</url>
+    <connection>scm:git:https://github.com/ClearTK/cleartk.git</connection>
+    <developerConnection>scm:git:git@github.com:ClearTK/cleartk.git</developerConnection>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/ClearTK/cleartk/issues</url>
+  </issueManagement>
+
+  <developers>
     <developer>
       <id>reckart</id>
       <email>richard.eckart@gmail.com</email>
       <name>Richard Eckart de Castilho</name>
     </developer>
-		<developer>
-			<id>steven.bethard</id>
-			<email>steven.bethard@gmail.com</email>
-			<name>Steven Bethard</name>
-		</developer>
-		<developer>
-			<id>philip.ogren</id>
-			<email>philip@ogren.info</email>
-			<name>Philip Ogren</name>
-		</developer>
-		<developer>
-			<id>lee.becker</id>
-			<email>lee.becker@gmail.com</email>
-			<name>Lee Becker</name>
-		</developer>
-	</developers>
-  
-	<modules>
+    <developer>
+      <id>steven.bethard</id>
+      <email>steven.bethard@gmail.com</email>
+      <name>Steven Bethard</name>
+    </developer>
+    <developer>
+      <id>philip.ogren</id>
+      <email>philip@ogren.info</email>
+      <name>Philip Ogren</name>
+    </developer>
+    <developer>
+      <id>lee.becker</id>
+      <email>lee.becker@gmail.com</email>
+      <name>Lee Becker</name>
+    </developer>
+  </developers>
+
+  <modules>
 		<!-- basic util modules -->
-		<module>cleartk-test-util</module>
-		<module>cleartk-util</module>
+    <module>cleartk-test-util</module>
+    <module>cleartk-util</module>
 		<!-- machine learning modules -->
-		<module>cleartk-ml</module>
-		<module>cleartk-ml-opennlp-maxent</module>
-		<module>cleartk-ml-svmlight</module>
-		<module>cleartk-ml-tksvmlight</module>
-		<module>cleartk-ml-liblinear</module>
-		<module>cleartk-ml-libsvm</module>
-		<module>cleartk-ml-libsvm-tk</module>
-		<module>cleartk-ml-mallet</module>
-		<module>cleartk-ml-crfsuite</module>
-		<module>cleartk-ml-weka</module>
+    <module>cleartk-ml</module>
+    <module>cleartk-ml-opennlp-maxent</module>
+    <module>cleartk-ml-svmlight</module>
+    <module>cleartk-ml-tksvmlight</module>
+    <module>cleartk-ml-liblinear</module>
+    <module>cleartk-ml-libsvm</module>
+    <module>cleartk-ml-libsvm-tk</module>
+    <module>cleartk-ml-mallet</module>
+    <module>cleartk-ml-crfsuite</module>
+    <module>cleartk-ml-weka</module>
 		<!-- evaluation module -->
-		<module>cleartk-eval</module>
+    <module>cleartk-eval</module>
 		<!-- type system -->
-		<module>cleartk-type-system</module>
-		<module>cleartk-corpus</module>
-		<module>cleartk-feature</module>
+    <module>cleartk-type-system</module>
+    <module>cleartk-corpus</module>
+    <module>cleartk-feature</module>
 		<!-- wrappers for external components -->
-		<module>cleartk-snowball</module>
-		<module>cleartk-opennlp-tools</module>
-		<module>cleartk-berkeleyparser</module>
-		<module>cleartk-clearnlp</module>
-		<module>cleartk-maltparser</module>
-		<module>cleartk-stanford-corenlp</module>
+    <module>cleartk-snowball</module>
+    <module>cleartk-opennlp-tools</module>
+    <module>cleartk-berkeleyparser</module>
+    <module>cleartk-clearnlp</module>
+    <module>cleartk-maltparser</module>
+    <module>cleartk-stanford-corenlp</module>
 		<!-- home-grown components -->
-		<module>cleartk-token</module>
-		<module>cleartk-summarization</module>
-		<module>cleartk-timeml</module>
-		<module>cleartk-examples</module>
-		
-		<module>cleartk-ml-script</module>
-		
-	</modules>
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-		<relativePath />
-	</parent>
-	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <module>cleartk-token</module>
+    <module>cleartk-summarization</module>
+    <module>cleartk-timeml</module>
+    <module>cleartk-examples</module>
+
+    <module>cleartk-ml-script</module>
+
+  </modules>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <uima-version>2.11.0</uima-version>
     <uimafit-version>2.5.0</uimafit-version>
-	</properties>
-	<dependencyManagement>
-		<dependencies>
+    <junit-version>4.13.2</junit-version>
+    <assertj-version>3.23.1</assertj-version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
 			<!-- Dependencies shared by multiple ClearTK modules -->
-			<dependency>
-				<groupId>org.jdom</groupId>
-				<artifactId>jdom</artifactId>
-				<version>2.0.2</version>
-			</dependency>
-			<dependency>
-				<groupId>com.lexicalscope.jewelcli</groupId>
-				<artifactId>jewelcli</artifactId>
-				<version>0.8.9</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.uima</groupId>
-				<artifactId>uimaj-core</artifactId>
-				<version>${uima-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.uima</groupId>
-				<artifactId>uimaj-document-annotation</artifactId>
+      <dependency>
+        <groupId>org.jdom</groupId>
+        <artifactId>jdom</artifactId>
+        <version>2.0.2</version>
+      </dependency>
+      <dependency>
+        <groupId>com.lexicalscope.jewelcli</groupId>
+        <artifactId>jewelcli</artifactId>
+        <version>0.8.9</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.uima</groupId>
+        <artifactId>uimaj-core</artifactId>
         <version>${uima-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.uima</groupId>
-				<artifactId>uimafit-core</artifactId>
-				<version>${uimafit-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>17.0</version>
-				<exclusions>
-					<exclusion>
-						<groupId>com.google.code.findbugs</groupId>
-						<artifactId>jsr305</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>commons-io</groupId>
-				<artifactId>commons-io</artifactId>
-				<version>2.7</version>
-			</dependency>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.13.1</version>
-			</dependency>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.uima</groupId>
+        <artifactId>uimaj-document-annotation</artifactId>
+        <version>${uima-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.uima</groupId>
+        <artifactId>uimafit-core</artifactId>
+        <version>${uimafit-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>17.0</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.7</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${assertj-version}</version>
+      </dependency>
 			<!-- ClearTK modules -->
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-test-util</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-util</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-ml</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-ml-opennlp-maxent</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-ml-svmlight</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-ml-tksvmlight</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-ml-liblinear</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-ml-libsvm</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-ml-libsvm-tk</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-ml-mallet</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-ml-crfsuite</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-ml-weka</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-eval</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-type-system</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-corpus</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-feature</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-snowball</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-opennlp-tools</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-berkeleyparser</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-clearnlp</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-maltparser</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-stanford-corenlp</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-token</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-summarization</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cleartk</groupId>
-				<artifactId>cleartk-timeml</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.4</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.5</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.1</version>
-					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
-					</configuration>
-				</plugin>
-				<plugin>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.8.1</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-eclipse-plugin</artifactId>
-					<version>2.9</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>1.5</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-install-plugin</artifactId>
-					<version>2.5.1</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.4</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.9.1</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-plugin-plugin</artifactId>
-					<version>3.3</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>2.5</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.6</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>3.3</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>2.2.1</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.17</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.uima</groupId>
-					<artifactId>jcasgen-maven-plugin</artifactId>
-					<version>${uima-version}</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-test-util</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-util</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-ml</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-ml-opennlp-maxent</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-ml-svmlight</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-ml-tksvmlight</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-ml-liblinear</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-ml-libsvm</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-ml-libsvm-tk</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-ml-mallet</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-ml-crfsuite</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-ml-weka</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-eval</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-type-system</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-corpus</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-feature</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-snowball</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-opennlp-tools</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-berkeleyparser</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-clearnlp</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-maltparser</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-stanford-corenlp</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-token</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-summarization</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cleartk</groupId>
+        <artifactId>cleartk-timeml</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>2.5</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.1</version>
+          <configuration>
+            <source>1.8</source>
+            <target>1.8</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <version>2.9</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>1.5</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.5.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.9.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <version>3.3</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.5</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.6</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.3</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>2.2.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.17</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.uima</groupId>
+          <artifactId>jcasgen-maven-plugin</artifactId>
+          <version>${uima-version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>generate</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.cleartk</groupId>
-										<artifactId>
-											consistent-versions-plugin
-										</artifactId>
-										<versionRange>
-											[0.5.0-SNAPSHOT,)
-										</versionRange>
-										<goals>
-											<goal>
-												check-version-consistency
-											</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-enforcer-plugin
-										</artifactId>
-										<versionRange>
-											[1.0,)
-										</versionRange>
-										<goals>
-											<goal>enforce</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-		<plugins>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
-					<descriptors>
-						<descriptor>zip.xml</descriptor>
-					</descriptors>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9.1</version>
-				<configuration>
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.cleartk</groupId>
+                    <artifactId>
+                      consistent-versions-plugin
+                    </artifactId>
+                    <versionRange>
+                      [0.5.0-SNAPSHOT,)
+                    </versionRange>
+                    <goals>
+                      <goal>
+                        check-version-consistency
+                      </goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <execute />
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>
+                      org.apache.maven.plugins
+                    </groupId>
+                    <artifactId>
+                      maven-enforcer-plugin
+                    </artifactId>
+                    <versionRange>
+                      [1.0,)
+                    </versionRange>
+                    <goals>
+                      <goal>enforce</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+          <descriptors>
+            <descriptor>zip.xml</descriptor>
+          </descriptors>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.9.1</version>
+        <configuration>
 					<!-- switch on dependency-driven aggregation -->
-					<includeDependencySources>true</includeDependencySources>
+          <includeDependencySources>true</includeDependencySources>
 
 					<!-- include ONLY ClearTK dependencies -->
-					<dependencySourceIncludes>
-						<dependencySourceInclude>org.cleartk:*</dependencySourceInclude>
-					</dependencySourceIncludes>
+          <dependencySourceIncludes>
+            <dependencySourceInclude>org.cleartk:*</dependencySourceInclude>
+          </dependencySourceIncludes>
 
 					<!-- Suppress timestamp for minimal diffs when re-generating -->
-					<notimestamp>true</notimestamp>
+          <notimestamp>true</notimestamp>
 
 					<!-- Allow tags added by JCasGen -->
-					<tags>
-						<tag>
-							<name>generated</name>
-							<placement>a</placement>
-							<head>Generated</head>
-						</tag>
-						<tag>
-							<name>ordered</name>
-							<placement>a</placement>
-							<head>Ordered</head>
-						</tag>
-						<tag>
-							<name>modifiable</name>
-							<placement>a</placement>
-							<head>Modifiable</head>
-						</tag>
-					</tags>
+          <tags>
+            <tag>
+              <name>generated</name>
+              <placement>a</placement>
+              <head>Generated</head>
+            </tag>
+            <tag>
+              <name>ordered</name>
+              <placement>a</placement>
+              <head>Ordered</head>
+            </tag>
+            <tag>
+              <name>modifiable</name>
+              <placement>a</placement>
+              <head>Modifiable</head>
+            </tag>
+          </tags>
 
 					<!-- Link to standard Java HTML javadoc -->
-					<linksource>true</linksource>
+          <linksource>true</linksource>
 
 					<!-- Don't include deprecated APIs -->
-					<nodeprecated>true</nodeprecated>
+          <nodeprecated>true</nodeprecated>
 
 					<!-- Links to all dependency javadocs -->
-					<links>
+          <links>
 						<!-- berkeley parser -->
 						<!-- (none available) -->
 						<!-- commons-io -->
-						<link>http://commons.apache.org/io/apidocs/</link>
+            <link>http://commons.apache.org/io/apidocs/</link>
 
 						<!-- commons-lang -->
-						<link>http://commons.apache.org/lang/apidocs/</link>
+            <link>http://commons.apache.org/lang/apidocs/</link>
 
 						<!-- commons-logging -->
-						<link>http://commons.apache.org/logging/apidocs/</link>
+            <link>http://commons.apache.org/logging/apidocs/</link>
 
 						<!-- guava -->
-						<link>http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/</link>
+            <link>http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/</link>
 
 						<!-- jVinci, uima-* -->
-						<link>http://uima.apache.org/d/uimaj-2.3.1/api/</link>
+            <link>http://uima.apache.org/d/uimaj-2.3.1/api/</link>
 
 						<!-- jdom -->
-						<link>http://www.jdom.org/docs/apidocs/</link>
+            <link>http://www.jdom.org/docs/apidocs/</link>
 
 						<!-- joda-time -->
-						<link>http://joda-time.sourceforge.net/apidocs</link>
+            <link>http://joda-time.sourceforge.net/apidocs</link>
 
 						<!-- jsr173_api -->
 						<!-- (none available) -->
 
 						<!-- jsr305 -->
-						<link>http://findbugs.sourceforge.net/api/</link>
+            <link>http://findbugs.sourceforge.net/api/</link>
 
 						<!-- junit -->
-						<link>http://junit.org/apidocs/</link>
+            <link>http://junit.org/apidocs/</link>
 
 						<!-- jwnl -->
 						<!-- (none available) -->
@@ -510,28 +522,28 @@
 						<!-- (none available) -->
 
 						<!-- log4j -->
-						<link>http://logging.apache.org/log4j/1.2/apidocs/</link>
+            <link>http://logging.apache.org/log4j/1.2/apidocs/</link>
 
 						<!-- lucene-snowball -->
-						<link>http://lucene.apache.org/java/3_0_3/api/all/</link>
+            <link>http://lucene.apache.org/java/3_0_3/api/all/</link>
 
 						<!-- mallet -->
-						<link>http://mallet.cs.umass.edu/api/</link>
+            <link>http://mallet.cs.umass.edu/api/</link>
 
 						<!-- malt -->
-						<link>http://maltparser.org/api/</link>
+            <link>http://maltparser.org/api/</link>
 
 						<!-- opennlp-maxent -->
-						<link>http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-maxent/</link>
+            <link>http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-maxent/</link>
 
 						<!-- opennlp-tools -->
-						<link>http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-tools/</link>
+            <link>http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-tools/</link>
 
 						<!-- spring-core -->
-						<link>http://static.springsource.org/spring/docs/3.0.3.RELEASE/javadoc-api/</link>
+            <link>http://static.springsource.org/spring/docs/3.0.3.RELEASE/javadoc-api/</link>
 
 						<!-- stanford-corenlp -->
-						<link>http://nlp.stanford.edu/nlp/javadoc/javanlp/</link>
+            <link>http://nlp.stanford.edu/nlp/javadoc/javanlp/</link>
 
 						<!-- stax -->
 						<!-- (none available) -->
@@ -540,25 +552,25 @@
 						<!-- (none available) -->
 
 						<!-- trove4j -->
-						<link>http://trove4j.sourceforge.net/javadocs/</link>
+            <link>http://trove4j.sourceforge.net/javadocs/</link>
 
 						<!-- uimafit -->
-						<link>http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/</link>
+            <link>http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/</link>
 
 						<!-- xalan -->
-						<link>http://xml.apache.org/xalan-j/apidocs/</link>
+            <link>http://xml.apache.org/xalan-j/apidocs/</link>
 
 						<!-- xerces -->
-						<link>https://xerces.apache.org/xerces2-j/javadocs/api/</link>
+            <link>https://xerces.apache.org/xerces2-j/javadocs/api/</link>
 
 						<!-- xml-apis -->
 						<!-- (none available) -->
 
 						<!-- xom -->
-						<link>http://xom.nu/apidocs/</link>
-					</links>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+            <link>http://xom.nu/apidocs/</link>
+          </links>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
