@@ -4,13 +4,16 @@
 		<maven>3.0</maven>
 	</prerequisites>
 	<modelVersion>4.0.0</modelVersion>
+  
 	<groupId>org.cleartk</groupId>
 	<artifactId>cleartk</artifactId>
 	<version>2.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+  
 	<name>ClearTK</name>
 	<description>The official ClearTK release</description>
 	<url>http://cleartk.github.io/cleartk/</url>
+  
 	<licenses>
 		<license>
 			<name>The BSD 3-Clause License</name>
@@ -18,16 +21,24 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+  
 	<scm>
 		<url>https://github.com/ClearTK/cleartk</url>
 		<connection>scm:git:https://github.com/ClearTK/cleartk.git</connection>
 		<developerConnection>scm:git:git@github.com:ClearTK/cleartk.git</developerConnection>
 	</scm>
+  
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/ClearTK/cleartk/issues</url>
 	</issueManagement>
+  
 	<developers>
+    <developer>
+      <id>reckart</id>
+      <email>richard.eckart@gmail.com</email>
+      <name>Richard Eckart de Castilho</name>
+    </developer>
 		<developer>
 			<id>steven.bethard</id>
 			<email>steven.bethard@gmail.com</email>
@@ -44,6 +55,7 @@
 			<name>Lee Becker</name>
 		</developer>
 	</developers>
+  
 	<modules>
 		<!-- basic util modules -->
 		<module>cleartk-test-util</module>
@@ -91,6 +103,8 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <uima-version>2.11.0</uima-version>
+    <uimafit-version>2.5.0</uimafit-version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -108,17 +122,17 @@
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimaj-core</artifactId>
-				<version>2.9.0</version>
+				<version>${uima-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimaj-document-annotation</artifactId>
-				<version>2.9.0</version>
+        <version>${uima-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.uima</groupId>
 				<artifactId>uimafit-core</artifactId>
-				<version>2.3.0</version>
+				<version>${uimafit-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
@@ -339,7 +353,7 @@
 				<plugin>
 					<groupId>org.apache.uima</groupId>
 					<artifactId>jcasgen-maven-plugin</artifactId>
-					<version>2.5.0</version>
+					<version>${uima-version}</version>
 					<executions>
 						<execution>
 							<goals>
