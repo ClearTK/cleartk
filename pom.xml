@@ -113,6 +113,7 @@
 
     <uima-version>2.11.0</uima-version>
     <uimafit-version>2.5.0</uimafit-version>
+    <slf4j-version>1.7.36</slf4j-version>
     <junit-version>4.13.2</junit-version>
     <assertj-version>3.23.1</assertj-version>
     <xmlunit-version>2.9.0</xmlunit-version>
@@ -303,6 +304,12 @@
         <groupId>org.cleartk</groupId>
         <artifactId>cleartk-timeml</artifactId>
         <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4j-version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
