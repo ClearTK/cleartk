@@ -23,6 +23,7 @@
  */
 package org.cleartk.ml.jar;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -37,7 +38,6 @@ import org.cleartk.ml.encoder.outcome.StringToStringOutcomeEncoder;
 import org.cleartk.ml.test.DefaultStringTestDataWriterFactory;
 import org.cleartk.ml.test.StringTestDataWriter;
 import org.cleartk.test.util.DefaultTestBase;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -61,7 +61,8 @@ public class JarDataWriterTest extends DefaultTestBase {
     dataWriter.finish();
     File manifestFile = new File(outputDirectory, "MANIFEST.MF");
     String actualManifest = FileUtils.file2String(manifestFile);
-    Assert.assertEquals(expectedManifest, actualManifest.replaceAll("\r", "").trim());
+    
+    assertThat(actualManifest).isEqualToIgnoringWhitespace(expectedManifest);
   }
 
   @Test
@@ -75,7 +76,5 @@ public class JarDataWriterTest extends DefaultTestBase {
     DataWriter<String> dataWriter = factory.createDataWriter();
     dataWriter.finish();
     assertTrue(new File(outputDirectory, FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME).exists());
-
   }
-
 }
