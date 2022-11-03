@@ -225,9 +225,11 @@ public class StanfordCoreNlpTest
             }
             actualEntities.add(mentionTexts);
         }
+        
         for (NamedEntityMention mention : JCasUtil.select(this.jCas, NamedEntityMention.class)) {
             Assert.assertNotNull(mention.getMentionedEntity());
         }
-        Assert.assertEquals(expectedEntities, actualEntities);
+        
+        assertThat(actualEntities).containsExactlyInAnyOrderElementsOf(expectedEntities);
     }
 }
