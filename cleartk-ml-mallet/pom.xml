@@ -1,59 +1,90 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>cleartk-ml-mallet</artifactId>
-	<packaging>jar</packaging>
-	<name>ClearTK ML Mallet</name>
-	<description>ClearTK wrapper for MALLET</description>
-	<parent>
-		<artifactId>cleartk</artifactId>
-		<groupId>org.cleartk</groupId>
-		<version>2.1.0-SNAPSHOT</version>
-		<relativePath>..</relativePath>
-	</parent>
-	<dependencies>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-ml</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>cc.mallet</groupId>
-			<artifactId>mallet</artifactId>
-			<version>2.0.7</version>
-			<exclusions>
-				<exclusion>
-					<groupId>junit</groupId>
-					<artifactId>junit</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>jgrapht</groupId>
-					<artifactId>jgrapht</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>net.sf.jwordnet</groupId>
-					<artifactId>jwnl</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.googlecode.matrix-toolkits-java</groupId>
-					<artifactId>mtj</artifactId>
-				</exclusion>
-				<!-- exclude jdom 1.1 since it conflicts in Maven with the current 2.0.2 -->
-				<exclusion>
-					<groupId>org.jdom</groupId>
-					<artifactId>jdom</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!-- include jdom 1.1 again, but under the "jdom-legacy" name -->
-		<dependency>
-			<groupId>org.jdom</groupId>
-			<artifactId>jdom-legacy</artifactId>
-			<version>1.1.3</version>
-		</dependency>
-		<!-- test only -->
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-test-util</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>cleartk</artifactId>
+    <groupId>org.cleartk</groupId>
+    <version>2.1.0-SNAPSHOT</version>
+    <relativePath>..</relativePath>
+  </parent>
+
+  <artifactId>cleartk-ml-mallet</artifactId>
+
+  <name>ClearTK ML Mallet (${mallet-version})</name>
+  <description>ClearTK wrapper for MALLET</description>
+
+  <properties>
+    <mallet-version>2.0.8</mallet-version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimafit-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.cleartk</groupId>
+      <artifactId>cleartk-ml</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.cleartk</groupId>
+      <artifactId>cleartk-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>cc.mallet</groupId>
+      <artifactId>mallet</artifactId>
+      <version>${mallet-version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>jgrapht</groupId>
+          <artifactId>jgrapht</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>net.sf.jwordnet</groupId>
+          <artifactId>jwnl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.googlecode.matrix-toolkits-java</groupId>
+          <artifactId>mtj</artifactId>
+        </exclusion>
+        <!-- exclude jdom 1.x since it conflicts in Maven with the current 2.0.2 -->
+        <exclusion>
+          <groupId>org.jdom</groupId>
+          <artifactId>jdom</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- include jdom 1.x again, but under the "jdom-legacy" name -->
+    <dependency>
+      <groupId>org.jdom</groupId>
+      <artifactId>jdom-legacy</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- test only -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.cleartk</groupId>
+      <artifactId>cleartk-test-util</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>
