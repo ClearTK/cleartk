@@ -1,62 +1,69 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>cleartk-opennlp-tools</artifactId>
-	<packaging>jar</packaging>
-	<name>ClearTK OpenNLP Tools</name>
-	<description>ClearTK wrapper for OpenNLP tools</description>
-	<parent>
-		<artifactId>cleartk</artifactId>
-		<groupId>org.cleartk</groupId>
-		<version>2.1.0-SNAPSHOT</version>
-		<relativePath>..</relativePath>
-	</parent>
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.opennlp</groupId>
-			<artifactId>opennlp-maxent</artifactId>
-			<version>3.0.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.opennlp</groupId>
-			<artifactId>opennlp-tools</artifactId>
-			<version>1.5.3</version>
-			<exclusions>
-			<!-- only needed for coreference, which we don't wrap yet -->
-				<exclusion>
-					<groupId>jwnl</groupId>
-					<artifactId>jwnl</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.opennlp</groupId>
-			<artifactId>opennlp-uima</artifactId>
-			<version>1.5.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-util</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-type-system</artifactId>
-		</dependency>
-		<!-- test only -->
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-test-util</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
-	<build>
-		<plugins>
-			<!-- increase max memory for tests since model must be loaded -->
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<argLine>-Xmx512m</argLine>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>cleartk</artifactId>
+    <groupId>org.cleartk</groupId>
+    <version>2.1.0-SNAPSHOT</version>
+    <relativePath>..</relativePath>
+  </parent>
+
+  <artifactId>cleartk-opennlp-tools</artifactId>
+
+  <name>ClearTK OpenNLP Tools (${opennlp-version})</name>
+  <description>ClearTK wrapper for OpenNLP tools</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimafit-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.opennlp</groupId>
+      <artifactId>opennlp-tools</artifactId>
+      <version>${opennlp-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.opennlp</groupId>
+      <artifactId>opennlp-uima</artifactId>
+      <version>${opennlp-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.cleartk</groupId>
+      <artifactId>cleartk-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.cleartk</groupId>
+      <artifactId>cleartk-type-system</artifactId>
+    </dependency>
+    
+    <!-- test only -->
+    <dependency>
+      <groupId>org.cleartk</groupId>
+      <artifactId>cleartk-test-util</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+       <!-- increase max memory for tests since model must be loaded -->
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <argLine>-Xmx512m</argLine>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

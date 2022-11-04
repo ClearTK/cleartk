@@ -23,11 +23,11 @@
  */
 package org.cleartk.ml.opennlp.maxent;
 
-import opennlp.model.MaxentModel;
-
 import org.cleartk.ml.encoder.features.FeaturesEncoder;
 import org.cleartk.ml.encoder.outcome.OutcomeEncoder;
 import org.cleartk.ml.opennlp.maxent.encoder.ContextValues;
+
+import opennlp.tools.ml.model.MaxentModel;
 
 /**
  * <br>
