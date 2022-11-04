@@ -30,13 +30,21 @@ import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 import java.util.zip.GZIPInputStream;
 
-import opennlp.maxent.io.BinaryGISModelReader;
-import opennlp.model.MaxentModel;
-
 import org.cleartk.ml.encoder.features.NameNumberFeaturesEncoder;
 import org.cleartk.ml.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.ml.jar.JarStreams;
 import org.cleartk.ml.opennlp.maxent.encoder.ContextValues;
+
+import opennlp.tools.ml.EventTrainer;
+import opennlp.tools.ml.maxent.GISTrainer;
+import opennlp.tools.ml.maxent.io.BinaryGISModelReader;
+import opennlp.tools.ml.maxent.io.BinaryGISModelWriter;
+import opennlp.tools.ml.model.AbstractModel;
+import opennlp.tools.ml.model.MaxentModel;
+import opennlp.tools.ml.model.OnePassRealValueDataIndexer;
+import opennlp.tools.ml.model.RealValueFileEventStream;
+import opennlp.tools.util.TrainingParameters;
+import opennlp.tools.util.model.ModelUtil;
 
 /**
  * <br>
@@ -51,15 +59,43 @@ public abstract class MaxentClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends M
 
   private static final String MODEL_NAME = "model.maxent";
 
-  public File getTrainingDataFile(File dir) {
+  @Override
+public File getTrainingDataFile(File dir) {
     return new File(dir, "training-data.maxent");
   }
 
-  public void trainClassifier(File dir, String... args) throws Exception {
-    String[] maxentArgs = new String[args.length + 1];
-    maxentArgs[0] = getTrainingDataFile(dir).getPath();
-    System.arraycopy(args, 0, maxentArgs, 1, args.length);
-    opennlp.model.RealValueFileEventStream.main(maxentArgs);
+  @Override
+public void trainClassifier(File dir, String... args) throws Exception {
+    TrainingParameters params = ModelUtil.createDefaultTrainingParameters();
+    if (args.length > 0) {
+        params.put(TrainingParameters.ITERATIONS_PARAM, Integer.parseInt(args[0]));
+    }
+    if (args.length > 1) {
+        params.put(TrainingParameters.CUTOFF_PARAM, Integer.parseInt(args[1]));
+    }
+    
+    RealValueFileEventStream es = new RealValueFileEventStream(getTrainingDataFile(dir));
+    
+    OnePassRealValueDataIndexer indexer = new OnePassRealValueDataIndexer();
+    indexer.init(params, null);
+    indexer.index(es);
+    
+    EventTrainer trainer = new GISTrainer();
+    trainer.init(params, null);
+    
+    AbstractModel trainedModel = (AbstractModel) trainer.train(indexer);
+    
+    BinaryGISModelWriter writer = null;
+    try {
+        writer = new BinaryGISModelWriter(trainedModel,
+                new File(getTrainingDataFile(dir).getAbsoluteFile().toString() + ".bin.gz"));
+        writer.persist();
+    }
+    finally {
+        if (writer != null) {
+            writer.close();
+        }
+    }
   }
 
   @Override

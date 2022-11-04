@@ -15,10 +15,6 @@
   <name>ClearTK ML OpenNLP Maxent (${opennlp-version})</name>
   <description>ClearTK wrapper for OpenNLP-Maxent</description>
 
-  <properties>
-    <opennlp-version>1.5.3</opennlp-version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>
@@ -34,8 +30,8 @@
     </dependency>
     <dependency>
       <groupId>org.apache.opennlp</groupId>
-      <artifactId>opennlp-maxent</artifactId>
-      <version>3.0.3</version>
+      <artifactId>opennlp-tools</artifactId>
+      <version>${opennlp-version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>

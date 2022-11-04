@@ -85,10 +85,10 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    * @return A new classifier builder.
    */
   public static JarClassifierBuilder<?> fromTrainingDirectory(File dir) throws IOException {
-    InputStream stream = new BufferedInputStream(new FileInputStream(getManifestFile(dir)));
-    Manifest manifest = new Manifest(stream);
-    stream.close();
-    return fromManifest(manifest);
+    try (InputStream stream = new BufferedInputStream(new FileInputStream(getManifestFile(dir)))) {
+      Manifest manifest = new Manifest(stream);
+      return fromManifest(manifest);
+    }
   }
 
   /**
@@ -148,9 +148,9 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    */
   public void saveToTrainingDirectory(File dir) throws IOException {
     // save the manifest to the directory
-    FileOutputStream manifestStream = new FileOutputStream(getManifestFile(dir));
-    this.manifest.write(manifestStream);
-    manifestStream.close();
+    try (FileOutputStream manifestStream = new FileOutputStream(getManifestFile(dir))) {
+        this.manifest.write(manifestStream);
+    }
   }
 
   /**
@@ -177,10 +177,10 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    *          The directory where the classifier model was trained.
    */
   public void packageClassifier(File dir) throws IOException {
-    JarOutputStream modelStream = new JarOutputStream(new BufferedOutputStream(
-        new FileOutputStream(getModelJarFile(dir))), this.manifest);
+    try (JarOutputStream modelStream = new JarOutputStream(new BufferedOutputStream(
+        new FileOutputStream(getModelJarFile(dir))), this.manifest)) {
     this.packageClassifier(dir, modelStream);
-    modelStream.close();
+    }
   }
 
   /**
@@ -227,11 +227,8 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    */
   public CLASSIFIER_TYPE loadClassifierFromTrainingDirectory(File dir) throws IOException {
     File modelJarFile = getModelJarFile(dir);
-    InputStream inputStream = new BufferedInputStream(new FileInputStream(modelJarFile));
-    try {
+    try (InputStream inputStream = new BufferedInputStream(new FileInputStream(modelJarFile))) {
       return this.loadClassifier(inputStream);
-    } finally {
-      inputStream.close();
     }
   }
 
@@ -256,12 +253,9 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
 
     // if we need to wrap it in a Jar stream, be sure to close the stream afterwards
     else {
-      JarInputStream modelStream = new JarInputStream(inputStream);
-      try {
+      try (JarInputStream modelStream = new JarInputStream(inputStream)) {
         this.unpackageClassifier(modelStream);
         return this.newClassifier();
-      } finally {
-        modelStream.close();
       }
     }
   }

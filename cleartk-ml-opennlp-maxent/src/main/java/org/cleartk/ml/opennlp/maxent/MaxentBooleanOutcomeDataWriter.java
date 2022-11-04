@@ -26,7 +26,7 @@ package org.cleartk.ml.opennlp.maxent;
 import java.io.File;
 import java.io.IOException;
 
-import opennlp.model.RealValueFileEventStream;
+import opennlp.tools.ml.model.RealValueFileEventStream;
 
 import org.cleartk.ml.encoder.outcome.BooleanToStringOutcomeEncoder;
 

@@ -15,10 +15,6 @@
   <name>ClearTK OpenNLP Tools (${opennlp-version})</name>
   <description>ClearTK wrapper for OpenNLP tools</description>
 
-  <properties>
-    <opennlp-version>1.5.3</opennlp-version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>
@@ -34,21 +30,8 @@
     </dependency>
     <dependency>
       <groupId>org.apache.opennlp</groupId>
-      <artifactId>opennlp-maxent</artifactId>
-      <version>3.0.3</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.opennlp</groupId>
       <artifactId>opennlp-tools</artifactId>
       <version>${opennlp-version}</version>
-      <exclusions>
-        <!-- only needed for coreference, which we don't wrap yet -->
-        <exclusion>
-          <groupId>jwnl</groupId>
-          <artifactId>jwnl</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.opennlp</groupId>
@@ -78,7 +61,7 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <argLine>-Xmx512m</argLine>
+          <argLine>-Xmx1g</argLine>
         </configuration>
       </plugin>
     </plugins>

@@ -26,7 +26,7 @@ package org.cleartk.ml.opennlp.maxent;
 import java.util.List;
 import java.util.Map;
 
-import opennlp.model.MaxentModel;
+import opennlp.tools.ml.model.MaxentModel;
 
 import org.cleartk.ml.CleartkProcessingException;
 import org.cleartk.ml.Feature;
@@ -59,7 +59,8 @@ public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
     this.model = model;
   }
 
-  public OUTCOME_TYPE classify(List<Feature> features) throws CleartkProcessingException {
+  @Override
+public OUTCOME_TYPE classify(List<Feature> features) throws CleartkProcessingException {
     ContextValues contextValues = this.featuresEncoder.encodeAll(features);
     String encodedOutcome = this.model.getBestOutcome(this.model.eval(
         contextValues.getContext(),
@@ -71,7 +72,11 @@ public abstract class MaxentClassifier_ImplBase<OUTCOME_TYPE> extends
   public Map<OUTCOME_TYPE, Double> score(List<Feature> features) throws CleartkProcessingException {
     ContextValues contextValues = this.featuresEncoder.encodeAll(features);
     double[] evalResults = this.model.eval(contextValues.getContext(), contextValues.getValues());
-    String[] encodedOutcomes = (String[]) this.model.getDataStructures()[2];
+
+    String[] encodedOutcomes = new String[this.model.getNumOutcomes()];
+    for (int i = 0; i < this.model.getNumOutcomes(); i++) {
+        encodedOutcomes[i] = this.model.getOutcome(i);
+    }
 
     Map<OUTCOME_TYPE, Double> returnValues = Maps.newHashMap();
     for (int i = 0; i < evalResults.length; i++) {
