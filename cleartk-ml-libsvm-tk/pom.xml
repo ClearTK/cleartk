@@ -40,14 +40,17 @@
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-ml-tksvmlight</artifactId>
+     <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-ml-svmlight</artifactId>
+     <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-ml</artifactId>
+     <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.chboston.cnlp</groupId>
@@ -57,13 +60,9 @@
     
     <!-- test only -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-test-util</artifactId>
+     <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

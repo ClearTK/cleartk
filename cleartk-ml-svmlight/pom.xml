@@ -27,6 +27,7 @@
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-ml</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -35,13 +36,9 @@
     
     <!-- test only -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-test-util</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

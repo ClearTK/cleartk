@@ -30,12 +30,14 @@
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-ml</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <!-- test only -->
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-test-util</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

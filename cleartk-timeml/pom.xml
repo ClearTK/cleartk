@@ -34,7 +34,7 @@
     </dependency>
     <dependency>
       <groupId>org.jdom</groupId>
-      <artifactId>jdom</artifactId>
+      <artifactId>jdom2</artifactId>
     </dependency>
     <dependency>
       <groupId>com.lexicalscope.jewelcli</groupId>
@@ -43,48 +43,59 @@
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-util</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-eval</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-ml</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-ml-liblinear</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-type-system</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-feature</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-corpus</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-token</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-snowball</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-opennlp-tools</artifactId>
+      <version>${project.version}</version>
     </dependency>
     
 		<!-- test only -->
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-test-util</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

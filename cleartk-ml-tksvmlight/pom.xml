@@ -27,14 +27,17 @@
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-util</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-ml</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-ml-svmlight</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -47,13 +50,9 @@
 
     <!-- test only -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-test-util</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

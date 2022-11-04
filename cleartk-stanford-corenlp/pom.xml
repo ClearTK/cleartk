@@ -60,12 +60,14 @@
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-type-system</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
 		<!-- Test-only dependencies -->
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-test-util</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -35,26 +35,32 @@
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-util</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-token</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-type-system</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-snowball</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-opennlp-tools</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-ml</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.lexicalscope.jewelcli</groupId>

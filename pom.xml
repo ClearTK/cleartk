@@ -68,6 +68,7 @@
 
   <modules>
     <!-- basic util modules -->
+    <module>cleartk-bom</module>
     <module>cleartk-test-util</module>
     <module>cleartk-util</module>
     <!-- machine learning modules -->
@@ -208,7 +209,6 @@
         <artifactId>xmlunit-assertj3</artifactId>
         <version>${xmlunit-version}</version>
       </dependency>
-
       <dependency>
         <groupId>tw.edu.ntu.csie</groupId>
         <artifactId>libsvm</artifactId>
@@ -219,7 +219,6 @@
         <artifactId>liblinear</artifactId>
         <version>${liblinear-version}</version>
       </dependency>
-
       <dependency>
         <groupId>org.dkpro.core</groupId>
         <artifactId>dkpro-core-api-resources-asl</artifactId>
@@ -240,133 +239,6 @@
         </exclusions>
       </dependency>
       
-      <!-- ClearTK modules -->
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-test-util</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-util</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-ml</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-ml-opennlp-maxent</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-ml-svmlight</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-ml-tksvmlight</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-ml-liblinear</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-ml-libsvm</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-ml-libsvm-tk</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-ml-mallet</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-ml-crfsuite</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-ml-weka</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-eval</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-type-system</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-corpus</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-feature</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-snowball</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-opennlp-tools</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-berkeleyparser</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-clearnlp</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-maltparser</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-stanford-corenlp</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-token</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-summarization</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cleartk</groupId>
-        <artifactId>cleartk-timeml</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
       <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>

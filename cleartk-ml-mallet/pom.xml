@@ -35,10 +35,12 @@
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-ml</artifactId>
+     <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-util</artifactId>
+     <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>cc.mallet</groupId>
@@ -61,7 +63,7 @@
           <groupId>com.googlecode.matrix-toolkits-java</groupId>
           <artifactId>mtj</artifactId>
         </exclusion>
-        <!-- exclude jdom 1.x since it conflicts in Maven with the current 2.0.2 -->
+        <!-- exclude jdom 1.x since it conflicts in Maven with the current 2.x -->
         <exclusion>
           <groupId>org.jdom</groupId>
           <artifactId>jdom</artifactId>
@@ -77,13 +79,9 @@
 
     <!-- test only -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-test-util</artifactId>
+     <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
