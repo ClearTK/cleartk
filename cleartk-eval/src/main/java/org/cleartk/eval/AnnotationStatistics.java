@@ -40,9 +40,10 @@ import org.cleartk.eval.util.ConfusionMatrix;
 
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
-import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Stores statistics for comparing {@link Annotation}s extracted by a system to gold
@@ -461,11 +462,10 @@ public class AnnotationStatistics<OUTCOME_TYPE extends Comparable<? super OUTCOM
     }
 
     @Override
-    public String toString() {
-      ToStringHelper helper = Objects.toStringHelper(this);
-      helper.add("begin", this.begin);
-      helper.add("end", this.end);
-      return helper.toString();
+    public String toString()
+    {
+        return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append("end", end)
+                .append("begin", begin).toString();
     }
   }
 }

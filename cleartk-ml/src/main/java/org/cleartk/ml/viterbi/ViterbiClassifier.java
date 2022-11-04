@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.uima.UimaContext;
 import org.apache.uima.fit.component.initialize.ConfigurationParameterInitializer;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
@@ -44,8 +46,6 @@ import org.cleartk.util.ReflectionUtil;
 import org.cleartk.util.ReflectionUtil.TypeArgumentDelegator;
 
 import com.google.common.base.Functions;
-import com.google.common.base.Objects;
-import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -96,14 +96,16 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
     this.outcomeFeatureExtractors = outcomeFeatureExtractors;
   }
 
-  public void initialize(UimaContext context) throws ResourceInitializationException {
+  @Override
+public void initialize(UimaContext context) throws ResourceInitializationException {
     ConfigurationParameterInitializer.initialize(this, context);
     if (stackSize < 1) {
       throw CleartkInitializationException.parameterLessThan(PARAM_STACK_SIZE, 1, stackSize);
     }
   }
 
-  public List<OUTCOME_TYPE> classify(List<List<Feature>> features)
+  @Override
+public List<OUTCOME_TYPE> classify(List<List<Feature>> features)
       throws CleartkProcessingException {
     if (stackSize == 1) {
       List<Object> outcomes = new ArrayList<Object>();
@@ -192,7 +194,8 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
     throw new UnsupportedOperationException();
   }
 
-  public Map<String, Type> getTypeArguments(Class<?> genericType) {
+  @Override
+public Map<String, Type> getTypeArguments(Class<?> genericType) {
     if (genericType.equals(SequenceClassifier.class)) {
       genericType = Classifier.class;
     }
@@ -248,17 +251,15 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
     }
 
     @Override
-    public String toString() {
-      ToStringHelper helper = Objects.toStringHelper(this);
-      helper.add("outcome", this.outcome);
-      helper.add("score", this.score);
-      helper.add("parent", this.parent);
-      return helper.toString();
+    public int compareTo(Path that) {
+      return Doubles.compare(this.score, that.score);
     }
 
     @Override
-    public int compareTo(Path that) {
-      return Doubles.compare(this.score, that.score);
+    public String toString()
+    {
+        return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append("outcome", outcome)
+                .append("score", score).append("parent", parent).toString();
     }
   }
 }

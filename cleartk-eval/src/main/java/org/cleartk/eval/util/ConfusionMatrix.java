@@ -28,10 +28,11 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Ordering;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * This data structure provides an easy way to build and output a confusion matrix. A confusion
@@ -156,10 +157,7 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
     }
   }
 
-  @Override
-  public String toString() {
-    return Objects.toStringHelper(this).add("matrix", this.matrix).toString();
-  }
+  
 
   /**
    * Outputs the ConfusionMatrix as comma-separated values for easy import into spreadsheets
@@ -286,5 +284,12 @@ public class ConfusionMatrix<T extends Comparable<? super T>> {
     confusionMatrix2.add(confusionMatrix);
     System.out.println(confusionMatrix2.toHTML());
     System.out.println(confusionMatrix2.toCSV());
+  }
+
+  @Override
+  public String toString()
+  {
+      return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append("matrix", matrix)
+              .toString();
   }
 }
