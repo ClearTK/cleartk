@@ -43,9 +43,6 @@ import org.cleartk.ml.jar.DirectoryDataWriterFactory;
 import org.cleartk.ml.jar.GenericJarClassifierFactory;
 import org.cleartk.ml.jar.JarClassifierBuilder;
 import org.cleartk.ml.jar.Train;
-import org.cleartk.ml.opennlp.maxent.MaxentStringOutcomeClassifier;
-import org.cleartk.ml.opennlp.maxent.MaxentStringOutcomeClassifierBuilder;
-import org.cleartk.ml.opennlp.maxent.MaxentStringOutcomeDataWriter;
 import org.cleartk.test.util.DefaultTestBase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -127,10 +124,10 @@ public class MaxentStringOutcomeClassifierTest extends DefaultTestBase {
     dataWriterAnnotator.collectionProcessComplete();
 
     File trainFile = new MaxentStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
-    BufferedReader reader = new BufferedReader(new FileReader(trainFile));
-    String line = reader.readLine();
-    assertEquals("A hello=1234.0", line);
-    reader.close();
+    try (BufferedReader reader = new BufferedReader(new FileReader(trainFile))) {
+        String line = reader.readLine();
+        assertEquals("A hello=1234.0", line);
+    }
 
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName);
@@ -314,9 +311,9 @@ public class MaxentStringOutcomeClassifierTest extends DefaultTestBase {
     dataWriterAnnotator.collectionProcessComplete();
 
     File trainFile = new MaxentStringOutcomeClassifierBuilder().getTrainingDataFile(this.outputDirectory);
-    BufferedReader reader = new BufferedReader(new FileReader(trainFile));
-    reader.readLine();
-    reader.close();
+    try (BufferedReader reader = new BufferedReader(new FileReader(trainFile))) {
+        reader.readLine();
+    }
 
     HideOutput hider = new HideOutput();
     Train.main(outputDirectoryName + "/", "10", "1");
