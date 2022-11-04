@@ -19,6 +19,7 @@
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-util</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -29,6 +30,7 @@
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-test-util</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
