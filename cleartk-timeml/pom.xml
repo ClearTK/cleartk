@@ -2,17 +2,40 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>cleartk-timeml</artifactId>
-  <packaging>jar</packaging>
-  <name>ClearTK TimeML</name>
-  <description>ClearTK annotators for temporal information extraction</description>
+
   <parent>
     <artifactId>cleartk</artifactId>
     <groupId>org.cleartk</groupId>
     <version>3.0.0-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
+
+  <artifactId>cleartk-timeml</artifactId>
+
+  <name>ClearTK TimeML</name>
+  <description>ClearTK annotators for temporal information extraction</description>
+
   <dependencies>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimafit-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdom</groupId>
+      <artifactId>jdom</artifactId>
+    </dependency>
     <dependency>
       <groupId>com.lexicalscope.jewelcli</groupId>
       <artifactId>jewelcli</artifactId>
@@ -66,15 +89,21 @@
     </dependency>
     <dependency>
       <groupId>org.xmlunit</groupId>
+      <artifactId>xmlunit-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.xmlunit</groupId>
       <artifactId>xmlunit-assertj3</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <!-- increase max memory for tests since models must be loaded -->

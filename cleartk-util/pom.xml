@@ -37,7 +37,7 @@
       <artifactId>commons-lang3</artifactId>
     </dependency>
     
-		<!-- test only -->
+    <!-- test only -->
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-test-util</artifactId>

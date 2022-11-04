@@ -9,7 +9,7 @@
     <version>7</version>
     <relativePath />
   </parent>
-  
+
   <groupId>org.cleartk</groupId>
   <artifactId>cleartk</artifactId>
   <version>3.0.0-SNAPSHOT</version>
@@ -19,10 +19,6 @@
   <description>The official ClearTK release</description>
   <url>http://cleartk.github.io/cleartk/</url>
 
-  <prerequisites>
-    <maven>3.0</maven>
-  </prerequisites>
-
   <licenses>
     <license>
       <name>The BSD 3-Clause License</name>
@@ -30,15 +26,18 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
   <scm>
     <url>https://github.com/ClearTK/cleartk</url>
     <connection>scm:git:https://github.com/ClearTK/cleartk.git</connection>
     <developerConnection>scm:git:git@github.com:ClearTK/cleartk.git</developerConnection>
   </scm>
+
   <issueManagement>
     <system>GitHub</system>
     <url>https://github.com/ClearTK/cleartk/issues</url>
   </issueManagement>
+
   <developers>
     <developer>
       <id>reckart</id>
@@ -60,12 +59,18 @@
       <email>lee.becker@gmail.com</email>
       <name>Lee Becker</name>
     </developer>
+    <developer>
+      <id>martin.riedl</id>
+      <email>riedl.ma@gmail.com</email>
+      <name>Martin Riedl</name>
+    </developer>
   </developers>
+
   <modules>
-		<!-- basic util modules -->
+    <!-- basic util modules -->
     <module>cleartk-test-util</module>
     <module>cleartk-util</module>
-		<!-- machine learning modules -->
+    <!-- machine learning modules -->
     <module>cleartk-ml</module>
     <module>cleartk-ml-opennlp-maxent</module>
     <module>cleartk-ml-svmlight</module>
@@ -76,20 +81,20 @@
     <module>cleartk-ml-mallet</module>
     <module>cleartk-ml-crfsuite</module>
     <module>cleartk-ml-weka</module>
-		<!-- evaluation module -->
+    <!-- evaluation module -->
     <module>cleartk-eval</module>
-		<!-- type system -->
+    <!-- type system -->
     <module>cleartk-type-system</module>
     <module>cleartk-corpus</module>
     <module>cleartk-feature</module>
-		<!-- wrappers for external components -->
+    <!-- wrappers for external components -->
     <module>cleartk-snowball</module>
     <module>cleartk-opennlp-tools</module>
     <module>cleartk-berkeleyparser</module>
     <module>cleartk-clearnlp</module>
     <module>cleartk-maltparser</module>
     <module>cleartk-stanford-corenlp</module>
-		<!-- home-grown components -->
+    <!-- home-grown components -->
     <module>cleartk-token</module>
     <module>cleartk-summarization</module>
     <module>cleartk-timeml</module>
@@ -98,26 +103,31 @@
     <module>cleartk-ml-script</module>
 
   </modules>
-  
+
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    
+
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    
+
     <cleartk.skipTests>tksvmlight,svmlight</cleartk.skipTests>
 
     <uima-version>3.3.1</uima-version>
     <uimafit-version>3.3.0</uimafit-version>
     <slf4j-version>1.7.36</slf4j-version>
+    <log4j-version>1.2.17</log4j-version>
     <junit-version>4.13.2</junit-version>
     <assertj-version>3.23.1</assertj-version>
     <xmlunit-version>2.9.0</xmlunit-version>
     <commons-io-version>2.11.0</commons-io-version>
     <commons-lang3-version>3.12.0</commons-lang3-version>
+    <commons-cli-version>1.2</commons-cli-version>
     <guava-version>31.1-jre</guava-version>
+    <dkpro-core-version>2.2.0</dkpro-core-version>
+    <libsvm-version>3.17</libsvm-version>
+    <liblinear-version>1.94</liblinear-version>
   </properties>
-  
+
   <dependencyManagement>
     <dependencies>
       <!-- Dependencies shared by multiple ClearTK modules -->
@@ -158,6 +168,11 @@
         </exclusions>
       </dependency>
       <dependency>
+        <groupId>commons-cli</groupId>
+        <artifactId>commons-cli</artifactId>
+        <version>${commons-cli-version}</version>
+      </dependency>
+      <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons-io-version}</version>
@@ -179,9 +194,46 @@
       </dependency>
       <dependency>
         <groupId>org.xmlunit</groupId>
+        <artifactId>xmlunit-core</artifactId>
+        <version>${xmlunit-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xmlunit</groupId>
         <artifactId>xmlunit-assertj3</artifactId>
         <version>${xmlunit-version}</version>
       </dependency>
+
+      <dependency>
+        <groupId>tw.edu.ntu.csie</groupId>
+        <artifactId>libsvm</artifactId>
+        <version>${libsvm-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>de.bwaldvogel</groupId>
+        <artifactId>liblinear</artifactId>
+        <version>${liblinear-version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.dkpro.core</groupId>
+        <artifactId>dkpro-core-api-resources-asl</artifactId>
+        <version>${dkpro-core-version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      
       <!-- ClearTK modules -->
       <dependency>
         <groupId>org.cleartk</groupId>
@@ -310,23 +362,61 @@
       </dependency>
 
       <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>${log4j-version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
         <version>${slf4j-version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>log4j-over-slf4j</artifactId>
+        <version>${slf4j-version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <dependencies>
+    <!-- Used for testing all over the place -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
         <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
           <version>3.4.2</version>
         </plugin>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
-            <version>3.2.0</version>
-      </plugin>
+          <version>3.2.0</version>
+        </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.10.1</version>
@@ -341,7 +431,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
-            <version>3.0.1</version>
+          <version>3.0.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
@@ -392,8 +482,8 @@
             </execution>
           </executions>
         </plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
+        <!--This plugin's configuration is used to store Eclipse m2e settings 
+          only. It has no influence on the Maven build itself. -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
           <artifactId>lifecycle-mapping</artifactId>
@@ -447,6 +537,62 @@
     </pluginManagement>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireJavaVersion>
+                  <version>[1.8,)</version>
+                </requireJavaVersion>
+                <requireMavenVersion>
+                  <version>[3.0,)</version>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>analyze-only</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <failOnWarning>true</failOnWarning>
+          <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
+          <ignoredNonTestScopedDependencies
+            combine.children="append">
+            <!-- 
+              These are needed in virtually all ClearTK modules but sometimes only through
+              inheritance in the main code and only used directly in the test classes. So we
+              ignore them here to avoid having to ignore them in basically all modules.
+             -->
+            <dependency>org.apache.uima:uimaj-core</dependency>
+            <dependency>org.apache.uima:uimafit-core</dependency>
+          </ignoredNonTestScopedDependencies>
+          <ignoredUnusedDeclaredDependencies>
+            <!-- Used for testing all-over -->
+            <dependency>junit:junit</dependency>
+            <dependency>org.assertj:assertj-core</dependency>
+            <dependency>org.slf4j:slf4j-simple</dependency>
+            <dependency>org.slf4j:log4j-over-slf4j</dependency>
+          </ignoredUnusedDeclaredDependencies>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
@@ -459,131 +605,131 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-					<!-- switch on dependency-driven aggregation -->
+          <!-- switch on dependency-driven aggregation -->
           <includeDependencySources>true</includeDependencySources>
 
-					<!-- include ONLY ClearTK dependencies -->
+          <!-- include ONLY ClearTK dependencies -->
           <dependencySourceIncludes>
             <dependencySourceInclude>org.cleartk:*</dependencySourceInclude>
           </dependencySourceIncludes>
 
-					<!-- Suppress timestamp for minimal diffs when re-generating -->
+          <!-- Suppress timestamp for minimal diffs when re-generating -->
           <notimestamp>true</notimestamp>
 
-					<!-- Allow tags added by JCasGen -->
+          <!-- Allow tags added by JCasGen -->
           <tags>
             <tag>
               <name>generated</name>
               <placement>a</placement>
-              <head>Generated</head>
+              <head>Generated:</head>
             </tag>
             <tag>
               <name>ordered</name>
               <placement>a</placement>
-              <head>Ordered</head>
+              <head>Ordered:</head>
             </tag>
             <tag>
               <name>modifiable</name>
               <placement>a</placement>
-              <head>Modifiable</head>
+              <head>Modifiable:</head>
             </tag>
           </tags>
 
-					<!-- Link to standard Java HTML javadoc -->
+          <!-- Link to standard Java HTML javadoc -->
           <linksource>true</linksource>
 
-					<!-- Don't include deprecated APIs -->
+          <!-- Don't include deprecated APIs -->
           <nodeprecated>true</nodeprecated>
 
-					<!-- Links to all dependency javadocs -->
+          <!-- Links to all dependency javadocs -->
           <links>
-						<!-- berkeley parser -->
-						<!-- (none available) -->
-						<!-- commons-io -->
+            <!-- berkeley parser -->
+            <!-- (none available) -->
+            <!-- commons-io -->
             <link>http://commons.apache.org/io/apidocs/</link>
 
-						<!-- commons-lang -->
+            <!-- commons-lang -->
             <link>http://commons.apache.org/lang/apidocs/</link>
 
-						<!-- commons-logging -->
+            <!-- commons-logging -->
             <link>http://commons.apache.org/logging/apidocs/</link>
 
-						<!-- guava -->
+            <!-- guava -->
             <link>http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/</link>
 
-						<!-- jVinci, uima-* -->
+            <!-- jVinci, uima-* -->
             <link>http://uima.apache.org/d/uimaj-2.3.1/api/</link>
 
-						<!-- jdom -->
+            <!-- jdom -->
             <link>http://www.jdom.org/docs/apidocs/</link>
 
-						<!-- joda-time -->
+            <!-- joda-time -->
             <link>http://joda-time.sourceforge.net/apidocs</link>
 
-						<!-- jsr173_api -->
-						<!-- (none available) -->
+            <!-- jsr173_api -->
+            <!-- (none available) -->
 
-						<!-- jsr305 -->
+            <!-- jsr305 -->
             <link>http://findbugs.sourceforge.net/api/</link>
 
-						<!-- junit -->
+            <!-- junit -->
             <link>http://junit.org/apidocs/</link>
 
-						<!-- jwnl -->
-						<!-- (none available) -->
+            <!-- jwnl -->
+            <!-- (none available) -->
 
-						<!-- liblinear -->
-						<!-- (none available) -->
+            <!-- liblinear -->
+            <!-- (none available) -->
 
-						<!-- libsvm -->
-						<!-- (none available) -->
+            <!-- libsvm -->
+            <!-- (none available) -->
 
-						<!-- log4j -->
+            <!-- log4j -->
             <link>http://logging.apache.org/log4j/1.2/apidocs/</link>
 
-						<!-- lucene-snowball -->
+            <!-- lucene-snowball -->
             <link>http://lucene.apache.org/java/3_0_3/api/all/</link>
 
-						<!-- mallet -->
+            <!-- mallet -->
             <link>http://mallet.cs.umass.edu/api/</link>
 
-						<!-- malt -->
+            <!-- malt -->
             <link>http://maltparser.org/api/</link>
 
-						<!-- opennlp-maxent -->
+            <!-- opennlp-maxent -->
             <link>http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-maxent/</link>
 
-						<!-- opennlp-tools -->
+            <!-- opennlp-tools -->
             <link>http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-tools/</link>
 
-						<!-- spring-core -->
+            <!-- spring-core -->
             <link>http://static.springsource.org/spring/docs/3.0.3.RELEASE/javadoc-api/</link>
 
-						<!-- stanford-corenlp -->
+            <!-- stanford-corenlp -->
             <link>http://nlp.stanford.edu/nlp/javadoc/javanlp/</link>
 
-						<!-- stax -->
-						<!-- (none available) -->
+            <!-- stax -->
+            <!-- (none available) -->
 
-						<!-- stax-api -->
-						<!-- (none available) -->
+            <!-- stax-api -->
+            <!-- (none available) -->
 
-						<!-- trove4j -->
+            <!-- trove4j -->
             <link>http://trove4j.sourceforge.net/javadocs/</link>
 
-						<!-- uimafit -->
+            <!-- uimafit -->
             <link>http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/</link>
 
-						<!-- xalan -->
+            <!-- xalan -->
             <link>http://xml.apache.org/xalan-j/apidocs/</link>
 
-						<!-- xerces -->
+            <!-- xerces -->
             <link>https://xerces.apache.org/xerces2-j/javadocs/api/</link>
 
-						<!-- xml-apis -->
-						<!-- (none available) -->
+            <!-- xml-apis -->
+            <!-- (none available) -->
 
-						<!-- xom -->
+            <!-- xom -->
             <link>http://xom.nu/apidocs/</link>
           </links>
         </configuration>

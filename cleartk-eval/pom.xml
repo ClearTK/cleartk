@@ -17,8 +17,16 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.cleartk</groupId>
-      <artifactId>cleartk-util</artifactId>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimafit-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -26,6 +34,11 @@
     </dependency>
     
     <!-- test only -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-test-util</artifactId>
