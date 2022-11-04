@@ -32,7 +32,9 @@
  */
 package org.cleartk.ml.crfsuite;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -61,6 +63,7 @@ import org.cleartk.ml.jar.GenericJarClassifierFactory;
 import org.cleartk.ml.jar.JarClassifierBuilder;
 import org.cleartk.ml.jar.Train;
 import org.cleartk.test.util.DefaultTestBase;
+import org.cleartk.util.PlatformDetection;
 import org.junit.Assert;
 import org.junit.Test;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
@@ -99,6 +102,7 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
       super.initialize(context);
     }
 
+    @Override
     public void process(JCas cas) throws AnalysisEngineProcessException {
       if (this.isTraining()) {
         List<Instance<String>> instances = createInstances();
@@ -119,6 +123,7 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
 
   @Test
   public void runTest1() throws Exception {
+    assumeTrue(asList("x86_32", "x86_64").contains(new PlatformDetection().getArch()));
     this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, CRF_SUITE_TESTS_PROPERTY_VALUE);
     this.logger.info(CRF_SUITE_TESTS_ENABLED_MESSAGE);
 
@@ -174,6 +179,7 @@ public class CrfSuiteClassifierTest extends DefaultTestBase {
 
   @Test
   public void testClassifier() throws IOException {
+    assumeTrue(asList("x86_32", "x86_64").contains(new PlatformDetection().getArch()));
     this.assumeTestsEnabled(COMMON_TESTS_PROPERTY_VALUE, CRF_SUITE_TESTS_PROPERTY_VALUE);
     this.logger.info(CRF_SUITE_TESTS_ENABLED_MESSAGE);
 

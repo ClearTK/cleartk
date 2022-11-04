@@ -63,13 +63,18 @@
       <email>lee.becker@gmail.com</email>
       <name>Lee Becker</name>
     </developer>
+    <developer>
+      <id>martin.riedl</id>
+      <email>riedl.ma@gmail.com</email>
+      <name>Martin Riedl</name>
+    </developer>
   </developers>
 
   <modules>
-		<!-- basic util modules -->
+    <!-- basic util modules -->
     <module>cleartk-test-util</module>
     <module>cleartk-util</module>
-		<!-- machine learning modules -->
+    <!-- machine learning modules -->
     <module>cleartk-ml</module>
     <module>cleartk-ml-opennlp-maxent</module>
     <module>cleartk-ml-svmlight</module>
@@ -80,20 +85,20 @@
     <module>cleartk-ml-mallet</module>
     <module>cleartk-ml-crfsuite</module>
     <module>cleartk-ml-weka</module>
-		<!-- evaluation module -->
+    <!-- evaluation module -->
     <module>cleartk-eval</module>
-		<!-- type system -->
+    <!-- type system -->
     <module>cleartk-type-system</module>
     <module>cleartk-corpus</module>
     <module>cleartk-feature</module>
-		<!-- wrappers for external components -->
+    <!-- wrappers for external components -->
     <module>cleartk-snowball</module>
     <module>cleartk-opennlp-tools</module>
     <module>cleartk-berkeleyparser</module>
     <module>cleartk-clearnlp</module>
     <module>cleartk-maltparser</module>
     <module>cleartk-stanford-corenlp</module>
-		<!-- home-grown components -->
+    <!-- home-grown components -->
     <module>cleartk-token</module>
     <module>cleartk-summarization</module>
     <module>cleartk-timeml</module>
@@ -125,11 +130,11 @@
 
   <dependencyManagement>
     <dependencies>
-			<!-- Dependencies shared by multiple ClearTK modules -->
+      <!-- Dependencies shared by multiple ClearTK modules -->
       <dependency>
         <groupId>org.jdom</groupId>
-        <artifactId>jdom</artifactId>
-        <version>2.0.2</version>
+        <artifactId>jdom2</artifactId>
+        <version>2.0.6.1</version>
       </dependency>
       <dependency>
         <groupId>org.jdom</groupId>
@@ -192,7 +197,7 @@
         <artifactId>xmlunit-assertj3</artifactId>
         <version>${xmlunit-version}</version>
       </dependency>
-			<!-- ClearTK modules -->
+      <!-- ClearTK modules -->
       <dependency>
         <groupId>org.cleartk</groupId>
         <artifactId>cleartk-test-util</artifactId>
@@ -404,8 +409,8 @@
           </executions>
         </plugin>
         
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
+        <!--This plugin's configuration is used to store Eclipse m2e settings 
+          only. It has no influence on the Maven build itself. -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
           <artifactId>lifecycle-mapping</artifactId>
@@ -471,18 +476,18 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-					<!-- switch on dependency-driven aggregation -->
+          <!-- switch on dependency-driven aggregation -->
           <includeDependencySources>true</includeDependencySources>
 
-					<!-- include ONLY ClearTK dependencies -->
+          <!-- include ONLY ClearTK dependencies -->
           <dependencySourceIncludes>
             <dependencySourceInclude>org.cleartk:*</dependencySourceInclude>
           </dependencySourceIncludes>
 
-					<!-- Suppress timestamp for minimal diffs when re-generating -->
+          <!-- Suppress timestamp for minimal diffs when re-generating -->
           <notimestamp>true</notimestamp>
 
-					<!-- Allow tags added by JCasGen -->
+          <!-- Allow tags added by JCasGen -->
           <tags>
             <tag>
               <name>generated</name>
@@ -501,101 +506,101 @@
             </tag>
           </tags>
 
-					<!-- Link to standard Java HTML javadoc -->
+          <!-- Link to standard Java HTML javadoc -->
           <linksource>true</linksource>
 
-					<!-- Don't include deprecated APIs -->
+          <!-- Don't include deprecated APIs -->
           <nodeprecated>true</nodeprecated>
 
-					<!-- Links to all dependency javadocs -->
+          <!-- Links to all dependency javadocs -->
           <links>
-						<!-- berkeley parser -->
-						<!-- (none available) -->
-						<!-- commons-io -->
+            <!-- berkeley parser -->
+            <!-- (none available) -->
+            <!-- commons-io -->
             <link>http://commons.apache.org/io/apidocs/</link>
 
-						<!-- commons-lang -->
+            <!-- commons-lang -->
             <link>http://commons.apache.org/lang/apidocs/</link>
 
-						<!-- commons-logging -->
+            <!-- commons-logging -->
             <link>http://commons.apache.org/logging/apidocs/</link>
 
-						<!-- guava -->
+            <!-- guava -->
             <link>http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/</link>
 
-						<!-- jVinci, uima-* -->
+            <!-- jVinci, uima-* -->
             <link>http://uima.apache.org/d/uimaj-2.3.1/api/</link>
 
-						<!-- jdom -->
+            <!-- jdom -->
             <link>http://www.jdom.org/docs/apidocs/</link>
 
-						<!-- joda-time -->
+            <!-- joda-time -->
             <link>http://joda-time.sourceforge.net/apidocs</link>
 
-						<!-- jsr173_api -->
-						<!-- (none available) -->
+            <!-- jsr173_api -->
+            <!-- (none available) -->
 
-						<!-- jsr305 -->
+            <!-- jsr305 -->
             <link>http://findbugs.sourceforge.net/api/</link>
 
-						<!-- junit -->
+            <!-- junit -->
             <link>http://junit.org/apidocs/</link>
 
-						<!-- jwnl -->
-						<!-- (none available) -->
+            <!-- jwnl -->
+            <!-- (none available) -->
 
-						<!-- liblinear -->
-						<!-- (none available) -->
+            <!-- liblinear -->
+            <!-- (none available) -->
 
-						<!-- libsvm -->
-						<!-- (none available) -->
+            <!-- libsvm -->
+            <!-- (none available) -->
 
-						<!-- log4j -->
+            <!-- log4j -->
             <link>http://logging.apache.org/log4j/1.2/apidocs/</link>
 
-						<!-- lucene-snowball -->
+            <!-- lucene-snowball -->
             <link>http://lucene.apache.org/java/3_0_3/api/all/</link>
 
-						<!-- mallet -->
+            <!-- mallet -->
             <link>http://mallet.cs.umass.edu/api/</link>
 
-						<!-- malt -->
+            <!-- malt -->
             <link>http://maltparser.org/api/</link>
 
-						<!-- opennlp-maxent -->
+            <!-- opennlp-maxent -->
             <link>http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-maxent/</link>
 
-						<!-- opennlp-tools -->
+            <!-- opennlp-tools -->
             <link>http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-tools/</link>
 
-						<!-- spring-core -->
+            <!-- spring-core -->
             <link>http://static.springsource.org/spring/docs/3.0.3.RELEASE/javadoc-api/</link>
 
-						<!-- stanford-corenlp -->
+            <!-- stanford-corenlp -->
             <link>http://nlp.stanford.edu/nlp/javadoc/javanlp/</link>
 
-						<!-- stax -->
-						<!-- (none available) -->
+            <!-- stax -->
+            <!-- (none available) -->
 
-						<!-- stax-api -->
-						<!-- (none available) -->
+            <!-- stax-api -->
+            <!-- (none available) -->
 
-						<!-- trove4j -->
+            <!-- trove4j -->
             <link>http://trove4j.sourceforge.net/javadocs/</link>
 
-						<!-- uimafit -->
+            <!-- uimafit -->
             <link>http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/</link>
 
-						<!-- xalan -->
+            <!-- xalan -->
             <link>http://xml.apache.org/xalan-j/apidocs/</link>
 
-						<!-- xerces -->
+            <!-- xerces -->
             <link>https://xerces.apache.org/xerces2-j/javadocs/api/</link>
 
-						<!-- xml-apis -->
-						<!-- (none available) -->
+            <!-- xml-apis -->
+            <!-- (none available) -->
 
-						<!-- xom -->
+            <!-- xom -->
             <link>http://xom.nu/apidocs/</link>
           </links>
         </configuration>
