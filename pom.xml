@@ -107,7 +107,7 @@
     
     <cleartk.skipTests>tksvmlight,svmlight</cleartk.skipTests>
 
-    <uima-version>3.3.0</uima-version>
+    <uima-version>3.3.1</uima-version>
     <uimafit-version>3.3.0</uimafit-version>
     <slf4j-version>1.7.36</slf4j-version>
     <junit-version>4.13.2</junit-version>
