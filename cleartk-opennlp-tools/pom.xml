@@ -16,7 +16,7 @@
   <description>ClearTK wrapper for OpenNLP tools</description>
 
   <properties>
-    <opennlp-version>1.5.3</opennlp-version>
+    <opennlp-version>1.8.2</opennlp-version>
   </properties>
 
   <dependencies>
