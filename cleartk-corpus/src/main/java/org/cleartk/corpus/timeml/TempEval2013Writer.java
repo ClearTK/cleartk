@@ -60,9 +60,10 @@ import org.apache.uima.fit.factory.AnalysisEngineFactory;
 
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
-import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Ints;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Write events, times and temporal relations in the TempEval 2013 format.
@@ -286,11 +287,7 @@ public class TempEval2013Writer extends JCasAnnotator_ImplBase {
       this(annotation.getBegin(), annotation.getEnd());
     }
     
-    @Override
-    public String toString() {
-      ToStringHelper helper = Objects.toStringHelper(this.getClass()); 
-      return helper.add("begin", this.begin).add("end", this.end).toString();
-    }
+    
 
     @Override
     public int hashCode() {
@@ -329,6 +326,13 @@ public class TempEval2013Writer extends JCasAnnotator_ImplBase {
         return Ints.compare(left.end, right.end);
       }
     };
+
+    @Override
+    public String toString()
+    {
+        return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append("begin", begin)
+                .append("end", end).toString();
+    }
   }
   
   private static class MakeInstance extends FakeAnnotation<Event> {
