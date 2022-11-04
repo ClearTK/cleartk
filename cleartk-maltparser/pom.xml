@@ -2,67 +2,52 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>cleartk-maltparser</artifactId>
-  <packaging>jar</packaging>
-  <name>ClearTK MaltParser</name>
-  <description>ClearTK wrapper for MaltParser</description>
+
   <parent>
     <artifactId>cleartk</artifactId>
     <groupId>org.cleartk</groupId>
     <version>2.1.0-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
+
+  <artifactId>cleartk-maltparser</artifactId>
+
+  <name>ClearTK MaltParser (${maltparser-version})</name>
+  <description>ClearTK wrapper for MaltParser</description>
+
+  <properties>
+    <maltparser-version>1.9.2</maltparser-version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.maltparser</groupId>
       <artifactId>maltparser</artifactId>
-      <version>1.9.2</version>
-      <!-- MaltParser is using old versions -->
-      <exclusions>
-        <exclusion>
-          <groupId>de.bwaldvogel</groupId>
-          <artifactId>liblinear</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>tw.edu.ntu.csie</groupId>
-          <artifactId>libsvm</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>log4j</groupId>
-          <artifactId>log4j</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>${maltparser-version}</version>
     </dependency>
     <dependency>
-      <groupId>de.bwaldvogel</groupId>
-      <artifactId>liblinear</artifactId>
-      <version>1.94</version>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>tw.edu.ntu.csie</groupId>
-      <artifactId>libsvm</artifactId>
-      <version>3.17</version>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
-    </dependency>
-    <dependency>
-      <groupId>org.cleartk</groupId>
-      <artifactId>cleartk-util</artifactId>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimafit-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-type-system</artifactId>
+      <version>${project.version}</version>
     </dependency>
-		<!-- test only -->
+
+    <!-- test only -->
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-test-util</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <!-- increase max memory for tests since model must be loaded -->
