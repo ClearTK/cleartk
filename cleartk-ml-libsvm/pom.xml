@@ -1,30 +1,56 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>cleartk-ml-libsvm</artifactId>
-	<packaging>jar</packaging>
-	<name>ClearTK ML LIBSVM</name>
-	<description>ClearTK wrapper for LIBSVM</description>
-	<parent>
-		<artifactId>cleartk</artifactId>
-		<groupId>org.cleartk</groupId>
-		<version>3.0.0-SNAPSHOT</version>
-		<relativePath>..</relativePath>
-	</parent>
-	<dependencies>
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-ml</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>tw.edu.ntu.csie</groupId>
-			<artifactId>libsvm</artifactId>
-			<version>3.17</version>
-		</dependency>
-		<!-- test only -->
-		<dependency>
-			<groupId>org.cleartk</groupId>
-			<artifactId>cleartk-test-util</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>cleartk</artifactId>
+    <groupId>org.cleartk</groupId>
+    <version>3.0.0-SNAPSHOT</version>
+    <relativePath>..</relativePath>
+  </parent>
+
+  <artifactId>cleartk-ml-libsvm</artifactId>
+
+  <name>ClearTK ML LIBSVM (${libsvm-version})</name>
+  <description>ClearTK wrapper for LIBSVM</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimafit-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.cleartk</groupId>
+      <artifactId>cleartk-ml</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>tw.edu.ntu.csie</groupId>
+      <artifactId>libsvm</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+
+    <!-- test only -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.cleartk</groupId>
+      <artifactId>cleartk-test-util</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>

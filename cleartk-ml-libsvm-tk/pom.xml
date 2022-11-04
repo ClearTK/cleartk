@@ -1,46 +1,70 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.cleartk</groupId>
     <artifactId>cleartk</artifactId>
     <version>3.0.0-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
+
   <artifactId>cleartk-ml-libsvm-tk</artifactId>
+
   <name>ClearTK ML LIBSVM-TK</name>
-  <description>ClearTK wrapper for LIBSVM-TK</description>
+  <description>ClearTK wrapper for LIBSVM-TK (${libsvm-version})</description>
+
+  <properties>
+    <libsvm-version>0.1.0</libsvm-version>
+  </properties>
+
   <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimafit-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-cli</groupId>
+      <artifactId>commons-cli</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.cleartk</groupId>
+      <artifactId>cleartk-ml-tksvmlight</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.cleartk</groupId>
+      <artifactId>cleartk-ml-svmlight</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.cleartk</groupId>
+      <artifactId>cleartk-ml</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.chboston.cnlp</groupId>
+      <artifactId>libsvm-java-kernel</artifactId>
+      <version>${libsvm-version}</version>
+    </dependency>
+    
+    <!-- test only -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
-    	<groupId>commons-cli</groupId>
-    	<artifactId>commons-cli</artifactId>
-    	<version>1.2</version>
-    </dependency>
-    <dependency>
-    	<groupId>org.cleartk</groupId>
-    	<artifactId>cleartk-ml-tksvmlight</artifactId>
-    </dependency>
-    <dependency>
-    	<groupId>org.cleartk</groupId>
-    	<artifactId>cleartk-ml</artifactId>
-    </dependency>
-    <dependency>
-    	<groupId>org.cleartk</groupId>
-    	<artifactId>cleartk-eval</artifactId>
-    </dependency>
-    <dependency>
-    	<groupId>org.chboston.cnlp</groupId>
-    	<artifactId>libsvm-java-kernel</artifactId>
-    	<version>0.1.0</version>
-    </dependency>
-    <dependency>
-    	<groupId>org.cleartk</groupId>
-    	<artifactId>cleartk-test-util</artifactId>
+      <groupId>org.cleartk</groupId>
+      <artifactId>cleartk-test-util</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

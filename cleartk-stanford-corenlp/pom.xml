@@ -14,7 +14,7 @@
   <packaging>jar</packaging>
 
   <name>ClearTK Stanford CoreNLP</name>
-  <description>ClearTK wrapper for Stanford CoreNLP</description>
+  <description>ClearTK wrapper for Stanford CoreNLP (${corenlp-version})</description>
 
   <licenses>
     <license>
@@ -29,6 +29,18 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimafit-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
 
     <!-- Stanford CoreNLP code and models -->
     <dependency>
@@ -41,13 +53,10 @@
       <artifactId>stanford-corenlp</artifactId>
       <version>${corenlp-version}</version>
       <classifier>models</classifier>
+      <scope>runtime</scope>
     </dependency>
 
     <!-- ClearTK-internal dependencies -->
-    <dependency>
-      <groupId>org.cleartk</groupId>
-      <artifactId>cleartk-util</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-type-system</artifactId>
@@ -59,20 +68,11 @@
       <artifactId>cleartk-test-util</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
+
   <build>
     <plugins>
-			<!-- increase max memory for tests since model must be loaded -->
+      <!-- increase max memory for tests since model must be loaded -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
