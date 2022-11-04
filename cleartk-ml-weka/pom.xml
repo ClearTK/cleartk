@@ -12,7 +12,7 @@
 
   <artifactId>cleartk-ml-weka</artifactId>
 
-  <name>ClearTK ML Weka (${weka-version})</name>
+  <name>ClearTK ML Weka (${weka-version}-dev)</name>
   <description>ClearTK wrapper for the WEKA machine learning library</description>
 
   <licenses>
@@ -24,7 +24,7 @@
   </licenses>
 
   <properties>
-    <weka-version>3.7.11</weka-version>
+    <weka-version>3.9.6</weka-version>
   </properties>
 
   <dependencies>
