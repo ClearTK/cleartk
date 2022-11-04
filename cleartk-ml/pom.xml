@@ -17,8 +17,12 @@
       <groupId>org.cleartk</groupId>
       <artifactId>cleartk-util</artifactId>
     </dependency>
-    
-		<!-- test only -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+
+    <!-- test only -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

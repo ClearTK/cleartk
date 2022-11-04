@@ -55,12 +55,13 @@ import org.apache.uima.fit.util.JCasUtil;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Stores information needed for training and evaluating a machine learning model
@@ -91,19 +92,19 @@ class Model<ANNOTATION_TYPE extends TOP> {
     }
 
     @Override
-    public String toString() {
-      Objects.ToStringHelper helper = Objects.toStringHelper(this.getClass());
-      helper.add("dataWriterClass", this.dataWriterClass.getSimpleName());
-      if (this.nViterbiOutcomes > 0) {
-        helper.add("nViterbiOutcomes", this.nViterbiOutcomes);
-      }
-      if (this.trainingArguments.length > 0) {
-        helper.add("trainingArguments", Joiner.on(' ').join(this.trainingArguments));
-      }
-      return helper.toString();
+    public String toString()
+    {
+        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
+        builder.append("dataWriterClass", dataWriterClass).toString();
+        if (this.nViterbiOutcomes > 0) {
+            builder.append("nViterbiOutcomes", this.nViterbiOutcomes);
+        }
+        if (this.trainingArguments.length > 0) {
+            builder.append("trainingArguments", Joiner.on(' ').join(this.trainingArguments));
+        }
+        return builder.toString();
     }
-
-  }
+}
 
   public enum EvaluationType {
     NORMAL, GOLD_SPANS, SYSTEM_SPANS, INTERSECTED_SPANS
@@ -162,12 +163,7 @@ class Model<ANNOTATION_TYPE extends TOP> {
     this.featureToRemove = featureToRemove;
   }
   
-  @Override
-  public String toString() {
-    Objects.ToStringHelper helper = Objects.toStringHelper(this.getClass());
-    helper.add("name", this.name);
-    return helper.toString();
-  }
+  
 
   public AnalysisEngineDescription getWriterDescription(File directory, Model.Params params)
       throws ResourceInitializationException {
@@ -387,5 +383,11 @@ class Model<ANNOTATION_TYPE extends TOP> {
       String fileName = viterbi + Joiner.on("_").join(params.trainingArguments);
       return new File(new File(new File(directory, this.name), dataWriterName), fileName);
     }
+  }
+
+  @Override
+  public String toString()
+  {
+      return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append("name", name).toString();
   }
 }
