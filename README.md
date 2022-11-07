@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/ClearTK/cleartk.svg?branch=master)](https://travis-ci.org/ClearTK/cleartk)
+![example workflow](https://github.com/ClearTK/cleartk/actions/workflows/build-snapshot.yml/badge.svg)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.dkpro.core/dkpro-core/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/org.cleartk/cleartk)
 
 # Introduction #
 
