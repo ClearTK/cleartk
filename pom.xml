@@ -16,7 +16,7 @@
   <packaging>pom</packaging>
 
   <name>ClearTK</name>
-  <description>The official ClearTK release</description>
+  <description>ClearTK aggregator root</description>
   <url>http://cleartk.github.io/cleartk/</url>
 
   <licenses>
