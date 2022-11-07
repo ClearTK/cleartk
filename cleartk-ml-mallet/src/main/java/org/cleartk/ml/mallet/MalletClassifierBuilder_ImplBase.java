@@ -36,6 +36,7 @@ import org.cleartk.ml.encoder.features.NameNumber;
 import org.cleartk.ml.jar.ClassifierBuilder_ImplBase;
 import org.cleartk.ml.jar.JarStreams;
 import org.cleartk.ml.mallet.factory.ClassifierTrainerFactory;
+import org.cleartk.util.ClassLookup;
 import org.cleartk.util.ReflectionUtil;
 
 import cc.mallet.classify.Classifier;
@@ -53,7 +54,8 @@ import cc.mallet.types.InstanceList;
  */
 
 public abstract class MalletClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends MalletClassifier_ImplBase<OUTCOME_TYPE>, OUTCOME_TYPE>
-    extends ClassifierBuilder_ImplBase<CLASSIFIER_TYPE, List<NameNumber>, OUTCOME_TYPE, String> {
+        extends
+        ClassifierBuilder_ImplBase<CLASSIFIER_TYPE, List<NameNumber>, OUTCOME_TYPE, String> {
 
   private static final String MODEL_NAME = "model.mallet";
 
@@ -62,6 +64,7 @@ public abstract class MalletClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends M
     return new File(dir, "training-data.mallet");
   }
 
+  @Override
   public void trainClassifier(File dir, String... args) throws Exception {
 
     InstanceListCreator instanceListCreator = new InstanceListCreator();
@@ -71,20 +74,14 @@ public abstract class MalletClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends M
     String factoryName = args[0];
     Class<ClassifierTrainerFactory<?>> factoryClass = createTrainerFactory(factoryName);
     if (factoryClass == null) {
-      String factoryName2 = "org.cleartk.ml.mallet.factory." + factoryName
-          + "TrainerFactory";
+      String factoryName2 = "org.cleartk.ml.mallet.factory." + factoryName + "TrainerFactory";
       factoryClass = createTrainerFactory(factoryName2);
     }
     if (factoryClass == null) {
-      throw new IllegalArgumentException(
-          String
-              .format(
-                  "name for classifier trainer factory is not valid: name given ='%s'.  Valid classifier names include: %s, %s, %s, and %s",
-                  factoryName,
-                  ClassifierTrainerFactory.NAMES[0],
-                  ClassifierTrainerFactory.NAMES[1],
-                  ClassifierTrainerFactory.NAMES[2],
-                  ClassifierTrainerFactory.NAMES[3]));
+      throw new IllegalArgumentException(String.format(
+              "name for classifier trainer factory is not valid: name given ='%s'.  Valid classifier names include: %s, %s, %s, and %s",
+              factoryName, ClassifierTrainerFactory.NAMES[0], ClassifierTrainerFactory.NAMES[1],
+              ClassifierTrainerFactory.NAMES[2], ClassifierTrainerFactory.NAMES[3]));
     }
 
     String[] factoryArgs = new String[args.length - 1];
@@ -96,12 +93,13 @@ public abstract class MalletClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends M
       trainer = factory.createTrainer(factoryArgs);
     } catch (Throwable t) {
       throw new IllegalArgumentException("Unable to create trainer.  Usage for "
-          + factoryClass.getCanonicalName() + ": " + factory.getUsageMessage(), t);
+              + factoryClass.getCanonicalName() + ": " + factory.getUsageMessage(), t);
     }
 
     this.classifier = trainer.train(instanceList);
 
-    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(dir, MODEL_NAME)));
+    ObjectOutputStream oos = new ObjectOutputStream(
+            new FileOutputStream(new File(dir, MODEL_NAME)));
     oos.writeObject(classifier);
     oos.close();
 
@@ -109,7 +107,7 @@ public abstract class MalletClassifierBuilder_ImplBase<CLASSIFIER_TYPE extends M
 
   private Class<ClassifierTrainerFactory<?>> createTrainerFactory(String className) {
     try {
-      return ReflectionUtil.uncheckedCast(Class.forName(className));
+      return ReflectionUtil.uncheckedCast(ClassLookup.lookupClass(className));
     } catch (ClassNotFoundException cnfe) {
       return null;
     }

@@ -36,6 +36,7 @@ import java.util.jar.JarOutputStream;
 import org.cleartk.ml.encoder.features.FeaturesEncoder;
 import org.cleartk.ml.encoder.features.FeaturesEncoder_ImplBase;
 import org.cleartk.ml.encoder.outcome.OutcomeEncoder;
+import org.cleartk.util.ClassLookup;
 import org.cleartk.util.ReflectionUtil;
 
 /**
@@ -57,7 +58,7 @@ import org.cleartk.util.ReflectionUtil;
  * @author Steven Bethard
  */
 public abstract class EncodingJarClassifierBuilder<CLASSIFIER_TYPE, ENCODED_FEATURES_TYPE, OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>
-    extends JarClassifierBuilder<CLASSIFIER_TYPE> {
+        extends JarClassifierBuilder<CLASSIFIER_TYPE> {
 
   private static final String ENCODERS_FILE_NAME = FeaturesEncoder_ImplBase.ENCODERS_FILE_NAME;
 
@@ -115,7 +116,7 @@ public abstract class EncodingJarClassifierBuilder<CLASSIFIER_TYPE, ENCODED_FEAT
   protected void unpackageClassifier(JarInputStream modelStream) throws IOException {
     super.unpackageClassifier(modelStream);
     JarStreams.getNextJarEntry(modelStream, ENCODERS_FILE_NAME);
-    ObjectInputStream is = new ObjectInputStream(modelStream);
+    ObjectInputStream is = ClassLookup.streamObjects(modelStream);
     try {
       this.featuresEncoder = this.featuresEncoderCast(is.readObject());
       this.outcomeEncoder = this.outcomeEncoderCast(is.readObject());
@@ -128,14 +129,9 @@ public abstract class EncodingJarClassifierBuilder<CLASSIFIER_TYPE, ENCODED_FEAT
   private FeaturesEncoder<ENCODED_FEATURES_TYPE> featuresEncoderCast(Object object) {
     FeaturesEncoder<ENCODED_FEATURES_TYPE> encoder = (FeaturesEncoder<ENCODED_FEATURES_TYPE>) object;
 
-    ReflectionUtil.checkTypeParametersAreEqual(
-        EncodingJarClassifierBuilder.class,
-        "ENCODED_FEATURES_TYPE",
-        this,
-        FeaturesEncoder.class,
-        "ENCODED_FEATURES_TYPE",
-        encoder,
-        ClassCastException.class);
+    ReflectionUtil.checkTypeParametersAreEqual(EncodingJarClassifierBuilder.class,
+            "ENCODED_FEATURES_TYPE", this, FeaturesEncoder.class, "ENCODED_FEATURES_TYPE", encoder,
+            ClassCastException.class);
 
     return encoder;
   }
@@ -145,23 +141,12 @@ public abstract class EncodingJarClassifierBuilder<CLASSIFIER_TYPE, ENCODED_FEAT
     OutcomeEncoder<OUTCOME_TYPE, ENCODED_OUTCOME_TYPE> encoder;
     encoder = (OutcomeEncoder<OUTCOME_TYPE, ENCODED_OUTCOME_TYPE>) object;
 
-    ReflectionUtil.checkTypeParametersAreEqual(
-        EncodingJarClassifierBuilder.class,
-        "OUTCOME_TYPE",
-        this,
-        OutcomeEncoder.class,
-        "OUTCOME_TYPE",
-        encoder,
-        ClassCastException.class);
+    ReflectionUtil.checkTypeParametersAreEqual(EncodingJarClassifierBuilder.class, "OUTCOME_TYPE",
+            this, OutcomeEncoder.class, "OUTCOME_TYPE", encoder, ClassCastException.class);
 
-    ReflectionUtil.checkTypeParametersAreEqual(
-        EncodingJarClassifierBuilder.class,
-        "ENCODED_OUTCOME_TYPE",
-        this,
-        OutcomeEncoder.class,
-        "ENCODED_OUTCOME_TYPE",
-        encoder,
-        ClassCastException.class);
+    ReflectionUtil.checkTypeParametersAreEqual(EncodingJarClassifierBuilder.class,
+            "ENCODED_OUTCOME_TYPE", this, OutcomeEncoder.class, "ENCODED_OUTCOME_TYPE", encoder,
+            ClassCastException.class);
 
     return encoder;
   }
