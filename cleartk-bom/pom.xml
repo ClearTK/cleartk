@@ -13,7 +13,8 @@
   <artifactId>cleartk-bom</artifactId>
   <packaging>pom</packaging>
 
-  <name>ClearTK - Bill of materials</name>
+  <name>ClearTK - BOM</name>
+  <description>ClearTK bill of materials</description>
 
   <dependencyManagement>
     <dependencies>

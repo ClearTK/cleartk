@@ -16,7 +16,7 @@
   <packaging>pom</packaging>
 
   <name>ClearTK</name>
-  <description>The official ClearTK release</description>
+  <description>ClearTK aggregator root</description>
   <url>http://cleartk.github.io/cleartk/</url>
 
   <licenses>
@@ -32,6 +32,18 @@
     <connection>scm:git:https://github.com/ClearTK/cleartk.git</connection>
     <developerConnection>scm:git:git@github.com:ClearTK/cleartk.git</developerConnection>
   </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+    </repository>
+    <snapshotRepository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/ClearTK/cleartk</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <issueManagement>
     <system>GitHub</system>
