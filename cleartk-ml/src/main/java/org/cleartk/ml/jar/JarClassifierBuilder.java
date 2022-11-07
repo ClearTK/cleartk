@@ -37,6 +37,7 @@ import java.util.jar.Manifest;
 
 import org.cleartk.ml.DataWriter;
 import org.cleartk.ml.SequenceDataWriter;
+import org.cleartk.util.ClassLookup;
 
 /**
  * Superclass for builders which package classifiers as jar files. Saves a manifest from which new
@@ -65,7 +66,7 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    * The name of the attribute where the classifier builder class is stored.
    */
   private static final Attributes.Name CLASSIFIER_BUILDER_ATTRIBUTE_NAME = new Attributes.Name(
-      "classifierBuilderClass");
+          "classifierBuilderClass");
 
   /**
    * The manifest associated with this classifier builder. The manifest will be saved to directories
@@ -102,7 +103,8 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
     String className = manifest.getMainAttributes().getValue(CLASSIFIER_BUILDER_ATTRIBUTE_NAME);
     JarClassifierBuilder<?> builder;
     try {
-      builder = Class.forName(className).asSubclass(JarClassifierBuilder.class).newInstance();
+      builder = ClassLookup.lookupClass(className).asSubclass(JarClassifierBuilder.class)
+              .newInstance();
     } catch (Exception e) {
       throw new RuntimeException("ClassifierBuilder class read from manifest does not exist", e);
     }
@@ -122,7 +124,7 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    *          {@link #trainClassifier(File, String...)}.
    */
   public static void trainAndPackage(File trainingDirectory, String... trainingArguments)
-      throws Exception {
+          throws Exception {
     JarClassifierBuilder<?> classifierBuilder = fromTrainingDirectory(trainingDirectory);
     classifierBuilder.trainClassifier(trainingDirectory, trainingArguments);
     classifierBuilder.packageClassifier(trainingDirectory);
@@ -132,7 +134,6 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    * Creates a new classifier builder with a default manifest.
    */
   public JarClassifierBuilder() {
-    super();
     this.manifest = new Manifest();
     Attributes attributes = this.manifest.getMainAttributes();
     attributes.put(Attributes.Name.MANIFEST_VERSION, "1.0");
@@ -149,7 +150,7 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
   public void saveToTrainingDirectory(File dir) throws IOException {
     // save the manifest to the directory
     try (FileOutputStream manifestStream = new FileOutputStream(getManifestFile(dir))) {
-        this.manifest.write(manifestStream);
+      this.manifest.write(manifestStream);
     }
   }
 
@@ -177,9 +178,9 @@ public abstract class JarClassifierBuilder<CLASSIFIER_TYPE> {
    *          The directory where the classifier model was trained.
    */
   public void packageClassifier(File dir) throws IOException {
-    try (JarOutputStream modelStream = new JarOutputStream(new BufferedOutputStream(
-        new FileOutputStream(getModelJarFile(dir))), this.manifest)) {
-    this.packageClassifier(dir, modelStream);
+    try (JarOutputStream modelStream = new JarOutputStream(
+            new BufferedOutputStream(new FileOutputStream(getModelJarFile(dir))), this.manifest)) {
+      this.packageClassifier(dir, modelStream);
     }
   }
 
