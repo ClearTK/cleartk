@@ -57,8 +57,8 @@ import com.google.common.primitives.Doubles;
  * All rights reserved.
  */
 
-public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCOME_TYPE>,
-    Initializable, TypeArgumentDelegator {
+public class ViterbiClassifier<OUTCOME_TYPE>
+        implements SequenceClassifier<OUTCOME_TYPE>, Initializable, TypeArgumentDelegator {
 
   protected Classifier<OUTCOME_TYPE> delegatedClassifier;
 
@@ -66,38 +66,31 @@ public class ViterbiClassifier<OUTCOME_TYPE> implements SequenceClassifier<OUTCO
 
   public static final String PARAM_STACK_SIZE = "stackSize";
 
-  @ConfigurationParameter(
-      name = PARAM_STACK_SIZE,
-      description = "specifies the maximum number of candidate paths to "
+  @ConfigurationParameter(name = PARAM_STACK_SIZE, description = "specifies the maximum number of candidate paths to "
           + "keep track of. In general, this number should be higher than the number "
           + "of possible classifications at any given point in the sequence. This "
           + "guarantees that highest-possible scoring sequence will be returned. If, "
           + "however, the number of possible classifications is quite high and/or you "
           + "are concerned about throughput performance, then you may want to reduce the number "
           + "of candidate paths to maintain.  If Classifier.score is not implemented for the given delegated classifier, then "
-          + "the value of this parameter must be 1. ",
-      defaultValue = "1")
+          + "the value of this parameter must be 1. ", defaultValue = "1")
   protected int stackSize;
 
   public static final String PARAM_ADD_SCORES = "addScores";
 
-  @ConfigurationParameter(
-      name = PARAM_ADD_SCORES,
-      description = "specifies whether the scores of candidate sequence classifications should be "
+  @ConfigurationParameter(name = PARAM_ADD_SCORES, description = "specifies whether the scores of candidate sequence classifications should be "
           + "calculated by summing classfication scores for each member of the sequence or by multiplying them. A value of "
-          + "true means that the scores will be summed. A value of false means that the scores will be multiplied. ",
-      defaultValue = "false")
+          + "true means that the scores will be summed. A value of false means that the scores will be multiplied. ", defaultValue = "false")
   protected boolean addScores = false;
 
-  public ViterbiClassifier(
-      Classifier<OUTCOME_TYPE> delegatedClassifier,
-      OutcomeFeatureExtractor[] outcomeFeatureExtractors) {
+  public ViterbiClassifier(Classifier<OUTCOME_TYPE> delegatedClassifier,
+          OutcomeFeatureExtractor[] outcomeFeatureExtractors) {
     this.delegatedClassifier = delegatedClassifier;
     this.outcomeFeatureExtractors = outcomeFeatureExtractors;
   }
 
   @Override
-public void initialize(UimaContext context) throws ResourceInitializationException {
+  public void initialize(UimaContext context) throws ResourceInitializationException {
     ConfigurationParameterInitializer.initialize(this, context);
     if (stackSize < 1) {
       throw CleartkInitializationException.parameterLessThan(PARAM_STACK_SIZE, 1, stackSize);
@@ -105,8 +98,8 @@ public void initialize(UimaContext context) throws ResourceInitializationExcepti
   }
 
   @Override
-public List<OUTCOME_TYPE> classify(List<List<Feature>> features)
-      throws CleartkProcessingException {
+  public List<OUTCOME_TYPE> classify(List<List<Feature>> features)
+          throws CleartkProcessingException {
     if (stackSize == 1) {
       List<Object> outcomes = new ArrayList<Object>();
       List<OUTCOME_TYPE> returnValues = new ArrayList<OUTCOME_TYPE>();
@@ -123,12 +116,8 @@ public List<OUTCOME_TYPE> classify(List<List<Feature>> features)
       try {
         return viterbi(features);
       } catch (UnsupportedOperationException uoe) {
-        throw CleartkProcessingException.unsupportedOperationSetParameter(
-            uoe,
-            delegatedClassifier,
-            "score",
-            PARAM_STACK_SIZE,
-            1);
+        throw CleartkProcessingException.unsupportedOperationSetParameter(uoe, delegatedClassifier,
+                "score", PARAM_STACK_SIZE, 1);
       }
     }
 
@@ -139,15 +128,15 @@ public List<OUTCOME_TYPE> classify(List<List<Feature>> features)
    * classifier. If this proves to be too expensive, then consider using a smaller stack size.
    * 
    * @param featureLists
-   *          a sequence-worth of features. Each List<Feature> in features should corresond to all
-   *          of the features for a given element in a sequence to be classified.
+   *          a sequence-worth of features. Each {@code List<Feature>} in features should correspond
+   *          to all of the features for a given element in a sequence to be classified.
    * @return a list of outcomes (classifications) - one classification for each member of the
    *         sequence.
    * @see #PARAM_STACK_SIZE
    * @see OutcomeFeatureExtractor
    */
   public List<OUTCOME_TYPE> viterbi(List<List<Feature>> featureLists)
-      throws CleartkProcessingException {
+          throws CleartkProcessingException {
 
     if (featureLists == null || featureLists.size() == 0) {
       return Collections.emptyList();
@@ -190,12 +179,12 @@ public List<OUTCOME_TYPE> classify(List<List<Feature>> features)
 
   @Override
   public List<Map<OUTCOME_TYPE, Double>> score(List<List<Feature>> features)
-      throws CleartkProcessingException {
+          throws CleartkProcessingException {
     throw new UnsupportedOperationException();
   }
 
   @Override
-public Map<String, Type> getTypeArguments(Class<?> genericType) {
+  public Map<String, Type> getTypeArguments(Class<?> genericType) {
     if (genericType.equals(SequenceClassifier.class)) {
       genericType = Classifier.class;
     }
@@ -203,7 +192,7 @@ public Map<String, Type> getTypeArguments(Class<?> genericType) {
   }
 
   private Map<OUTCOME_TYPE, Double> getScoredOutcomes(List<Feature> features, Path path)
-      throws CleartkProcessingException {
+          throws CleartkProcessingException {
 
     // add the features from preceding outcomes
     features = Lists.newArrayList(features);
@@ -217,16 +206,16 @@ public Map<String, Type> getTypeArguments(Class<?> genericType) {
     // get the scored outcomes for this instance
     Map<OUTCOME_TYPE, Double> scoredOutcomes = this.delegatedClassifier.score(features);
     if (scoredOutcomes.isEmpty()) {
-      throw new IllegalStateException("expected at least one scored outcome, found "
-          + scoredOutcomes);
+      throw new IllegalStateException(
+              "expected at least one scored outcome, found " + scoredOutcomes);
     }
     return scoredOutcomes;
   }
 
   private List<OUTCOME_TYPE> getTopOutcomes(Map<OUTCOME_TYPE, Double> scoredOutcomes) {
     // get just the outcomes that fit within the stack
-    Ordering<OUTCOME_TYPE> ordering = Ordering.natural().onResultOf(
-        Functions.forMap(scoredOutcomes));
+    Ordering<OUTCOME_TYPE> ordering = Ordering.natural()
+            .onResultOf(Functions.forMap(scoredOutcomes));
     return ordering.greatestOf(scoredOutcomes.keySet(), this.stackSize);
   }
 
@@ -256,10 +245,9 @@ public Map<String, Type> getTypeArguments(Class<?> genericType) {
     }
 
     @Override
-    public String toString()
-    {
-        return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append("outcome", outcome)
-                .append("score", score).append("parent", parent).toString();
+    public String toString() {
+      return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).append("outcome", outcome)
+              .append("score", score).append("parent", parent).toString();
     }
   }
 }

@@ -70,7 +70,7 @@ public abstract class Evaluation_ImplBase<ITEM_TYPE, STATS_TYPE> {
    * @return The statistics that result from testing the model.
    */
   public STATS_TYPE trainAndTest(List<ITEM_TYPE> trainItems, List<ITEM_TYPE> testItems)
-      throws Exception {
+          throws Exception {
     File subDirectory = new File(this.baseDirectory, "train_and_test");
     subDirectory.mkdirs();
     this.train(this.getCollectionReader(trainItems), subDirectory);
@@ -120,7 +120,8 @@ public abstract class Evaluation_ImplBase<ITEM_TYPE, STATS_TYPE> {
    * @param nFolds
    *          The total number of folds in this cross validation.
    * @param fold
-   *          The index of the fold (0 <= fold < nFolds) whose training items are to be selected.
+   *          The index of the fold (0 &lt;= fold &lt; nFolds) whose training items are to be
+   *          selected.
    * @return The items that should be used for training.
    */
   protected List<ITEM_TYPE> selectFoldTrainItems(List<ITEM_TYPE> items, int nFolds, int fold) {
@@ -144,7 +145,7 @@ public abstract class Evaluation_ImplBase<ITEM_TYPE, STATS_TYPE> {
    * @param nFolds
    *          The total number of folds in this cross validation.
    * @param fold
-   *          The index of the fold (0 <= fold < nFolds) whose test items are to be selected.
+   *          The index of the fold (0 &lt;= fold &lt; nFolds) whose test items are to be selected.
    * @return The items that should be used for testing.
    */
   protected List<ITEM_TYPE> selectFoldTestItems(List<ITEM_TYPE> items, int nFolds, int fold) {
@@ -192,6 +193,6 @@ public abstract class Evaluation_ImplBase<ITEM_TYPE, STATS_TYPE> {
    * @return The statistics that result from testing the model
    */
   protected abstract STATS_TYPE test(CollectionReader collectionReader, File directory)
-      throws Exception;
+          throws Exception;
 
 }

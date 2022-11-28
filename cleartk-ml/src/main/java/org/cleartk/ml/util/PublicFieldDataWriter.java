@@ -52,49 +52,51 @@ public class PublicFieldDataWriter<T> implements DataWriter<T> {
     this.instances = new ArrayList<Instance<T>>();
   }
 
+  @Override
   public void finish() {
   }
 
+  @Override
   public void write(Instance<T> instance) {
     this.instances.add(instance);
   }
 
   /**
-   * Returns a single static instance of InstanceCollector<String>.
+   * Returns a single static instance of {@code InstanceCollector<String>}.
    */
   public static class StringFactory implements DataWriterFactory<String> {
     private static PublicFieldDataWriter<String> collector = new PublicFieldDataWriter<String>();
 
+    @Override
     public DataWriter<String> createDataWriter() {
       return collector;
     }
 
     public static List<Instance<String>> collectInstances(AnalysisEngine engine, JCas jCas)
-        throws AnalysisEngineProcessException {
+            throws AnalysisEngineProcessException {
       return PublicFieldDataWriter.collectInstances(engine, jCas, collector);
     }
   }
 
   /**
-   * Returns a single static instance of InstanceCollector<String>.
+   * Returns a single static instance of {@code InstanceCollector<String>}.
    */
   public static class BooleanFactory implements DataWriterFactory<Boolean> {
     private static PublicFieldDataWriter<Boolean> collector = new PublicFieldDataWriter<Boolean>();
 
+    @Override
     public DataWriter<Boolean> createDataWriter() {
       return collector;
     }
 
     public static List<Instance<Boolean>> collectInstances(AnalysisEngine engine, JCas jCas)
-        throws AnalysisEngineProcessException {
+            throws AnalysisEngineProcessException {
       return PublicFieldDataWriter.collectInstances(engine, jCas, collector);
     }
   }
 
-  static <T> List<Instance<T>> collectInstances(
-      AnalysisEngine engine,
-      JCas jCas,
-      PublicFieldDataWriter<T> collector) throws AnalysisEngineProcessException {
+  static <T> List<Instance<T>> collectInstances(AnalysisEngine engine, JCas jCas,
+          PublicFieldDataWriter<T> collector) throws AnalysisEngineProcessException {
     collector.instances.clear();
     engine.process(jCas);
     engine.collectionProcessComplete();

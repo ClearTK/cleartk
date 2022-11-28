@@ -60,9 +60,9 @@ public class SyntacticPathExtractor implements FeatureExtractor2<TreebankNode, T
    * @param pathMemberExtractor
    *          this extractor will be used to get a feature for every node on the path, which will
    *          then be combined to form a single string. The extractor should preferably generate
-   *          exactly one <tt>StringFeature</tt>, but must generate at least one
-   *          <tt>StringFeature</tt>, <tt>LongFeature</tt>, <tt>DoubleFeature</tt>, or
-   *          <tt>BooleanFeature</tt>. Only the first feature will then be used and naively
+   *          exactly one {@code StringFeature}, but must generate at least one
+   *          {@code StringFeature}, {@code LongFeature}, {@code DoubleFeature}, or
+   *          {@code BooleanFeature}. Only the first feature will then be used and naively
    *          converted to a string.
    * @param partial
    *          if true, generate a partial path only, i.e. from the first node up to the lowest

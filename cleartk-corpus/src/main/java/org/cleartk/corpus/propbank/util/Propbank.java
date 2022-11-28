@@ -46,7 +46,7 @@ import com.google.common.annotations.Beta;
  * 
  * <p>
  * A <em>Propbank object</em> represents one entry in Propbank. It closely reflects the structure of
- * one line in <tt>prop.txt</tt>.
+ * one line in {@code prop.txt}.
  * </p>
  * 
  * @author Philipp Wetzler, Philip Ogren, Steven Bethard
@@ -57,7 +57,7 @@ public class Propbank {
    * Parses one Propbank entry and returns its representation as a <em>Propbank</em> object.
    * 
    * @param propTxt
-   *          one line from <tt>prop.txt</tt>
+   *          one line from {@code prop.txt}
    * 
    * @return a <em>Propbank</em> object representing <b>propTxt</b>
    */
@@ -104,10 +104,10 @@ public class Propbank {
 
   /**
    * A convenience funtion to quickly read only the filename portion of a line from
-   * <tt>prop.txt</tt>.
+   * {@code prop.txt}.
    * 
    * @param propTxt
-   *          one line from <tt>prop.txt</tt>
+   *          one line from {@code prop.txt}
    * 
    * @return the filename part of <b>propTxt</b>
    */

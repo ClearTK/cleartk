@@ -57,7 +57,6 @@ public abstract class CleartkTestBase {
   private Set<String> skippedTestNames;
 
   public CleartkTestBase() {
-    super();
     this.logger = Logger.getLogger(this.getClass().getName());
     this.skippedTestNames = new HashSet<String>();
     String skipTests = System.getProperty(SKIP_TESTS_PROPERTY);
@@ -70,8 +69,9 @@ public abstract class CleartkTestBase {
    * The name of the property that can be set to skip some tests. The property value will be parsed
    * as a comma-separated list of values, where each value can designate one type of test to skip,
    * e.g. {@value #LONG_TESTS_PROPERTY_VALUE} or {@value #BIG_MEMORY_TESTS_PROPERTY_VALUE}. Example
-   * usage: <br/>
-   * <code>-Dcleartk.skipTests=long,bigMem</code>
+   * usage:
+   * <p>
+   * {@code -Dcleartk.skipTests=long,bigMem}
    */
   public static final String SKIP_TESTS_PROPERTY = "cleartk.skipTests";
 
@@ -150,8 +150,7 @@ public abstract class CleartkTestBase {
    * skip it. Should be logged immediately after calling {@link #assumeLongTestsEnabled()}.
    */
   protected static final String LONG_TEST_MESSAGE = createTestEnabledMessage(
-      LONG_TESTS_PROPERTY_VALUE,
-      "This test takes a long time to run");
+          LONG_TESTS_PROPERTY_VALUE, "This test takes a long time to run");
 
   /**
    * Value for the {@link #SKIP_TESTS_PROPERTY} property that indicates that tests requiring a lot
@@ -175,8 +174,7 @@ public abstract class CleartkTestBase {
    * {@link #assumeBigMemoryTestsEnabled()}.
    */
   public static final String BIG_MEMORY_TEST_MESSAGE = createTestEnabledMessage(
-      BIG_MEMORY_TESTS_PROPERTY_VALUE,
-      "This test requires a lot of memory");
+          BIG_MEMORY_TESTS_PROPERTY_VALUE, "This test requires a lot of memory");
 
   protected JCas jCas;
 

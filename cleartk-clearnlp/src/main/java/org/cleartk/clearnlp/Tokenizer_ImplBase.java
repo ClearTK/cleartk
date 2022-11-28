@@ -60,7 +60,6 @@ import edu.emory.clir.clearnlp.util.lang.TLanguage;
  * <p>
  * 
  * @author Lee Becker
- * 
  */
 @Beta
 public abstract class Tokenizer_ImplBase<TOKEN_TYPE extends Annotation, SENTENCE_TYPE extends Annotation> extends

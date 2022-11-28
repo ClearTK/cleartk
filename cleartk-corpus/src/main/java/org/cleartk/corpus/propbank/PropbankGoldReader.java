@@ -55,7 +55,7 @@ import org.apache.uima.fit.descriptor.SofaCapability;
  * 
  * 
  * <p>
- * PropbankCollectionReader reads all <tt>.mrg</tt> files of the WSJ part of Treebank in lexical
+ * PropbankCollectionReader reads all {@code .mrg} files of the WSJ part of Treebank in lexical
  * order, then reads the corresponding Propbank entries, and populates the "TreebankView" and
  * "PropbankView" SOFAs.
  * </p>

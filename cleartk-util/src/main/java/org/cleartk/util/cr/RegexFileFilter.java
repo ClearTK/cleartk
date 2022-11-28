@@ -36,11 +36,11 @@ import org.apache.commons.io.filefilter.AbstractFileFilter;
 
 /**
  * Filters files using supplied regular expression(s).
- * <p/>
+ * <p>
  * See java.util.regex.Pattern for regex matching rules
- * <p/>
+ * <p>
  * 
- * <p/>
+ * <p>
  * e.g.
  * 
  * <pre>
