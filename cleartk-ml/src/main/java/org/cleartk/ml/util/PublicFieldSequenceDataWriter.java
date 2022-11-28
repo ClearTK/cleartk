@@ -60,7 +60,7 @@ public class PublicFieldSequenceDataWriter<T> implements SequenceDataWriter<T> {
   }
 
   /**
-   * Returns a single static instance of InstanceCollector<String>.
+   * Returns a single static instance of {@code InstanceCollector<String>}.
    */
   public static class StringFactory implements SequenceDataWriterFactory<String> {
     private static PublicFieldSequenceDataWriter<String> collector = new PublicFieldSequenceDataWriter<String>();
@@ -76,7 +76,7 @@ public class PublicFieldSequenceDataWriter<T> implements SequenceDataWriter<T> {
   }
 
   /**
-   * Returns a single static instance of InstanceCollector<String>.
+   * Returns a single static instance of {@code InstanceCollector<String>}.
    */
   public static class BooleanFactory implements SequenceDataWriterFactory<Boolean> {
     private static PublicFieldSequenceDataWriter<Boolean> collector = new PublicFieldSequenceDataWriter<Boolean>();

@@ -32,6 +32,10 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.collection.CollectionException;
+import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;
+import org.apache.uima.fit.component.ViewCreatorAnnotator;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.SofaCapability;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.FileUtils;
@@ -39,10 +43,6 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 import org.cleartk.util.ViewUriUtil;
-import org.apache.uima.fit.component.JCasCollectionReader_ImplBase;
-import org.apache.uima.fit.component.ViewCreatorAnnotator;
-import org.apache.uima.fit.descriptor.ConfigurationParameter;
-import org.apache.uima.fit.descriptor.SofaCapability;
 
 import com.google.common.annotations.Beta;
 
@@ -80,20 +80,18 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
   public static final String PARAM_CORPUS_DIRECTORY_NAME = "corpusDirectoryName";
 
   private static final String CORPUS_DIRECTORY_DESCRIPTION = "Specifies the location of WSJ/PennTreebank treebank files.  "
-      + "The directory should contain subdirectories corresponding to the sections (e.g. '00', '01', etc.) "
-      + "That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. "
-      + "There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24. ";
+          + "The directory should contain subdirectories corresponding to the sections (e.g. '00', '01', etc.) "
+          + "That is, if a local copy of PennTreebank sits at C:/Data/PTB/wsj/mrg, then the the subdirectory C:/Data/PTB/wsj/mrg/00 should exist. "
+          + "There are 24 sections in PTB corresponding to the directories 00, 01, 02, ... 24. ";
 
-  @ConfigurationParameter(
-      name = PARAM_CORPUS_DIRECTORY_NAME,
-      mandatory = true, description = CORPUS_DIRECTORY_DESCRIPTION)
+  @ConfigurationParameter(name = PARAM_CORPUS_DIRECTORY_NAME, mandatory = true, description = CORPUS_DIRECTORY_DESCRIPTION)
   private String corpusDirectoryName;
 
   public static final String PARAM_SECTIONS_SPECIFIER = "sectionsSpecifier";
 
   private static final String SECTIONS_DESCRIPTION = "specifies which sections of PTB to read in.  "
-      + "The required format for values of this parameter allows for comma-separated section numbers and section ranges, "
-      + "for example '02,07-12,16'.";
+          + "The required format for values of this parameter allows for comma-separated section numbers and section ranges, "
+          + "for example '02,07-12,16'.";
 
   @ConfigurationParameter(name = PARAM_SECTIONS_SPECIFIER, defaultValue = "00-24", description = SECTIONS_DESCRIPTION)
   private String sectionsSpecifier;
@@ -119,7 +117,7 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
   }
 
   /**
-   * This will add all the <tt>.mrg</tt> files in the given WSJ sections to <em>treebankFiles</em>.
+   * This will add all the {@code .mrg} files in the given WSJ sections to <em>treebankFiles</em>.
    * 
    * @param wsjDirectory
    *          The top level of the WSJ part of Treebank. Underneath here are the section
@@ -130,22 +128,23 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
    *          The set of sections to include.
    */
   @Beta
-  public static void collectSections(
-      File wsjDirectory,
-      List<File> treebankFiles,
-      ListSpecification wsjSections) {
-    if (!wsjDirectory.isDirectory())
+  public static void collectSections(File wsjDirectory, List<File> treebankFiles,
+          ListSpecification wsjSections) {
+    if (!wsjDirectory.isDirectory()) {
       return;
+    }
 
     for (File subFile : wsjDirectory.listFiles()) {
-      if (!subFile.isDirectory())
+      if (!subFile.isDirectory()) {
         continue;
+      }
 
       try {
         int section = Integer.valueOf(subFile.getName());
 
-        if (!wsjSections.contains(section))
+        if (!wsjSections.contains(section)) {
           continue;
+        }
       } catch (NumberFormatException e) {
         continue;
       }
@@ -167,37 +166,37 @@ public class PennTreebankReader extends JCasCollectionReader_ImplBase {
   /**
    * Reads the next file and stores its text in <b>cas</b> as the "TreebankView" SOFA.
    */
+  @Override
   public void getNext(JCas jCas) throws IOException, CollectionException {
     File treebankFile = files.removeFirst();
-    getUimaContext().getLogger().log(
-        Level.FINEST,
-        "reading treebank file: " + treebankFile.getPath());
+    getUimaContext().getLogger().log(Level.FINEST,
+            "reading treebank file: " + treebankFile.getPath());
     ViewUriUtil.setURI(jCas, treebankFile.toURI());
     try {
-      JCas treebankView = ViewCreatorAnnotator.createViewSafely(
-          jCas,
-          TREEBANK_VIEW);
+      JCas treebankView = ViewCreatorAnnotator.createViewSafely(jCas, TREEBANK_VIEW);
       treebankView.setSofaDataString(FileUtils.file2String(treebankFile), "text/plain");
     } catch (AnalysisEngineProcessException aepe) {
       throw new CollectionException(aepe);
     }
   }
 
+  @Override
   public void close() throws IOException {
   }
 
+  @Override
   public Progress[] getProgress() {
-    return new Progress[] { new ProgressImpl(
-        numberOfFiles - files.size(),
-        numberOfFiles,
-        Progress.ENTITIES) };
+    return new Progress[] {
+        new ProgressImpl(numberOfFiles - files.size(), numberOfFiles, Progress.ENTITIES) };
   }
 
+  @Override
   public boolean hasNext() throws IOException, CollectionException {
-    if (files.size() > 0)
+    if (files.size() > 0) {
       return true;
-    else
+    } else {
       return false;
+    }
   }
 
   @Beta

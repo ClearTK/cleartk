@@ -39,10 +39,10 @@ import org.cleartk.ml.encoder.features.NameNumber;
 import org.cleartk.ml.jar.JarStreams;
 import org.cleartk.ml.jar.SequenceClassifierBuilder_ImplBase;
 
+import com.google.common.io.Files;
+
 import cc.mallet.grmm.learning.ACRF;
 import cc.mallet.grmm.learning.GenericAcrfTui;
-
-import com.google.common.io.Files;
 
 /**
  * <br>
@@ -54,7 +54,7 @@ import com.google.common.io.Files;
  * 
  */
 public class GrmmClassifierBuilder extends
-    SequenceClassifierBuilder_ImplBase<GrmmClassifier, List<NameNumber>, String[], String[]> {
+        SequenceClassifierBuilder_ImplBase<GrmmClassifier, List<NameNumber>, String[], String[]> {
 
   private static String DEFAULT_MODEL_FILENAME = "acrf.model.ser.gz";
 
@@ -68,13 +68,12 @@ public class GrmmClassifierBuilder extends
   }
 
   /**
-   * Parameters:<br>
    * <table border="1">
-   * <thead>
+   * <caption>Parameters</caption> <thead>
    * <tr>
    * <th>position</th>
    * <th>type</th>
-   * <th>description</td></th>
+   * <th>description</th>
    * </tr>
    * </thead>
    * <tr>
@@ -104,6 +103,7 @@ public class GrmmClassifierBuilder extends
    * </tr>
    * </table>
    */
+  @Override
   public void trainClassifier(File dir, String... args) throws Exception {
     if (dir == null || !dir.isDirectory()) {
       throw new IllegalArgumentException(String.format("invalid directory \"%s\"", dir));
@@ -122,17 +122,10 @@ public class GrmmClassifierBuilder extends
     String maxInferencer = args.length < 3 ? "LoopyBP.createForMaxProduct()" : args[2];
 
     // usage of GRMM:
-    String[] grmmArgs = new String[] {
-        "--training",
-        new File(dir, "training-data.grmm").getAbsolutePath(),
-        "--testing",
-        new File(dir, "training-data.grmm").getAbsolutePath(),
-        "--model-file",
-        template.getAbsolutePath(),
-        "--inferencer",
-        inferencer,
-        "--max-inferencer",
-        maxInferencer };
+    String[] grmmArgs = new String[] { "--training",
+        new File(dir, "training-data.grmm").getAbsolutePath(), "--testing",
+        new File(dir, "training-data.grmm").getAbsolutePath(), "--model-file",
+        template.getAbsolutePath(), "--inferencer", inferencer, "--max-inferencer", maxInferencer };
 
     // GenericAcrfTui saves in the current directory; move to the appropriate directory
     GenericAcrfTui.main(grmmArgs);
@@ -156,9 +149,9 @@ public class GrmmClassifierBuilder extends
     // handle an outcome example from the training data over to the
     // classifier
     // through a special jar-file-entry:
-    LineNumberReader lnr = new LineNumberReader(new FileReader(trainingData));
-    this.outcomeExample = lnr.readLine().split("----")[0];
-    lnr.close();
+    try (LineNumberReader lnr = new LineNumberReader(new FileReader(trainingData))) {
+      this.outcomeExample = lnr.readLine().split("----")[0];
+    }
     JarStreams.putNextJarEntry(modelStream, JAR_ENTRY_MODEL, model);
     modelStream.putNextEntry(new JarEntry(JAR_ENTRY_OUTCOME_EXAMPLE));
     new ObjectOutputStream(modelStream).writeObject(outcomeExample);
@@ -183,11 +176,7 @@ public class GrmmClassifierBuilder extends
 
   @Override
   protected GrmmClassifier newClassifier() {
-    return new GrmmClassifier(
-        this.featuresEncoder,
-        this.outcomeEncoder,
-        this.acrf,
-        this.outcomeExample);
+    return new GrmmClassifier(this.featuresEncoder, this.outcomeEncoder, this.acrf,
+            this.outcomeExample);
   }
-
 }

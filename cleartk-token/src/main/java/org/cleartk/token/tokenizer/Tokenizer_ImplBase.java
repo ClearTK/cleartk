@@ -39,34 +39,33 @@ public abstract class Tokenizer_ImplBase implements Tokenizer {
 
   /**
    * performs tokenization on the input text and returns the character offsets corresponding to the
-   * begining and end of each token w.r.t. the input text.
+   * beginning and end of each token w.r.t. the input text.
    * 
    * @param text
    *          the text that you want tokenized.
-   * @return offsets corresponding to the begining and end of each token. The dimensions of the
+   * @return offsets corresponding to the beginning and end of each token. The dimensions of the
    *         returned array will be number of tokens returned by getTokens by 2 (one for token begin
    *         and one for token end).
    * 
    *         <pre>
-   * 
-   *         <code> int[][] offsets = getTokenOffsets("example text"); int
-   *         beginFirstToken = offsets[0][0]; int endFirstToken =
-   *         offsets[0][1]; int begin4thToken = offsets[3][0]; int end4thToken
-   *         = offsets[3][1];
-   * 
+   *         {@code 
+   *         int[][] offsets = getTokenOffsets("example text"); 
+   *         int beginFirstToken = offsets[0][0]; 
+   *         int endFirstToken = offsets[0][1]; 
+   *         int begin4thToken = offsets[3][0]; 
+   *         int end4thToken = offsets[3][1];}
    * </pre>
-   * 
-   *         </code>
-   * 
    */
+  @Override
   public List<Token> getTokens(String text) {
     List<Token> returnValues = new ArrayList<Token>();
     String[] tokenTexts = getTokenTexts(text);
     if (text.length() > 0) {
       int offset = 0;
       for (String tokenText : tokenTexts) {
-        while (text.charAt(offset) != tokenText.charAt(0))
+        while (text.charAt(offset) != tokenText.charAt(0)) {
           offset++;
+        }
 
         Token token = new Token(offset, offset + tokenText.length(), tokenText);
         returnValues.add(token);
@@ -76,5 +75,4 @@ public abstract class Tokenizer_ImplBase implements Tokenizer {
 
     return returnValues;
   }
-
 }
