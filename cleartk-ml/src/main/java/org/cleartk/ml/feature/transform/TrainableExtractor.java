@@ -36,24 +36,19 @@ import org.cleartk.ml.Instance;
  * TrainableExtractors defines a extractors that can be trained to fix up data based on a set of
  * instances. Prototypical cases include computing statistics for normalization such as mean,
  * standard deviation, min, max, or for computing corpus tf*idf values
- * 
  * <p>
  * TrainableExtractors that have not yet been trained cannot be used as subextractors inside of any
  * other feature extractor, though they can have subextractors of their own. So for example, while
  * the following will work:
  * <p>
- * 
- * <code>
+ * {@code 
  * new TfidfExtractor(new ContextExtractor<Token>(Token.class, new CoveredTextExtractor(), new
- * Preceding(2)))
- * </code>
+ * Preceding(2)))}
  * <p>
  * the following will not:
  * <p>
- * <code>
- * new ContextExtractor<Token>(Token.class, new TfidfExtractor(new CoveredTextExtractor()), new
- * Preceding(2))
- * </code>
+ * {@code new ContextExtractor<Token>(Token.class, new TfidfExtractor(new CoveredTextExtractor()), new
+ * Preceding(2))}
  */
 public interface TrainableExtractor<OUTCOME_T> {
 
@@ -64,17 +59,17 @@ public interface TrainableExtractor<OUTCOME_T> {
    * @param instances
    *          - URI pointing to the output location for saving statistics
    */
-  public void train(Iterable<Instance<OUTCOME_T>> instances);
+  void train(Iterable<Instance<OUTCOME_T>> instances);
 
   /**
    * Saves statistics from train in location URI
    */
-  public void save(URI uri) throws IOException;
+  void save(URI uri) throws IOException;
 
   /**
    * Loads statistics from location URI
    */
-  public void load(URI uri) throws IOException;
+  void load(URI uri) throws IOException;
 
   /**
    * Transforms all features handled by this extractor. Called on an Instance that was created
@@ -84,6 +79,5 @@ public interface TrainableExtractor<OUTCOME_T> {
    *          An instance that was created before {@link #train(Iterable)} was called.
    * @return A copy of the instance, where processing of the instances is complete.
    */
-  public Instance<OUTCOME_T> transform(Instance<OUTCOME_T> instance);
-
+  Instance<OUTCOME_T> transform(Instance<OUTCOME_T> instance);
 }

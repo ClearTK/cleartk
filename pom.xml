@@ -1,13 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-    <relativePath />
-  </parent>
-
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.cleartk</groupId>
@@ -321,6 +314,29 @@
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.4.1</version>
+          <configuration>
+            <!-- Suppress timestamp for minimal diffs when re-generating -->
+            <notimestamp>true</notimestamp>
+
+            <!-- Allow tags added by JCasGen -->
+            <tags>
+              <tag>
+                <name>generated</name>
+                <placement>a</placement>
+                <head>Generated</head>
+              </tag>
+              <tag>
+                <name>ordered</name>
+                <placement>a</placement>
+                <head>Ordered</head>
+              </tag>
+              <tag>
+                <name>modifiable</name>
+                <placement>a</placement>
+                <head>Modifiable</head>
+              </tag>
+            </tags>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-plugin-plugin</artifactId>
@@ -428,137 +444,38 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <!-- switch on dependency-driven aggregation -->
-          <includeDependencySources>true</includeDependencySources>
-
-          <!-- include ONLY ClearTK dependencies -->
-          <dependencySourceIncludes>
-            <dependencySourceInclude>org.cleartk:*</dependencySourceInclude>
-          </dependencySourceIncludes>
-
-          <!-- Suppress timestamp for minimal diffs when re-generating -->
-          <notimestamp>true</notimestamp>
-
-          <!-- Allow tags added by JCasGen -->
-          <tags>
-            <tag>
-              <name>generated</name>
-              <placement>a</placement>
-              <head>Generated</head>
-            </tag>
-            <tag>
-              <name>ordered</name>
-              <placement>a</placement>
-              <head>Ordered</head>
-            </tag>
-            <tag>
-              <name>modifiable</name>
-              <placement>a</placement>
-              <head>Modifiable</head>
-            </tag>
-          </tags>
-
-          <!-- Link to standard Java HTML javadoc -->
-          <linksource>true</linksource>
-
-          <!-- Don't include deprecated APIs -->
-          <nodeprecated>true</nodeprecated>
-
-          <!-- Links to all dependency javadocs -->
-          <links>
-            <!-- berkeley parser -->
-            <!-- (none available) -->
-            <!-- commons-io -->
-            <link>http://commons.apache.org/io/apidocs/</link>
-
-            <!-- commons-lang -->
-            <link>http://commons.apache.org/lang/apidocs/</link>
-
-            <!-- commons-logging -->
-            <link>http://commons.apache.org/logging/apidocs/</link>
-
-            <!-- guava -->
-            <link>http://docs.guava-libraries.googlecode.com/git-history/v10.0/javadoc/</link>
-
-            <!-- jVinci, uima-* -->
-            <link>http://uima.apache.org/d/uimaj-2.3.1/api/</link>
-
-            <!-- jdom -->
-            <link>http://www.jdom.org/docs/apidocs/</link>
-
-            <!-- joda-time -->
-            <link>http://joda-time.sourceforge.net/apidocs</link>
-
-            <!-- jsr173_api -->
-            <!-- (none available) -->
-
-            <!-- jsr305 -->
-            <link>http://findbugs.sourceforge.net/api/</link>
-
-            <!-- junit -->
-            <link>http://junit.org/apidocs/</link>
-
-            <!-- jwnl -->
-            <!-- (none available) -->
-
-            <!-- liblinear -->
-            <!-- (none available) -->
-
-            <!-- libsvm -->
-            <!-- (none available) -->
-
-            <!-- log4j -->
-            <link>http://logging.apache.org/log4j/1.2/apidocs/</link>
-
-            <!-- lucene-snowball -->
-            <link>http://lucene.apache.org/java/3_0_3/api/all/</link>
-
-            <!-- mallet -->
-            <link>http://mallet.cs.umass.edu/api/</link>
-
-            <!-- malt -->
-            <link>http://maltparser.org/api/</link>
-
-            <!-- opennlp-maxent -->
-            <link>http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-maxent/</link>
-
-            <!-- opennlp-tools -->
-            <link>http://incubator.apache.org/opennlp/documentation/apidocs/opennlp-tools/</link>
-
-            <!-- spring-core -->
-            <link>http://static.springsource.org/spring/docs/3.0.3.RELEASE/javadoc-api/</link>
-
-            <!-- stanford-corenlp -->
-            <link>http://nlp.stanford.edu/nlp/javadoc/javanlp/</link>
-
-            <!-- stax -->
-            <!-- (none available) -->
-
-            <!-- stax-api -->
-            <!-- (none available) -->
-
-            <!-- trove4j -->
-            <link>http://trove4j.sourceforge.net/javadocs/</link>
-
-            <!-- uimafit -->
-            <link>http://uimafit.googlecode.com/svn/tags/uimafit-parent-1.2.0/apidocs/</link>
-
-            <!-- xalan -->
-            <link>http://xml.apache.org/xalan-j/apidocs/</link>
-
-            <!-- xerces -->
-            <link>https://xerces.apache.org/xerces2-j/javadocs/api/</link>
-
-            <!-- xml-apis -->
-            <!-- (none available) -->
-
-            <!-- xom -->
-            <link>http://xom.nu/apidocs/</link>
-          </links>
-        </configuration>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

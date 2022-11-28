@@ -50,7 +50,7 @@ public abstract class PropbankRelation {
    * <em>PropbankRelation</em> object.
    * 
    * @param s
-   *          the textual representation of a relation taken from <tt>prop.txt</tt>
+   *          the textual representation of a relation taken from {@code prop.txt}
    * 
    * @return a <em>PropbankRelation</em> object representing <b>s</b>
    */

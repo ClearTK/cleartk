@@ -24,13 +24,12 @@
 
 package org.cleartk.test.util;
 
+import org.apache.uima.fit.testing.factory.TokenBuilder;
 import org.cleartk.test.util.type.Sentence;
 import org.cleartk.test.util.type.Token;
 import org.junit.Before;
-import org.apache.uima.fit.testing.factory.TokenBuilder;
 
 /**
- * <br>
  * Copyright (c) 2010, Regents of the University of Colorado <br>
  * All rights reserved.
  * 
@@ -40,6 +39,7 @@ public class DefaultTestBase extends CleartkTestBase {
 
   protected TokenBuilder<Token, Sentence> tokenBuilder;
 
+  @Override
   @Before
   public void setUp() throws Exception {
     super.setUp();
