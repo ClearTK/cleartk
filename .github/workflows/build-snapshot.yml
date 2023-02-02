@@ -20,7 +20,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B install -Dgpg.skip --no-transfer-progress --file pom.xml
+      run: mvn -B install --no-transfer-progress --file pom.xml -Dgpg.skip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -39,6 +39,6 @@ jobs:
         cache: maven
 
     - name: Publish SNAPSHOT version to GitHub Packages (we can skip tests, since we only deploy, if the build workflow succeeded)
-      run: mvn -B --no-transfer-progress deploy -DskipTests
+      run: mvn -B deploy --no-transfer-progress --file pom.xml -DskipTests -Dgpg.skip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
