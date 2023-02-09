@@ -1,11 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.cleartk</groupId>
   <artifactId>cleartk</artifactId>
-  <version>3.0.0-SNAPSHOT</version>
+  <version>3.0.0</version>
   <packaging>pom</packaging>
 
   <name>ClearTK</name>
@@ -24,6 +22,7 @@
     <url>https://github.com/ClearTK/cleartk</url>
     <connection>scm:git:https://github.com/ClearTK/cleartk.git</connection>
     <developerConnection>scm:git:git@github.com:ClearTK/cleartk.git</developerConnection>
+    <tag>cleartk-3.0.0</tag>
   </scm>
 
   <distributionManagement>
@@ -479,8 +478,7 @@
         <configuration>
           <failOnWarning>true</failOnWarning>
           <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
-          <ignoredNonTestScopedDependencies
-            combine.children="append">
+          <ignoredNonTestScopedDependencies combine.children="append">
             <!-- 
               These are needed in virtually all ClearTK modules but sometimes only through
               inheritance in the main code and only used directly in the test classes. So we
