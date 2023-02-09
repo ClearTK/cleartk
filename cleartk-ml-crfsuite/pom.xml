@@ -4,7 +4,7 @@
   <parent>
     <artifactId>cleartk</artifactId>
     <groupId>org.cleartk</groupId>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
   

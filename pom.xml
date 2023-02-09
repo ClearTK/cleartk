@@ -3,7 +3,7 @@
 
   <groupId>org.cleartk</groupId>
   <artifactId>cleartk</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>ClearTK</name>
@@ -22,7 +22,7 @@
     <url>https://github.com/ClearTK/cleartk</url>
     <connection>scm:git:https://github.com/ClearTK/cleartk.git</connection>
     <developerConnection>scm:git:git@github.com:ClearTK/cleartk.git</developerConnection>
-    <tag>cleartk-3.0.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>
