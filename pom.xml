@@ -127,7 +127,7 @@
     <commons-io-version>2.11.0</commons-io-version>
     <commons-lang3-version>3.12.0</commons-lang3-version>
     <commons-cli-version>1.2</commons-cli-version>
-    <guava-version>31.1-jre</guava-version>
+    <guava-version>32.0.0-jre</guava-version>
     <dkpro-core-version>2.2.0</dkpro-core-version>
     <libsvm-version>3.17</libsvm-version>
     <liblinear-version>1.94</liblinear-version>
